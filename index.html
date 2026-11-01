@@ -641,7 +641,7 @@ body.cel .app { display: block; }
 body.cel, body.cel main { overflow-x: hidden; } body.cel main { width: 100%; box-sizing: border-box; } body.cel .tab { min-width: 0; }
 body.cel .card.guia { display: none; }
 body.cel aside.nav { display: none !important; }
-body.cel main { padding: 0 12px calc(96px + env(safe-area-inset-bottom)); max-width: 100%; }
+body.cel main { padding: 0 12px calc(150px + env(safe-area-inset-bottom)); max-width: 100%; }
 body.cel .top { position: sticky; top: 0; z-index: 30; background: var(--bg); padding: calc(10px + env(safe-area-inset-top)) 0 8px; margin: 0 0 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 body.cel .top h1 { width: auto; flex: 1 1 auto; font-size: 24px; margin: 0; }
 body.cel #btnDia, body.cel .mais-wrap, body.cel #btnNovo, body.cel .busca-btn, body.cel #btnAjuda { display: none !important; }
@@ -714,6 +714,35 @@ body.cel #tab-lancamentos [data-importar], body.cel #tab-lancamentos #lCsv { dis
 body.cel #tab-lancamentos .toolbar { gap: 8px; } body.cel #tab-lancamentos #lBusca { width: 100%; flex: 1 1 100%; }
 body.cel .totals { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; }
 @media (prefers-color-scheme: dark) { .cel-bv-ms { background: #ecebe6; color: #171714; border-color: #ecebe6; } }
+/* =================== v5.3: celular melhor =================== */
+body.cel-hoje-on #filters { display: none !important; }
+body.cel #tab-config .cfg > .card:first-child { display: none; }
+.cel-hoje { display: grid; gap: 10px; }
+.cel-ola small { display: block; color: var(--muted); font-size: 13px; } .cel-ola b { font-size: 20px; font-family: Georgia, serif; font-weight: 400; }
+.cel-heroi { background: var(--accent); color: var(--accent-fg); border: 0; display: grid; gap: 4px; padding: 16px; }
+.cel-heroi small { opacity: .88; font-size: 12.5px; } .cel-heroi b { font-size: 32px; font-variant-numeric: tabular-nums; line-height: 1.1; } .cel-heroi b span { font-size: 15px; opacity: .8; font-weight: 500; }
+.cel-heroi .bar { height: 7px; background: rgba(255, 255, 255, .25); border-radius: 9px; overflow: hidden; } .cel-heroi .bar i { display: block; height: 100%; background: #fff; border-radius: 9px; }
+.cel-heroi .btn { justify-self: start; margin-top: 6px; background: rgba(255, 255, 255, .16); color: inherit; border-color: transparent; }
+.cel-heroi.alerta { background: var(--bad); }
+.cel-c { padding: 12px 14px; } .cel-c h3 { margin: 0 0 6px; font-size: 14.5px; }
+.cel-c-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; } .cel-c-h h3 { margin: 0 0 6px; }
+.cel-l { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); cursor: pointer; }
+.cel-l span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; font-size: 14px; } .cel-l small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; } .cel-l b { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cel-lim { margin: 6px 0; } .cel-lim .bar { height: 6px; background: var(--panel-2); border-radius: 9px; overflow: hidden; } .cel-lim .bar i { display: block; height: 100%; background: var(--warn); } .cel-lim.bad .bar i { background: var(--bad); }
+.cel-hoje-pe { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 2px; }
+.cel-rp .cel-voz { flex: none; width: 48px; padding: 0; font-size: 20px; border-radius: 12px; } .cel-voz.on { background: var(--bad); color: #fff; border-color: var(--bad); animation: celPulso 1s infinite; }
+@keyframes celPulso { 50% { opacity: .6; } }
+.cel-ok { width: 100%; padding: 13px; font-size: 15px; margin-top: 10px; }
+.cel-chips { display: flex; gap: 6px; overflow-x: auto; padding: 8px 0 2px; scrollbar-width: none; } .cel-chips::-webkit-scrollbar { display: none; }
+.cel-chips button { flex: none; border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); border-radius: 12px; padding: 7px 11px; text-align: left; font: inherit; cursor: pointer; display: grid; }
+.cel-chips b { font-size: 13px; } .cel-chips small { font-size: 11px; color: var(--muted); }
+.cel-foto-prev:empty { display: none; } .cel-foto-prev { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 12.5px; } .cel-foto-prev img { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; }
+.cel-cp-img { width: 100%; border-radius: 12px; margin: 6px 0; }
+#celTrava { position: fixed; inset: 0; z-index: 200; background: var(--bg); overflow: auto; } #celTrava[hidden] { display: none; }
+.cel-dig { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); } .cel-dig small { display: block; color: var(--muted); font-size: 12px; }
+.cel-resumo { text-align: center; } .cel-resumo-t { font-size: 44px; } .cel-resumo h2 { margin: 4px 0; } .cel-resumo .card { text-align: left; padding: 10px 14px; margin: 8px 0; } .cel-resumo h3 { margin: 0 0 4px; font-size: 14px; }
+.cel-como { padding-left: 20px; display: grid; gap: 8px; font-size: 15px; }
+.cel-ex-t b { text-decoration: underline dotted color-mix(in srgb, var(--muted) 60%, transparent); text-underline-offset: 4px; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -3633,7 +3662,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '5.2';
+const APP_VERSAO = '5.3';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -4906,7 +4935,7 @@ function cardVerificacao() {
     <div class="row" style="margin-top:10px"><button class="btn" data-verif>Verificar agora</button><button class="btn" data-lembretes>📅 Lembretes no celular</button></div></div>`;
 }
 document.addEventListener('click', (e) => { if (e.target.closest('[data-verif]')) verificarCopias(true); });
-setTimeout(() => { const v = ultimaVerif(); if (db && (!v || Date.now() - new Date(v.quando) > 30 * 86400000)) verificarCopias(false).catch(() => {}); }, 45000);
+setTimeout(() => { const v = ultimaVerif(); if (CELULAR && lsGet('cel-tem-dados') !== '1') return; if (db && (!v || Date.now() - new Date(v.quando) > 30 * 86400000)) verificarCopias(false).catch(() => {}); }, 45000);
 
 /* =================== v4.1: CONSULTÓRIO DA HELEN (Hoje · férias · lembretes · notas · escalas · evolução revisada · fechamento · cartas · lousa · acompanhamento) =================== */
 const CORES_PAC = ['#8e7cc3', '#6fa894', '#d9918a', '#c4a062', '#7f9fcf', '#b984b0', '#93b874', '#d6a06c', '#6aa7b8', '#a98bd6'];
@@ -6114,7 +6143,7 @@ async function pastaComprovantes(criar = true) {
 function telaComprovantes(id) {
   const l = db.lancamentos.find((x) => x.id === id); if (!l) return; const dlg = $('#dlg'); dlg.classList.remove('wide'); const lst = l.comprovantes || [];
   dlg.innerHTML = `<div class="form"><h2>📎 Comprovantes</h2><p class="muted" style="margin:0">${esc(l.descricao)} · ${dmy(l.data)} · ${fmt(l.valor)}</p>
-    ${lst.length ? `<div style="display:grid;gap:6px">${lst.map((c, i) => `<div class="row-between doc-linha"><span>📄 ${esc(c.nome)}</span><span class="row"><button class="btn sm" data-cp-abrir="${i}">Abrir</button><button class="icon-btn" data-cp-del="${i}" title="Remover">🗑</button></span></div>`).join('')}</div>` : '<div class="empty small">Nenhum comprovante ainda.</div>'}
+    ${lst.length ? `<div style="display:grid;gap:6px">${lst.map((c, i) => `<div class="row-between doc-linha"><span>${c.nuvem ? '📷' : '📄'} ${esc(c.nome)}${c.nuvem ? ' <small class="muted">(no OneDrive)</small>' : ''}</span><span class="row"><button class="btn sm" data-cp-abrir="${i}">Abrir</button><button class="icon-btn" data-cp-del="${i}" title="Remover">🗑</button></span></div>`).join('')}</div>` : '<div class="empty small">Nenhum comprovante ainda.</div>'}
     ${dirH ? '' : '<div class="lembrete info" style="margin:0"><span>Os comprovantes ficam guardados na pasta de dados deste computador. Para isso, ative as <b>cópias na pasta</b> (Configurações → Cópias de segurança).</span></div>'}
     <p class="small muted" style="margin:0">Foto ou PDF do recibo, nota ou comprovante. Ficam na pasta <code>dados/comprovantes</code> deste computador (não vão para o OneDrive).</p>
     <div class="actions"><button class="btn" data-cp="f">Fechar</button>${dirH ? '<button class="btn primary" data-cp="add">+ Anexar arquivo</button>' : '<button class="btn primary" data-cp="pasta">Ativar a pasta</button>'}</div></div>`;
@@ -6129,7 +6158,7 @@ function telaComprovantes(id) {
         changed(); toast('Comprovante anexado ✔'); telaComprovantes(id); } catch (er) { toast('Não foi possível anexar: ' + er.message); } };
       return inp.click();
     }
-    const ab = t.closest('[data-cp-abrir]'); if (ab) { try { const c = lst[+ab.dataset.cpAbrir]; const p = await pastaComprovantes(false); const [a, n] = c.arq.split('/'); const f = await (await (await p.getDirectoryHandle(a)).getFileHandle(n)).getFile(); window.open(URL.createObjectURL(f), '_blank'); } catch (er) { toast('Arquivo não encontrado neste computador (ele fica no computador onde foi anexado).'); } return; }
+    const ab = t.closest('[data-cp-abrir]'); if (ab) { if (lst[+ab.dataset.cpAbrir]?.nuvem) { toast('📷 Foto tirada no celular: está no OneDrive, na pasta Finanças da Família/Comprovantes/' + lst[+ab.dataset.cpAbrir].arq.split('/')[0] + '.'); return; } try { const c = lst[+ab.dataset.cpAbrir]; const p = await pastaComprovantes(false); const [a, n] = c.arq.split('/'); const f = await (await (await p.getDirectoryHandle(a)).getFileHandle(n)).getFile(); window.open(URL.createObjectURL(f), '_blank'); } catch (er) { toast('Arquivo não encontrado neste computador (ele fica no computador onde foi anexado).'); } return; }
     const dl = t.closest('[data-cp-del]'); if (dl && confirm('Remover este comprovante do lançamento?')) { l.comprovantes = lst.filter((_, i) => i !== +dl.dataset.cpDel); changed(); telaComprovantes(id); }
   };
   if (!dlg.open) dlg.showModal();
@@ -8009,6 +8038,333 @@ setTab = function (t) { if (CELULAR && CEL_ESCONDE.includes(t)) t = 'painel'; ce
 const _renderAllPC = renderAll;
 renderAll = function () { _renderAllPC(); if (CELULAR) { celAtualizarBarra(); celPill(); celTelaAcesa(); } };
 if (CELULAR) celMontar();
+
+/* =================== v5.3: CELULAR MELHOR (Hoje · toque · voz · atalhos · digital · foto · treino) =================== */
+const CEL_ACAO = CELULAR ? new URLSearchParams(location.search).get('acao') : null;
+if (CEL_ACAO) { const u = new URL(location.href); u.searchParams.delete('acao'); history.replaceState(null, '', u.pathname + (u.search || '')); }
+
+/* ---------- 1. tela Hoje ---------- */
+const celPrimeiroNome = () => (lsGet('cel-nome') || 'Matheus').split(/\s+/)[0].replace(/\(.*$/, '') || 'Matheus';
+function celHeroi() {
+  const H = hoje(); const cur = ymOf(H); const fim = fimDoMes(cur); const resta = Math.max(1, Math.round((new Date(fim + 'T12:00') - new Date(H + 'T12:00')) / 86400000) + 1);
+  if (saldoBancos() == null) {
+    const mb = ui.membro; ui.membro = ''; const orc = orcamento(cur); ui.membro = mb; const meta = soma(orc.filter((o) => o.meta > 0), 'meta'); const gasto = soma(orc.filter((o) => o.meta > 0), 'gasto');
+    return `<div class="card cel-heroi"><small>Gasto do mês com limite</small><b>${fmt0(gasto)}${meta ? ` <span>de ${fmt0(meta)}</span>` : ''}</b>${meta ? `<div class="bar"><i style="width:${Math.min(100, (gasto / meta) * 100)}%"></i></div><small>${meta - gasto >= 0 ? `sobram ${fmt0(meta - gasto)} · ${fmt0((meta - gasto) / resta)} por dia até ${dmy(fim).slice(0, 5)}` : `passou ${fmt0(gasto - meta)} do limite`}</small>` : ''}
+      <button class="btn sm" data-sub="planejar:contas">Informar saldos para ver quanto dá para gastar</button></div>`;
+  }
+  const ate = fimDoMes(addM(cur, 1)); const P = projetarSaldo(ate); const livre = P.min.s;
+  if (livre < 0) return `<div class="card cel-heroi alerta"><small>Previsão até ${dmy(ate).slice(0, 5)}</small><b>${fmt0(livre)}</b><small>⚠ A conta deve ficar negativa em <b>${dmy((P.neg || P.min).d).slice(0, 5)}</b>. Segure os gastos que puder.</small><button class="btn sm" data-go-sub="planejar:futuro">Ver a previsão</button></div>`;
+  return `<div class="card cel-heroi"><small>Dá para gastar sem apertar</small><b>${fmt0(livre)}</b><small>até ${dmy(ate).slice(0, 5)}, já contando contas, faturas e o dia a dia · ${fmt0(livre / resta)} por dia neste mês</small></div>`;
+}
+function celHoje() {
+  const H = hoje(); const hr = new Date().getHours(); const ola = hr < 12 ? 'Bom dia' : hr < 18 ? 'Boa tarde' : 'Boa noite';
+  const dataLonga = ((x) => x.charAt(0).toUpperCase() + x.slice(1))(new Date(H + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }));
+  const doDia = db.lancamentos.filter((l) => l.data === H && l.tipo === 'Despesa').sort((a, b) => (a.id < b.id ? 1 : -1)); const totDia = soma(doDia, 'valor');
+  const lim = addDias(H, 7); const prox = [];
+  db.contasPagar.filter((c) => c.status !== 'Pago' && c.vencimento <= lim).forEach((c) => prox.push({ d: c.vencimento, t: c.descricao, v: c.valor, tab: 'contas' }));
+  try { const cur = ymOf(H); [cur, addM(cur, 1)].forEach((m, i) => faturas([cur, addM(cur, 1)]).forEach((f) => { const v = f.valores[i]; const venc = `${m}-${pad(Math.min(28, f.conta.vencimento || 1))}`; if (v > 0 && venc >= H && venc <= lim) prox.push({ d: venc, t: 'Fatura ' + nomeCartao(f.conta), v, tab: 'painel' }); })); } catch (e) { /* sem cartões */ }
+  prox.sort((a, b) => (a.d < b.d ? -1 : 1));
+  const mb = ui.membro; ui.membro = ''; const orc = orcamento(ymOf(H)).filter((o) => o.meta > 0 && o.uso >= 0.8).sort((a, b) => b.uso - a.uso); ui.membro = mb;
+  let treino = '';
+  try { const c = T0(); if (Object.values(c.dias || {}).some(Boolean)) { const x = montarSemana(c).plano[diaSemDe(H)]; const feito = riGet(`tconc-${H}`) || riDe('mat', 'corrida').some((r) => r.data === H);
+    treino = `<div class="card cel-c"><div class="cel-c-h"><h3>${x ? (x.k === 'musc' ? '🏋️ Treino de hoje' : '🏃 Corrida de hoje') : '😴 Hoje é descanso'}</h3>${x && !feito ? '<button class="btn sm primary" data-cel-tab="treino">Começar</button>' : ''}</div><p class="small muted" style="margin:0">${x ? (x.k === 'musc' ? `${esc(x.nome)} · ${exerciciosDo(x.idx, c).length} exercícios` : esc(corridaDo(x.tipo, c).t)) : 'O músculo cresce na recuperação.'}${feito ? ' · <span class="good">✅ feito</span>' : ''}</p></div>`; } } catch (e) { treino = ''; }
+  const nAv = gerarAvisos().filter((a) => a.nivel !== 'info').length;
+  return `<div class="cel-hoje"><div class="cel-ola"><small>${dataLonga}</small><b>${ola}, ${esc(celPrimeiroNome())}</b></div>
+    ${celHeroi()}
+    <div class="card cel-c"><div class="cel-c-h"><h3>Gastos de hoje</h3><b>${fmt(totDia)}</b></div>${doDia.length ? doDia.slice(0, 4).map((l) => `<div class="cel-l" data-edit-l="${l.id}"><span>${esc(l.descricao)}<small>${esc(l.categoria)} · ${esc(formaDe(l) || contaNome(l.conta))}</small></span><b>${fmt(l.valor)}</b></div>`).join('') + (doDia.length > 4 ? `<button class="btn sm" data-cel-tab="lancamentos">Ver os ${doDia.length}</button>` : '') : '<p class="small muted" style="margin:0">Nada lançado hoje. Toque em ＋ Lançar quando gastar.</p>'}</div>
+    ${prox.length ? `<div class="card cel-c"><div class="cel-c-h"><h3>Vence nos próximos 7 dias</h3><b>${fmt0(soma(prox, 'v'))}</b></div>${prox.slice(0, 6).map((p) => `<div class="cel-l" data-cel-ir="${p.tab}"><span>${esc(p.t)}<small class="${p.d < H ? 'bad' : p.d === H ? 'warn' : ''}">${p.d < H ? 'atrasada desde ' + dmy(p.d).slice(0, 5) : p.d === H ? 'vence hoje' : dmy(p.d).slice(0, 5)}</small></span><b>${fmt(p.v)}</b></div>`).join('')}</div>` : ''}
+    ${orc.length ? `<div class="card cel-c"><h3>Limites em alerta</h3>${orc.slice(0, 3).map((o) => `<div class="cel-lim ${o.uso > 1 ? 'bad' : ''}"><div class="bar"><i style="width:${Math.min(100, o.uso * 100)}%"></i></div><p class="small" style="margin:4px 0 0">${textoAlerta(o, ymOf(H))}</p></div>`).join('')}</div>` : ''}
+    ${treino}
+    <div class="cel-hoje-pe">${nAv ? `<button class="btn" data-cel-acao="avisos">🔔 ${nAv} ${nAv === 1 ? 'aviso' : 'avisos'}</button>` : ''}<button class="btn" data-cel-painel>Painel completo</button></div></div>`;
+}
+document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-cel-painel]')) { ui.celPainel = true; setTab('painel'); return; }
+  const l = e.target.closest('[data-edit-l]'); if (l) { const x = db.lancamentos.find((y) => y.id === l.dataset.editL); if (x) formLancamento(x); }
+});
+
+/* ---------- 2. gastos de sempre, com um toque ---------- */
+const CEL_FORMA_PAL = { Débito: 'débito', Pix: 'pix', Crédito: 'crédito', Dinheiro: 'dinheiro', Boleto: 'boleto' };
+function celFrequentes() {
+  const ini = addDias(hoje(), -120); const m = new Map();
+  db.lancamentos.filter((l) => l.tipo === 'Despesa' && l.data >= ini && l.data <= hoje() && !(l.parcelas > 1) && !l.origemDivida).forEach((l) => {
+    const k = chaveDesc(l.descricao); if (!k) return; const x = m.get(k) || { n: 0, vals: [], ult: null }; x.n++; x.vals.push(l.valor); if (!x.ult || l.data >= x.ult.data) x.ult = l; m.set(k, x);
+  });
+  return [...m.values()].filter((x) => x.n >= 2).sort((a, b) => b.n - a.n || (a.ult.data < b.ult.data ? 1 : -1)).slice(0, 8).map((x) => {
+    const v = [...x.vals].sort((a, b) => a - b)[Math.floor(x.vals.length / 2)]; const f = formaDe(x.ult); const c = db.contas.find((y) => y.id === x.ult.conta);
+    const pal = (CEL_FORMA_PAL[f] || '') + (f === 'Crédito' && cartoes().length > 1 && c ? ' ' + nomeCartao(c).toLowerCase() : '');
+    return { desc: x.ult.descricao, med: v, pal };
+  });
+}
+function celChips() { const F = celFrequentes(); return F.length ? `<div class="cel-chips">${F.map((x, i) => `<button data-cel-chip="${i}"><b>${esc(x.desc)}</b><small>~${fmt0(x.med)}${x.pal ? ' · ' + esc(x.pal) : ''}</small></button>`).join('')}</div>` : ''; }
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-cel-chip]'); if (!b) return; const x = celFrequentes()[+b.dataset.celChip]; const i = $('#celRpIn'); if (!x || !i) return;
+  const antes = x.desc + ' '; i.value = antes + (x.pal ? ' ' + x.pal : ''); i.focus(); i.setSelectionRange(antes.length, antes.length); i.dispatchEvent(new Event('input', { bubbles: true }));
+});
+
+/* ---------- 3. lançar falando ---------- */
+const CEL_SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+function celNormFala(t) {
+  let s = ' ' + String(t || '').toLowerCase().replace(/r\$\s*/g, '') + ' ';
+  s = s.replace(/\b(gastei|paguei|comprei|lança|lançar|lance)\b/g, ' ');
+  s = s.replace(/(\d+)\s*reais?\s*e\s*(\d{1,2})\s*centavos?/g, (_, a, b) => `${a},${b.padStart(2, '0')}`);
+  s = s.replace(/(\d+)\s*v[ií]rgula\s*(\d{1,2})/g, '$1,$2').replace(/(\d+)\s*reais?\b/g, '$1').replace(/(\d+)\.(\d{2})\b/g, '$1,$2');
+  s = s.replace(/\b(no|na|com|pelo|pela|em)\s+(?=(pix|d[ée]bito|cr[ée]dito|cart[ãa]o|dinheiro|boleto)\b)/g, '');
+  return s.replace(/\s+/g, ' ').trim();
+}
+let celOuvindo = null;
+function celOuvir() {
+  if (!CEL_SR) return toast('Este celular não tem reconhecimento de voz no Chrome.');
+  if (celOuvindo) { celOuvindo.stop(); return; }
+  const r = new CEL_SR(); r.lang = 'pt-BR'; r.interimResults = true; r.maxAlternatives = 1; celOuvindo = r;
+  const b = $('[data-cel-voz]'); if (b) b.classList.add('on');
+  r.onresult = (e) => { const t = [...e.results].map((x) => x[0].transcript).join(' '); const i = $('#celRpIn'); if (i) { i.value = celNormFala(t); i.dispatchEvent(new Event('input', { bubbles: true })); } };
+  r.onerror = (e) => toast(e.error === 'not-allowed' ? 'Libere o microfone para o Prumo (o Chrome pergunta na primeira vez).' : e.error === 'no-speech' ? 'Não ouvi nada. Toque no 🎤 e fale.' : 'Não entendi. Tente de novo.');
+  r.onend = () => { celOuvindo = null; $('[data-cel-voz]')?.classList.remove('on'); };
+  try { r.start(); } catch (e) { celOuvindo = null; }
+}
+document.addEventListener('click', (e) => { if (e.target.closest('[data-cel-voz]')) celOuvir(); });
+
+/* ---------- 6. foto do comprovante (vai para o OneDrive, pasta Comprovantes) ---------- */
+const celPastaBase = () => celCaminho().split('/').slice(0, -1).join('/') || '';
+async function celComprimir(file) {
+  try {
+    const bmp = await createImageBitmap(file); const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const cv = document.createElement('canvas'); cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k); cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+    return await new Promise((res) => cv.toBlob((b) => res(b || file), 'image/jpeg', 0.72));
+  } catch (e) { return file; }
+}
+const celFila = () => { try { return JSON.parse(lsGet('cel-fotos') || '[]'); } catch (e) { return []; } };
+async function celAnexarFoto(l, blob) {
+  const nome = `${l.data}-${chaveDesc(l.descricao).replace(/\s+/g, '-') || 'lanc'}-${uid().slice(0, 6)}.jpg`; const arq = `${l.data.slice(0, 4)}/${nome}`;
+  await idb.set('cel-foto-' + arq, blob).catch(() => {});
+  l.comprovantes = [...(l.comprovantes || []), { nome: `Foto ${dmy(l.data).slice(0, 5)}.jpg`, arq, nuvem: true }]; changed();
+  lsSet('cel-fotos', JSON.stringify([...celFila(), arq])); celEnviarFotos();
+}
+const celUrlFoto = (arq) => '/me/drive/root:/' + [celPastaBase(), 'Comprovantes', ...arq.split('/')].filter(Boolean).map(encodeURIComponent).join('/');
+async function celCriarPasta(pai, nome) { await celGraph(`/me/drive/root${pai ? ':/' + pai.split('/').map(encodeURIComponent).join('/') + ':' : ''}/children`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: nome, folder: {}, '@microsoft.graph.conflictBehavior': 'fail' }) }).catch(() => {}); }
+let celEnviando = false;
+async function celEnviarFotos() {
+  if (celEnviando || !celTemLogin() || !navigator.onLine) return; celEnviando = true;
+  try {
+    for (const arq of celFila()) {
+      const blob = await idb.get('cel-foto-' + arq).catch(() => null); if (!blob) { lsSet('cel-fotos', JSON.stringify(celFila().filter((x) => x !== arq))); continue; }
+      let r = await celGraph(celUrlFoto(arq) + ':/content', { method: 'PUT', headers: { 'Content-Type': 'image/jpeg' }, body: blob });
+      if (r.status === 404 || r.status === 409) { const base = celPastaBase(); await celCriarPasta(base, 'Comprovantes'); await celCriarPasta([base, 'Comprovantes'].filter(Boolean).join('/'), arq.split('/')[0]); r = await celGraph(celUrlFoto(arq) + ':/content', { method: 'PUT', headers: { 'Content-Type': 'image/jpeg' }, body: blob }); }
+      if (!r.ok) break;
+      lsSet('cel-fotos', JSON.stringify(celFila().filter((x) => x !== arq)));
+    }
+  } catch (e) { /* tenta depois */ }
+  celEnviando = false;
+}
+window.addEventListener('online', () => { if (CELULAR) setTimeout(celEnviarFotos, 2000); });
+setInterval(() => { if (CELULAR && celFila().length) celEnviarFotos(); }, 120000);
+async function celFotoBlob(arq) {
+  const loc = await idb.get('cel-foto-' + arq).catch(() => null); if (loc) return loc;
+  const r = await celGraph(celUrlFoto(arq)); if (!r.ok) throw new Error(r.status === 404 ? 'a foto ainda não chegou ao OneDrive' : 'OneDrive ' + r.status);
+  const it = await r.json(); const d = await fetch(it['@microsoft.graph.downloadUrl']); const b = await d.blob(); idb.set('cel-foto-' + arq, b).catch(() => {}); return b;
+}
+let celFotoNova = null;
+function celEscolherFoto(fn, camera = true) {
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*'; if (camera) inp.capture = 'environment';
+  inp.onchange = async () => { const f = inp.files[0]; if (f) fn(await celComprimir(f)); }; inp.click();
+}
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('[data-cel-foto]')) return;
+  celEscolherFoto((b) => { celFotoNova = b; const el = $('#celFotoPrev'); if (el) el.innerHTML = `<img src="${URL.createObjectURL(b)}" alt=""><span>📷 Foto pronta: vai junto com o lançamento</span><button class="icon-btn" data-cel-foto-x>✕</button>`; });
+});
+document.addEventListener('click', (e) => { if (e.target.closest('[data-cel-foto-x]')) { celFotoNova = null; const el = $('#celFotoPrev'); if (el) el.innerHTML = ''; } });
+const _telaComprovantesPC = telaComprovantes;
+telaComprovantes = function (id) {
+  if (!CELULAR) return _telaComprovantesPC(id);
+  const l = db.lancamentos.find((x) => x.id === id); if (!l) return; const lst = l.comprovantes || []; const fila = celFila();
+  celFolha(`<h3 style="margin:0 0 4px">📎 Comprovantes</h3><p class="small muted" style="margin:0 0 10px">${esc(l.descricao)} · ${dmy(l.data)} · ${fmt(l.valor)}</p>
+    ${lst.length ? lst.map((c, i) => `<div class="row-between doc-linha" style="margin-bottom:6px"><span>${c.nuvem ? '📷' : '📄'} ${esc(c.nome)}${c.nuvem && fila.includes(c.arq) ? ' <small class="warn">· enviando…</small>' : ''}</span><span class="row">${c.nuvem ? `<button class="btn sm" data-cel-cp-ver="${i}">Ver</button>` : '<small class="muted">no computador</small>'}<button class="icon-btn" data-cel-cp-del="${i}">🗑</button></span></div>`).join('') : '<p class="small muted">Nenhum comprovante ainda.</p>'}
+    <div id="celCpVer"></div>
+    <p class="small muted">As fotos ficam no seu OneDrive, na pasta <b>${esc([celPastaBase(), 'Comprovantes'].filter(Boolean).join('/'))}</b>.</p>
+    <div class="row"><button class="btn primary" data-cel-cp-add="1">📷 Tirar foto</button><button class="btn" data-cel-cp-add="0">🖼 Da galeria</button><button class="btn" data-cel-fechar>Fechar</button></div>`);
+  const o = $('#celFolha'); o.dataset.lid = id;
+};
+document.addEventListener('click', async (e) => {
+  const o = $('#celFolha'); const id = o?.dataset.lid; if (!id) return; const l = db.lancamentos.find((x) => x.id === id); if (!l) return;
+  const add = e.target.closest('[data-cel-cp-add]'); if (add) return celEscolherFoto(async (b) => { await celAnexarFoto(l, b); toast('📷 Foto anexada ✔'); telaComprovantes(id); }, add.dataset.celCpAdd === '1');
+  const v = e.target.closest('[data-cel-cp-ver]'); if (v) { const c = l.comprovantes[+v.dataset.celCpVer]; const box = $('#celCpVer'); box.innerHTML = '<p class="small muted">Abrindo…</p>'; try { box.innerHTML = `<img class="cel-cp-img" src="${URL.createObjectURL(await celFotoBlob(c.arq))}" alt="">`; } catch (er) { box.innerHTML = `<p class="small bad">Não consegui abrir: ${esc(er.celMsg || er.message)}</p>`; } return; }
+  const d = e.target.closest('[data-cel-cp-del]'); if (d && confirm('Remover esta foto do lançamento? (o arquivo continua no OneDrive)')) { l.comprovantes = l.comprovantes.filter((_, i) => i !== +d.dataset.celCpDel); changed(); telaComprovantes(id); }
+});
+
+/* ---------- 4. atalhos no ícone e lançar (a folha nova) ---------- */
+celLancar = function () {
+  celFotoNova = null;
+  celFolha(`<h3 style="margin:0 0 8px">⚡ Lançar</h3><div class="cel-rp"><input type="text" id="celRpIn" placeholder="açougue 56,36 débito" autocomplete="off" enterkeyhint="done">${CEL_SR ? '<button class="btn cel-voz" data-cel-voz title="Falar">🎤</button>' : ''}<button class="btn cel-voz" data-cel-foto title="Foto do comprovante">📷</button></div>
+    <div id="celFotoPrev" class="cel-foto-prev"></div>
+    ${celChips()}
+    <div class="rp-prev" id="celRpPrev">${previewFrase(null)}</div>
+    <button class="btn primary cel-ok" data-cel-rp-ok>Lançar</button>
+    <p class="small muted" style="margin:10px 0">Escreva ou fale o que foi, o valor e como pagou: <i>pizza 72 crédito</i>, <i>farmácia 38,90 pix</i>.</p>
+    <div class="row"><button class="btn" data-cel-form>Formulário completo</button><button class="btn" data-cel-fechar>Fechar</button></div>`, 'lancar');
+  setTimeout(() => $('#celRpIn')?.focus(), 60);
+};
+const _celRpLancar = celRpLancar;
+// (a função antiga continua para o Enter; a foto vai junto com o novo lançamento)
+async function celRpLancarComFoto() {
+  const i = $('#celRpIn'); if (!i || !i.value.trim()) return; const antes = new Set(db.lancamentos.map((l) => l.id)); _celRpLancar();
+  const novo = db.lancamentos.find((l) => !antes.has(l.id)); if (novo && celFotoNova) { const b = celFotoNova; celFotoNova = null; const el = $('#celFotoPrev'); if (el) el.innerHTML = ''; await celAnexarFoto(novo, b); }
+}
+document.addEventListener('click', (e) => { if (e.target.closest('[data-cel-rp-ok]')) { e.stopImmediatePropagation(); celRpLancarComFoto(); } }, true);
+document.addEventListener('keydown', (e) => { if (e.target.id === 'celRpIn' && e.key === 'Enter') { e.preventDefault(); e.stopImmediatePropagation(); celRpLancarComFoto(); } }, true);
+function celFazerAcao() {
+  if (CEL_ACAO === 'lancar') celLancar();
+  if (CEL_ACAO === 'treino') { ui.sub.mat = 'treino'; ui.trSub = 'dia'; ui.trDia = hoje(); setTab('mat'); }
+}
+
+/* ---------- 5. abrir com a digital ---------- */
+const celDigLigada = () => !!lsGet('cel-dig');
+const b64uPara = (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((s.length + 3) % 4)), (c) => c.charCodeAt(0));
+async function celDigLigar() {
+  try {
+    if (!window.PublicKeyCredential || !(await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())) return toast('Este celular não oferece a digital para sites e apps instalados pelo Chrome.');
+    const cred = await navigator.credentials.create({ publicKey: { challenge: crypto.getRandomValues(new Uint8Array(32)), rp: { name: 'Prumo', id: location.hostname }, user: { id: crypto.getRandomValues(new Uint8Array(16)), name: lsGet('cel-email') || 'prumo', displayName: 'Prumo' }, pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }], authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', residentKey: 'discouraged' }, timeout: 60000 } });
+    lsSet('cel-dig', b64url(cred.rawId)); toast('🔒 Pronto: o Prumo vai pedir a digital ao abrir.'); renderAll();
+  } catch (e) { toast(e.name === 'NotAllowedError' ? 'Cancelado.' : 'Não foi possível ligar a digital: ' + e.message); }
+}
+function celDigDesligar() { if (!confirm('Parar de pedir a digital ao abrir o Prumo?')) return; lsSet('cel-dig', ''); renderAll(); }
+let celTravado = false, celSaiuEm = 0;
+function celTravar() {
+  if (!celDigLigada()) return; celTravado = true; let t = $('#celTrava');
+  if (!t) { t = document.createElement('div'); t.id = 'celTrava'; document.body.appendChild(t); }
+  t.innerHTML = `<div class="cel-bv"><div class="cel-bv-logo">${ICON.prumo}</div><h1>Prumo</h1><p class="muted">Toque para entrar com a digital</p><button class="btn primary cel-bv-ms" data-cel-destravar>👆 Entrar</button></div>`; t.hidden = false;
+  setTimeout(() => celDestravar(true), 250);
+}
+async function celDestravar(auto = false) {
+  if (!celTravado) return;
+  try {
+    await navigator.credentials.get({ publicKey: { challenge: crypto.getRandomValues(new Uint8Array(32)), rpId: location.hostname, allowCredentials: [{ type: 'public-key', id: b64uPara(lsGet('cel-dig')), transports: ['internal'] }], userVerification: 'required', timeout: 60000 } });
+    celTravado = false; const t = $('#celTrava'); if (t) t.hidden = true; celFazerAcaoPendente();
+  } catch (e) { if (!auto) toast(e.name === 'NotAllowedError' ? 'Não confirmou. Toque em Entrar para tentar de novo.' : 'Digital: ' + e.message); }
+}
+let celAcaoFeita = false;
+function celFazerAcaoPendente() { if (celAcaoFeita || celTravado || !db || lsGet('cel-tem-dados') !== '1') return; celAcaoFeita = true; celFazerAcao(); }
+document.addEventListener('click', (e) => { if (e.target.closest('[data-cel-destravar]')) celDestravar(); if (e.target.closest('[data-cel-dig=on]')) celDigLigar(); if (e.target.closest('[data-cel-dig=off]')) celDigDesligar(); });
+document.addEventListener('visibilitychange', () => { if (!CELULAR) return; if (document.visibilityState === 'hidden') celSaiuEm = Date.now(); else if (celSaiuEm && Date.now() - celSaiuEm > 3 * 60000 && !celTravado) celTravar(); });
+const _cardCelular1 = cardCelular;
+cardCelular = function () {
+  const h = _cardCelular1();
+  return h.replace(/<\/div>$/, `<div class="cel-dig"><span>🔒 <b>Digital ao abrir</b><small>${celDigLigada() ? 'Ligada: pede a digital ao abrir e depois de 3 minutos fora do app.' : 'Pede a sua digital (ou a senha do celular) para abrir o Prumo.'}</small></span>${celDigLigada() ? '<button class="btn" data-cel-dig="off">Desligar</button>' : '<button class="btn primary" data-cel-dig="on">Ligar</button>'}</div></div>`);
+};
+
+/* ---------- 7. treino: aviso no bolso, resumo e como fazer ---------- */
+let celRestFim = null;
+const _celDescansar1 = celDescansar;
+celDescansar = function (seg) {
+  _celDescansar1(seg);
+  try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch (e) { /* */ }
+  clearTimeout(celRestFim);
+  celRestFim = setTimeout(() => { if (document.visibilityState !== 'visible' && 'Notification' in window && Notification.permission === 'granted') navigator.serviceWorker?.ready.then((r) => r.showNotification('⏱ Descanso acabou', { body: 'Bora para a próxima série 💪', tag: 'prumo-descanso', renotify: true, vibrate: [300, 120, 300, 120, 300], icon: 'icon-192.png' })).catch(() => {}); }, seg * 1000);
+};
+const rm1 = (x) => x && x.carga ? x.carga * (1 + Math.max(0, ...x.reps) / 30) : 0;
+function celResumoTreino(d, idx) {
+  const c = T0(); const EX = exerciciosDo(+idx, c); let vol = 0; const subiu = []; const rec = []; let feitos = 0;
+  EX.forEach((e) => {
+    const h = logHoje(e.nome, d); if (!h || !h.reps.some((r) => r > 0)) return; feitos++; vol += (h.carga || 0) * soma(h.reps.filter((r) => r > 0), (r) => r);
+    const u = ultimoLog(e.nome, d); if (u && h.carga > u.carga) subiu.push(`${e.nome}: ${fmtKg(u.carga)} → ${fmtKg(h.carga)}`);
+    const ant = riDe('mat', 'serie').filter((x) => x.ex === e.nome && x.data < d); const best = Math.max(0, ...ant.map(rm1)); if (ant.length && rm1(h) > best) rec.push(e.nome);
+  });
+  celFolha(`<div class="cel-resumo"><div class="cel-resumo-t">💪</div><h2>Treino concluído!</h2><p class="muted">${feitos} de ${EX.length} exercícios · ${Math.round(vol).toLocaleString('pt-BR')} kg levantados</p>
+    ${subiu.length ? `<div class="card"><h3>⬆ Subiu a carga</h3>${subiu.map((x) => `<p class="small" style="margin:2px 0">${esc(x)}</p>`).join('')}</div>` : ''}
+    ${rec.length ? `<div class="card"><h3>🏆 Recordes</h3><p class="small" style="margin:0">${rec.map(esc).join(', ')}</p></div>` : ''}
+    ${!subiu.length && !rec.length ? '<p class="small">Treino registrado. Quando fechar o topo da faixa de repetições em todas as séries, o app avisa para subir a carga.</p>' : ''}
+    <button class="btn primary cel-ok" data-cel-fechar>Fechar</button></div>`);
+}
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-tr-fim]'); if (b && CELULAR) { const [d, idx] = b.dataset.trFim.split('|'); setTimeout(() => celResumoTreino(d, idx), 200); } });
+const COMO_EX = {
+  'Supino reto com barra': ['Deite com os olhos embaixo da barra, pés firmes no chão e escápulas "para trás e para baixo".', 'Desça a barra até tocar a parte baixa do peito, cotovelos uns 45° do corpo.', 'Empurre para cima sem tirar o quadril do banco.'],
+  'Supino reto com halteres (pegada neutra)': ['Palmas viradas uma para a outra, cotovelos perto do corpo.', 'Desça devagar até o halter chegar ao lado do peito.', 'Empurre para cima sem bater um halter no outro.'],
+  'Flexão de braço': ['Mãos um pouco mais abertas que os ombros, corpo reto da cabeça ao calcanhar.', 'Desça até o peito quase encostar no chão.', 'Se ficar pesado, apoie os joelhos.'],
+  'Supino inclinado com halteres': ['Banco a 30°, escápulas encaixadas.', 'Desça os halteres até a linha do peito alto.', 'Empurre para cima e um pouco para dentro.'],
+  'Flexão inclinada (pés no banco)': ['Pés no banco, mãos no chão um pouco mais abertas que os ombros.', 'Corpo reto, sem deixar o quadril cair.', 'Desça controlando e empurre o chão.'],
+  'Crucifixo na máquina (peck deck)': ['Ajuste o banco para as mãos ficarem na altura do peito.', 'Feche os braços com os cotovelos levemente dobrados.', 'Volte devagar até sentir alongar o peito, sem passar da linha do ombro.'],
+  'Crucifixo com halteres no chão': ['Deitado no chão, cotovelos levemente dobrados.', 'Abra até os cotovelos tocarem o chão.', 'Feche como se abraçasse uma árvore.'],
+  'Crossover na polia': ['Polias altas, um passo à frente, tronco levemente inclinado.', 'Traga as mãos para baixo e para dentro, cruzando na frente do quadril.', 'Volte devagar.'],
+  'Flexão com pegada fechada': ['Mãos na largura dos ombros ou um pouco menos.', 'Cotovelos raspando no corpo na descida.', 'Corpo sempre reto.'],
+  'Puxada na frente (pulley)': ['Pegada um pouco mais aberta que os ombros, peito alto.', 'Puxe a barra até o queixo/peito levando os cotovelos para baixo.', 'Suba controlando, sem balançar o tronco.'],
+  'Barra fixa ou remada com elástico': ['Na barra: pendure, encaixe as escápulas e puxe até o queixo passar a barra.', 'No elástico: puxe os cotovelos para trás, apertando as costas.', 'Desça sempre controlando.'],
+  'Remada curvada com barra': ['Joelhos levemente dobrados, tronco inclinado uns 45°, coluna neutra.', 'Puxe a barra até o umbigo, cotovelos perto do corpo.', 'Se a lombar reclamar, troque pela remada apoiada.'],
+  'Remada apoiada no banco (cavalinho)': ['Peito apoiado, coluna protegida.', 'Puxe os cotovelos para trás e aperte as escápulas no fim.', 'Desça devagar até esticar os braços.'],
+  'Remada unilateral com halter': ['Mão e joelho no banco, costas retas.', 'Puxe o halter em direção ao quadril.', 'Não gire o tronco para ajudar.'],
+  'Remada baixa no cabo': ['Sentado, joelhos levemente dobrados, peito alto.', 'Puxe o triângulo até o abdômen, cotovelos para trás.', 'Volte esticando os braços sem curvar a coluna.'],
+  'Remada com elástico': ['Elástico preso na altura do peito.', 'Puxe os cotovelos para trás apertando as costas.', 'Volte devagar.'],
+  'Pulldown com braços estendidos': ['Polia alta, braços quase esticados, tronco levemente inclinado.', 'Leve a barra até as coxas usando as costas.', 'Volte até a altura da cabeça.'],
+  'Pullover com halter': ['Deitado no banco, segure um halter com as duas mãos acima do peito.', 'Leve o halter para trás da cabeça com os cotovelos levemente dobrados.', 'Volte usando as costas e o peito.'],
+  'Desenvolvimento com halteres': ['Sentado ou em pé, halteres na altura das orelhas.', 'Empurre para cima sem arquear a lombar.', 'Desça até os cotovelos ficarem um pouco abaixo dos ombros.'],
+  'Elevação frontal com halteres (até a linha do ombro)': ['Halteres na frente das coxas, pegada neutra.', 'Suba os braços à frente até a linha do ombro, não acima.', 'Desça devagar.'],
+  'Desenvolvimento com halteres sentado': ['Encosto reto, halteres na altura das orelhas.', 'Empurre para cima sem bater os halteres.', 'Desça controlando.'],
+  'Elevação lateral': ['Cotovelos levemente dobrados, tronco parado.', 'Suba os braços para os lados até a linha do ombro, "derramando uma jarra".', 'Carga leve e sem embalo.'],
+  'Crucifixo inverso (posterior de ombro)': ['Tronco inclinado à frente ou na máquina de peck deck invertida.', 'Abra os braços para os lados apertando a parte de trás do ombro.', 'Carga leve, movimento lento.'],
+  'Face pull na polia': ['Corda na altura do rosto.', 'Puxe a corda em direção à testa abrindo os cotovelos para fora.', 'Termine com as mãos ao lado das orelhas.'],
+  'Face pull com elástico': ['Elástico preso na altura do rosto.', 'Puxe em direção à testa abrindo os cotovelos.', 'Aperte a parte de trás dos ombros no fim.'],
+  'Tríceps na polia (corda)': ['Cotovelos colados ao corpo, parados.', 'Estique os braços abrindo a corda no final.', 'Volte só até o antebraço passar da horizontal.'],
+  'Tríceps francês com halter': ['Sentado, halter com as duas mãos atrás da cabeça.', 'Cotovelos apontando para cima, parados.', 'Estique os braços e desça devagar.'],
+  'Tríceps testa': ['Deitado, barra acima do peito, cotovelos apontando para o teto.', 'Dobre só os cotovelos levando a barra até a testa.', 'Estique sem abrir os cotovelos.'],
+  'Tríceps na polia (barra)': ['Cotovelos colados ao corpo.', 'Empurre a barra para baixo até esticar os braços.', 'Volte devagar.'],
+  'Mergulho no banco': ['Mãos no banco atrás de você, pernas à frente.', 'Desça dobrando os cotovelos até uns 90°.', 'Se o ombro reclamar, diminua a descida.'],
+  'Rosca direta com barra': ['Em pé, cotovelos colados ao corpo.', 'Suba a barra sem balançar o tronco.', 'Desça devagar até esticar.'],
+  'Rosca direta com halteres': ['Palmas para a frente, cotovelos parados.', 'Suba os dois halteres juntos.', 'Desça controlando.'],
+  'Rosca alternada': ['Um braço de cada vez, girando a palma para cima ao subir.', 'Cotovelo parado ao lado do corpo.', 'Sem embalo.'],
+  'Rosca martelo': ['Palmas viradas uma para a outra o tempo todo.', 'Suba sem mexer o cotovelo.', 'Desça devagar.'],
+  'Agachamento livre': ['Pés na largura dos ombros, pontas um pouco para fora.', 'Desça como se fosse sentar, joelhos acompanhando a direção dos pés.', 'Peito alto e calcanhar no chão; suba empurrando o chão.'],
+  'Leg press (amplitude confortável)': ['Pés no meio da plataforma, na largura dos ombros.', 'Desça só até onde o joelho não reclamar.', 'Não estique o joelho travando no alto.'],
+  'Agachamento no Smith': ['Pés um pouco à frente da barra.', 'Desça até a coxa ficar paralela ao chão ou até onde for confortável.', 'Suba empurrando com o pé inteiro.'],
+  'Agachamento goblet': ['Halter na frente do peito, cotovelos para baixo.', 'Desça entre as pernas com o peito alto.', 'Suba empurrando o chão.'],
+  'Leg press 45°': ['Lombar e quadril encostados o tempo todo.', 'Desça até uns 90° no joelho.', 'Empurre com o pé inteiro, sem travar o joelho no alto.'],
+  'Agachamento búlgaro': ['Pé de trás apoiado no banco, pé da frente um passo grande à frente.', 'Desça reto, o joelho de trás em direção ao chão.', 'Suba com a perna da frente.'],
+  'Cadeira extensora': ['Ajuste o encosto para o joelho ficar no eixo da máquina.', 'Estique as pernas e segure 1 s no alto.', 'Desça devagar.'],
+  'Cadeira extensora (carga leve, 3 s descendo)': ['Carga leve, joelho no eixo da máquina.', 'Estique as pernas sem dor.', 'Desça contando 3 segundos.'],
+  'Agachamento na parede (isometria)': ['Costas na parede, desça até onde for confortável.', 'Fique parado respirando normalmente.', 'Pare se o joelho doer.'],
+  'Afundo parado com apoio': ['Segure em um apoio, um pé à frente e outro atrás.', 'Desça reto o joelho de trás em direção ao chão.', 'Amplitude só até onde o joelho deixar.'],
+  'Levantamento terra romeno': ['Joelhos levemente dobrados e parados, coluna neutra.', 'Leve o quadril para trás descendo a barra rente às coxas.', 'Desça até sentir alongar o posterior e suba apertando o glúteo.'],
+  'Mesa flexora': ['Deitado, joelho no eixo da máquina.', 'Traga o rolo em direção ao glúteo.', 'Desça devagar sem tirar o quadril do banco.'],
+  'Stiff com halteres': ['Halteres na frente das coxas, joelhos levemente dobrados.', 'Quadril para trás, costas retas.', 'Suba apertando o glúteo.'],
+  'Ponte de glúteo com uma perna': ['Deitado, um pé no chão e a outra perna esticada.', 'Suba o quadril apertando o glúteo.', 'Desça devagar.'],
+  'Elevação de quadril (hip thrust)': ['Costas apoiadas no banco, barra (com proteção) sobre o quadril.', 'Suba o quadril até o tronco ficar alinhado com as coxas.', 'Aperte o glúteo 1 s no alto, queixo para baixo.'],
+  'Ponte de glúteo': ['Deitado, pés no chão perto do quadril.', 'Suba o quadril apertando o glúteo.', 'Segure 1 s no alto.'],
+  'Cadeira flexora': ['Sentado, joelho no eixo da máquina, coxa presa.', 'Leve o rolo para baixo e para trás.', 'Volte devagar.'],
+  'Flexão de joelho com elástico': ['Elástico preso no tornozelo, deitado de barriga para baixo.', 'Traga o calcanhar em direção ao glúteo.', 'Volte devagar.'],
+  'Panturrilha em pé': ['Ponta dos pés no apoio, joelhos esticados (sem travar).', 'Suba o máximo e segure 1 s.', 'Desça até alongar bem.'],
+  'Panturrilha no degrau': ['Ponta dos pés no degrau, segurando em algo.', 'Suba o máximo e desça abaixo do degrau.', 'Pode fazer com uma perna para ficar mais difícil.'],
+  'Panturrilha sentado': ['Joelhos a 90° com o apoio sobre as coxas.', 'Suba os calcanhares o máximo.', 'Desça devagar até alongar.'],
+  'Prancha': ['Antebraços no chão, cotovelos embaixo dos ombros.', 'Corpo reto: aperte o abdômen e o glúteo.', 'Respire normalmente; pare se a lombar doer.'],
+  'Abdominal na polia': ['Ajoelhado de frente para a polia, corda atrás da cabeça.', 'Enrole o tronco levando os cotovelos aos joelhos.', 'Quem trabalha é o abdômen, não o quadril.'],
+  'Dead bug': ['Deitado, braços para cima e joelhos a 90°.', 'Estique um braço e a perna oposta sem tirar a lombar do chão.', 'Volte e troque o lado.'],
+  'Abdominal supra': ['Deitado, joelhos dobrados, mãos ao lado da cabeça.', 'Tire as escápulas do chão enrolando o tronco.', 'Não puxe o pescoço.'],
+  'Pallof press': ['De lado para a polia, cabo na altura do peito.', 'Empurre o cabo à frente sem deixar o tronco girar.', 'Segure 2 s e volte.'],
+  'Prancha lateral': ['Deitado de lado, apoiado no antebraço.', 'Suba o quadril até o corpo ficar reto.', 'Segure e troque o lado.'],
+};
+function celComo(nome) {
+  const c = T0(); const d = ui.trDia || hoje(); const x = montarSemana(c).plano[diaSemDe(d)]; const e = x && x.k === 'musc' ? exerciciosDo(x.idx, c).find((y) => y.nome === nome) : null;
+  const t = COMO_EX[nome] || ['Movimento controlado, sem embalo.', 'Desça devagar e suba com força.', 'Termine cada série com 1 a 2 repetições sobrando.'];
+  celFolha(`<h3 style="margin:0 0 6px">${esc(nome)}</h3>${e ? `<p class="small muted" style="margin:0 0 10px">${e.s} × ${e.r} · descanso ${e.d} · ${esc(e.cad)}${e.rir ? ' · ' + esc(e.rir) : ''}</p>` : ''}
+    <ol class="cel-como">${t.map((p) => `<li>${esc(p)}</li>`).join('')}</ol>
+    <p class="small muted">Com dor forte ou que não passa, pare e procure um médico ou fisioterapeuta.</p><button class="btn primary cel-ok" data-cel-fechar>Entendi</button>`);
+}
+document.addEventListener('click', (e) => { const b = e.target.closest('.cel-ex-t b'); if (b && CELULAR) celComo(b.textContent); });
+
+/* ---------- ligações: Hoje no lugar do Painel, atalhos e digital ---------- */
+const _renderAllCel1 = renderAll;
+renderAll = function () {
+  _renderAllCel1();
+  if (!CELULAR) return;
+  const hojeTela = ui.tab === 'painel' && !ui.celPainel; document.body.classList.toggle('cel-hoje-on', hojeTela);
+  if (hojeTela && db) { const s = $('#tab-painel'); if (s) s.innerHTML = celHoje(); $('#pageTitle').textContent = 'Hoje'; }
+  celFazerAcaoPendente();
+};
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-cel-tab]'); if (b && b.dataset.celTab === 'painel') ui.celPainel = false; }, true);
+if (CELULAR && celDigLigada()) celTravar();
+
+/* celular: o Painel do computador só quando pedido; cartões que só valem no computador ficam escondidos */
+const _renderPainelPC = renderPainel;
+renderPainel = function () { if (CELULAR && !ui.celPainel && db) { const s = $('#tab-painel'); if (s) s.innerHTML = celHoje(); return; } return _renderPainelPC(); };
+const _cardSenhaPC = cardSenha; cardSenha = function () { return CELULAR ? '' : _cardSenhaPC(); };
+const _cardSyncPC = cardSync; cardSync = function () { return CELULAR ? '' : _cardSyncPC(); };
+const _cardCopiasPC = cardCopias; cardCopias = function () { return CELULAR ? '' : _cardCopiasPC(); };
 
 /* ---------- início ---------- */
 (async function boot() {
