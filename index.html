@@ -657,7 +657,7 @@ body.cel .filters select { max-width: 46%; }
 #celBar .ci { font-size: 19px; line-height: 22px; height: 22px; display: grid; place-items: center; }
 #celBar .ci svg { width: 21px; height: 21px; }
 #celBar button.on { color: var(--accent); font-weight: 700; }
-#celFab { position: fixed; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); z-index: 41; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font-weight: 700; font-size: 15px; padding: 14px 20px; box-shadow: 0 6px 18px rgba(0, 0, 0, .22); cursor: pointer; }
+#celFab { position: fixed; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); z-index: 41; border: 0; border-radius: 999px; background: #2b6b5a; color: #fff; font-weight: 700; font-size: 15px; padding: 14px 20px; box-shadow: 0 6px 18px rgba(0, 0, 0, .22); cursor: pointer; }
 #celFab[hidden] { display: none; }
 .cel-folha-o { position: fixed; inset: 0; z-index: 60; background: rgba(0, 0, 0, .35); display: flex; align-items: flex-end; }
 .cel-folha-o[hidden] { display: none; }
@@ -719,11 +719,11 @@ body.cel-hoje-on #filters { display: none !important; }
 body.cel #tab-config .cfg > .card:first-child { display: none; }
 .cel-hoje { display: grid; gap: 10px; }
 .cel-ola small { display: block; color: var(--muted); font-size: 13px; } .cel-ola b { font-size: 20px; font-family: Georgia, serif; font-weight: 400; }
-.cel-heroi { background: var(--accent); color: var(--accent-fg); border: 0; display: grid; gap: 4px; padding: 16px; }
+.cel-heroi { background: #2b6b5a; color: #fff; border: 0; display: grid; gap: 4px; padding: 16px; }
 .cel-heroi small { opacity: .88; font-size: 12.5px; } .cel-heroi b { font-size: 32px; font-variant-numeric: tabular-nums; line-height: 1.1; } .cel-heroi b span { font-size: 15px; opacity: .8; font-weight: 500; }
 .cel-heroi .bar { height: 7px; background: rgba(255, 255, 255, .25); border-radius: 9px; overflow: hidden; } .cel-heroi .bar i { display: block; height: 100%; background: #fff; border-radius: 9px; }
 .cel-heroi .btn { justify-self: start; margin-top: 6px; background: rgba(255, 255, 255, .16); color: inherit; border-color: transparent; }
-.cel-heroi.alerta { background: var(--bad); }
+.cel-heroi.alerta { background: #a8402f; }
 .cel-c { padding: 12px 14px; } .cel-c h3 { margin: 0 0 6px; font-size: 14.5px; }
 .cel-c-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; } .cel-c-h h3 { margin: 0 0 6px; }
 .cel-l { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); cursor: pointer; }
@@ -8049,6 +8049,7 @@ function celHeroi() {
   const H = hoje(); const cur = ymOf(H); const fim = fimDoMes(cur); const resta = Math.max(1, Math.round((new Date(fim + 'T12:00') - new Date(H + 'T12:00')) / 86400000) + 1);
   if (saldoBancos() == null) {
     const mb = ui.membro; ui.membro = ''; const orc = orcamento(cur); ui.membro = mb; const meta = soma(orc.filter((o) => o.meta > 0), 'meta'); const gasto = soma(orc.filter((o) => o.meta > 0), 'gasto');
+    if (!meta) { const tot = soma(lancs({ mes: cur, categoria: '' }).filter((l) => l.tipo === 'Despesa' && l.data <= H), 'valor'); return `<div class="card cel-heroi"><small>Gasto em ${new Date(H + 'T12:00').toLocaleDateString('pt-BR', { month: 'long' })} até hoje</small><b>${fmt0(tot)}</b><small>${fmt0(tot / Math.max(1, +H.slice(8, 10)))} por dia, em média</small><button class="btn sm" data-sub="planejar:contas">Informar saldos para ver quanto dá para gastar</button></div>`; }
     return `<div class="card cel-heroi"><small>Gasto do mês com limite</small><b>${fmt0(gasto)}${meta ? ` <span>de ${fmt0(meta)}</span>` : ''}</b>${meta ? `<div class="bar"><i style="width:${Math.min(100, (gasto / meta) * 100)}%"></i></div><small>${meta - gasto >= 0 ? `sobram ${fmt0(meta - gasto)} · ${fmt0((meta - gasto) / resta)} por dia até ${dmy(fim).slice(0, 5)}` : `passou ${fmt0(gasto - meta)} do limite`}</small>` : ''}
       <button class="btn sm" data-sub="planejar:contas">Informar saldos para ver quanto dá para gastar</button></div>`;
   }
