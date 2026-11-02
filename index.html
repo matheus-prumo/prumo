@@ -786,6 +786,12 @@ body.cel .tab:not([hidden]) { animation: celEntra .2s ease; } @keyframes celEntr
 #celPuxa.pronto { color: var(--accent); } #celPuxa.girando { animation: celGira .8s linear infinite; } @keyframes celGira { to { transform: translate(-50%, 50px) rotate(360deg); } }
 .cel-cr-t { font-size: 58px; font-weight: 700; font-variant-numeric: tabular-nums; margin: 14px 0; }
 #celCrMini { position: fixed; left: 16px; bottom: calc(80px + env(safe-area-inset-bottom)); z-index: 41; border: 0; border-radius: 999px; background: #1f3b5c; color: #fff; font-weight: 700; padding: 10px 14px; font-variant-numeric: tabular-nums; box-shadow: 0 6px 16px rgba(0, 0, 0, .25); }
+/* =================== v5.8: celular =================== */
+::view-transition-old(root) { animation: celSai .16s ease both; } ::view-transition-new(root) { animation: celVem .2s ease both; }
+@keyframes celSai { to { opacity: 0; transform: translateY(-4px); } } @keyframes celVem { from { opacity: 0; transform: translateY(6px); } }
+#celBar { view-transition-name: celbar; } #celFab { view-transition-name: celfab; }
+.cel-menu { display: grid; gap: 8px; } .cel-menu button { text-align: left; border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); border-radius: 12px; padding: 13px 14px; font: inherit; font-size: 15px; cursor: pointer; } .cel-menu button.bad { color: var(--bad); }
+body.cel #tab-lancamentos tbody tr { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 </style>
 </head>
 <body>
@@ -3705,7 +3711,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '5.7';
+const APP_VERSAO = '5.8';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -8652,6 +8658,84 @@ if (CELULAR) { setInterval(() => { if (document.visibilityState === 'visible') c
 const _celDestravar57 = celDestravar;
 celDestravar = async function (auto) { await _celDestravar57(auto); if (!celTravado) celMarcarUso(); };
 CEL_NOVIDADES['5.7'] = ['Puxar a tela para baixo só sincroniza: não recarrega o app nem pede a digital de novo'];
+
+/* =================== v5.8: CELULAR — compartilhar, transições, menu, abas deslizando, barra colorida, lembretes =================== */
+/* ---------- 1. receber o que foi compartilhado (aviso do banco ou foto do comprovante) ---------- */
+async function celRecebido() {
+  let txt = '', foto = null;
+  try { const c = await caches.open('prumo-compartilhado'); const t = await c.match('texto'); if (t) txt = await t.text(); const f = await c.match('foto'); if (f) foto = await f.blob(); await caches.delete('prumo-compartilhado'); } catch (e) { /* */ }
+  if (foto) foto = await celComprimir(foto);
+  if (txt.trim()) {
+    colarAviso(); const ta = $('#dlg [data-aviso-txt]'); if (ta) { ta.value = txt.trim(); ta.focus(); }
+    if (foto) { celFotoNova = foto; toast('📷 A foto vai junto com o lançamento que você criar no ＋ Lançar.'); }
+  } else if (foto) { celLancar(); celFotoNova = foto; const el = $('#celFotoPrev'); if (el) el.innerHTML = `<img src="${URL.createObjectURL(foto)}" alt=""><span>📷 Comprovante recebido: escreva o gasto</span><button class="icon-btn" data-cel-foto-x>✕</button>`; }
+  else toast('Nada recebido para lançar.');
+}
+const _celFazerAcao58 = celFazerAcao;
+celFazerAcao = function () { if (CEL_ACAO === 'compartilhado') return celRecebido(); return _celFazerAcao58(); };
+/* ---------- 2. transições entre telas ---------- */
+const _setTab58 = setTab;
+setTab = function (t) { if (CELULAR && document.startViewTransition && t !== ui.tab && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.startViewTransition(() => _setTab58(t)); } else _setTab58(t); };
+/* ---------- 3. segurar o dedo num lançamento: menu ---------- */
+document.addEventListener('contextmenu', (e) => {
+  if (!CELULAR) return; const tr = e.target.closest('#tab-lancamentos tbody tr:not(.cel-dia), .cel-l[data-edit-l]'); if (!tr) return;
+  const id = $('[data-edit]', tr)?.dataset.edit || tr.dataset.editL; const l = db.lancamentos.find((x) => x.id === id); if (!l) return;
+  e.preventDefault(); celVibrar(12);
+  celFolha(`<h3 style="margin:0 0 2px">${esc(l.descricao)}</h3><p class="small muted" style="margin:0 0 12px">${dmy(l.data)} · ${esc(l.categoria)} · ${fmt(l.valor)}</p>
+    <div class="cel-menu"><button data-cel-m="dup|${id}">📄 Duplicar para hoje</button><button data-cel-m="ed|${id}">✎ Editar</button><button data-cel-m="foto|${id}">📷 Anexar foto</button><button data-cel-m="del|${id}" class="bad">🗑 Excluir</button></div>`);
+});
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-cel-m]'); if (!b) return; const [a, id] = b.dataset.celM.split('|'); const l = db.lancamentos.find((x) => x.id === id); celFecharFolha(); if (!l) return;
+  if (a === 'dup') { const n = { ...l, id: uid(), data: hoje() }; ['grupo', 'parcela', 'parcelas', 'origem', 'comprovantes', 'origemDivida'].forEach((k) => delete n[k]); db.lancamentos.push(n); changed(); toastAcao(`✔ ${l.descricao} duplicado para hoje`, 'Editar', () => formLancamento(n)); }
+  if (a === 'ed') formLancamento(l); if (a === 'foto') telaComprovantes(id); if (a === 'del') excluirLancamento(id);
+});
+/* ---------- 4. deslizar para os lados troca de aba ---------- */
+const CEL_ABAS = ['painel', 'lancamentos', 'treino', 'ritmo'];
+const celAbaAtual = () => (ui.tab === 'mat' ? ((ui.sub.mat || 'hoje') === 'treino' ? 'treino' : 'ritmo') : ui.tab);
+let celAb = null;
+document.addEventListener('touchstart', (e) => {
+  if (!CELULAR || e.touches.length > 1 || $('#dlg').open || $('#celFolha:not([hidden])') || celTravado) { celAb = null; return; }
+  const t = e.touches[0]; if (t.clientX < 28 || t.clientX > innerWidth - 28) { celAb = null; return; } // borda: gesto de voltar do Android
+  if (e.target.closest('#tab-lancamentos tbody, .subnav, .tr-nav, .cel-chips, .tbl-wrap, input, textarea, select, .cel-7, .chips, #celBar, .cel-seg')) { celAb = null; return; }
+  celAb = { x: t.clientX, y: t.clientY, t: Date.now() };
+}, { passive: true });
+document.addEventListener('touchend', (e) => {
+  if (!celAb) return; const t = e.changedTouches[0]; const dx = t.clientX - celAb.x; const dy = t.clientY - celAb.y; const rapido = Date.now() - celAb.t < 600; celAb = null;
+  if (!rapido || Math.abs(dx) < 90 || Math.abs(dy) > Math.abs(dx) * 0.5) return;
+  const i = CEL_ABAS.indexOf(celAbaAtual()); if (i < 0) return; const j = i + (dx < 0 ? 1 : -1); if (j < 0 || j >= CEL_ABAS.length) return;
+  $(`#celBar [data-cel-tab="${CEL_ABAS[j]}"]`)?.click();
+}, { passive: true });
+/* ---------- 5. barra do Android na cor da tela ---------- */
+function celCorBarra() { const m = $('meta[name=theme-color]'); if (!m) return; const c = getComputedStyle(document.body).getPropertyValue('--bg').trim(); if (c) m.content = c; }
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => setTimeout(celCorBarra, 50));
+/* ---------- 6. lembretes de contas com o app fechado (experimental) ---------- */
+async function celAgenda() {
+  if (!CELULAR || !('caches' in window) || !db) return;
+  const H = hoje(); const lim = addDias(H, 3);
+  const itens = db.contasPagar.filter((c) => c.status !== 'Pago' && c.vencimento <= lim).map((c) => ({ id: c.id, d: c.vencimento, t: c.descricao }));
+  try { const c = await caches.open('prumo-lembretes'); await c.put('agenda', new Response(JSON.stringify({ itens, em: Date.now() }), { headers: { 'Content-Type': 'application/json' } })); } catch (e) { /* */ }
+}
+let celAgT = null;
+const _renderAll58 = renderAll;
+renderAll = function () { _renderAll58(); if (CELULAR) { celCorBarra(); clearTimeout(celAgT); celAgT = setTimeout(celAgenda, 1500); } };
+const celLembLigado = () => lsGet('cel-lemb') === '1';
+async function celLembLigar() {
+  try {
+    if (!('Notification' in window)) return toast('Este celular não permite notificações do Prumo.');
+    if ((await Notification.requestPermission()) !== 'granted') return toast('Sem permissão para notificações. Libere em Configurações do Android → Apps → Prumo.');
+    const reg = await navigator.serviceWorker?.ready; if (!reg?.periodicSync) { lsSet('cel-lemb', ''); return toast('Este celular não oferece o despertar em segundo plano para o Prumo.'); }
+    const st = await navigator.permissions.query({ name: 'periodic-background-sync' }).catch(() => ({ state: 'granted' }));
+    if (st.state !== 'granted') return toast('O Android ainda não liberou: use o Prumo por alguns dias pelo ícone e tente de novo.');
+    await reg.periodicSync.register('prumo-lembretes', { minInterval: 12 * 3600000 }); lsSet('cel-lemb', '1'); await celAgenda(); toast('🔔 Lembretes ligados: o Prumo avisa das contas que vencem hoje e amanhã.'); renderAll();
+  } catch (e) { toast('Não foi possível ligar os lembretes: ' + e.message); }
+}
+async function celLembDesligar() { try { const reg = await navigator.serviceWorker?.ready; await reg?.periodicSync?.unregister('prumo-lembretes'); } catch (e) { /* */ } lsSet('cel-lemb', ''); renderAll(); }
+document.addEventListener('click', (e) => { if (e.target.closest('[data-cel-lemb=on]')) celLembLigar(); if (e.target.closest('[data-cel-lemb=off]')) celLembDesligar(); });
+const _cardCelular58 = cardCelular;
+cardCelular = function () {
+  return _cardCelular58().replace(/<\/div>$/, `<div class="cel-dig"><span>🔔 <b>Lembretes de contas</b> <small>(experimental)</small><small>${celLembLigado() ? 'Ligados: o Android acorda o Prumo cerca de 1 vez por dia, no horário que ele escolhe.' : 'Avisa das contas que vencem hoje e amanhã, mesmo com o app fechado. O horário quem escolhe é o Android.'}</small></span>${celLembLigado() ? '<button class="btn" data-cel-lemb="off">Desligar</button>' : '<button class="btn primary" data-cel-lemb="on">Ligar</button>'}</div></div>`);
+};
+CEL_NOVIDADES['5.8'] = ['Compartilhar com o Prumo: avisos do banco e fotos de comprovantes', 'Segure o dedo num lançamento: duplicar, editar, anexar foto ou excluir', 'Deslize para os lados para trocar de aba', 'Transições suaves entre as telas e a barra do Android na cor do app', 'Lembretes de contas com o app fechado (experimental, em Configurações)'];
 
 /* ---------- início ---------- */
 (async function boot() {
