@@ -3662,7 +3662,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '5.3';
+const APP_VERSAO = '5.4';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -8362,15 +8362,61 @@ if (CELULAR && celDigLigada()) celTravar();
 
 /* celular: o Painel do computador só quando pedido; cartões que só valem no computador ficam escondidos */
 const _renderPainelPC = renderPainel;
-renderPainel = function () { if (CELULAR && !ui.celPainel && db) { const s = $('#tab-painel'); if (s) s.innerHTML = celHoje(); return; } return _renderPainelPC(); };
+renderPainel = function () { if (!db) return; if (CELULAR && !ui.celPainel) { const s = $('#tab-painel'); if (s) s.innerHTML = celHoje(); return; } return _renderPainelPC(); };
 const _cardSenhaPC = cardSenha; cardSenha = function () { return CELULAR ? '' : _cardSenhaPC(); };
 const _cardSyncPC = cardSync; cardSync = function () { return CELULAR ? '' : _cardSyncPC(); };
 const _cardCopiasPC = cardCopias; cardCopias = function () { return CELULAR ? '' : _cardCopiasPC(); };
+
+/* =================== v5.4: CELULAR — a digital também abre os dados protegidos por senha =================== */
+// Com a digital ligada, o celular guarda a chave dos dados (a mesma que a senha libera) no próprio Chrome,
+// e só a usa depois que a digital confirma. Nos computadores e no pendrive nada muda: lá continua a senha.
+let celResolverDesbloqueio = () => {};
+const celDesbloqueio = new Promise((res) => { celResolverDesbloqueio = res; if (!(CELULAR && celDigLigada())) res(); });
+const _celDestravar1 = celDestravar;
+celDestravar = async function (auto = false) { await _celDestravar1(auto); if (!celTravado) celResolverDesbloqueio(); else if (!auto) celOferecerSenha(); };
+// se a digital não funcionar mais (trocou o celular de dono, apagou as digitais…), dá para entrar com a senha dos dados
+async function celOferecerSenha() {
+  const t = $('#celTrava'); if (!t || t.hidden || $('[data-cel-sem-dig]', t)) return;
+  let cifrado = false; try { cifrado = ehEnvelope(JSON.parse((await idb.get('cel-db')) || lsGet('ff-db') || '{}')); } catch (e) { cifrado = false; }
+  if (!cifrado) return; // sem senha nos dados, a digital é a única proteção: não oferece atalho
+  const b = document.createElement('button'); b.className = 'btn'; b.dataset.celSemDig = '1'; b.style.marginTop = '12px'; b.textContent = 'A digital não funciona? Entrar com a senha dos dados';
+  $('.cel-bv', t).appendChild(b);
+}
+document.addEventListener('click', async (e) => { if (!e.target.closest('[data-cel-sem-dig]')) return; lsSet('cel-dig', ''); await idb.del('cel-sess').catch(() => {}); location.reload(); });
+
+async function celRestaurarSessao() {
+  if (!CELULAR || !celDigLigada()) return;
+  await celDesbloqueio;
+  try { const s = await idb.get('cel-sess'); if (s && s.dek && s.kid && !CRIPTO) { CRIPTO = s; celSessChave = s.kid + '|' + (s.senhaEm || ''); } } catch (e) { /* pede a senha */ }
+}
+let celSessChave = '';
+async function celGuardarSessao() {
+  if (!CELULAR || !celDigLigada() || !CRIPTO) return;
+  const k = CRIPTO.kid + '|' + (CRIPTO.senhaEm || ''); if (k === celSessChave) return; celSessChave = k;
+  try { await idb.set('cel-sess', { dek: CRIPTO.dek, kid: CRIPTO.kid, senha: CRIPTO.senha, rec: CRIPTO.rec, senhaEm: CRIPTO.senhaEm || '' }); } catch (e) { celSessChave = ''; }
+}
+const _celDigDesligar1 = celDigDesligar;
+celDigDesligar = function () { _celDigDesligar1(); if (!celDigLigada()) { idb.del('cel-sess').catch(() => {}); celSessChave = ''; } };
+// depois de 15 minutos parado: no celular com digital, pede a digital em vez da senha
+const _bloquearPC = bloquear;
+bloquear = async function () {
+  if (CELULAR && celDigLigada() && CRIPTO && celSessChave) { if (!celTravado) celTravar(); return; }
+  return _bloquearPC();
+};
+const _renderAllDig = renderAll;
+renderAll = function () { _renderAllDig(); if (CELULAR) celGuardarSessao(); };
+const _cardCelular2 = cardCelular;
+cardCelular = function () {
+  const h = _cardCelular2();
+  if (!CRIPTO || !celDigLigada()) return h;
+  return h.replace('fora do app.</small>', 'fora do app. Os dados protegidos por senha também abrem com a digital.</small>');
+};
 
 /* ---------- início ---------- */
 (async function boot() {
   let local = null; try { local = localStorage.getItem('ff-db'); } catch (e) { local = null; }
   if (CELULAR) { try { local = (await idb.get('cel-db')) || local; } catch (e) { /* fica o do localStorage */ } }
+  if (CELULAR) await celRestaurarSessao();
   const insistir = async (fn) => { for (;;) { try { return await fn(); } catch (e) { if (!e.cancelado) throw e; document.body.classList.add('travado'); } } };
   if (local) { try { db = normalize(await insistir(() => desserializar(local, { nome: 'arquivo' }))); } catch (e) { db = null; } }
   document.body.classList.remove('travado');
