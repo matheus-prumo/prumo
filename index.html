@@ -743,6 +743,25 @@ body.cel #tab-config .cfg > .card:first-child { display: none; }
 .cel-resumo { text-align: center; } .cel-resumo-t { font-size: 44px; } .cel-resumo h2 { margin: 4px 0; } .cel-resumo .card { text-align: left; padding: 10px 14px; margin: 8px 0; } .cel-resumo h3 { margin: 0 0 4px; font-size: 14px; }
 .cel-como { padding-left: 20px; display: grid; gap: 8px; font-size: 15px; }
 .cel-ex-t b { text-decoration: underline dotted color-mix(in srgb, var(--muted) 60%, transparent); text-underline-offset: 4px; cursor: pointer; }
+/* =================== v5.5: celular =================== */
+#celBar .ci { width: 56px; height: 30px; border-radius: 16px; transition: background .2s; } #celBar .ci svg { width: 22px; height: 22px; }
+#celBar button.on .ci { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+.cel-l-d { display: grid; justify-items: end; gap: 4px; } .cel-l-d .btn { padding: 3px 9px; font-size: 12px; }
+.cel-heroi.com-anel { position: relative; padding-right: 96px; }
+.cel-anel { position: absolute; right: 12px; top: 14px; width: 70px; display: grid; justify-items: center; }
+.cel-anel svg { width: 62px; height: 62px; } .cel-anel b { position: absolute; top: 21px; font-size: 16px !important; line-height: 1; } .cel-anel small { font-size: 11px !important; margin-top: 2px; }
+.cel-seg { display: flex; gap: 4px; background: var(--panel-2); border-radius: 12px; padding: 4px; margin: 0 0 10px; }
+.cel-seg button { flex: 1; border: 0; background: none; color: var(--muted); font: inherit; font-size: 13.5px; padding: 8px 4px; border-radius: 9px; cursor: pointer; }
+.cel-seg button.on { background: var(--panel); color: var(--fg); font-weight: 700; box-shadow: 0 1px 3px rgba(0, 0, 0, .12); }
+.cel-chips[hidden] { display: none; }
+.cel-alerta-sync { border-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--panel)); }
+.cel-saude-l { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--line); } .cel-saude-l b { display: block; font-size: 14px; } .cel-saude-l small { color: var(--muted); font-size: 12.5px; }
+.cel-novo { text-align: left; display: grid; gap: 6px; padding-left: 20px; margin: 10px 0; }
+body.cel #tab-lancamentos tr.cel-dia { display: flex !important; justify-content: space-between; padding: 14px 2px 4px; border-bottom: 0; }
+body.cel #tab-lancamentos tr.cel-dia td { display: flex; width: 100%; justify-content: space-between; color: var(--muted); font-size: 12.5px; font-weight: 700; grid-area: auto !important; }
+body.cel #tab-lancamentos tbody tr:not(.cel-dia) { grid-template-columns: 42px 1fr auto; grid-template-areas: "data desc valor" "data cat acoes"; }
+body.cel #tab-lancamentos tbody tr:not(.cel-dia) td:nth-child(1) { align-self: center; }
+.cel-ico { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 17px; background: color-mix(in srgb, var(--c) 18%, var(--panel)); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); }
 </style>
 </head>
 <body>
@@ -3662,7 +3681,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '5.4';
+const APP_VERSAO = '5.5';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -8062,7 +8081,7 @@ function celHoje() {
   const dataLonga = ((x) => x.charAt(0).toUpperCase() + x.slice(1))(new Date(H + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }));
   const doDia = db.lancamentos.filter((l) => l.data === H && l.tipo === 'Despesa').sort((a, b) => (a.id < b.id ? 1 : -1)); const totDia = soma(doDia, 'valor');
   const lim = addDias(H, 7); const prox = [];
-  db.contasPagar.filter((c) => c.status !== 'Pago' && c.vencimento <= lim).forEach((c) => prox.push({ d: c.vencimento, t: c.descricao, v: c.valor, tab: 'contas' }));
+  db.contasPagar.filter((c) => c.status !== 'Pago' && c.vencimento <= lim).forEach((c) => prox.push({ d: c.vencimento, t: c.descricao, v: c.valor, tab: 'contas', id: c.id }));
   try { const cur = ymOf(H); [cur, addM(cur, 1)].forEach((m, i) => faturas([cur, addM(cur, 1)]).forEach((f) => { const v = f.valores[i]; const venc = `${m}-${pad(Math.min(28, f.conta.vencimento || 1))}`; if (v > 0 && venc >= H && venc <= lim) prox.push({ d: venc, t: 'Fatura ' + nomeCartao(f.conta), v, tab: 'painel' }); })); } catch (e) { /* sem cartões */ }
   prox.sort((a, b) => (a.d < b.d ? -1 : 1));
   const mb = ui.membro; ui.membro = ''; const orc = orcamento(ymOf(H)).filter((o) => o.meta > 0 && o.uso >= 0.8).sort((a, b) => b.uso - a.uso); ui.membro = mb;
@@ -8071,9 +8090,9 @@ function celHoje() {
     treino = `<div class="card cel-c"><div class="cel-c-h"><h3>${x ? (x.k === 'musc' ? '🏋️ Treino de hoje' : '🏃 Corrida de hoje') : '😴 Hoje é descanso'}</h3>${x && !feito ? '<button class="btn sm primary" data-cel-tab="treino">Começar</button>' : ''}</div><p class="small muted" style="margin:0">${x ? (x.k === 'musc' ? `${esc(x.nome)} · ${exerciciosDo(x.idx, c).length} exercícios` : esc(corridaDo(x.tipo, c).t)) : 'O músculo cresce na recuperação.'}${feito ? ' · <span class="good">✅ feito</span>' : ''}</p></div>`; } } catch (e) { treino = ''; }
   const nAv = gerarAvisos().filter((a) => a.nivel !== 'info').length;
   return `<div class="cel-hoje"><div class="cel-ola"><small>${dataLonga}</small><b>${ola}, ${esc(celPrimeiroNome())}</b></div>
-    ${celHeroi()}
+    ${typeof celAvisoSync === 'function' ? celAvisoSync() : ''}${celHeroi()}
     <div class="card cel-c"><div class="cel-c-h"><h3>Gastos de hoje</h3><b>${fmt(totDia)}</b></div>${doDia.length ? doDia.slice(0, 4).map((l) => `<div class="cel-l" data-edit-l="${l.id}"><span>${esc(l.descricao)}<small>${esc(l.categoria)} · ${esc(formaDe(l) || contaNome(l.conta))}</small></span><b>${fmt(l.valor)}</b></div>`).join('') + (doDia.length > 4 ? `<button class="btn sm" data-cel-tab="lancamentos">Ver os ${doDia.length}</button>` : '') : '<p class="small muted" style="margin:0">Nada lançado hoje. Toque em ＋ Lançar quando gastar.</p>'}</div>
-    ${prox.length ? `<div class="card cel-c"><div class="cel-c-h"><h3>Vence nos próximos 7 dias</h3><b>${fmt0(soma(prox, 'v'))}</b></div>${prox.slice(0, 6).map((p) => `<div class="cel-l" data-cel-ir="${p.tab}"><span>${esc(p.t)}<small class="${p.d < H ? 'bad' : p.d === H ? 'warn' : ''}">${p.d < H ? 'atrasada desde ' + dmy(p.d).slice(0, 5) : p.d === H ? 'vence hoje' : dmy(p.d).slice(0, 5)}</small></span><b>${fmt(p.v)}</b></div>`).join('')}</div>` : ''}
+    ${prox.length ? `<div class="card cel-c"><div class="cel-c-h"><h3>Vence nos próximos 7 dias</h3><b>${fmt0(soma(prox, 'v'))}</b></div>${prox.slice(0, 6).map((p) => `<div class="cel-l" data-cel-ir="${p.tab}"><span>${esc(p.t)}<small class="${p.d < H ? 'bad' : p.d === H ? 'warn' : ''}">${p.d < H ? 'atrasada desde ' + dmy(p.d).slice(0, 5) : p.d === H ? 'vence hoje' : dmy(p.d).slice(0, 5)}</small></span><span class="cel-l-d"><b>${fmt(p.v)}</b>${p.id ? `<button class="btn sm" data-cel-pagar="${p.id}">✓ Paguei</button>` : ''}</span></div>`).join('')}</div>` : ''}
     ${orc.length ? `<div class="card cel-c"><h3>Limites em alerta</h3>${orc.slice(0, 3).map((o) => `<div class="cel-lim ${o.uso > 1 ? 'bad' : ''}"><div class="bar"><i style="width:${Math.min(100, o.uso * 100)}%"></i></div><p class="small" style="margin:4px 0 0">${textoAlerta(o, ymOf(H))}</p></div>`).join('')}</div>` : ''}
     ${treino}
     <div class="cel-hoje-pe">${nAv ? `<button class="btn" data-cel-acao="avisos">🔔 ${nAv} ${nAv === 1 ? 'aviso' : 'avisos'}</button>` : ''}<button class="btn" data-cel-painel>Painel completo</button></div></div>`;
@@ -8411,6 +8430,115 @@ cardCelular = function () {
   if (!CRIPTO || !celDigLigada()) return h;
   return h.replace('fora do app.</small>', 'fora do app. Os dados protegidos por senha também abrem com a digital.</small>');
 };
+
+/* =================== v5.5: CELULAR — robustez, Paguei, receita/venda, ícones, extrato e anel =================== */
+/* ---------- 1. pedir ao Android para não apagar os dados ---------- */
+async function celPersistir() { try { if (navigator.storage?.persist) { const ja = await navigator.storage.persisted(); const ok = ja || (await navigator.storage.persist()); lsSet('cel-persist', ok ? '1' : '0'); } } catch (e) { /* */ } }
+if (CELULAR) setTimeout(celPersistir, 3000);
+/* ---------- 2. o que ainda não subiu ---------- */
+const celPend = () => +lsGet('cel-pend') || 0;
+const _changed55 = changed;
+changed = function () { _changed55(); if (CELULAR) lsSet('cel-pend', String(celPend() + 1)); };
+const _sync55 = syncNuvem;
+syncNuvem = async function (o) { const antes = nuvemEm; await _sync55(o); if (CELULAR && !nuvemErro && nuvemEm && nuvemEm !== antes) { lsSet('cel-pend', '0'); lsSet('cel-ult-sync', String(Date.now())); } if (CELULAR) { celPill(); if (ui.tab === 'painel' && !ui.celPainel) renderPainel(); } };
+const _celPill55 = celPill;
+celPill = function () { _celPill55(); const p = $('#celNuvem'); if (!p || !celPend() || nuvemRodando || pending) return; if (/Entrar|senha/.test(p.textContent)) return; if (/Sem internet/.test(p.textContent)) { p.textContent = `☁ Sem internet (${celPend()})`; return; } p.textContent = `☁ ${celPend()} pendente${celPend() > 1 ? 's' : ''}`; p.className = 'cel-pill warn'; };
+function celAvisoSync() {
+  const ult = +lsGet('cel-ult-sync') || 0; if (!ult) return ''; const h = (Date.now() - ult) / 3600000; if (h < 24) return '';
+  return `<div class="card cel-c cel-alerta-sync"><b>⚠ Faz ${h < 48 ? Math.floor(h) + ' horas' : Math.floor(h / 24) + ' dias'} que o Prumo não sincroniza</b><p class="small" style="margin:4px 0 8px">${celPend() ? `${celPend()} ${celPend() > 1 ? 'alterações ainda não foram' : 'alteração ainda não foi'} para o OneDrive. ` : ''}${!celTemLogin() || nuvemErro === 'login' ? 'O acesso à conta Microsoft venceu.' : navigator.onLine ? (nuvemErro ? esc(nuvemErro) : '') : 'O celular está sem internet.'}</p>
+    <button class="btn sm primary" data-cel-sync-ja>${!celTemLogin() || nuvemErro === 'login' ? 'Entrar com a Microsoft' : 'Sincronizar agora'}</button></div>`;
+}
+document.addEventListener('click', (e) => { if (e.target.closest('[data-cel-sync-ja]')) { if (!celTemLogin() || nuvemErro === 'login') celLogin(); else syncNuvem({ manual: true }); } });
+/* ---------- 3. aviso de versão nova ---------- */
+const CEL_NOVIDADES = {
+  '5.5': ['Tela Hoje com anel do mês e ✓ Paguei nas contas que vencem', '＋ Lançar agora tem Gasto, Receita e Venda da loja', 'Lançamentos agrupados por dia, com ícone de cada categoria', 'Mostra o que ainda não subiu para o OneDrive e avisa se ficar mais de um dia sem sincronizar', 'Saúde do app (em Mais) e proteção contra a limpeza do Android'],
+};
+function celVersaoNova() {
+  const v = lsGet('cel-ver'); lsSet('cel-ver', APP_VERSAO); if (!v || v === APP_VERSAO || lsGet('cel-tem-dados') !== '1') return;
+  const itens = Object.keys(CEL_NOVIDADES).filter((k) => k > v && k <= APP_VERSAO).flatMap((k) => CEL_NOVIDADES[k]);
+  celFolha(`<div class="cel-resumo"><div class="cel-resumo-t">✨</div><h2>Prumo atualizado para a ${APP_VERSAO}</h2>${itens.length ? `<ul class="cel-novo">${itens.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}<button class="btn primary cel-ok" data-cel-fechar>Legal!</button></div>`);
+}
+/* ---------- 4. saúde do app ---------- */
+async function celSaude() {
+  let est = null; try { est = await navigator.storage?.estimate?.(); } catch (e) { est = null; }
+  const mb = (b) => (b / 1048576).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' MB';
+  const ult = +lsGet('cel-ult-sync') || 0; const linha = (ok, t, d) => `<div class="cel-saude-l"><span>${ok === null ? '•' : ok ? '✅' : '⚠️'}</span><div><b>${t}</b><small>${d}</small></div></div>`;
+  celFolha(`<h3 style="margin:0 0 10px">🩺 Saúde do app</h3>
+    ${linha(true, 'Versão ' + APP_VERSAO, 'Prumo no celular')}
+    ${linha(celTemLogin(), 'Conta Microsoft', celTemLogin() ? esc(lsGet('cel-email') || 'conectada') : 'desconectada: toque em ☁ Entrar no alto')}
+    ${linha(ult && Date.now() - ult < 86400000, 'Sincronização', ult ? 'última às ' + new Date(ult).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'ainda não sincronizou')}
+    ${linha(!celPend(), 'Pendências', celPend() ? `${celPend()} ${celPend() > 1 ? 'alterações esperando' : 'alteração esperando'} para subir` : 'tudo já está no OneDrive')}
+    ${linha(!celFila().length, 'Fotos de comprovantes', celFila().length ? `${celFila().length} na fila para enviar` : 'todas enviadas')}
+    ${linha(lsGet('cel-persist') === '1', 'Proteção dos dados', lsGet('cel-persist') === '1' ? 'o Android não apaga os dados do Prumo' : 'o Android pode limpar se faltar espaço (os dados continuam no OneDrive)')}
+    ${linha(celDigLigada() ? true : null, 'Digital ao abrir', celDigLigada() ? 'ligada' : 'desligada')}
+    ${linha(null, 'Espaço usado', est ? `${mb(est.usage || 0)} neste celular` : '—')}
+    ${linha(null, 'Dados', `${db.lancamentos.length} lançamentos · ${db.contasPagar.length} contas`)}
+    <div class="row" style="margin-top:12px"><button class="btn primary" data-cel-sync-ja>Sincronizar agora</button><button class="btn" data-cel-backup>Baixar backup</button><button class="btn" data-cel-fechar>Fechar</button></div>`);
+}
+document.addEventListener('click', (e) => { const a = e.target.closest('[data-cel-acao]')?.dataset.celAcao; if (a === 'saude') celSaude(); if (e.target.closest('[data-cel-backup]')) baixarBackup(); });
+const _celMais55 = celMais;
+celMais = function () { _celMais55(); const g = $('#celFolha .cel-grade'); if (g) g.insertAdjacentHTML('beforeend', `<button data-cel-acao="saude"><span class="ci">🩺</span>Saúde do app</button>`); };
+/* ---------- 5. ✓ Paguei ---------- */
+function celPagar(id) {
+  const c = db.contasPagar.find((x) => x.id === id); if (!c || c.status === 'Pago') return; c.status = 'Pago'; c.pagoEm = hoje();
+  const lid = uid(); db.lancamentos.push({ id: lid, data: c.vencimento > hoje() ? c.vencimento : hoje(), descricao: c.descricao, tipo: 'Despesa', categoria: c.categoria, membro: c.membro || 'Casa', conta: c.conta, valor: c.valor, origem: c.id }); c.lancamento = lid;
+  if (c.recorrente) { const prox = { ...c, id: uid(), vencimento: addMDate(c.vencimento, 1), status: 'Pendente' }; delete prox.pagoEm; delete prox.lancamento; delete prox.proximo; db.contasPagar.push(prox); c.proximo = prox.id; }
+  try { navigator.vibrate?.(20); } catch (e) { /* */ }
+  toastAcao(`✔ “${c.descricao}” paga e lançada`, 'Desfazer', () => { const l = db.lancamentos.findIndex((x) => x.id === lid); if (l >= 0) db.lancamentos.splice(l, 1); if (c.proximo) db.contasPagar = db.contasPagar.filter((x) => x.id !== c.proximo); c.status = 'Pendente'; delete c.pagoEm; delete c.lancamento; delete c.proximo; changed(); });
+  changed();
+}
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-cel-pagar]'); if (!b) return; e.stopPropagation(); celPagar(b.dataset.celPagar); }, true);
+/* ---------- 6. ＋ com Gasto, Receita e Venda ---------- */
+ui.celTipo = 'gasto';
+const _celLancar55 = celLancar;
+celLancar = function () {
+  _celLancar55(); ui.celTipo = 'gasto';
+  const h = $('#celFolha h3'); if (h) h.outerHTML = `<div class="cel-seg"><button class="on" data-cel-tipo="gasto">Gasto</button><button data-cel-tipo="rec">Receita</button>${typeof formVenda === 'function' ? '<button data-cel-tipo="venda">Venda da loja</button>' : ''}</div>`;
+};
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-cel-tipo]'); if (!b) return; const t = b.dataset.celTipo;
+  if (t === 'venda') { celFecharFolha(); return formVenda(); }
+  ui.celTipo = t; $$('[data-cel-tipo]').forEach((x) => x.classList.toggle('on', x === b));
+  const i = $('#celRpIn'); if (i) { i.placeholder = t === 'rec' ? 'salário 3500 itaú' : 'açougue 56,36 débito'; i.focus(); i.dispatchEvent(new Event('input', { bubbles: true })); }
+  $$('.cel-chips').forEach((c) => { c.hidden = t === 'rec'; });
+});
+const celFraseTipo = (v) => (ui.celTipo === 'rec' && v.trim() && !/^\s*receb/i.test(v) ? 'recebi ' + v : v);
+document.addEventListener('input', (e) => { if (e.target.id === 'celRpIn' && ui.celTipo === 'rec') { const p = $('#celRpPrev'); if (p) p.innerHTML = previewFrase(e.target.value.trim() ? lerFrase(celFraseTipo(e.target.value)) : null); } });
+const _celRpFoto55 = celRpLancarComFoto;
+celRpLancarComFoto = async function () { const i = $('#celRpIn'); if (i && ui.celTipo === 'rec') i.value = celFraseTipo(i.value); const n = db.lancamentos.length; await _celRpFoto55(); if (db.lancamentos.length > n) { try { navigator.vibrate?.(15); } catch (e) { /* */ } } };
+/* ---------- U1. ícones da barra no mesmo estilo ---------- */
+const CEL_SVG = {
+  treino: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/></svg>',
+  ritmo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>',
+  mais: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+};
+if (CELULAR) $$('#celBar button').forEach((b) => { const s = CEL_SVG[b.dataset.celTab]; if (s) $('.ci', b).innerHTML = s; });
+/* ---------- U4. lançamentos como extrato: por dia, com ícone da categoria ---------- */
+const CEL_CAT_ICO = [[/mercado|supermerc|feira|a[çc]ougue|padaria/, '🛒', '#3f8f6b'], [/comer|delivery|restaur|lanche|pizza/, '🍕', '#d9822b'], [/transporte|combust|gasolina|uber|carro/, '⛽', '#4f79b8'], [/sa[uú]de|farm|m[eé]dic|rem[eé]dio/, '💊', '#c0504d'], [/educa|escola|curso|livro/, '📚', '#7b61c9'], [/moradia|aluguel|condom/, '🏠', '#8a6d3b'], [/contas da casa|luz|[aá]gua|internet|g[aá]s|telefone/, '💡', '#c9a227'], [/lazer|viagem|cinema/, '🎉', '#d46aa1'], [/compras|roupa|vestu/, '🛍', '#9c6ade'], [/pet/, '🐾', '#7a8b3f'], [/cuidado|beleza|sal[aã]o|barbear/, '💇', '#c76b8f'], [/presente|doa[çc]/, '🎁', '#e0675a'], [/d[ií]vida|empr[eé]st|juros/, '📉', '#a04a3a'], [/sal[aá]rio|renda|receita|venda|pr[oó]-labore/, '💰', '#2f8f4f'], [/invest/, '📈', '#2b6b5a']];
+const celIcoCat = (cat, tipo) => { const s = semAcento(cat || ''); const m = CEL_CAT_ICO.find(([re]) => re.test(s)); return m ? [m[1], m[2]] : tipo === 'Receita' ? ['💰', '#2f8f4f'] : ['🧾', '#7a776f']; };
+function celDiaRotulo(d) { const H = hoje(); if (d === H) return 'Hoje'; if (d === addDias(H, -1)) return 'Ontem'; const t = new Date(d + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit' }); return t.charAt(0).toUpperCase() + t.slice(1); }
+function celAgruparLanc() {
+  const tb = $('#tab-lancamentos tbody'); if (!tb || tb.dataset.cel) return; tb.dataset.cel = '1'; let dia = null;
+  $$('tr', tb).forEach((tr) => {
+    const id = $('[data-edit]', tr)?.dataset.edit; const l = db.lancamentos.find((x) => x.id === id); if (!l) return;
+    if (l.data !== dia) { dia = l.data; const doDia = db.lancamentos.filter((x) => x.data === dia && x.tipo === 'Despesa' && (!ui.membro || x.membro === ui.membro)); tr.insertAdjacentHTML('beforebegin', `<tr class="cel-dia"><td colspan="7"><span>${celDiaRotulo(dia)}</span><b>${doDia.length ? '− ' + fmt(soma(doDia, 'valor')) : ''}</b></td></tr>`); }
+    const [ic, cor] = celIcoCat(l.categoria, l.tipo); tr.cells[0].innerHTML = `<span class="cel-ico" style="--c:${cor}">${ic}</span>`;
+  });
+}
+const _renderLanc55 = renderLancamentos;
+renderLancamentos = function () { _renderLanc55(); if (CELULAR) celAgruparLanc(); };
+/* ---------- U6. anel do mês na tela Hoje ---------- */
+function celAnel(f, rot) { const p = Math.max(0, Math.min(1, f)); const r = 26, c = 2 * Math.PI * r; return `<div class="cel-anel"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="${r}" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="7"/><circle cx="32" cy="32" r="${r}" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-dasharray="${(c * p).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 32 32)"/></svg><b>${Math.round(p * 100)}%</b><small>${rot}</small></div>`; }
+const _celHeroi55 = celHeroi;
+celHeroi = function () {
+  const h = _celHeroi55(); const H = hoje(); const cur = ymOf(H); const fimD = +fimDoMes(cur).slice(8, 10); const passou = +H.slice(8, 10) / fimD;
+  let anel = celAnel(passou, 'do mês');
+  if (saldoBancos() == null) { const mb = ui.membro; ui.membro = ''; const orc = orcamento(cur).filter((o) => o.meta > 0); ui.membro = mb; const meta = soma(orc, 'meta'); if (meta) anel = celAnel(soma(orc, 'gasto') / meta, 'do limite'); }
+  return h.replace('<div class="card cel-heroi', '<div class="card cel-heroi com-anel').replace(/(<div class="card cel-heroi[^>]*>)/, `$1${anel}`);
+};
+/* ---------- ligações ---------- */
+const _iniciarCelular55 = iniciarCelular;
+iniciarCelular = async function () { await _iniciarCelular55(); setTimeout(celVersaoNova, 800); };
 
 /* ---------- início ---------- */
 (async function boot() {
