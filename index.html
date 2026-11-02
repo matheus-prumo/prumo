@@ -3705,7 +3705,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '5.6';
+const APP_VERSAO = '5.7';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -8401,7 +8401,7 @@ renderAll = function () {
   celFazerAcaoPendente();
 };
 document.addEventListener('click', (e) => { const b = e.target.closest('[data-cel-tab]'); if (b && b.dataset.celTab === 'painel') ui.celPainel = false; }, true);
-if (CELULAR && celDigLigada()) celTravar();
+if (CELULAR && celDigLigada() && !celUsoRecente()) celTravar();
 
 /* celular: o Painel do computador só quando pedido; cartões que só valem no computador ficam escondidos */
 const _renderPainelPC = renderPainel;
@@ -8414,7 +8414,7 @@ const _cardCopiasPC = cardCopias; cardCopias = function () { return CELULAR ? ''
 // Com a digital ligada, o celular guarda a chave dos dados (a mesma que a senha libera) no próprio Chrome,
 // e só a usa depois que a digital confirma. Nos computadores e no pendrive nada muda: lá continua a senha.
 let celResolverDesbloqueio = () => {};
-const celDesbloqueio = new Promise((res) => { celResolverDesbloqueio = res; if (!(CELULAR && celDigLigada())) res(); });
+const celDesbloqueio = new Promise((res) => { celResolverDesbloqueio = res; if (!(CELULAR && celDigLigada()) || !celTravado) res(); });
 const _celDestravar1 = celDestravar;
 celDestravar = async function (auto = false) { await _celDestravar1(auto); if (!celTravado) celResolverDesbloqueio(); else if (!auto) celOferecerSenha(); };
 // se a digital não funcionar mais (trocou o celular de dono, apagou as digitais…), dá para entrar com a senha dos dados
@@ -8641,6 +8641,17 @@ renderAll = function () { _renderAll56(); if (CELULAR && db) setTimeout(celTirar
 const _celBV56 = celBoasVindas;
 celBoasVindas = function (erro) { celTirarSplash(); return _celBV56(erro); };
 CEL_NOVIDADES['5.6'] = ['Deslize um lançamento: para a esquerda exclui, para a direita edita', 'Puxe a tela para baixo para sincronizar', 'Cronômetro de corrida que continua com a tela apagada', 'Gráfico dos últimos 7 dias na tela Hoje', 'Título e botão ＋ que encolhem ao rolar, folhas que fecham arrastando e vibração ao confirmar'];
+
+/* =================== v5.7: CELULAR — puxar não recarrega e não pede a digital à toa =================== */
+// o "puxar para atualizar" do próprio Chrome recarregava o app (e a digital era pedida de novo)
+if (CELULAR) { document.documentElement.style.overscrollBehaviorY = 'contain'; document.body.style.overscrollBehaviorY = 'contain'; }
+// recarregou há pouco (menos de 3 minutos de uso)? não pede a digital de novo
+function celUsoRecente() { try { return Date.now() - (+sessionStorage.getItem('cel-ativo') || 0) < 3 * 60000; } catch (e) { return false; } }
+function celMarcarUso() { try { if (!celTravado) sessionStorage.setItem('cel-ativo', String(Date.now())); } catch (e) { /* */ } }
+if (CELULAR) { setInterval(() => { if (document.visibilityState === 'visible') celMarcarUso(); }, 20000); let ultT = 0; document.addEventListener('touchstart', () => { if (Date.now() - ultT > 10000 && document.visibilityState === 'visible') { ultT = Date.now(); celMarcarUso(); } }, { passive: true }); }
+const _celDestravar57 = celDestravar;
+celDestravar = async function (auto) { await _celDestravar57(auto); if (!celTravado) celMarcarUso(); };
+CEL_NOVIDADES['5.7'] = ['Puxar a tela para baixo só sincroniza: não recarrega o app nem pede a digital de novo'];
 
 /* ---------- início ---------- */
 (async function boot() {
