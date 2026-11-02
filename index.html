@@ -792,6 +792,10 @@ body.cel .tab:not([hidden]) { animation: celEntra .2s ease; } @keyframes celEntr
 #celBar { view-transition-name: celbar; } #celFab { view-transition-name: celfab; }
 .cel-menu { display: grid; gap: 8px; } .cel-menu button { text-align: left; border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); border-radius: 12px; padding: 13px 14px; font: inherit; font-size: 15px; cursor: pointer; } .cel-menu button.bad { color: var(--bad); }
 body.cel #tab-lancamentos tbody tr { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+/* v5.9: barras de abas do celular deslizam para o lado */
+body.cel .subnav, body.cel .tr-nav { display: flex; max-width: 100%; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+body.cel .subnav::-webkit-scrollbar, body.cel .tr-nav::-webkit-scrollbar { display: none; }
+body.cel .subnav > *, body.cel .tr-nav > * { flex: none; }
 </style>
 </head>
 <body>
@@ -3711,7 +3715,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '5.8';
+const APP_VERSAO = '5.9';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -8736,6 +8740,12 @@ cardCelular = function () {
   return _cardCelular58().replace(/<\/div>$/, `<div class="cel-dig"><span>🔔 <b>Lembretes de contas</b> <small>(experimental)</small><small>${celLembLigado() ? 'Ligados: o Android acorda o Prumo cerca de 1 vez por dia, no horário que ele escolhe.' : 'Avisa das contas que vencem hoje e amanhã, mesmo com o app fechado. O horário quem escolhe é o Android.'}</small></span>${celLembLigado() ? '<button class="btn" data-cel-lemb="off">Desligar</button>' : '<button class="btn primary" data-cel-lemb="on">Ligar</button>'}</div></div>`);
 };
 CEL_NOVIDADES['5.8'] = ['Compartilhar com o Prumo: avisos do banco e fotos de comprovantes', 'Segure o dedo num lançamento: duplicar, editar, anexar foto ou excluir', 'Deslize para os lados para trocar de aba', 'Transições suaves entre as telas e a barra do Android na cor do app', 'Lembretes de contas com o app fechado (experimental, em Configurações)'];
+
+/* ---------- v5.9: a aba escolhida fica sempre à vista na barra de cima ---------- */
+function celCentrarAbas() { $$('.tab:not([hidden]) .subnav, .tab:not([hidden]) .tr-nav').forEach((n) => { const a = n.querySelector('.on, .active, [aria-selected=true]'); if (a && n.scrollWidth > n.clientWidth) n.scrollLeft = a.offsetLeft - (n.clientWidth - a.offsetWidth) / 2; }); }
+const _renderAll59 = renderAll;
+renderAll = function () { _renderAll59(); if (CELULAR) requestAnimationFrame(celCentrarAbas); };
+CEL_NOVIDADES['5.9'] = ['As barras de abas de cima (Hoje, Metas, Rotina, Treino…) agora deslizam para o lado'];
 
 /* ---------- início ---------- */
 (async function boot() {
