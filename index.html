@@ -638,7 +638,7 @@ body.tema-mat { --accent: #3d5a80; --accent-fg: #fff; --accent-soft: #e7edf5; }
 /* =================== v5.2: celular =================== */
 body.cel { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; }
 body.cel .app { display: block; }
-body.cel, body.cel main { overflow-x: hidden; } body.cel main { width: 100%; box-sizing: border-box; } body.cel .tab { min-width: 0; }
+body.cel, body.cel main { overflow-x: clip; } body.cel main { width: 100%; box-sizing: border-box; } body.cel .tab { min-width: 0; }
 body.cel .card.guia { display: none; }
 body.cel aside.nav { display: none !important; }
 body.cel main { padding: 0 12px calc(150px + env(safe-area-inset-bottom)); max-width: 100%; }
@@ -762,6 +762,30 @@ body.cel #tab-lancamentos tr.cel-dia td { display: flex; width: 100%; justify-co
 body.cel #tab-lancamentos tbody tr:not(.cel-dia) { grid-template-columns: 42px 1fr auto; grid-template-areas: "data desc valor" "data cat acoes"; }
 body.cel #tab-lancamentos tbody tr:not(.cel-dia) td:nth-child(1) { align-self: center; }
 .cel-ico { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 17px; background: color-mix(in srgb, var(--c) 18%, var(--panel)); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); }
+/* =================== v5.6: celular =================== */
+#celSplash { position: fixed; inset: 0; z-index: 300; background: var(--bg); display: grid; place-items: center; align-content: center; gap: 12px; transition: opacity .3s; }
+#celSplash b { font-family: Georgia, serif; font-weight: 400; font-size: 26px; } #celSplash.sai { opacity: 0; pointer-events: none; }
+body.cel .top { transition: padding .2s, background .2s; }
+body.cel .top h1 { transition: font-size .2s; }
+body.cel.cel-rolou .top { background: color-mix(in srgb, var(--bg) 82%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); padding-top: calc(6px + env(safe-area-inset-top)); padding-bottom: 6px; border-bottom: 1px solid var(--line); margin-left: -12px; margin-right: -12px; padding-left: 12px; padding-right: 12px; }
+body.cel.cel-rolou .top h1 { font-size: 18px; }
+body.cel.cel-rolou .top .filters { display: none; }
+#celFab { display: flex; align-items: center; gap: 6px; transition: padding .2s; } #celFab .fi { font-size: 20px; line-height: 1; } #celFab .ft { transition: max-width .2s, opacity .2s; max-width: 80px; overflow: hidden; white-space: nowrap; }
+body.cel-rolou #celFab { padding: 16px 18px; } body.cel-rolou #celFab .ft { max-width: 0; opacity: 0; }
+.cel-7 { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; height: 96px; align-items: end; margin-top: 4px; }
+.cel-7 > div { display: grid; grid-template-rows: 14px 1fr 16px; height: 100%; justify-items: center; align-items: end; }
+.cel-7 i { width: 70%; background: color-mix(in srgb, var(--accent) 45%, transparent); border-radius: 6px 6px 3px 3px; display: block; }
+.cel-7 .hj i { background: var(--accent); } .cel-7 small { font-size: 9.5px; color: var(--muted); } .cel-7 span { font-size: 11px; color: var(--muted); } .cel-7 .hj span { color: var(--fg); font-weight: 700; }
+body.cel #tab-lancamentos tbody tr { transition: transform .18s ease, background .15s; touch-action: pan-y; }
+body.cel #tab-lancamentos .tbl-wrap { overflow: visible; }
+body.cel #tab-lancamentos tbody tr.sw-del { background: color-mix(in srgb, var(--bad) 16%, transparent); }
+body.cel #tab-lancamentos tbody tr.sw-ed { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+body.cel .tab:not([hidden]) { animation: celEntra .2s ease; } @keyframes celEntra { from { opacity: 0; transform: translateY(6px); } }
+.cel-folha { transition: transform .2s ease; }
+#celPuxa { position: fixed; top: calc(10px + env(safe-area-inset-top)); left: 50%; z-index: 90; width: 40px; height: 40px; border-radius: 50%; background: var(--panel); box-shadow: 0 4px 14px rgba(0, 0, 0, .18); display: grid; place-items: center; font-size: 18px; color: var(--muted); transform: translate(-50%, -40px); }
+#celPuxa.pronto { color: var(--accent); } #celPuxa.girando { animation: celGira .8s linear infinite; } @keyframes celGira { to { transform: translate(-50%, 50px) rotate(360deg); } }
+.cel-cr-t { font-size: 58px; font-weight: 700; font-variant-numeric: tabular-nums; margin: 14px 0; }
+#celCrMini { position: fixed; left: 16px; bottom: calc(80px + env(safe-area-inset-bottom)); z-index: 41; border: 0; border-radius: 999px; background: #1f3b5c; color: #fff; font-weight: 700; padding: 10px 14px; font-variant-numeric: tabular-nums; box-shadow: 0 6px 16px rgba(0, 0, 0, .25); }
 </style>
 </head>
 <body>
@@ -3681,7 +3705,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '5.5';
+const APP_VERSAO = '5.6';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -8539,6 +8563,84 @@ celHeroi = function () {
 /* ---------- ligações ---------- */
 const _iniciarCelular55 = iniciarCelular;
 iniciarCelular = async function () { await _iniciarCelular55(); setTimeout(celVersaoNova, 800); };
+
+/* =================== v5.6: CELULAR — gestos, cronômetro, título que encolhe, 7 dias, animações =================== */
+const celVibrar = (ms = 15) => { try { navigator.vibrate?.(ms); } catch (e) { /* */ } };
+/* ---------- U11. abertura com o logo ---------- */
+if (CELULAR) { const sp = document.createElement('div'); sp.id = 'celSplash'; sp.innerHTML = `<div class="cel-bv-logo">${ICON.prumo}</div><b>Prumo</b>`; document.body.appendChild(sp); setTimeout(() => celTirarSplash(), 2500); }
+function celTirarSplash() { const s = $('#celSplash'); if (s && !s.classList.contains('sai')) { s.classList.add('sai'); setTimeout(() => s.remove(), 350); } }
+/* ---------- U2/U3. título e botão que encolhem ao rolar ---------- */
+window.addEventListener('scroll', () => { if (CELULAR) document.body.classList.toggle('cel-rolou', window.scrollY > 36); }, { passive: true });
+if (CELULAR) { const f = $('#celFab'); if (f) f.innerHTML = '<span class="fi">＋</span><span class="ft">Lançar</span>'; }
+/* ---------- U7. últimos 7 dias na tela Hoje ---------- */
+function cel7Dias() {
+  const H = hoje(); const dias = Array.from({ length: 7 }, (_, i) => addDias(H, i - 6)); const v = dias.map((d) => soma(db.lancamentos.filter((l) => l.data === d && l.tipo === 'Despesa'), 'valor')); const mx = Math.max(1, ...v); const tot = soma(v, (x) => x);
+  const DS = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+  return `<div class="card cel-c"><div class="cel-c-h"><h3>Últimos 7 dias</h3><b>${fmt0(tot)}</b></div><div class="cel-7">${dias.map((d, i) => `<div class="${d === H ? 'hj' : ''}" title="${dmy(d)}: ${fmt(v[i])}"><small>${v[i] ? fmtK(v[i]) : ''}</small><i style="height:${Math.max(3, (v[i] / mx) * 100)}%"></i><span>${DS[new Date(d + 'T12:00').getDay()]}</span></div>`).join('')}</div><p class="small muted" style="margin:6px 0 0">Média de ${fmt0(tot / 7)} por dia</p></div>`;
+}
+const _celHoje56 = celHoje;
+celHoje = function () { const h = _celHoje56(); const m = '<div class="card cel-c"><div class="cel-c-h"><h3>Gastos de hoje</h3>'; return h.includes(m) ? h.replace(m, cel7Dias() + m) : h; };
+/* ---------- U5. deslizar o lançamento: ← excluir · → editar ---------- */
+let celSw = null;
+document.addEventListener('touchstart', (e) => { if (!CELULAR) return; const tr = e.target.closest('#tab-lancamentos tbody tr:not(.cel-dia)'); if (!tr) return; const t = e.touches[0]; celSw = { tr, x: t.clientX, y: t.clientY, dx: 0, h: null }; }, { passive: false });
+document.addEventListener('touchmove', (e) => {
+  if (!celSw) return; const t = e.touches[0]; const dx = t.clientX - celSw.x; const dy = t.clientY - celSw.y;
+  if (celSw.h === null) { if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return; celSw.h = Math.abs(dx) > Math.abs(dy); }
+  if (!celSw.h) { celSw = null; return; }
+  if (e.cancelable) e.preventDefault();
+  celSw.dx = Math.max(-140, Math.min(140, dx)); celSw.tr.style.transform = `translateX(${celSw.dx}px)`; celSw.tr.classList.toggle('sw-del', celSw.dx < -40); celSw.tr.classList.toggle('sw-ed', celSw.dx > 40);
+}, { passive: false });
+document.addEventListener('touchend', () => {
+  if (!celSw) return; const { tr, dx } = celSw; celSw = null; tr.style.transform = ''; tr.classList.remove('sw-del', 'sw-ed');
+  const id = $('[data-edit]', tr)?.dataset.edit; if (!id) return;
+  if (dx < -90) { celVibrar(); excluirLancamento(id); } else if (dx > 90) { celVibrar(); const l = db.lancamentos.find((x) => x.id === id); if (l) formLancamento(l); }
+});
+document.addEventListener('touchcancel', () => { if (celSw) { celSw.tr.style.transform = ''; celSw.tr.classList.remove('sw-del', 'sw-ed'); celSw = null; } });
+/* ---------- U8. folhas fecham arrastando para baixo ---------- */
+let celArr = null;
+document.addEventListener('touchstart', (e) => { const f = e.target.closest('.cel-folha'); if (!f || f.scrollTop > 0 || e.target.closest('input,textarea,.cel-chips,.cel-seg')) return; celArr = { f, y: e.touches[0].clientY, dy: 0 }; }, { passive: true });
+document.addEventListener('touchmove', (e) => { if (!celArr) return; celArr.dy = Math.max(0, e.touches[0].clientY - celArr.y); celArr.f.style.transition = 'none'; celArr.f.style.transform = `translateY(${celArr.dy}px)`; }, { passive: true });
+document.addEventListener('touchend', () => { if (!celArr) return; const { f, dy } = celArr; celArr = null; f.style.transition = ''; f.style.transform = ''; if (dy > 100) celFecharFolha(); });
+/* ---------- U10. puxar para baixo para sincronizar ---------- */
+let celPx = null;
+document.addEventListener('touchstart', (e) => { if (!CELULAR || window.scrollY > 0 || e.target.closest('.cel-folha, dialog, #celBar, #tab-lancamentos tbody, .cel-7')) return; celPx = { y: e.touches[0].clientY, dy: 0 }; }, { passive: true });
+document.addEventListener('touchmove', (e) => { if (!celPx) return; celPx.dy = e.touches[0].clientY - celPx.y; let el = $('#celPuxa'); if (!el) { el = document.createElement('div'); el.id = 'celPuxa'; el.textContent = '☁'; document.body.appendChild(el); } const d = Math.max(0, Math.min(90, celPx.dy)); el.style.transform = `translate(-50%, ${d - 40}px) rotate(${d * 4}deg)`; el.classList.toggle('pronto', d >= 70); }, { passive: true });
+document.addEventListener('touchend', async () => { if (!celPx) return; const dy = celPx.dy; celPx = null; const el = $('#celPuxa'); if (dy >= 70 && el) { el.classList.add('girando'); celVibrar(); if (!celTemLogin()) celLogin(); else await syncNuvem({ manual: true }); } if (el) setTimeout(() => el.remove(), 250); });
+/* ---------- U9. vibração ao anotar a série e concluir o treino ---------- */
+const _celSalvarEx56 = celSalvarEx;
+celSalvarEx = function (ex, d) { _celSalvarEx56(ex, d); celVibrar(10); };
+document.addEventListener('click', (e) => { if (CELULAR && e.target.closest('[data-tr-fim]')) celVibrar([20, 60, 20]); });
+/* ---------- C8. cronômetro da corrida (continua contando com a tela apagada) ---------- */
+const celCr = () => { try { return JSON.parse(lsGet('cel-corr') || 'null'); } catch (e) { return null; } };
+const celCrSeg = (c) => (c ? Math.floor(((c.acum || 0) + (c.rodando ? Date.now() - c.ini : 0)) / 1000) : 0);
+const celFmtT = (s) => { const h = Math.floor(s / 3600); const m = Math.floor((s % 3600) / 60); const x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); };
+let celCrT = null;
+function celCrono(d, tipo) {
+  let c = celCr(); if (!c) { c = { d: d || hoje(), tipo: tipo || 'leve', acum: 0, rodando: false, ini: 0 }; lsSet('cel-corr', JSON.stringify(c)); }
+  const desenhar = () => { const k = celCr(); const el = $('#celCrT'); if (!el || !k) return clearInterval(celCrT); el.textContent = celFmtT(celCrSeg(k)); $('#celCrGo').textContent = k.rodando ? '⏸ Pausar' : celCrSeg(k) ? '▶ Continuar' : '▶ Começar'; };
+  celFolha(`<div class="cel-resumo"><div class="cel-resumo-t">🏃</div><h2>Corrida</h2><p class="muted" style="margin:0">${esc(corridaDo(c.tipo, T0()).t)}</p><div id="celCrT" class="cel-cr-t">0:00</div>
+    <div class="row" style="justify-content:center"><button class="btn primary" id="celCrGo" data-cel-cr="go">▶ Começar</button><button class="btn" data-cel-cr="fim">■ Terminar e registrar</button></div>
+    <p class="small muted">Pode bloquear o celular: o tempo continua contando.</p><button class="btn" data-cel-cr="zerar">Zerar</button></div>`);
+  clearInterval(celCrT); desenhar(); celCrT = setInterval(desenhar, 500);
+}
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-cel-crono]'); if (b) { const [d, t] = b.dataset.celCrono.split('|'); return celCrono(d, t); }
+  const a = e.target.closest('[data-cel-cr]')?.dataset.celCr; if (!a) return; const c = celCr(); if (!c) return;
+  if (a === 'go') { if (c.rodando) { c.acum += Date.now() - c.ini; c.rodando = false; } else { c.ini = Date.now(); c.rodando = true; try { celCrWake = await navigator.wakeLock?.request('screen'); } catch (er) { /* */ } } lsSet('cel-corr', JSON.stringify(c)); celVibrar(); }
+  if (a === 'zerar' && confirm('Zerar o cronômetro?')) { lsSet('cel-corr', ''); celFecharFolha(); }
+  if (a === 'fim') { const s = celCrSeg(c); lsSet('cel-corr', ''); clearInterval(celCrT); celFecharFolha(); try { celCrWake?.release(); } catch (er) { /* */ } formCorrida(c.d, c.tipo); setTimeout(() => { const i = $('#dlg [name=tempo]'); if (i && s) { i.value = celFmtT(s); i.dispatchEvent(new Event('input', { bubbles: true })); } $('#dlg [name=km]')?.focus(); }, 80); }
+});
+let celCrWake = null;
+const _trDia56 = trDia;
+trDia = function (c) { const h = _trDia56(c); return CELULAR ? h.replace(/(<button class="btn primary" data-tr-corrida="([^"|]+)\|([^"]+)">[^<]*<\/button>)/, '<button class="btn primary" data-cel-crono="$2|$3">⏱ Cronômetro</button> $1') : h; };
+// corrida rodando: um aviso pequeno acima da barra
+setInterval(() => { if (!CELULAR) return; const c = celCr(); let el = $('#celCrMini'); if (c && c.rodando && !$('#celCrT')) { if (!el) { el = document.createElement('button'); el.id = 'celCrMini'; el.addEventListener('click', () => celCrono()); document.body.appendChild(el); } el.textContent = '🏃 ' + celFmtT(celCrSeg(c)); } else if (el) el.remove(); }, 1000);
+/* ---------- ligações ---------- */
+const _renderAll56 = renderAll;
+renderAll = function () { _renderAll56(); if (CELULAR && db) setTimeout(celTirarSplash, 150); };
+const _celBV56 = celBoasVindas;
+celBoasVindas = function (erro) { celTirarSplash(); return _celBV56(erro); };
+CEL_NOVIDADES['5.6'] = ['Deslize um lançamento: para a esquerda exclui, para a direita edita', 'Puxe a tela para baixo para sincronizar', 'Cronômetro de corrida que continua com a tela apagada', 'Gráfico dos últimos 7 dias na tela Hoje', 'Título e botão ＋ que encolhem ao rolar, folhas que fecham arrastando e vibração ao confirmar'];
 
 /* ---------- início ---------- */
 (async function boot() {
