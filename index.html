@@ -821,6 +821,12 @@ body.cel #tab-cons .tbl-wrap, body.cel #tab-hel .tbl-wrap { overflow-x: auto; }
 body.cel #tab-cons .grid2, body.cel #tab-cons .grid3, body.cel #tab-hel .grid2, body.cel .rt-g { grid-template-columns: 1fr !important; }
 body.cel .site-g { grid-template-columns: 1fr; }
 body.cel-hel #celFab { background: #9a5f3e; }
+/* v6.3: iPhone — nada passa da largura da tela */
+body.cel { max-width: 100%; overflow-x: hidden; overflow-x: clip; }
+body.cel main, body.cel .tab, body.cel .card { min-width: 0; max-width: 100%; }
+body.cel .cel-hoje, body.cel .grid, body.cel .kpis { grid-template-columns: minmax(0, 1fr); }
+body.cel .top { max-width: 100%; } body.cel .top .icon-top { flex: none; }
+body.cel .cel-l span, body.cel .cel-c-h h3 { min-width: 0; }
 </style>
 </head>
 <body>
@@ -3740,7 +3746,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '6.2';
+const APP_VERSAO = '6.3';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -8146,7 +8152,7 @@ function celHoje() {
   prox.sort((a, b) => (a.d < b.d ? -1 : 1));
   const mb = ui.membro; ui.membro = ''; const orc = orcamento(ymOf(H)).filter((o) => o.meta > 0 && o.uso >= 0.8).sort((a, b) => b.uso - a.uso); ui.membro = mb;
   let treino = '';
-  try { const c = T0(); if (Object.values(c.dias || {}).some(Boolean)) { const x = montarSemana(c).plano[diaSemDe(H)]; const feito = riGet(`tconc-${H}`) || riDe('mat', 'corrida').some((r) => r.data === H);
+  if (CEL_PERFIL !== 'hel') try { const c = T0(); if (Object.values(c.dias || {}).some(Boolean)) { const x = montarSemana(c).plano[diaSemDe(H)]; const feito = riGet(`tconc-${H}`) || riDe('mat', 'corrida').some((r) => r.data === H);
     treino = `<div class="card cel-c"><div class="cel-c-h"><h3>${x ? (x.k === 'musc' ? '🏋️ Treino de hoje' : '🏃 Corrida de hoje') : '😴 Hoje é descanso'}</h3>${x && !feito ? '<button class="btn sm primary" data-cel-tab="treino">Começar</button>' : ''}</div><p class="small muted" style="margin:0">${x ? (x.k === 'musc' ? `${esc(x.nome)} · ${exerciciosDo(x.idx, c).length} exercícios` : esc(corridaDo(x.tipo, c).t)) : 'O músculo cresce na recuperação.'}${feito ? ' · <span class="good">✅ feito</span>' : ''}</p></div>`; } } catch (e) { treino = ''; }
   const nAv = gerarAvisos().filter((a) => a.nivel !== 'info').length;
   return `<div class="cel-hoje"><div class="cel-ola"><small>${dataLonga}</small><b>${ola}, ${esc(celPrimeiroNome())}</b></div>
@@ -10158,6 +10164,7 @@ if (CELULAR) {
   add('meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'default' });
   add('meta', { name: 'apple-mobile-web-app-title', content: 'Prumo' });
 }
+CEL_NOVIDADES['6.3'] = ['Ajustes para o iPhone: as telas não passam mais da largura do celular'];
 CEL_NOVIDADES['6.2'] = ['Prumo também no celular da Helen (com Consultório e o Ritmo dela)', 'No iPhone: segure o dedo num lançamento para duplicar, editar ou excluir'];
 
 /* ---------- início ---------- */
