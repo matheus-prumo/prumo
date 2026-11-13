@@ -777,7 +777,7 @@ body.cel-rolou #celFab { padding: 16px 18px; } body.cel-rolou #celFab .ft { max-
 .cel-7 i { width: 70%; background: color-mix(in srgb, var(--accent) 45%, transparent); border-radius: 6px 6px 3px 3px; display: block; }
 .cel-7 .hj i { background: var(--accent); } .cel-7 small { font-size: 9.5px; color: var(--muted); } .cel-7 span { font-size: 11px; color: var(--muted); } .cel-7 .hj span { color: var(--fg); font-weight: 700; }
 body.cel #tab-lancamentos tbody tr { transition: transform .18s ease, background .15s; touch-action: pan-y; }
-body.cel #tab-lancamentos .tbl-wrap { overflow: visible; }
+body.cel #tab-lancamentos .tbl-wrap { overflow: visible; max-height: none; }
 body.cel #tab-lancamentos tbody tr.sw-del { background: color-mix(in srgb, var(--bad) 16%, transparent); }
 body.cel #tab-lancamentos tbody tr.sw-ed { background: color-mix(in srgb, var(--accent) 16%, transparent); }
 body.cel .tab:not([hidden]) { animation: celEntra .2s ease; } @keyframes celEntra { from { opacity: 0; transform: translateY(6px); } }
@@ -3746,7 +3746,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '6.3';
+const APP_VERSAO = '6.4';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -10164,6 +10164,7 @@ if (CELULAR) {
   add('meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'default' });
   add('meta', { name: 'apple-mobile-web-app-title', content: 'Prumo' });
 }
+CEL_NOVIDADES['6.4'] = ['Lançamentos: o resumo do mês não fica mais por cima da lista'];
 CEL_NOVIDADES['6.3'] = ['Ajustes para o iPhone: as telas não passam mais da largura do celular'];
 CEL_NOVIDADES['6.2'] = ['Prumo também no celular da Helen (com Consultório e o Ritmo dela)', 'No iPhone: segure o dedo num lançamento para duplicar, editar ou excluir'];
 
