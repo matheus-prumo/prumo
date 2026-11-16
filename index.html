@@ -827,6 +827,58 @@ body.cel main, body.cel .tab, body.cel .card { min-width: 0; max-width: 100%; }
 body.cel .cel-hoje, body.cel .grid, body.cel .kpis { grid-template-columns: minmax(0, 1fr); }
 body.cel .top { max-width: 100%; } body.cel .top .icon-top { flex: none; }
 body.cel .cel-l span, body.cel .cel-c-h h3 { min-width: 0; }
+/* =================== v6.5: Caixa =================== */
+.cx-seg { display: flex; background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 3px; gap: 3px; margin: 0 0 12px; max-width: 520px; }
+.cx-seg button { flex: 1; border: 0; background: none; color: var(--muted); font: inherit; font-size: 13.5px; padding: 8px 4px; border-radius: 9px; cursor: pointer; white-space: nowrap; }
+.cx-seg button.on { background: var(--panel); color: var(--fg); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.cx-seg-n { max-width: 260px; }
+#tab-caixa > .card, #tab-caixa > .cx-btns, #tab-caixa > .cx-g2, #tab-caixa > details { max-width: 720px; }
+.cx-btns { display: flex; gap: 10px; margin-bottom: 12px; }
+.cx-btns button { flex: 1; border: 0; border-radius: 14px; padding: 13px 8px; font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; display: grid; gap: 2px; justify-items: center; }
+.cx-btns small { font-weight: 500; font-size: 11.5px; opacity: .8; }
+.cx-in { background: color-mix(in srgb, var(--ok) 14%, var(--panel)); color: var(--ok); }
+.cx-out { background: color-mix(in srgb, var(--bad) 13%, var(--panel)); color: var(--bad); }
+.cx-heroi { background: #2b6b5a; color: #fff; border: 0; display: grid; gap: 4px; padding: 16px; margin-bottom: 12px; }
+.cx-heroi.neg { background: #a8402f; }
+.cx-heroi small { opacity: .88; font-size: 12.5px; } .cx-heroi b { font-size: 32px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.cx-ajusta { justify-self: start; margin-top: 6px; background: rgba(255,255,255,.16); color: inherit; border: 0; border-radius: 9px; padding: 6px 11px; font: inherit; font-size: 12.5px; cursor: pointer; }
+.cx-g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.cx-g2 .card { padding: 10px 12px; margin: 0; } .cx-g2 small { color: var(--muted); font-size: 12px; } .cx-g2 b { display: block; font-size: 18px; font-variant-numeric: tabular-nums; margin-top: 2px; }
+@media (min-width: 900px) { .cx-g2 { grid-template-columns: repeat(4, 1fr); } }
+.cx-c { padding: 12px 14px; margin-bottom: 12px; } .cx-c h3 { margin: 0 0 6px; font-size: 14.5px; }
+.cx-c-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; } .cx-c-h h3 { margin: 0; }
+.cx-l { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); }
+.cx-l > span { flex: 1; min-width: 0; font-weight: 600; font-size: 14px; } .cx-l small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+.cx-l > b { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cx-l[data-cx-fixa], .cx-l[data-cx-ir] { cursor: pointer; }
+.cx-fx.esp > span { opacity: .75; }
+.cx-pg { border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); border-radius: 9px; padding: 6px 9px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.cx-alerta { background: color-mix(in srgb, var(--warn) 12%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); padding: 12px 14px; margin-bottom: 12px; display: grid; gap: 4px; cursor: pointer; }
+.cx-alerta b { color: var(--bad); } .cx-alerta small { color: var(--muted); font-size: 12.5px; }
+.cx-ok { padding: 12px 14px; margin-bottom: 12px; display: grid; gap: 3px; } .cx-ok b { color: var(--ok); } .cx-ok small { color: var(--muted); font-size: 12.5px; }
+.cx-bar { height: 8px; background: var(--panel-2); border-radius: 8px; overflow: hidden; margin: 7px 0; } .cx-bar i { display: block; height: 100%; background: #2b6b5a; border-radius: 8px; }
+.cx-ch { display: flex; align-items: flex-end; gap: 6px; height: 130px; padding-top: 4px; }
+.cx-chm { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; height: 100%; min-width: 0; }
+.cx-chm i { display: block; width: 100%; max-width: 54px; background: #2b6b5a; border-radius: 5px 5px 0 0; } .cx-chm i.neg { background: var(--bad); border-radius: 0 0 5px 5px; }
+.cx-chm small { font-size: 11px; color: var(--muted); } .cx-chv { font-size: 10px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cx-tab { overflow-x: auto; } .cx-tab table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.cx-tab th, .cx-tab td { padding: 5px 4px; text-align: right; border: 0; white-space: nowrap; } .cx-tab th { color: var(--muted); font-weight: 600; } .cx-tab td:first-child, .cx-tab th:first-child { text-align: left; }
+.cx-tab tr.good td { color: var(--ok); } .cx-tab tr.bad td { color: var(--bad); } .cx-tab tbody tr:last-child td { border-top: 1px solid var(--line); }
+.cx-det summary { display: flex; justify-content: space-between; gap: 8px; cursor: pointer; list-style: none; font-size: 14px; } .cx-det summary::-webkit-details-marker { display: none; }
+.cx-det summary span { color: var(--muted); font-size: 13px; } .cx-det[open] summary { margin-bottom: 6px; }
+.cx-sim-l > span { color: var(--warn); }
+.cx-sim, .cx-ini-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; } .cx-sim input, .cx-ini-row input { flex: 1 1 120px; min-width: 0; font-size: 16px; padding: 10px; border-radius: 10px; } .cx-sim select { flex: 0 0 auto; }
+.cx-ini h2 { margin: 0 0 4px; }
+.cx-tx { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; } .cx-tx label { font-size: 12px; color: var(--muted); display: grid; gap: 3px; } .cx-tx input { text-align: right; }
+.cx-tx:has(label:nth-child(4)):not(:has(label:nth-child(5))) { grid-template-columns: 1fr; }
+.cx-escolha { display: grid; gap: 8px; } .cx-escolha button { display: flex; justify-content: space-between; align-items: center; gap: 10px; text-align: left; border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); border-radius: 12px; padding: 11px 13px; font: inherit; font-weight: 600; cursor: pointer; }
+.cx-escolha small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+body.cel .cx-heroi b { font-size: 30px; }
+.cx-chm { justify-content: flex-start; height: auto; } .cx-ch { height: auto; align-items: stretch; }
+.cx-chp { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; width: 100%; gap: 2px; border-bottom: 1px solid var(--line); }
+.cx-chn { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; width: 100%; gap: 2px; }
+.cx-meta-n { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; } .cx-meta-n b { font-size: 26px; font-variant-numeric: tabular-nums; } .cx-meta-n span { color: var(--muted); font-size: 13px; }
+body.cel .cx-tab table { font-size: 11px; } body.cel .cx-tab th, body.cel .cx-tab td { padding: 4px 2px; } body.cel .cx-chv { font-size: 9px; }
 </style>
 </head>
 <body>
@@ -867,6 +919,7 @@ body.cel .cel-l span, body.cel .cel-c-h h3 { min-width: 0; }
     <section id="tab-contas" class="tab" hidden></section>
     <section id="tab-metas" class="tab" hidden></section>
     <section id="tab-recomeco" class="tab" hidden></section>
+    <section id="tab-caixa" class="tab" hidden></section>
     <section id="tab-loja" class="tab" hidden></section>
     <section id="tab-rep" class="tab" hidden></section>
     <section id="tab-cons" class="tab" hidden></section>
@@ -1772,7 +1825,7 @@ function renderAll() {
   $('#fCat').hidden = !ui.categoria || !['painel', 'lancamentos'].includes(ui.tab); $('#fCat').textContent = `${ui.categoria}  ✕`;
   $('#fCat').title = 'Remover filtro de categoria';
   renderBanner();
-  ({ painel: renderPainel, lancamentos: renderLancamentos, contas: renderContas, metas: renderMetas, recomeco: renderRecomeco, loja: renderLoja, rep: renderRep, cons: renderCons, mat: () => renderRitmo('mat'), hel: () => renderRitmo('hel'), ir: renderIR, planejar: renderPlanejar, invest: renderInvest, config: renderConfig })[ui.tab]();
+  ({ painel: renderPainel, lancamentos: renderLancamentos, contas: renderContas, metas: renderMetas, recomeco: renderRecomeco, caixa: renderCaixa, loja: renderLoja, rep: renderRep, cons: renderCons, mat: () => renderRitmo('mat'), hel: () => renderRitmo('hel'), ir: renderIR, planejar: renderPlanejar, invest: renderInvest, config: renderConfig })[ui.tab]();
   renderSave(); atualizarSino();
   { const bm = $('#btnMais'); if (bm) bm.innerHTML = $('#btnNovo').hidden ? `${ICON.mais}Novo` : ICON.seta; }
   { const dt = $('#saveStatus .dot'), sm = $('#saveMini'); if (sm) { sm.style.color = dt ? dt.style.background : ''; sm.title = ($('#saveStatus b')?.textContent || 'Salvamento') + ' · abrir Configurações'; } }
@@ -2254,8 +2307,8 @@ function recAjustes() {
 }
 
 /* =================== LOJA =================== */
-const vendaBruta = (v) => (Number(v.pix) || 0) + (Number(v.debito) || 0) + (Number(v.credito) || 0) + (Number(v.dinheiro) || 0);
-const vendaTaxa = (v) => (Number(v.debito) || 0) * (db.loja.taxaDebito || 0) / 100 + (Number(v.credito) || 0) * (db.loja.taxaCredito || 0) / 100;
+const vendaBruta = (v) => (Number(v.pix) || 0) + (Number(v.debito) || 0) + (Number(v.credito) || 0) + (Number(v.creditoP) || 0) + (Number(v.dinheiro) || 0);
+const vendaTaxa = (v) => cxTaxaVenda(v);
 function lojaMes(mes) {
   const L = db.loja; const vs = noMes(L.vendas, mes);
   const fat = soma(vs, vendaBruta), taxas = soma(vs, vendaTaxa), cmv = fat * (L.custoPct || 0) / 100;
@@ -2277,7 +2330,7 @@ function renderLoja() {
 }
 function lojaResultado() {
   const m = lojaMes(ui.mes), p = lojaMes(addM(ui.mes, -1)); const pe = pontoEquilibrio(ui.mes);
-  const formas = [['Pix', 'pix'], ['Cartão de débito', 'debito'], ['Cartão de crédito', 'credito'], ['Dinheiro', 'dinheiro']].map(([l, k]) => [l, soma(m.vs, k)]);
+  const formas = [['Pix', 'pix'], ['Cartão de débito', 'debito'], ['Crédito à vista', 'credito'], ['Crédito parcelado', 'creditoP'], ['Dinheiro', 'dinheiro']].map(([l, k]) => [l, soma(m.vs, k)]);
   return `${lembreteDia('loja', 'Loja')}
   <div class="kpis">
     ${kpiBox('Faturamento', fmt0(m.fat), deltaTxt(m.fat, p.fat, true))}
@@ -2309,7 +2362,7 @@ function lojaVendas() {
   const vs = noMes(db.loja.vendas, ui.mes).sort((a, b) => (a.data < b.data ? 1 : -1));
   return `<div class="card"><div class="toolbar"><span class="muted grow">Lance no fim de cada dia o total vendido em cada forma de pagamento</span><button class="btn primary" data-loja-venda>+ Venda do dia</button></div>
   ${vs.length ? `<div class="tbl-wrap"><table><thead><tr><th>Data</th><th class="num">Pix</th><th class="num">Débito</th><th class="num">Crédito</th><th class="num">Dinheiro</th><th class="num">Total</th><th class="num hide-sm">Taxas</th><th></th></tr></thead><tbody>
-  ${vs.map((v) => `<tr><td>${dmy(v.data)}${v.obs ? `<div class="small muted">${esc(v.obs)}</div>` : ''}</td><td class="num">${fmt(v.pix)}</td><td class="num">${fmt(v.debito)}</td><td class="num">${fmt(v.credito)}</td><td class="num">${fmt(v.dinheiro)}</td><td class="num"><b>${fmt(vendaBruta(v))}</b></td><td class="num hide-sm muted">${fmt(vendaTaxa(v))}</td>
+  ${vs.map((v) => `<tr><td>${dmy(v.data)}${v.obs ? `<div class="small muted">${esc(v.obs)}</div>` : ''}</td><td class="num">${fmt(v.pix)}</td><td class="num">${fmt(v.debito)}</td><td class="num">${fmt((Number(v.credito) || 0) + (Number(v.creditoP) || 0))}${v.creditoP ? `<div class="small muted">${fmt(v.creditoP)} em ${v.vezes}x</div>` : ''}</td><td class="num">${fmt(v.dinheiro)}</td><td class="num"><b>${fmt(vendaBruta(v))}</b></td><td class="num hide-sm muted">${fmt(vendaTaxa(v))}</td>
     <td class="num"><button class="icon-btn" data-loja-venda-edit="${v.id}">✎</button><button class="icon-btn" data-loja-venda-del="${v.id}">🗑</button></td></tr>`).join('')}
   </tbody></table></div><div class="totals"><span>${vs.length} dias</span><span>Total <b>${fmt(soma(vs, vendaBruta))}</b></span><span>Média por dia <b>${fmt(soma(vs, vendaBruta) / vs.length)}</b></span><span>Taxas <b>${fmt(soma(vs, vendaTaxa))}</b></span></div>` : '<div class="empty">Nenhuma venda lançada neste mês.</div>'}</div>`;
 }
@@ -3746,7 +3799,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '6.4';
+const APP_VERSAO = '6.6';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -4619,6 +4672,7 @@ const ICON = {
   contas: svg('<rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M8 14h3M8 17.5h6"/>'),
   metas: svg('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>'),
   recomeco: svg('<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>'),
+  caixa: svg('<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path d="M7 15h4"/><path d="M15.5 3.5l2 2.5"/><path d="M8.5 3.5l-2 2.5"/>'),
   loja: svg('<path d="M4 9.5V20h16V9.5"/><path d="M2.5 9.5L5 4h14l2.5 5.5"/><path d="M2.5 9.5a3.2 3.2 0 006.3 0 3.2 3.2 0 006.4 0 3.2 3.2 0 006.3 0"/><path d="M10 20v-5h4v5"/>'),
   rep: svg('<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8.5 7V5.5A2 2 0 0110.5 3.5h3a2 2 0 012 2V7M3 13h18"/>'),
   cons: svg('<path d="M12 20.5s-7.5-4.4-7.5-10.2A4.3 4.3 0 0112 7.6a4.3 4.3 0 017.5 2.7c0 5.8-7.5 10.2-7.5 10.2z"/>'),
@@ -4648,7 +4702,7 @@ const ICON = {
 /* menu e topo */
 (function montarInterface() {
   const NAV = [['Casa', [['painel', 'Painel'], ['lancamentos', 'Lançamentos'], ['contas', 'Contas a pagar'], ['planejar', 'Planejar'], ['metas', 'Metas'], ['invest', 'Investimentos'], ['recomeco', 'Recomeço']]],
-    ['Negócios', [['loja', 'Loja'], ['rep', 'Representação'], ['cons', 'Consultório']]],
+    ['Negócios', [['caixa', 'Caixa'], ['loja', 'Loja'], ['rep', 'Representação'], ['cons', 'Consultório']]],
     ['Ritmo', [['mat', 'Matheus'], ['hel', 'Helen']]],
     ['Ferramentas', [['ir', 'Imposto de Renda'], ['config', 'Configurações']]]];
   const nav = $('.nav'); const save = $('#saveStatus');
@@ -8518,6 +8572,8 @@ document.addEventListener('click', (e) => { if (e.target.closest('[data-cel-sync
 /* ---------- 3. aviso de versão nova ---------- */
 const CEL_NOVIDADES = {
   '5.5': ['Tela Hoje com anel do mês e ✓ Paguei nas contas que vencem', '＋ Lançar agora tem Gasto, Receita e Venda da loja', 'Lançamentos agrupados por dia, com ícone de cada categoria', 'Mostra o que ainda não subiu para o OneDrive e avisa se ficar mais de um dia sem sincronizar', 'Saúde do app (em Mais) e proteção contra a limpeza do Android'],
+  '6.5': ['Novo: Caixa da Loja, da Representação e da Casa, separados', 'Projeção de 3 e 6 meses: avisa antes o mês em que vai faltar', 'Quanto a loja precisa vender por mês para empatar', 'Contas fixas da loja já cadastradas, com ✓ Paguei', 'Maquininha: o cartão cai no próximo dia útil, já sem a taxa de cada parcela'],
+  '6.6': ['Caixa: você marca ✓ Paguei nas contas que já pagou (nada fica pago sozinho)', 'Conta lançada à mão em Despesas (ex.: ALUGUEL) já conta como paga'],
 };
 function celVersaoNova() {
   const v = lsGet('cel-ver'); lsSet('cel-ver', APP_VERSAO); if (!v || v === APP_VERSAO || lsGet('cel-tem-dados') !== '1') return;
@@ -10167,6 +10223,422 @@ if (CELULAR) {
 CEL_NOVIDADES['6.4'] = ['Lançamentos: o resumo do mês não fica mais por cima da lista'];
 CEL_NOVIDADES['6.3'] = ['Ajustes para o iPhone: as telas não passam mais da largura do celular'];
 CEL_NOVIDADES['6.2'] = ['Prumo também no celular da Helen (com Consultório e o Ritmo dela)', 'No iPhone: segure o dedo num lançamento para duplicar, editar ou excluir'];
+
+/* =================== v6.5: CAIXA (fluxo de caixa da Loja, Representação e Casa, separados) =================== */
+const CX_AREAS = { loja: ['🏪', 'Loja'], rep: ['💼', 'Representação'], casa: ['🏠', 'Casa'] };
+const CX_TAXAS_PADRAO = [3.15, 3.39, 6.12, 6.85, 7.57, 8.28, 8.99, 9.69, 10.38, 11.06, 11.74, 12.4];
+const CX_SEMENTE = [
+  { id: 'fx-loja-parcela', area: 'loja', nome: 'Parcela da compra da loja', valor: 5000, dia: 0, inicio: '2026-11', mesesEsp: { 12: 9000 }, restante: 75000, categoria: 'Outros', obs: 'Total R$ 110 mil · R$ 20 mil de entrada · 3 parcelas de R$ 5 mil já pagas' },
+  { id: 'fx-loja-emprestimo', area: 'loja', nome: 'Empréstimo da entrada', valor: 667, dia: 0, inicio: '2026-11', categoria: 'Outros', obs: 'Confira o dia do vencimento e quantas parcelas faltam' },
+  { id: 'fx-loja-aluguel', area: 'loja', nome: 'Aluguel', valor: 3800, dia: 10, inicio: '2026-11', categoria: 'Aluguel do ponto' },
+  { id: 'fx-loja-luz', area: 'loja', nome: 'Luz', valor: 470, dia: 5, inicio: '2026-11', categoria: 'Energia e internet', obs: 'valor médio' },
+  { id: 'fx-loja-agua', area: 'loja', nome: 'Água', valor: 230, dia: 26, inicio: '2026-11', categoria: 'Outros', obs: 'valor médio' },
+  { id: 'fx-loja-honorario', area: 'loja', nome: 'Honorário do contador', valor: 59.99, dia: 7, inicio: '2026-11', categoria: 'Impostos' },
+  { id: 'fx-loja-das', area: 'loja', nome: 'DAS', valor: 82.05, dia: 23, inicio: '2026-11', categoria: 'Impostos' },
+  { id: 'fx-loja-internet', area: 'loja', nome: 'Internet', valor: 89.9, dia: 15, inicio: '2026-11', categoria: 'Energia e internet' },
+  { id: 'fx-casa-nubank', area: 'casa', nome: 'Empréstimo Nubank (no nome da Helen)', valor: 1900, dia: 0, inicio: '2026-11', espera: true, obs: 'Em espera: a ideia é quitar à vista com desconto depois de pagar a loja' },
+];
+function cxGarantir(d) {
+  d.caixa = Object.assign({ saldos: [], reservaMeses: 2, vendaMedia: 0, semeado: false }, d.caixa || {});
+  if (!Array.isArray(d.caixa.saldos)) d.caixa.saldos = [];
+  if (!Array.isArray(d.fixas)) d.fixas = [];
+  if (!Array.isArray(d.transf)) d.transf = [];
+  if (d.loja && !Array.isArray(d.loja.taxasCred)) d.loja.taxasCred = CX_TAXAS_PADRAO.slice();
+  if (!d.caixa.semeado && d.app === 'financas-familia' && (!navigator.webdriver || window.__cxSemente)) {
+    const exc = d.excluidos || {};
+    CX_SEMENTE.forEach((f) => { if (!d.fixas.some((x) => x.id === f.id) && !exc[f.id]) d.fixas.push(JSON.parse(JSON.stringify(f))); });
+    if (d.loja) d.loja.taxaDebito = 1.37, d.loja.taxaCredito = 3.15;
+    d.caixa.semeado = true;
+  }
+  return d;
+}
+const _ensure65 = ensureModules;
+ensureModules = function (d) { return cxGarantir(_ensure65(d)); };
+COLECOES.push(['fixas'], ['transf'], ['caixa', 'saldos']);
+TITLES.caixa = 'Caixa';
+if (db) cxGarantir(db);
+
+/* ---------- dias úteis (feriados nacionais e bancários) ---------- */
+const _cxFer = {};
+function cxPascoa(y) { const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451); const mes = Math.floor((h + l - 7 * m + 114) / 31), dia = ((h + l - 7 * m + 114) % 31) + 1; return `${y}-${pad(mes)}-${pad(dia)}`; }
+function cxFeriados(y) {
+  if (_cxFer[y]) return _cxFer[y];
+  const p = cxPascoa(y); const s = new Set(['01-01', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '11-20', '12-25'].map((x) => `${y}-${x}`));
+  [-48, -47, -2, 60].forEach((n) => s.add(addDias(p, n))); // carnaval (seg e ter), sexta-feira santa, Corpus Christi
+  return (_cxFer[y] = s);
+}
+const cxUtil = (d) => { const w = new Date(d + 'T12:00').getDay(); return w !== 0 && w !== 6 && !cxFeriados(+d.slice(0, 4)).has(d); };
+const cxProxUtil = (d) => { let x = addDias(d, 1); while (!cxUtil(x)) x = addDias(x, 1); return x; };
+const cxUltimoDia = (ym) => { const [y, m] = ym.split('-').map(Number); return new Date(y, m, 0).getDate(); };
+const cxDiaSem = (d) => ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'][new Date(d + 'T12:00').getDay()];
+
+/* ---------- vendas: taxa por parcela ---------- */
+function cxTaxaParc(n) { const t = db.loja.taxasCred || CX_TAXAS_PADRAO; n = Math.max(1, Math.min(12, Math.round(Number(n) || 1))); return Number(t[n - 1]) || 0; }
+function cxTaxaVenda(v) {
+  const L = db.loja; const cred1 = Array.isArray(L.taxasCred) ? Number(L.taxasCred[0]) || 0 : L.taxaCredito || 0;
+  return (Number(v.debito) || 0) * (L.taxaDebito || 0) / 100 + (Number(v.credito) || 0) * cred1 / 100 + (Number(v.creditoP) || 0) * cxTaxaParc(v.vezes || 2) / 100;
+}
+const cxCartao = (v) => (Number(v.debito) || 0) + (Number(v.credito) || 0) + (Number(v.creditoP) || 0);
+formVenda = function (v) {
+  const novo = !v;
+  openForm({ title: novo ? 'Vendas do dia' : 'Editar vendas do dia', values: novo ? { data: hoje(), vezes: 2 } : { vezes: 2, ...v },
+    fields: [{ k: 'data', label: 'Dia', type: 'date', required: true },
+      { k: 'pix', label: 'Pix (R$)', type: 'money', half: true }, { k: 'dinheiro', label: 'Dinheiro (R$)', type: 'money', half: true },
+      { k: 'debito', label: `Débito (R$) · taxa ${String(db.loja.taxaDebito).replace('.', ',')}%`, type: 'money', half: true }, { k: 'credito', label: `Crédito à vista (R$) · ${String(cxTaxaParc(1)).replace('.', ',')}%`, type: 'money', half: true },
+      { k: 'creditoP', label: 'Crédito parcelado (R$)', type: 'money', half: true },
+      { k: 'vezes', label: 'Parcelado em', type: 'select', half: true, options: Array.from({ length: 11 }, (_, i) => ({ value: i + 2, label: `${i + 2}x · taxa ${String(cxTaxaParc(i + 2)).replace('.', ',')}%` })) },
+      { k: 'obs', label: 'Observação (opcional)' }],
+    note: 'O cartão (débito e crédito) cai na conta no próximo dia útil, já sem a taxa da maquininha.',
+    onSave: (x) => { const z = (n) => (isFinite(n) ? r2(n) : 0); const base = { data: x.data, pix: z(x.pix), debito: z(x.debito), credito: z(x.credito), creditoP: z(x.creditoP), vezes: Number(x.vezes) || 2, dinheiro: z(x.dinheiro), obs: (x.obs || '').trim() };
+      if (!vendaBruta(base)) return 'Informe pelo menos um valor.';
+      if (novo) { const dup = db.loja.vendas.find((y) => y.data === base.data); if (dup && !confirm('Já existe lançamento para esse dia. Somar a ele?')) return 'Escolha outra data ou edite o lançamento existente.'; if (dup) { for (const k of ['pix', 'debito', 'credito', 'creditoP', 'dinheiro']) dup[k] = r2((Number(dup[k]) || 0) + base[k]); if (base.creditoP) dup.vezes = base.vezes; return; } db.loja.vendas.push({ id: uid(), ...base }); } else Object.assign(v, base); } });
+};
+
+/* ---------- contas fixas: ocorrências mês a mês ---------- */
+function cxOcorr(f, ateYm) {
+  const out = []; if (!f.inicio) return out; let ym = f.inicio, pago = 0, n = 0;
+  while (ym <= ateYm && n < 400) {
+    let v = Number((f.mesesEsp || {})[+ym.slice(5, 7)]) || Number(f.valor) || 0;
+    if (f.restante) { const falta = r2(Number(f.restante) - pago); if (falta <= 0.009) break; v = Math.min(v, falta); }
+    if (f.parcelas && n >= Number(f.parcelas)) break;
+    const dia = Number(f.dia) ? Math.min(Number(f.dia), cxUltimoDia(ym)) : cxUltimoDia(ym);
+    out.push({ f, ym, data: `${ym}-${pad(dia)}`, valor: r2(v), n: n + 1 }); pago += v; n++; ym = addM(ym, 1);
+  }
+  return out;
+}
+function cxFim(f) { if (!f.restante && !f.parcelas) return null; const o = cxOcorr(f, '2099-12'); return o.length ? o[o.length - 1] : null; }
+const cxSemAc = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+function cxChave(f) { const ws = cxSemAc(f.nome).split(/[^a-z0-9]+/).filter(Boolean); return ws.find((x) => x.length >= 3 && !['da', 'do', 'de', 'das', 'dos', 'para', 'com'].includes(x)) || ws[0] || ''; }
+const cxBate = (f, desc) => { const k = cxChave(f); return !!k && cxSemAc(desc).split(/[^a-z0-9]+/).includes(k); };
+function cxPagamento(o) {
+  const f = o.f;
+  if (f.area === 'casa') return db.lancamentos.find((l) => l.fixa === f.id && l.ref === o.ym);
+  const ds = db[f.area]?.despesas || [];
+  // marcada pelo ✓ Paguei, ou lançada à mão no mesmo mês com o mesmo nome (ex.: "ALUGUEL" em Loja › Despesas)
+  return ds.find((d) => d.fixa === f.id && d.ref === o.ym) || ds.find((d) => !d.fixa && d.data && ymOf(d.data) === o.ym && cxBate(f, d.descricao));
+}
+function cxPagar(o, valor, data) {
+  const f = o.f;
+  if (f.area === 'casa') db.lancamentos.push({ id: uid(), data, descricao: f.nome, tipo: 'Despesa', categoria: f.categoria || 'Dívidas', membro: 'Casa', conta: db.contas.find((c) => c.tipo !== 'cartao')?.id || db.contas[0]?.id, valor: r2(valor), fixa: f.id, ref: o.ym });
+  else db[f.area].despesas.push({ id: uid(), data, descricao: f.nome, categoria: f.categoria || 'Outros', valor: r2(valor), fixa: f.id, ref: o.ym });
+}
+/* contas em aberto: vencidas depois do saldo informado (as de antes já estão dentro do saldo) + futuras */
+function cxAbertas(area, ateYm) {
+  // todas as que não foram marcadas como pagas, inclusive as vencidas: quem diz o que já pagou é você
+  return db.fixas.filter((f) => f.area === area && !f.espera).flatMap((f) => cxOcorr(f, ateYm)).filter((o) => !cxPagamento(o)).sort((a, b) => (a.data < b.data ? -1 : 1));
+}
+
+/* ---------- saldo de cada caixa ---------- */
+const cxSaldoReg = (area) => db.caixa.saldos.find((s) => s.id === 'saldo-' + area);
+function cxMovs(area, de, ate) { // movimentos com data em [de, ate]
+  const M = []; const dentro = (d) => d && d >= de && d <= ate;
+  if (area === 'loja') {
+    db.loja.vendas.forEach((v) => {
+      const din = (Number(v.pix) || 0) + (Number(v.dinheiro) || 0); if (din && dentro(v.data)) M.push({ data: v.data, valor: din, d: 'Vendas Pix e dinheiro', t: 'venda' });
+      const c = cxCartao(v); if (c) { const cai = cxProxUtil(v.data); if (dentro(cai) && cai > de) M.push({ data: cai, valor: r2(c - cxTaxaVenda(v)), d: `Maquininha (vendas de ${dmy(v.data).slice(0, 5)})`, t: 'cartao' }); }
+    });
+    db.loja.compras.forEach((c) => dentro(c.data) && M.push({ data: c.data, valor: -c.valor, d: `Compra: ${c.fornecedor}`, t: 'compra' }));
+  }
+  if (area === 'loja' || area === 'rep') db[area].despesas.forEach((x) => dentro(x.data) && M.push({ data: x.data, valor: -x.valor, d: x.descricao, t: x.categoria === 'Pró-labore' ? 'pl' : 'desp' }));
+  if (area === 'rep') db.rep.pedidos.forEach((p) => p.status === 'recebida' && dentro(p.recebidoEm) && M.push({ data: p.recebidoEm, valor: Number(p.valorRecebido ?? comissao(p)) || 0, d: `Comissão: ${p.cliente}`, t: 'comissao' }));
+  if (area === 'casa') db.lancamentos.forEach((l) => dentro(l.data) && M.push({ data: l.data, valor: l.tipo === 'Receita' ? l.valor : -l.valor, d: l.descricao, t: l.tipo === 'Receita' ? 'rec' : 'desp' }));
+  db.transf.forEach((t) => { if (!dentro(t.data)) return; if (t.de === area) M.push({ data: t.data, valor: -t.valor, d: `Para ${CX_AREAS[t.para][1]}${t.obs ? ' · ' + t.obs : ''}`, t: 'transf' }); if (t.para === area) M.push({ data: t.data, valor: t.valor, d: `De ${CX_AREAS[t.de][1]}${t.obs ? ' · ' + t.obs : ''}`, t: 'transf' }); });
+  return M;
+}
+function cxSaldoEm(area, dia) { const S = cxSaldoReg(area); if (!S) return null; return r2(Number(S.valor) + soma(cxMovs(area, S.data, dia), 'valor')); }
+function cxAReceber(area) { // cartão vendido e ainda não caiu
+  if (area !== 'loja') return [];
+  const H = hoje(); return db.loja.vendas.filter((v) => cxCartao(v) && cxProxUtil(v.data) > H).map((v) => ({ data: cxProxUtil(v.data), valor: r2(cxCartao(v) - cxTaxaVenda(v)), venda: v.data }));
+}
+
+/* ---------- projeção ---------- */
+const cxMesesAntes = (n) => Array.from({ length: n }, (_, i) => addM(ymOf(hoje()), -(i + 1)));
+function cxMediaVendas() { // média dos últimos 3 meses fechados com vendas; senão, o valor informado
+  const ms = cxMesesAntes(6).map((m) => soma(noMes(db.loja.vendas, m), vendaBruta)).filter((v) => v > 0).slice(0, 3);
+  return ms.length ? { v: soma(ms, (x) => x) / ms.length, n: ms.length, fonte: 'hist' } : { v: Number(db.caixa.vendaMedia) || 0, n: 0, fonte: 'manual' };
+}
+function cxSazonal(ym) { // mesmo mês do ano passado comparado à média daquele ano
+  const ant = addM(ym, -12); const y = ant.slice(0, 4); const anoMs = MESES_ANO(y).map((m) => soma(noMes(db.loja.vendas, m), vendaBruta)).filter((v) => v > 0);
+  const v = soma(noMes(db.loja.vendas, ant), vendaBruta); if (anoMs.length < 4 || !v) return 1;
+  return Math.max(0.4, Math.min(2.5, v / (soma(anoMs, (x) => x) / anoMs.length)));
+}
+function cxTaxaMedia() { const vs = db.loja.vendas.filter((v) => v.data >= addDias(hoje(), -120)); const fat = soma(vs, vendaBruta); return fat ? soma(vs, cxTaxaVenda) / fat : 0.025; }
+function cxMediaMes(fn, n = 3) { const ms = cxMesesAntes(n).map(fn); const com = ms.filter((v) => v); return com.length ? soma(com, (x) => x) / com.length : 0; }
+function cxProjecao(area, nMeses, extra = null) {
+  const H = hoje(), m0 = ymOf(H); const fimYm = addM(m0, nMeses - 1);
+  const ini = cxSaldoEm(area, H); if (ini == null) return null;
+  const abertas = cxAbertas(area, fimYm);
+  const rows = []; let saldo = ini;
+  const fracRest = (ym) => (ym === m0 ? Math.max(0, cxUltimoDia(m0) - +H.slice(8, 10)) / cxUltimoDia(m0) : 1);
+  const L = db.loja; const mv = cxMediaVendas(); const tx = cxTaxaMedia(); const custo = (L.custoPct || 0) / 100;
+  const despVar = (a) => cxMediaMes((m) => soma(despSemPL(noMes(db[a].despesas, m)).filter((d) => !cxPareceFixa(d, a)), 'valor'));
+  for (let i = 0; i < nMeses; i++) {
+    const ym = addM(m0, i); const fr = fracRest(ym); const ent = [], sai = [];
+    if (area === 'loja') {
+      const vend = mv.v * cxSazonal(ym) * fr;
+      if (vend) { ent.push({ d: `Vendas previstas${cxSazonal(ym) !== 1 ? ' (pelo mesmo mês do ano passado)' : ''}`, v: r2(vend * (1 - tx)) }); sai.push({ d: `Repor mercadoria (${L.custoPct}% do que vender)`, v: r2(vend * custo) }); }
+      if (i === 0) cxAReceber('loja').forEach((r) => ent.push({ d: `Maquininha cai ${cxDiaSem(r.data)} ${dmy(r.data).slice(0, 5)}`, v: r.valor }));
+      const dv = despVar('loja') * fr; if (dv) sai.push({ d: 'Gastos variáveis (média)', v: r2(dv) });
+      if (Number(L.proLabore) > 0) sai.push({ d: 'Pró-labore → Casa', v: r2(Number(L.proLabore) * (i === 0 && soma(noMes(L.despesas, m0).filter((d) => d.categoria === 'Pró-labore'), 'valor') ? 0 : 1)) });
+    }
+    if (area === 'rep') {
+      const ped = db.rep.pedidos.filter((p) => p.status === 'a_receber' && ymOf(p.previsao || p.data) === ym && (p.previsao || p.data) >= H);
+      const atras = i === 0 ? db.rep.pedidos.filter((p) => p.status === 'a_receber' && (p.previsao || p.data) < H) : [];
+      ped.concat(atras).forEach((p) => ent.push({ d: `Comissão: ${p.cliente}${(p.previsao || p.data) < H ? ' (atrasada)' : ''}`, v: comissao(p) }));
+      const dv = despVar('rep') * fr; if (dv) sai.push({ d: 'Despesas de viagem (média)', v: r2(dv) });
+    }
+    if (area === 'casa') {
+      const rec = cxMediaMes((m) => soma(noMes(db.lancamentos, m).filter((l) => l.tipo === 'Receita'), 'valor')) * fr;
+      const des = cxMediaMes((m) => soma(noMes(db.lancamentos, m).filter((l) => l.tipo === 'Despesa' && !l.fixa), 'valor')) * fr;
+      if (rec) ent.push({ d: 'Receitas (média dos últimos meses)', v: r2(rec) }); if (des) sai.push({ d: 'Gastos da casa (média dos últimos meses)', v: r2(des) });
+    }
+    abertas.filter((o) => (i === 0 ? o.ym <= m0 : o.ym === ym)).forEach((o) => sai.push({ d: `${o.f.nome}${o.data < H ? ' (vencida)' : ` · dia ${+o.data.slice(8, 10)}`}`, v: o.valor, fixa: true }));
+    if (extra && extra.ym === ym) sai.push({ d: extra.d, v: extra.v, extra: true });
+    const e = soma(ent, 'v'), s = soma(sai, 'v'); const comeca = saldo; saldo = r2(saldo + e - s);
+    rows.push({ ym, comeca, e, s, termina: saldo, ent, sai });
+  }
+  return { ini, rows, mv };
+}
+function cxPareceFixa(d, area) { // despesas lançadas à mão que já estão nas contas fixas não entram na média de gastos variáveis
+  if (d.fixa) return true; return db.fixas.some((f) => f.area === area && cxBate(f, d.descricao));
+}
+function cxCustoFixoMes(area) { return soma(db.fixas.filter((f) => f.area === area && !f.espera), (f) => f.valor); }
+
+const cxN0 = (n) => (n < -0.5 ? '−' : '') + fmt0(Math.abs(n)).replace('R$', '').trim();
+function cxMeta() { // quanto a loja precisa vender por mês para o caixa empatar
+  const L = db.loja; const tx = cxTaxaMedia(); const custo = (L.custoPct || 0) / 100; const marg = 1 - tx - custo; if (marg <= 0.02) return null;
+  const fixo = cxCustoFixoMes('loja'); const vari = cxMediaMes((m) => soma(despSemPL(noMes(L.despesas, m)).filter((d) => !cxPareceFixa(d, 'loja')), 'valor')); const pl = Number(L.proLabore) || 0;
+  const meta = (fixo + vari + pl) / marg; return { fixo, vari, pl, marg, meta, dia: meta / 26, media: cxMediaVendas().v };
+}
+/* ---------- tela ---------- */
+ui.cxArea = ui.cxArea || 'loja';
+function renderCaixa() {
+  const el = $('#tab-caixa'); const sub = subAtual('caixa', 'hoje'); const a = ui.cxArea;
+  const seg = sub === 'geral' ? '' : `<div class="cx-seg">${Object.entries(CX_AREAS).map(([k, [ic, n]]) => `<button class="${k === a ? 'on' : ''}" data-cx-area="${k}">${ic} ${k === 'rep' ? (CELULAR ? 'Represent.' : n) : n}</button>`).join('')}</div>`;
+  el.innerHTML = subnav('caixa', [['hoje', 'Hoje'], ['proj', 'Projeção'], ['fixas', 'Contas fixas'], ['geral', 'Visão geral'], ['ajustes', 'Ajustes']]) + seg + { hoje: cxHoje, proj: cxProj, fixas: cxFixas, geral: cxGeral, ajustes: cxAjustes }[sub]();
+}
+function cxPedirSaldo(a) {
+  const nome = CX_AREAS[a][1];
+  return `<div class="card cx-ini"><h2>${CX_AREAS[a][0]} Para começar o caixa ${a === 'casa' ? 'da Casa' : a === 'loja' ? 'da Loja' : 'da Representação'}</h2>
+    <p class="sub">Quanto ${a === 'casa' ? 'a família tem' : `a ${nome.toLowerCase()} tem`} hoje, somando ${a === 'loja' ? 'a conta do banco e o dinheiro da gaveta' : 'as contas e o dinheiro'}? Daí para frente o Prumo vai somando as entradas e tirando as saídas.</p>
+    ${a === 'loja' ? '<p class="small muted">Dica: conte como estava <b>no começo do dia de hoje</b>. Depois é só marcar ✓ Paguei nas contas que você já pagou.</p>' : ''}
+    <div class="cx-ini-row"><input type="text" inputmode="decimal" id="cxSaldoIn" placeholder="0,00"><button class="btn primary" data-cx-saldo-ok="${a}">Começar</button></div></div>`;
+}
+function cxBotoes(a) {
+  if (a === 'loja') return `<div class="cx-btns"><button class="cx-in" data-cx-ent="loja">⊕ Entrada<small>vendas do dia</small></button><button class="cx-out" data-cx-sai="loja">⊖ Saída<small>conta, gasto, compra</small></button></div>`;
+  if (a === 'rep') return `<div class="cx-btns"><button class="cx-in" data-cx-ent="rep">⊕ Entrada<small>comissão recebida</small></button><button class="cx-out" data-cx-sai="rep">⊖ Saída<small>despesa de viagem</small></button></div>`;
+  return `<div class="cx-btns"><button class="cx-in" data-cx-ent="casa">⊕ Entrada</button><button class="cx-out" data-cx-sai="casa">⊖ Saída</button></div>`;
+}
+function cxHoje() {
+  const a = ui.cxArea; if (!cxSaldoReg(a)) return cxPedirSaldo(a) + (a === 'loja' ? cxListaFixasResumo(a) : '');
+  const H = hoje(), m0 = ymOf(H); const saldo = cxSaldoEm(a, H);
+  const mm = cxMovs(a, `${m0}-01`, H); const ent = soma(mm.filter((m) => m.valor > 0), 'valor'), sai = -soma(mm.filter((m) => m.valor < 0), 'valor');
+  const rec = cxAReceber(a); const aRec = soma(rec, 'valor');
+  const ab = cxAbertas(a, ymOf(addDias(H, 31))).filter((o) => o.data <= addDias(H, 30)); const aPag = soma(ab, 'valor'); const venc = ab.filter((o) => o.data < H);
+  const prox = rec.length ? rec.sort((x, y) => (x.data < y.data ? -1 : 1))[0] : null;
+  const p = cxProjecao(a, 6); const neg = p && p.rows.find((r) => r.termina < 0);
+  const ult = cxMovs(a, addDias(H, -14), addDias(H, 3)).sort((x, y) => (x.data < y.data ? 1 : -1)).slice(0, 8);
+  const meta = cxCustoFixoMes(a) * (db.caixa.reservaMeses || 2);
+  return `${cxBotoes(a)}
+  <div class="card cx-heroi ${saldo < 0 ? 'neg' : ''}"><small>Saldo ${a === 'casa' ? 'da casa' : a === 'loja' ? 'da loja' : 'da representação'} hoje</small><b>${fmt(saldo)}</b>
+    ${prox ? `<small>+ ${fmt(aRec)} da maquininha ${prox.data === addDias(H, 1) ? 'cai amanhã' : `cai ${cxDiaSem(prox.data)} ${dmy(prox.data).slice(0, 5)}`} (próximo dia útil)</small>` : ''}
+    <button class="cx-ajusta" data-cx-ajusta="${a}">Conferir com o banco</button></div>
+  ${neg ? `<div class="card cx-alerta" data-sub="caixa:proj"><b>⚠ Em ${MESES[+neg.ym.slice(5, 7) - 1]} pode faltar ${fmt0(-neg.termina)}</b><small>Toque para ver a projeção e onde dá para ajustar.</small></div>` : ''}
+  <div class="cx-g2">
+    <div class="card"><small>Entrou · ${MC[+m0.slice(5, 7) - 1]}</small><b class="good">${fmt0(ent)}</b></div>
+    <div class="card"><small>Saiu · ${MC[+m0.slice(5, 7) - 1]}</small><b class="bad">${fmt0(sai)}</b></div>
+    <div class="card"><small>A receber</small><b>${fmt0(aRec)}</b></div>
+    <div class="card"><small>A pagar · 30 dias</small><b class="warn">${fmt0(aPag)}</b></div>
+  </div>
+  ${venc.length ? `<div class="card cx-alerta cx-venc"><b>${venc.length === 1 ? '1 conta venceu' : `${venc.length} contas venceram`} e não ${venc.length === 1 ? 'está marcada' : 'estão marcadas'} como paga${venc.length === 1 ? '' : 's'}</b><small>Toque em ✓ Paguei nas que você já pagou. As que ficarem sem marcar continuam contando como conta a pagar na projeção.</small></div>` : ''}
+  <div class="card cx-c"><h3>Vencimentos</h3>${ab.length ? ab.map((o) => `<div class="cx-l"><span>${esc(o.f.nome)}<small>${o.data < H ? '<b class="bad">venceu</b> ' + dmy(o.data).slice(0, 5) : o.data === H ? '<b class="warn">vence hoje</b>' : `vence ${cxDiaSem(o.data)} ${dmy(o.data).slice(0, 5)}`}${o.f.restante ? ` · parcela ${o.n}` : ''}</small></span><b>${fmt(o.valor)}</b><button class="cx-pg" data-cx-pagar="${o.f.id}|${o.ym}">✓ Paguei</button></div>`).join('') : '<p class="small muted" style="margin:0">Nada vencendo nos próximos 30 dias.</p>'}</div>
+  ${a === 'loja' && meta ? `<div class="card cx-c"><h3>🛟 Reserva da loja</h3><p class="small muted" style="margin:0">Meta: ${db.caixa.reservaMeses || 2} meses de contas fixas (${fmt0(meta)})</p><div class="cx-bar"><i style="width:${Math.max(0, Math.min(100, saldo / meta * 100))}%"></i></div><p class="small muted" style="margin:0">${saldo > 0 ? `${fmt0(saldo)} no caixa · ${pct(Math.max(0, saldo) / meta)}` : 'Ainda sem reserva'}</p></div>` : ''}
+  <div class="card cx-c"><h3>Últimos movimentos</h3>${ult.length ? ult.map((m) => `<div class="cx-l"><span>${esc(m.d)}<small>${m.data > H ? 'previsto ' : ''}${cxDiaSem(m.data)} ${dmy(m.data).slice(0, 5)}</small></span><b class="${m.valor >= 0 ? 'good' : ''}">${m.valor >= 0 ? '+' : '−'}${fmt(Math.abs(m.valor))}</b></div>`).join('') : '<p class="small muted" style="margin:0">Nenhum movimento nas últimas 2 semanas.</p>'}</div>`;
+}
+function cxListaFixasResumo(a) {
+  const fx = db.fixas.filter((f) => f.area === a && !f.espera); if (!fx.length) return '';
+  return `<div class="card cx-c"><h3>Contas fixas já cadastradas</h3>${fx.map((f) => `<div class="cx-l"><span>${esc(f.nome)}<small>${f.dia ? 'todo dia ' + f.dia : 'último dia do mês'}</small></span><b>${fmt(f.valor)}</b></div>`).join('')}<p class="small muted" style="margin:6px 0 0">Total por mês: <b>${fmt(cxCustoFixoMes(a))}</b></p></div>`;
+}
+ui.cxN = ui.cxN || 6;
+function cxProj() {
+  const a = ui.cxArea; if (!cxSaldoReg(a)) return cxPedirSaldo(a);
+  const p = cxProjecao(a, ui.cxN, ui.cxSim || null); const rows = p.rows; const neg = rows.find((r) => r.termina < 0);
+  const mxP = Math.max(0, ...rows.map((r) => r.termina)), mxN = Math.max(0, ...rows.map((r) => -r.termina)); const tot = Math.max(1, mxP + mxN); const hP = Math.round(104 * mxP / tot), hN = 104 - hP;
+  const semVendas = a === 'loja' && !p.mv.v;
+  let dica = '';
+  const cheios = rows.slice(1); const def = cheios.length ? soma(cheios, (r) => r.s - r.e) / cheios.length : 0; const M = a === 'loja' ? cxMeta() : null;
+  if (neg && def > 50 && cheios.filter((r) => r.s > r.e).length >= cheios.length - 1) dica = `Não é só um mês: do jeito que está, sai uns <b>${fmt0(def)}</b> a mais do que entra por mês.${M ? `${M.media && M.meta > M.media ? ` Para empatar, a loja precisa vender uns <b>${fmt0(M.meta - M.media)}</b> a mais por mês (cerca de ${fmt0((M.meta - M.media) / 26)} por dia).` : ''}` : ''}`;
+  else if (neg) { const iN = rows.indexOf(neg); const antes = rows.slice(0, iN).filter((r) => r.termina > 0).length || 1; dica = `Guardando uns ${fmt0(Math.ceil(-neg.termina / antes / 50) * 50)} por mês ${antes > 1 ? `nos ${antes} meses antes` : 'antes'}, ou vendendo esse tanto a mais, o mês fecha no positivo.`; }
+  return `<div class="cx-seg cx-seg-n">${[3, 6].map((n) => `<button class="${ui.cxN === n ? 'on' : ''}" data-cx-n="${n}">${n} meses</button>`).join('')}</div>
+  ${semVendas ? `<div class="card cx-alerta"><b>Falta uma informação</b><small>Ainda não tem vendas lançadas para calcular a média. Informe quanto a loja vende por mês, mais ou menos:</small><div class="cx-ini-row"><input type="text" inputmode="decimal" id="cxVendaIn" placeholder="0,00"><button class="btn primary" data-cx-venda-ok>Usar</button></div></div>` : ''}
+  ${neg ? `<div class="card cx-alerta"><b>⚠ Em ${MESES[+neg.ym.slice(5, 7) - 1]} pode faltar ${fmt0(-neg.termina)}</b><small>${dica}</small></div>` : `<div class="card cx-ok"><b>✓ O caixa fica positivo nos próximos ${ui.cxN} meses</b><small>Menor saldo: ${fmt0(Math.min(...rows.map((r) => r.termina)))} em ${MESES[+rows.reduce((m, r) => (r.termina < m.termina ? r : m)).ym.slice(5, 7) - 1]}.</small></div>`}
+  ${M ? `<div class="card cx-c cx-meta"><h3>🎯 Quanto a loja precisa vender para empatar</h3><div class="cx-meta-n"><b>${fmt0(M.meta)}</b><span>por mês · uns ${fmt0(M.dia)} por dia</span></div>
+    ${M.media ? `<div class="cx-bar"><i style="width:${Math.min(100, M.media / M.meta * 100)}%;${M.media < M.meta ? 'background:var(--warn)' : ''}"></i></div><p class="small muted" style="margin:0">Hoje a loja vende uns <b>${fmt0(M.media)}</b> por mês (${pct(M.media / M.meta)} da meta).</p>` : ''}
+    <p class="small muted" style="margin:6px 0 0">Conta: contas fixas ${fmt0(M.fixo)}${M.vari ? ` + gastos variáveis ${fmt0(M.vari)}` : ''}${M.pl ? ` + pró-labore ${fmt0(M.pl)}` : ''}, divididos por ${pct(M.marg)} (o que sobra de cada venda depois de repor a mercadoria e pagar a maquininha). Em dezembro a parcela da loja é maior.</p></div>` : ''}
+  <div class="card cx-c"><h3>Saldo no fim de cada mês</h3><div class="cx-ch">${rows.map((r) => `<div class="cx-chm" title="${nomeMes(r.ym)}: ${fmt(r.termina)}"><div class="cx-chp" style="height:${hP + 14}px">${r.termina >= 0 ? `<span class="cx-chv">${cxN0(r.termina)}</span><i style="height:${Math.max(2, r.termina / tot * 104)}px"></i>` : ''}</div><div class="cx-chn" style="height:${hN + (mxN ? 14 : 0)}px">${r.termina < 0 ? `<i class="neg" style="height:${Math.max(2, -r.termina / tot * 104)}px"></i><span class="cx-chv bad">${cxN0(r.termina)}</span>` : ''}</div><small>${MC[+r.ym.slice(5, 7) - 1]}</small></div>`).join('')}</div></div>
+  <div class="card cx-c cx-tab"><table><thead><tr><th></th>${rows.map((r) => `<th>${MC[+r.ym.slice(5, 7) - 1]}</th>`).join('')}</tr></thead><tbody>
+    <tr><td>Começa</td>${rows.map((r) => `<td>${cxN0(r.comeca)}</td>`).join('')}</tr>
+    <tr class="good"><td>Entra</td>${rows.map((r) => `<td>${cxN0(r.e)}</td>`).join('')}</tr>
+    <tr class="bad"><td>Sai</td>${rows.map((r) => `<td>${cxN0(r.s)}</td>`).join('')}</tr>
+    <tr><td><b>Termina</b></td>${rows.map((r) => `<td><b class="${r.termina < 0 ? 'bad' : ''}">${cxN0(r.termina)}</b></td>`).join('')}</tr></tbody></table>
+    <p class="small muted" style="margin:6px 0 0">${a === 'loja' ? (p.mv.fonte === 'hist' ? `Vendas pela média dos últimos ${p.mv.n} ${p.mv.n === 1 ? 'mês' : 'meses'} (${fmt0(p.mv.v)}/mês). Se tiver o mesmo mês do ano passado, ele é usado para dezembro, janeiro etc.` : `Vendas pelo valor que você informou (${fmt0(p.mv.v)}/mês), até ter 1 mês lançado.`) + ' O mês atual conta só os dias que faltam.' : a === 'rep' ? 'Entradas pelas comissões a receber e a previsão de cada pedido.' : 'Entradas e gastos pela média dos últimos meses.'}</p></div>
+  ${rows.map((r, i) => `<details class="card cx-c cx-det" ${i === 0 && !ui.cxSim ? '' : ''}><summary><b>${nomeMes(r.ym)}</b><span class="${r.termina < 0 ? 'bad' : ''}">termina com ${fmt(r.termina)}</span></summary>
+    ${r.ent.map((x) => `<div class="cx-l"><span>${esc(x.d)}</span><b class="good">+${fmt(x.v)}</b></div>`).join('')}${r.sai.map((x) => `<div class="cx-l ${x.extra ? 'cx-sim-l' : ''}"><span>${esc(x.d)}</span><b>−${fmt(x.v)}</b></div>`).join('')}</details>`).join('')}
+  ${a === 'loja' ? `<div class="card cx-c"><h3>🧮 Posso fazer essa compra?</h3><p class="small muted" style="margin:0 0 6px">Simule um pedido para fornecedor (ou outro gasto) e veja se algum mês fica no vermelho.</p>
+    <div class="cx-sim"><input type="text" inputmode="decimal" id="cxSimV" placeholder="Valor" value="${ui.cxSim ? valorTxt(ui.cxSim.v) : ''}"><select id="cxSimM">${rows.map((r) => `<option value="${r.ym}" ${ui.cxSim && ui.cxSim.ym === r.ym ? 'selected' : ''}>${MC[+r.ym.slice(5, 7) - 1]}/${r.ym.slice(2, 4)}</option>`).join('')}</select><button class="btn primary" data-cx-sim>Simular</button>${ui.cxSim ? '<button class="btn" data-cx-sim-x>Limpar</button>' : ''}</div>
+    ${ui.cxSim ? `<p class="small" style="margin:8px 0 0">${neg ? `<b class="bad">Com essa compra, ${MESES[+neg.ym.slice(5, 7) - 1]} fica negativo.</b> Tente parcelar ou esperar um mês.` : '<b class="good">Cabe no caixa.</b> Nenhum mês fica negativo.'}</p>` : ''}</div>` : ''}`;
+}
+function cxFixas() {
+  const a = ui.cxArea; const fx = db.fixas.filter((f) => f.area === a);
+  return `<div class="card cx-c"><div class="cx-c-h"><h3>Contas fixas: ${CX_AREAS[a][1]}</h3><button class="btn sm primary" data-cx-fixa-nova>+ Conta fixa</button></div>
+  ${fx.length ? fx.map((f) => { const fim = cxFim(f); const pagas = f.restante ? db[f.area === 'casa' ? 'lancamentos' : f.area]?.despesas?.filter?.((d) => d.fixa === f.id) || [] : [];
+    const falta = f.restante ? r2(Number(f.restante) - soma(pagas, 'valor')) : 0;
+    return `<div class="cx-l cx-fx ${f.espera ? 'esp' : ''}" data-cx-fixa="${f.id}"><span>${esc(f.nome)}<small>${f.espera ? '⏳ em espera · não entra na projeção' : f.dia ? `todo dia ${f.dia}` : 'último dia do mês'}${f.mesesEsp && Object.keys(f.mesesEsp).length ? ` · ${Object.entries(f.mesesEsp).map(([m, v]) => `${MC[m - 1]}: ${fmt0(v)}`).join(', ')}` : ''}${fim ? ` · termina ${MC[+fim.ym.slice(5, 7) - 1]}/${fim.ym.slice(2, 4)}` : ''}${f.restante ? ` · faltam ${fmt0(falta)}` : ''}${f.espera ? ` · ${cxEsperaTxt(f)}` : ''}${f.obs ? `<br>${esc(f.obs)}` : ''}</small></span><b>${fmt(f.valor)}</b><button class="icon-btn" data-cx-fixa-del="${f.id}" title="Excluir">🗑</button></div>`; }).join('') : '<p class="small muted">Nenhuma conta fixa ainda.</p>'}
+  ${fx.length ? `<p class="small muted" style="margin:8px 0 0">Total por mês (sem as em espera): <b>${fmt(cxCustoFixoMes(a))}</b>. Toque numa conta para editar.</p>` : ''}</div>
+  <p class="small muted">Ao tocar em <b>✓ Paguei</b> no Caixa, a conta vira uma despesa ${a === 'casa' ? 'nos Lançamentos' : `na aba ${CX_AREAS[a][1]}`} e sai do saldo.</p>`;
+}
+function cxEsperaTxt(f) { const n = cxOcorr(f, ymOf(hoje())).filter((o) => o.data <= hoje() && !cxPagamento(o)).length; return n ? `${n} ${n === 1 ? 'parcela' : 'parcelas'} sem pagar (${fmt0(n * f.valor)} sem juros)` : 'nenhuma parcela vencida ainda'; }
+function cxGeral() {
+  const H = hoje(), m0 = ymOf(H); const fim3 = addM(m0, 2);
+  const lin = Object.entries(CX_AREAS).map(([k, [ic, n]]) => { const s = cxSaldoEm(k, H); const p = s == null ? null : cxProjecao(k, 3); return { k, ic, n, s, p3: p ? p.rows[2].termina : null }; });
+  const tr = db.transf.filter((t) => ymOf(t.data) === m0); const pls = ['loja', 'rep'].flatMap((k) => noMes(db[k].despesas, m0).filter((d) => d.categoria === 'Pró-labore').map((d) => ({ de: k, para: 'casa', valor: d.valor, obs: 'pró-labore' })));
+  const esp = db.fixas.filter((f) => f.espera);
+  return `<div class="card cx-c"><h3>Os três caixas · hoje</h3>${lin.map((l) => `<div class="cx-l" data-cx-ir="${l.k}"><span>${l.ic} ${l.n}${l.k === 'rep' ? `<small>comissões a receber: ${fmt0(soma(db.rep.pedidos.filter((p) => p.status === 'a_receber'), comissao))}</small>` : ''}</span><b>${l.s == null ? '<span class="muted small">informar saldo</span>' : fmt(l.s)}</b></div>`).join('')}</div>
+  <div class="card cx-c"><h3>Daqui a 3 meses (fim de ${MESES[+fim3.slice(5, 7) - 1]})</h3>${lin.map((l) => `<div class="cx-l"><span>${l.ic} ${l.n}</span><b class="${l.p3 == null ? 'muted' : l.p3 < 0 ? 'bad' : 'good'}">${l.p3 == null ? '—' : fmt(l.p3) + (l.p3 < 0 ? ' ⚠' : '')}</b></div>`).join('')}</div>
+  <div class="card cx-c"><div class="cx-c-h"><h3>🔁 Entre os caixas este mês</h3><button class="btn sm" data-cx-transf>+ Transferir</button></div>${[...pls, ...tr].length ? [...pls, ...tr].map((t) => `<div class="cx-l"><span>${CX_AREAS[t.de][1]} → ${CX_AREAS[t.para][1]}<small>${esc(t.obs || 'transferência')}</small></span><b>${fmt(t.valor)}</b>${t.id ? `<button class="icon-btn" data-cx-transf-del="${t.id}">🗑</button>` : ''}</div>`).join('') : '<p class="small muted" style="margin:0">Nenhuma transferência neste mês.</p>'}
+    <p class="small muted" style="margin:6px 0 0">Um lançamento só: sai de um caixa e entra no outro, sem contar duas vezes.</p></div>
+  ${esp.length ? `<div class="card cx-c"><h3>⏳ Dívidas em espera</h3>${esp.map((f) => `<div class="cx-l" data-cx-fixa="${f.id}"><span>${esc(f.nome)}<small>${cxEsperaTxt(f)}</small></span><b>${fmt(f.valor)}/mês</b></div>`).join('')}<p class="small muted" style="margin:6px 0 0">Não entram na projeção. Dá para cadastrar o saldo devedor no Recomeço para acompanhar a negociação.</p></div>` : ''}`;
+}
+function cxAjustes() {
+  const L = db.loja; const t = L.taxasCred || CX_TAXAS_PADRAO;
+  return `<div class="card cx-c"><h3>Taxas da maquininha</h3><p class="small muted" style="margin:0 0 8px">O cartão cai no próximo dia útil já sem a taxa.</p>
+    <div class="cx-tx"><label>Débito<input type="text" inputmode="decimal" data-cfg="loja.taxaDebito" value="${String(L.taxaDebito).replace('.', ',')}"></label>
+    ${t.map((v, i) => `<label>Crédito ${i + 1}x<input type="text" inputmode="decimal" data-cx-taxa="${i}" value="${String(v).replace('.', ',')}"></label>`).join('')}</div></div>
+  <div class="card cx-c"><h3>Projeção</h3><div class="cx-tx">
+    <label>Venda média por mês (enquanto não tiver histórico)<input type="text" inputmode="decimal" data-cfg="caixa.vendaMedia" value="${valorTxt(db.caixa.vendaMedia || 0)}"></label>
+    <label>Custo da mercadoria (% do preço de venda)<input type="text" inputmode="decimal" data-cfg="loja.custoPct" value="${L.custoPct}"></label>
+    <label>Pró-labore mensal (0 = sem pró-labore por enquanto)<input type="text" inputmode="decimal" data-cfg="loja.proLabore" value="${valorTxt(L.proLabore || 0)}"></label>
+    <label>Reserva da loja: quantos meses de contas fixas<input type="text" inputmode="decimal" data-cfg="caixa.reservaMeses" value="${db.caixa.reservaMeses || 2}"></label></div>
+    <p class="small muted" style="margin:8px 0 0">Exemplo do custo: uma capinha que custa R$ 9 e vende por R$ 20 tem custo de 45%. A projeção reserva esse tanto das vendas para repor o estoque.</p></div>
+  <div class="card cx-c"><h3>Saldos informados</h3>${Object.entries(CX_AREAS).map(([k, [ic, n]]) => { const S = cxSaldoReg(k); return `<div class="cx-l"><span>${ic} ${n}<small>${S ? `${fmt(S.valor)} em ${dmy(S.data)}` : 'ainda não informado'}</small></span><button class="btn sm" data-cx-ajusta="${k}">${S ? 'Corrigir' : 'Informar'}</button></div>`; }).join('')}</div>`;
+}
+
+/* ---------- formulários ---------- */
+function cxFormSaldo(a) {
+  const atual = cxSaldoEm(a, hoje());
+  openForm({ title: `Conferir saldo: ${CX_AREAS[a][1]}`, values: { valor: atual ?? '' },
+    fields: [{ k: 'valor', label: `Quanto ${a === 'loja' ? 'a loja' : a === 'rep' ? 'a representação' : 'a casa'} tem agora (banco + dinheiro)`, type: 'money', required: true }],
+    note: atual != null ? `Pelas contas do Prumo seriam ${fmt(atual)}. Se o banco mostra outro valor, digite o valor certo: o Prumo recomeça a partir dele.` : '',
+    onSave: (v) => cxSetSaldo(a, v.valor) });
+}
+function cxSetSaldo(a, valor) {
+  const H = hoje(); const S = cxSaldoReg(a);
+  // o saldo vale para o começo de hoje: tira o que já foi lançado hoje (senão contaria duas vezes)
+  const base = { id: 'saldo-' + a, area: a, valor: r2(valor - soma(cxMovs(a, H, H), 'valor')), data: H };
+  if (S) Object.assign(S, base); else db.caixa.saldos.push(base);
+}
+function cxFormFixa(f) {
+  const novo = !f; const a = f ? f.area : ui.cxArea;
+  const v0 = novo ? { area: a, dia: 10, inicio: ymOf(hoje()), tipoFim: 'nunca' } : { ...f, dia: f.dia || 0, tipoFim: f.restante ? 'restante' : f.parcelas ? 'parcelas' : 'nunca', dez: f.mesesEsp?.[12] ?? '', espera: !!f.espera };
+  openForm({ title: novo ? 'Nova conta fixa' : 'Editar conta fixa', values: v0,
+    fields: [
+      { k: 'nome', label: 'Nome', required: true, placeholder: 'Ex.: Aluguel' },
+      { k: 'valor', label: 'Valor por mês (R$)', type: 'money', required: true, half: true },
+      { k: 'dia', label: 'Vence todo dia', type: 'select', half: true, options: [{ value: 0, label: 'último dia do mês' }, ...Array.from({ length: 31 }, (_, i) => ({ value: i + 1, label: String(i + 1) }))] },
+      { k: 'area', label: 'Caixa', type: 'select', half: true, options: Object.entries(CX_AREAS).map(([value, [ic, n]]) => ({ value, label: `${ic} ${n}` })) },
+      { k: 'inicio', label: 'A partir de', type: 'month', half: true },
+      { k: 'tipoFim', label: 'Até quando', type: 'select', rerender: true, options: [{ value: 'nunca', label: 'Todo mês, sem data para acabar' }, { value: 'parcelas', label: 'Um número de parcelas' }, { value: 'restante', label: 'Até pagar um valor total' }] },
+      { k: 'parcelas', label: 'Quantas parcelas faltam (contando a deste mês)', type: 'number', show: (v) => v.tipoFim === 'parcelas' },
+      { k: 'restante', label: 'Quanto falta pagar no total (R$)', type: 'money', show: (v) => v.tipoFim === 'restante' },
+      { k: 'dez', label: 'Valor diferente em dezembro (R$, opcional)', type: 'money' },
+      { k: 'espera', label: 'Em espera: não estou pagando agora (não entra na projeção)', type: 'checkbox' },
+      { k: 'obs', label: 'Observação' },
+    ],
+    onSave: (v) => {
+      const base = { area: v.area, nome: v.nome.trim(), valor: r2(v.valor), dia: Number(v.dia) || 0, inicio: v.inicio || ymOf(hoje()), espera: !!v.espera, obs: (v.obs || '').trim(),
+        categoria: f?.categoria || (v.area === 'casa' ? 'Dívidas' : 'Outros'), mesesEsp: num(v.dez, 0) > 0 ? { 12: r2(num(v.dez, 0)) } : {} };
+      base.parcelas = v.tipoFim === 'parcelas' ? Math.max(1, Math.round(num(v.parcelas, 1))) : null; base.restante = v.tipoFim === 'restante' ? r2(num(v.restante, 0)) || null : null;
+      if (novo) db.fixas.push({ id: uid(), ...base }); else Object.assign(f, base);
+    },
+  });
+}
+function cxFormPagar(o) {
+  const S = cxSaldoReg(o.f.area); const antes = S && o.data < S.data;
+  openForm({ title: `Pagar: ${o.f.nome}`, values: { valor: o.valor, data: antes ? o.data : hoje() },
+    fields: [{ k: 'valor', label: 'Valor pago (R$)', type: 'money', required: true, half: true }, { k: 'data', label: 'Dia em que pagou', type: 'date', required: true, half: true }],
+    note: `Referente a ${nomeMes(o.ym)}${o.f.restante ? ` · parcela ${o.n}` : ''}.${S ? ` Se pagou antes de ${dmy(S.data)}, o saldo que você informou já está sem esse valor: o Prumo só marca como paga, sem tirar de novo.` : ''}`, submit: '✓ Paguei',
+    onSave: (v) => { cxPagar(o, v.valor, v.data); } });
+}
+function cxFormTransf(de = 'loja', para = 'casa') {
+  openForm({ title: 'Transferir entre caixas', values: { de, para, data: hoje() },
+    fields: [{ k: 'de', label: 'Sai de', type: 'select', half: true, options: Object.entries(CX_AREAS).map(([value, [ic, n]]) => ({ value, label: `${ic} ${n}` })) },
+      { k: 'para', label: 'Entra em', type: 'select', half: true, options: Object.entries(CX_AREAS).map(([value, [ic, n]]) => ({ value, label: `${ic} ${n}` })) },
+      { k: 'valor', label: 'Valor (R$)', type: 'money', required: true, half: true }, { k: 'data', label: 'Data', type: 'date', half: true },
+      { k: 'obs', label: 'Motivo', placeholder: 'Ex.: retirada, ajuda no mês, empréstimo' }],
+    note: 'Para pró-labore use a aba Loja › Despesas › Registrar pró-labore: ele já aparece aqui também.',
+    onSave: (v) => { if (v.de === v.para) return 'Escolha caixas diferentes.'; db.transf.push({ id: uid(), de: v.de, para: v.para, valor: r2(v.valor), data: v.data, obs: (v.obs || '').trim() }); } });
+}
+function cxSaida(a) {
+  if (a === 'casa') return formLancamento();
+  if (a === 'rep') return formBizDespesa('rep');
+  const lista = cxAbertas('loja', ymOf(addDias(hoje(), 10))).filter((o) => o.data <= addDias(hoje(), 10));
+  const html = `<div class="cx-escolha">${lista.length ? `<p class="small muted" style="margin:0 0 4px">Pagar uma conta fixa</p>${lista.map((o) => `<button data-cx-pagar="${o.f.id}|${o.ym}"><span>${esc(o.f.nome)}<small>vence ${dmy(o.data).slice(0, 5)}</small></span><b>${fmt(o.valor)}</b></button>`).join('')}<p class="small muted" style="margin:8px 0 4px">Ou outra saída</p>` : ''}
+    <button data-cx-op="compra"><span>📦 Compra de mercadoria<small>pedido pago no Pix ao fornecedor</small></span></button>
+    <button data-cx-op="desp"><span>🧾 Outro gasto da loja<small>material, manutenção, conta avulsa</small></span></button>
+    <button data-cx-op="transf"><span>🔁 Transferir para outro caixa<small>retirada para a casa, por exemplo</small></span></button></div>`;
+  if (CELULAR && typeof celFolha === 'function') celFolha(`<h3 style="margin:0 0 8px">⊖ Saída da loja</h3>${html}`);
+  else { const dlg = $('#dlg'); dlg.classList.remove('wide'); dlg.innerHTML = `<div class="dlg-body" style="padding:18px 20px"><h2 style="margin:0 0 10px">Saída da loja</h2>${html}<div style="text-align:right;margin-top:12px"><button class="btn" data-fechar-cx>Cancelar</button></div></div>`; dlg.showModal(); dlg.onclick = (e) => { if (e.target.closest('[data-fechar-cx]') || e.target === dlg) dlg.close(); }; }
+}
+function cxFecharEscolha() { if (CELULAR && typeof celFecharFolha === 'function') celFecharFolha(); const d = $('#dlg'); if (d.open) d.close(); }
+function cxCompra() { const L = db.loja; openForm({ title: 'Compra de mercadoria', values: { data: hoje() }, fields: [{ k: 'fornecedor', label: 'Fornecedor', required: true, list: () => [...new Set(L.compras.map((c) => c.fornecedor))] }, { k: 'valor', label: 'Valor pago (R$)', type: 'money', required: true, half: true }, { k: 'data', label: 'Data', type: 'date', half: true }, { k: 'obs', label: 'O que comprou (opcional)' }], onSave: (v) => { L.compras.push({ id: uid(), data: v.data, fornecedor: v.fornecedor.trim(), valor: r2(v.valor), obs: (v.obs || '').trim() }); } }); }
+
+/* ---------- cliques ---------- */
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`)?.getAttribute(k);
+  let v;
+  if ((v = g('data-cx-area'))) { ui.cxArea = v; ui.cxSim = null; return renderAll(); }
+  if ((v = g('data-cx-n'))) { ui.cxN = +v; return renderAll(); }
+  if ((v = g('data-cx-ir'))) { ui.cxArea = v; ui.sub.caixa = 'hoje'; return renderAll(); }
+  if ((v = g('data-cx-saldo-ok'))) { const n = num($('#cxSaldoIn')?.value, NaN); if (!isFinite(n)) return toast('Digite o valor.'); cxSetSaldo(v, n); changed(); return toast('Caixa começado ✔'); }
+  if (g('data-cx-venda-ok') != null) { const n = num($('#cxVendaIn')?.value, NaN); if (!isFinite(n) || n <= 0) return toast('Digite o valor.'); db.caixa.vendaMedia = r2(n); return changed(); }
+  if ((v = g('data-cx-ajusta'))) return cxFormSaldo(v);
+  if ((v = g('data-cx-pagar'))) { const [id, ym] = v.split('|'); const f = db.fixas.find((x) => x.id === id); const o = f && cxOcorr(f, ym).find((x) => x.ym === ym); if (o) { cxFecharEscolha(); cxFormPagar(o); } return; }
+  if ((v = g('data-cx-ent'))) { if (v === 'loja') return formVenda(); if (v === 'rep') { ui.sub.rep = 'pedidos'; return setTab('rep'); } return formLancamento(); }
+  if ((v = g('data-cx-sai'))) return cxSaida(v);
+  if ((v = g('data-cx-op'))) { cxFecharEscolha(); if (v === 'compra') return cxCompra(); if (v === 'desp') return formBizDespesa('loja'); if (v === 'transf') return cxFormTransf('loja', 'casa'); }
+  if (g('data-cx-fixa-nova') != null) return cxFormFixa();
+  if ((v = g('data-cx-fixa-del'))) { const f = db.fixas.find((x) => x.id === v); if (f && confirm(`Excluir a conta fixa "${f.nome}"? Os pagamentos já registrados continuam nas despesas.`)) { db.fixas = db.fixas.filter((x) => x.id !== v); changed(); } return; }
+  if ((v = g('data-cx-fixa'))) return cxFormFixa(db.fixas.find((x) => x.id === v));
+  if (g('data-cx-transf') != null) return cxFormTransf();
+  if ((v = g('data-cx-transf-del'))) { if (confirm('Excluir esta transferência?')) { db.transf = db.transf.filter((t) => t.id !== v); changed(); } return; }
+  if (g('data-cx-sim') != null) { const n = num($('#cxSimV')?.value, NaN); if (!isFinite(n) || n <= 0) return toast('Digite o valor da compra.'); ui.cxSim = { v: r2(n), ym: $('#cxSimM').value, d: 'Compra simulada' }; return renderAll(); }
+  if (g('data-cx-sim-x') != null) { ui.cxSim = null; return renderAll(); }
+});
+document.addEventListener('change', (e) => {
+  const i = e.target.closest('[data-cx-taxa]'); if (!i) return;
+  const t = (db.loja.taxasCred || CX_TAXAS_PADRAO).slice(); t[+i.dataset.cxTaxa] = num(i.value, 0); db.loja.taxasCred = t; db.loja.taxaCredito = t[0]; changed();
+});
+
+/* ---------- celular: Caixa no menu e resumo no Início ---------- */
+if (typeof CEL_MAIS !== 'undefined') CEL_MAIS.unshift(['caixa', 'Caixa']);
+if (CELULAR && typeof celHoje === 'function' && CEL_PERFIL !== 'hel') {
+  const _celHoje65 = celHoje;
+  celHoje = function () {
+    const h = _celHoje65(); let card = '';
+    try {
+      const s = cxSaldoEm('loja', hoje());
+      if (s == null) card = `<div class="card cel-c"><div class="cel-c-h"><h3>🏪 Caixa da loja</h3><button class="btn sm primary" data-cx-ir="loja" data-cel-ir="caixa">Começar</button></div><p class="small muted" style="margin:0">Informe quanto a loja tem hoje e veja a projeção dos próximos meses.</p></div>`;
+      else {
+        const p = cxProjecao('loja', 6); const neg = p.rows.find((r) => r.termina < 0); const ab = cxAbertas('loja', ymOf(addDias(hoje(), 8))).filter((o) => o.data <= addDias(hoje(), 7));
+        card = `<div class="card cel-c"><div class="cel-c-h"><h3>🏪 Caixa da loja</h3><b>${fmt0(s)}</b></div>
+          ${neg ? `<p class="small bad" style="margin:0 0 4px">⚠ Em ${MESES[+neg.ym.slice(5, 7) - 1]} pode faltar ${fmt0(-neg.termina)}</p>` : ''}
+          ${ab.slice(0, 3).map((o) => `<div class="cel-l" data-cx-ir="loja" data-cel-ir="caixa"><span>${esc(o.f.nome)}<small>${o.data < hoje() ? 'venceu' : 'vence'} ${cxDiaSem(o.data)} ${dmy(o.data).slice(0, 5)}</small></span><b>${fmt(o.valor)}</b></div>`).join('')}
+          <button class="btn sm" data-cx-ir="loja" data-cel-ir="caixa" style="margin-top:6px">Abrir o caixa</button></div>`;
+      }
+    } catch (err) { card = ''; }
+    const i = h.indexOf('<div class="cel-hoje-pe">'); return i < 0 ? h : h.slice(0, i) + card + h.slice(i);
+  };
+}
 
 /* ---------- início ---------- */
 (async function boot() {
