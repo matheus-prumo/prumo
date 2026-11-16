@@ -928,6 +928,32 @@ body.cel .fd { width: 100%; padding: 14px; } body.cel .fd-corpo { max-height: 68
 .cx-pdv-ban > span { display: grid; gap: 4px; flex: 1; } .cx-pdv-ban small { color: var(--muted); font-size: 12px; }
 .cx-pdv-ban.novo { background: color-mix(in srgb, var(--warn) 10%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); }
 .cx-pdv-dia { display: flex; justify-content: space-between; gap: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 10px; padding: 8px 11px; font: inherit; font-size: 13px; cursor: pointer; text-align: left; } .cx-pdv-dia b { color: #2b6b5a; }
+/* v7.0: painel da loja */
+.pn { display: grid; gap: 12px; }
+.pn-top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.pn-per { display: flex; gap: 3px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 11px; padding: 3px; overflow-x: auto; max-width: 100%; }
+.pn-per button { border: 0; background: none; color: var(--muted); font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.pn-per button.on { background: #2b6b5a; color: #fff; font-weight: 700; }
+.pn-livre { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); } .pn-livre input { width: auto; }
+.pn-kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.pn-k { margin: 0; padding: 11px 12px; border-top: 4px solid var(--c); display: grid; gap: 2px; } .pn-k small { color: var(--muted); font-size: 12px; } .pn-k b { font-size: 21px; font-variant-numeric: tabular-nums; } .pn-k span { font-size: 12px; color: var(--muted); }
+.pn-g2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; } .pn-g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.pn-c { margin: 0; padding: 12px 14px; min-width: 0; } .pn-c h3 { margin: 0 0 2px; font-size: 14.5px; } .pn-c > p { margin: 0 0 8px; font-size: 12px; color: var(--muted); }
+.pn-svg { width: 100%; height: 190px; display: block; }
+.pn-rosca { display: flex; align-items: center; gap: 14px; } .pn-rosca svg { width: 130px; height: 130px; flex: none; color: var(--fg); } .pn-rosca > div { flex: 1; min-width: 0; }
+.pn-cor { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 7px; }
+.pn-barras { display: flex; gap: 8px; align-items: flex-end; height: 130px; }
+.pn-bm { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; } .pn-bm small { font-size: 11px; color: var(--muted); }
+.pn-bb { flex: 1; width: 100%; max-width: 46px; position: relative; display: flex; align-items: flex-end; justify-content: center; }
+.pn-bb i { display: block; width: 55%; border-radius: 4px 4px 0 0; position: relative; z-index: 1; } .pn-bb .pn-meta { position: absolute; left: 0; width: 100%; bottom: 0; background: var(--line); z-index: 0; opacity: .8; }
+.pn-v { background: #2b6b5a; } .pn-ok { background: #2f7d4f; } .pn-atual { background: #d9772b; }
+.pn-n { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: #2b6b5a; color: #fff; font-size: 11px; margin-right: 7px; }
+@media (max-width: 1100px) { .pn-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } .pn-g2, .pn-g3 { grid-template-columns: 1fr; } }
+body.cel .pn-kpis { grid-template-columns: 1fr 1fr; } body.cel .pn-k:last-child { grid-column: 1 / -1; } body.cel .pn-k b { font-size: 18px; } body.cel .pn-svg { height: 150px; }
+.cx-passos { margin: 0 0 8px; padding-left: 20px; display: grid; gap: 4px; font-size: 14px; }
+.cx-ini-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .cx-ini-2 label { display: grid; gap: 4px; font-size: 13px; font-weight: 600; } .cx-ini-2 input { font-size: 17px; padding: 10px; border-radius: 10px; text-align: right; }
+.cx-ini-tot { display: flex; justify-content: space-between; align-items: baseline; margin: 8px 2px; font-size: 14px; } .cx-ini-tot b { font-size: 20px; }
+.cx-ini-bt { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; margin-top: 6px; } .cx-ini-bt .btn.primary { padding: 10px 22px; }
 </style>
 </head>
 <body>
@@ -1881,7 +1907,7 @@ function renderAll() {
   if (COFRE) carregarClin().then((n) => { if (n) renderAll(); });
   if (SALA) renderSalaNotas();
 }
-let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (ui.tab === 'painel') renderPainel(); if (ui.tab === 'loja' && subAtual('loja', 'resultado') === 'resultado') lojaGrafico(); }, 150); });
+let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (ui.tab === 'painel') renderPainel(); if (ui.tab === 'loja' && subAtual('loja', 'painel') === 'resultado') lojaGrafico(); }, 150); });
 document.addEventListener('keydown', (e) => { if (e.key === 'n' && !e.ctrlKey && !e.metaKey && !$('#dlg').open && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); formLancamento(); } });
 
 /* =====================================================================
@@ -2360,7 +2386,7 @@ const vendaBruta = (v) => (Number(v.pix) || 0) + (Number(v.debito) || 0) + (Numb
 const vendaTaxa = (v) => cxTaxaVenda(v);
 function lojaMes(mes) {
   const L = db.loja; const vs = noMes(L.vendas, mes);
-  const fat = soma(vs, vendaBruta), taxas = soma(vs, vendaTaxa), cmv = fat * (L.custoPct || 0) / 100;
+  const fat = soma(vs, vendaBruta), taxas = soma(vs, vendaTaxa), cmv = soma(vs, (v) => (v.custo !== undefined && v.custo !== null && v.custo !== '' ? Number(v.custo) || 0 : vendaBruta(v) * (L.custoPct || 0) / 100));
   const desp = soma(despSemPL(noMes(L.despesas, mes)), 'valor'), pl = soma(noMes(L.despesas, mes).filter((d) => d.categoria === 'Pró-labore'), 'valor');
   const compras = soma(noMes(L.compras, mes), 'valor');
   return { vs, fat, taxas, cmv, desp, pl, compras, lucro: fat - cmv - taxas - desp, dias: vs.length };
@@ -2373,8 +2399,8 @@ function pontoEquilibrio(mes) {
   return desp / margem;
 }
 function renderLoja() {
-  const el = $('#tab-loja'); const sub = subAtual('loja', 'resultado');
-  el.innerHTML = subnav('loja', [['resultado', 'Resultado'], ['vendas', 'Vendas do dia'], ['despesas', 'Despesas'], ['compras', 'Compras'], ['ajustes', 'Ajustes']]) + { resultado: lojaResultado, vendas: lojaVendas, despesas: () => tabelaDespesas('loja', ui.mes), compras: lojaCompras, ajustes: lojaAjustes }[sub]();
+  const el = $('#tab-loja'); const sub = subAtual('loja', 'painel');
+  el.innerHTML = subnav('loja', [['painel', 'Painel'], ['resultado', 'Resultado'], ['vendas', 'Vendas do dia'], ['despesas', 'Despesas'], ['compras', 'Compras'], ['ajustes', 'Ajustes']]) + { painel: lojaPainel, resultado: lojaResultado, vendas: lojaVendas, despesas: () => tabelaDespesas('loja', ui.mes), compras: lojaCompras, ajustes: lojaAjustes }[sub]();
   if (sub === 'resultado') lojaGrafico();
 }
 function lojaResultado() {
@@ -3848,7 +3874,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '6.9';
+const APP_VERSAO = '7.0';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -10957,6 +10983,138 @@ document.addEventListener('click', async (e) => {
 });
 CEL_NOVIDADES['6.9'] = ['Parcela da loja: R$ 9 mil só em dezembro de 2026', 'Contas fixas: valor diferente num mês específico (ou todo ano)', 'Lembrete para preencher quantas parcelas faltam do empréstimo'];
 CEL_NOVIDADES['6.8'] = ['📥 Puxar do PDV: as vendas e as sangrias do dia entram sozinhas (no PC da loja)', 'Custo real da mercadoria e taxa exata vindos do PDV', 'Resumo do dia com lucro bruto, ticket médio e gaveta'];
+
+/* =================== v7.0: Painel da loja (gráficos) e começar o caixa mais fácil =================== */
+ui.pnPer = ui.pnPer || 'mes';
+const pnCusto = (v) => (v.custo !== undefined && v.custo !== null && v.custo !== '' ? Number(v.custo) || 0 : vendaBruta(v) * (Number(db.loja.custoPct) || 0) / 100);
+function pnPeriodo(per) {
+  const H = hoje();
+  if (per === 'hoje') return { ini: H, fim: H, ant: [addDias(H, -7), addDias(H, -7)], rot: 'hoje', antRot: 'mesmo dia da semana passada' };
+  if (per === 'semana') return { ini: addDias(H, -6), fim: H, ant: [addDias(H, -13), addDias(H, -7)], rot: 'últimos 7 dias', antRot: '7 dias antes' };
+  if (per === 'ano') { const y = ui.mes.slice(0, 4); return { ini: `${y}-01-01`, fim: `${y}-12-31`, ant: [`${+y - 1}-01-01`, `${+y - 1}-12-31`], rot: y, antRot: String(+y - 1) }; }
+  if (per === 'livre') { const a = ui.pnIni || addDias(H, -29), b = ui.pnFim || H; const n = Math.round((new Date(b) - new Date(a)) / 864e5) + 1; return { ini: a, fim: b, ant: [addDias(a, -n), addDias(a, -1)], rot: `${dmy(a).slice(0, 5)} a ${dmy(b).slice(0, 5)}`, antRot: 'período anterior' }; }
+  const m = ui.mes; const p = addM(m, -1);
+  if (m === ymOf(H)) { const dd = Math.min(+H.slice(8, 10), cxUltimoDia(p)); return { ini: `${m}-01`, fim: H, ant: [`${p}-01`, `${p}-${pad(dd)}`], rot: `${nomeMes(m)} até hoje`, antRot: `1 a ${dd} de ${MESES[+p.slice(5, 7) - 1]}` }; }
+  return { ini: `${m}-01`, fim: `${m}-${pad(cxUltimoDia(m))}`, ant: [`${p}-01`, `${p}-${pad(cxUltimoDia(p))}`], rot: nomeMes(m), antRot: MESES[+p.slice(5, 7) - 1] };
+}
+function pnNumeros(ini, fim) {
+  const L = db.loja; const den = (x) => x.data >= ini && x.data <= fim;
+  const vs = L.vendas.filter(den); const vendas = soma(vs, vendaBruta), taxas = soma(vs, cxTaxaVenda), custo = soma(vs, pnCusto);
+  const desp = L.despesas.filter(den); const despV = soma(despSemPL(desp), 'valor'); const pl = soma(desp.filter((d) => d.categoria === 'Pró-labore'), 'valor');
+  const comp = L.compras.filter(den); const tr = db.transf.filter((t) => t.de === 'loja' && den(t));
+  const qtd = soma(vs, (v) => Number(v.qtd) || 0); const comQtd = vs.filter((v) => Number(v.qtd) > 0);
+  return { vs, vendas, taxas, custo, bruto: vendas - taxas - custo, despV, pl, liquido: vendas - taxas - custo - despV, desp, comp, tr, compras: soma(comp, 'valor'), qtd, ticket: comQtd.length ? soma(comQtd, vendaBruta) / soma(comQtd, (v) => Number(v.qtd)) : 0, custoReal: vs.some((v) => v.custo != null) };
+}
+const pnDelta = (a, b, bomSobe = true) => { if (!b) return '<span class="muted">sem comparação</span>'; const v = a / b - 1; const bom = bomSobe ? v >= 0 : v <= 0; return `<span class="${bom ? 'good' : 'bad'}">${v >= 0 ? '↑' : '↓'} ${pct(Math.abs(v))}</span>`; };
+function lojaPainel() {
+  const P = pnPeriodo(ui.pnPer); const n = pnNumeros(P.ini, P.fim); const a = pnNumeros(P.ant[0], P.ant[1]); const M = cxMeta();
+  const per = [['hoje', 'Hoje'], ['semana', 'Semana'], ['mes', 'Mês'], ['ano', 'Ano'], ['livre', 'Escolher período']];
+  const vencidas = cxAbertas('loja', ymOf(hoje())).filter((o) => o.data < hoje()).length;
+  const kpi = (cor, rot, val, sub, cls = '') => `<div class="card pn-k" style="--c:${cor}"><small>${rot}</small><b class="${cls}">${val}</b><span>${sub}</span></div>`;
+  if (!db.loja.vendas.length && !db.loja.despesas.length) return `<div class="card cx-c"><h3>Painel da loja</h3><p class="small muted" style="margin:0">Ainda não tem vendas lançadas. Feche o caixa do dia em <b>Caixa › Fechar o caixa de hoje</b> (ou puxe do PDV) e os gráficos aparecem aqui.</p></div>`;
+  return `<div class="pn">
+  <div class="pn-top"><div class="pn-per">${per.map(([k, l]) => `<button class="${ui.pnPer === k ? 'on' : ''}" data-pn-per="${k}">${l}</button>`).join('')}</div>
+    ${ui.pnPer === 'livre' ? `<div class="pn-livre"><input type="date" data-pn-ini value="${P.ini}"> até <input type="date" data-pn-fim value="${P.fim}"></div>` : `<span class="muted small">${P.rot}${ui.pnPer === 'mes' || ui.pnPer === 'ano' ? ' · troque o mês lá em cima' : ''}</span>`}</div>
+  <div class="pn-kpis">
+    ${kpi('#d9772b', 'Vendas', fmt0(n.vendas), `${pnDelta(n.vendas, a.vendas)} vs ${P.antRot}`)}
+    ${kpi('#5a5fa8', 'Custo da mercadoria + taxas', fmt0(n.custo + n.taxas), n.custoReal ? 'custo real do PDV' : `custo estimado em ${db.loja.custoPct}%`)}
+    ${kpi('#2f7d4f', 'Lucro bruto', fmt0(n.bruto), `${pnDelta(n.bruto, a.bruto)} · margem ${n.vendas ? pct(n.bruto / n.vendas) : '—'}`)}
+    ${kpi('#b4412f', 'Despesas pagas', fmt0(n.despV), vencidas ? `<span class="bad">${vencidas} ${vencidas === 1 ? 'conta vencida' : 'contas vencidas'}</span>` : 'contas e gastos da loja')}
+    ${kpi('#1f3b5c', 'Lucro líquido', (n.liquido < 0 ? '−' : '') + fmt0(Math.abs(n.liquido)), n.vendas ? `margem ${n.liquido < 0 ? '−' : ''}${pct(Math.abs(n.liquido) / n.vendas)}` : '', n.liquido < 0 ? 'bad' : '')}
+  </div>
+  <div class="pn-g2">
+    <div class="card pn-c"><h3>Vendas por dia</h3><p>${M ? `A linha tracejada é a meta diária para empatar o mês (${fmt0(M.dia)}).` : 'Cada ponto é um dia.'}</p>${pnLinha(P, M)}</div>
+    <div class="card pn-c"><h3>Como os clientes pagam</h3><p>${P.rot} · taxas da maquininha: <b>${fmt(n.taxas)}</b></p>${pnRosca(n)}</div>
+  </div>
+  <div class="pn-g3">
+    <div class="card pn-c"><h3>Meta × realizado</h3><p>Cinza = quanto precisava vender para empatar · verde = quanto vendeu</p>${pnMeta(M)}</div>
+    <div class="card pn-c"><h3>Para onde vai o dinheiro</h3><p>As 5 maiores saídas · ${P.rot}</p>${pnTop(n)}</div>
+    <div class="card pn-c"><h3>Destaques</h3><p>O que os números mostram</p>${pnDestaques(n, M, P)}</div>
+  </div></div>`;
+}
+function pnLinha(P, M) {
+  let ini = P.ini, fim = P.fim > hoje() ? hoje() : P.fim; if (ui.pnPer === 'hoje' || ui.pnPer === 'semana') { ini = addDias(hoje(), -29); fim = hoje(); }
+  const anual = ui.pnPer === 'ano' || (new Date(fim) - new Date(ini)) / 864e5 > 92;
+  let pts = [];
+  if (anual) { let m = ymOf(ini); while (m <= ymOf(fim)) { pts.push({ r: MC[+m.slice(5, 7) - 1], v: soma(noMes(db.loja.vendas, m), vendaBruta) }); m = addM(m, 1); } }
+  else { let d = ini; while (d <= fim) { const v = db.loja.vendas.find((x) => x.data === d); pts.push({ r: dmy(d).slice(0, 5), v: v ? vendaBruta(v) : 0, dom: new Date(d + 'T12:00').getDay() === 0 }); d = addDias(d, 1); } }
+  if (!pts.length || !pts.some((p) => p.v)) return '<p class="small muted">Sem vendas nesse período.</p>';
+  const meta = !anual && M ? M.dia : anual && M ? M.meta : 0; const max = Math.max(meta * 1.15, ...pts.map((p) => p.v), 1);
+  const W = 600, H = 170, L = 40, B = 150, T = 12; const x = (i) => L + (pts.length === 1 ? (W - L) / 2 : i * (W - L - 10) / (pts.length - 1)); const y = (v) => B - (v / max) * (B - T);
+  const grade = [0.33, 0.66, 1].map((f) => `<line x1="${L}" x2="${W}" y1="${y(max * f)}" y2="${y(max * f)}" stroke="var(--line)"/><text x="${L - 4}" y="${y(max * f) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${fmt0(max * f).replace('R$', '').trim()}</text>`).join('');
+  const passo = Math.max(1, Math.ceil(pts.length / 8));
+  return `<svg class="pn-svg" viewBox="0 0 ${W} ${H + 8}" preserveAspectRatio="none">${grade}
+    ${meta ? `<line x1="${L}" x2="${W}" y1="${y(meta)}" y2="${y(meta)}" stroke="var(--bad)" stroke-dasharray="5 4"/>` : ''}
+    <polyline fill="none" stroke="#2b6b5a" stroke-width="2.5" stroke-linejoin="round" points="${pts.map((p, i) => `${x(i)},${y(p.v)}`).join(' ')}"/>
+    ${pts.map((p, i) => `<circle cx="${x(i)}" cy="${y(p.v)}" r="${pts.length > 40 ? 1.8 : 3}" fill="${meta && p.v >= meta ? '#2f7d4f' : '#2b6b5a'}"><title>${p.r}: ${fmt(p.v)}</title></circle>`).join('')}
+    ${pts.map((p, i) => (i % passo === 0 || i === pts.length - 1 ? `<text x="${x(i)}" y="${H + 4}" text-anchor="middle" font-size="10" fill="var(--muted)">${p.r}</text>` : '')).join('')}</svg>`;
+}
+function pnRosca(n) {
+  const fs = [['Pix', 'pix', '#2b6b5a'], ['Crédito', null, '#d9772b'], ['Débito', 'debito', '#5a5fa8'], ['Dinheiro', 'dinheiro', '#c9a85c']].map(([l, k, c]) => ({ l, c, v: k ? soma(n.vs, (v) => Number(v[k]) || 0) : soma(n.vs, (v) => (Number(v.credito) || 0) + (Number(v.creditoP) || 0)) }));
+  const tot = soma(fs, 'v'); if (!tot) return '<p class="small muted">Sem vendas nesse período.</p>';
+  let ac = 0; const R = 15.9155;
+  const arcos = fs.filter((f) => f.v > 0).map((f) => { const p = f.v / tot * 100; const s = `<circle cx="21" cy="21" r="${R}" fill="none" stroke="${f.c}" stroke-width="6.5" stroke-dasharray="${p} ${100 - p}" stroke-dashoffset="${25 - ac}"/>`; ac += p; return s; }).join('');
+  return `<div class="pn-rosca"><svg viewBox="0 0 42 42">${arcos}<text x="21" y="22.6" text-anchor="middle" font-size="4.6" font-weight="700" fill="currentColor">${tot >= 1000 ? 'R$ ' + String(r2(tot / 1000)).replace('.', ',') + ' mil' : fmt0(tot)}</text></svg>
+    <div>${fs.map((f) => `<div class="cx-l"><span><i class="pn-cor" style="background:${f.c}"></i>${f.l}</span><b>${pct(f.v / tot)}</b></div>`).join('')}</div></div>`;
+}
+function pnMeta(M) {
+  const ms = Array.from({ length: 6 }, (_, i) => addM(ymOf(hoje()), i - 5)); const vs = ms.map((m) => soma(noMes(db.loja.vendas, m), vendaBruta));
+  if (!vs.some((v) => v)) return '<p class="small muted">Os meses aparecem conforme você fecha os dias.</p>';
+  const meta = M ? M.meta : 0; const max = Math.max(meta, ...vs, 1);
+  return `<div class="pn-barras">${ms.map((m, i) => `<div class="pn-bm" title="${nomeMes(m)}: vendeu ${fmt0(vs[i])}${meta ? `, precisava ${fmt0(meta)}` : ''}"><div class="pn-bb">${meta ? `<i class="pn-meta" style="height:${meta / max * 100}%"></i>` : ''}<i class="${i === 5 ? 'pn-atual' : meta && vs[i] >= meta ? 'pn-ok' : 'pn-v'}" style="height:${vs[i] / max * 100}%"></i></div><small>${MC[+m.slice(5, 7) - 1]}${i === 5 ? '*' : ''}</small></div>`).join('')}</div>
+    <p class="small muted" style="margin:6px 0 0">* mês atual, até hoje${M ? ` · meta de ${fmt0(M.meta)} pelas contas de hoje` : ''}</p>`;
+}
+function pnTop(n) {
+  const g = {}; const add = (k, v) => { g[k] = (g[k] || 0) + v; };
+  n.desp.forEach((d) => add(d.fixa ? (db.fixas.find((f) => f.id === d.fixa)?.nome || d.descricao) : String(d.descricao || 'Gasto').trim(), Number(d.valor) || 0));
+  n.comp.forEach((c) => add(`Mercadoria · ${c.fornecedor}`, Number(c.valor) || 0)); n.tr.forEach((t) => add('Retiradas p/ casa', Number(t.valor) || 0));
+  const top = Object.entries(g).sort((a, b) => b[1] - a[1]).slice(0, 5); if (!top.length) return '<p class="small muted">Nenhuma saída lançada nesse período.</p>';
+  return top.map(([k, v], i) => `<div class="cx-l"><span><b class="pn-n">${i + 1}</b>${esc(k === k.toUpperCase() && k.length > 3 ? k.charAt(0) + k.slice(1).toLowerCase() : k)}</span><b>${fmt0(v)}</b></div>`).join('');
+}
+function pnDestaques(n, M, P) {
+  const ini = ui.pnPer === 'hoje' || ui.pnPer === 'semana' ? addDias(hoje(), -59) : P.ini; const vs = db.loja.vendas.filter((v) => v.data >= ini && v.data <= P.fim && vendaBruta(v) > 0);
+  const DS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']; const sem = Array.from({ length: 7 }, () => []);
+  vs.forEach((v) => sem[new Date(v.data + 'T12:00').getDay()].push(vendaBruta(v)));
+  const med = sem.map((a, i) => ({ i, m: a.length ? soma(a, (x) => x) / a.length : null })).filter((x) => x.m != null).sort((a, b) => b.m - a.m);
+  const L = []; if (med.length) L.push(['🏆 Melhor dia da semana', `${DS[med[0].i]} · ${fmt0(med[0].m)}`]); if (med.length > 1) L.push(['📉 Dia mais fraco', `${DS[med[med.length - 1].i]} · ${fmt0(med[med.length - 1].m)}`]);
+  if (M) { const nb = vs.filter((v) => vendaBruta(v) >= M.dia).length; L.push(['🎯 Dias com a meta batida', `${nb} de ${vs.length}`]); }
+  if (n.ticket) L.push(['🧾 Ticket médio', `${fmt(n.ticket)} · ${n.qtd} vendas`]); else L.push(['🧾 Ticket médio', '<span class="muted">puxe os dias do PDV</span>']);
+  if (n.vendas) L.push(['📦 Comprou × vendeu', `${pct(n.compras / n.vendas)} das vendas`]);
+  const desc = soma(n.vs, (v) => Number(v.descontos) || 0); if (desc) L.push(['🏷️ Descontos dados', fmt(desc)]);
+  return L.map(([a, b]) => `<div class="cx-l"><span>${a}</span><b>${b}</b></div>`).join('');
+}
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-pn-per]'); if (b) { ui.pnPer = b.dataset.pnPer; renderAll(); } });
+document.addEventListener('change', (e) => { const i = e.target.closest('[data-pn-ini],[data-pn-fim]'); if (!i || !i.value) return; if (i.matches('[data-pn-ini]')) ui.pnIni = i.value; else ui.pnFim = i.value; renderAll(); });
+
+/* ---------- começar o caixa: mais fácil ---------- */
+cxPedirSaldo = function (a) {
+  const nome = { loja: 'da Loja', rep: 'da Representação', casa: 'da Casa' }[a];
+  const passos = { loja: ['Abra o app do banco <b>da loja</b> e veja o saldo.', 'Conte o dinheiro que está na <b>gaveta</b>.', 'Digite os dois aqui embaixo e clique em <b>Começar</b>.'],
+    rep: ['Veja quanto tem guardado das <b>comissões</b>.', 'Se a comissão cai na mesma conta da casa, misturada, comece com <b>R$ 0</b>.', 'Daí para frente: comissões recebidas entram, despesas de viagem saem.'],
+    casa: ['Veja o saldo das <b>contas da família</b> no banco.', 'Some o dinheiro em espécie, se tiver.', 'O Prumo soma as receitas e tira os gastos que vocês já lançam.'] }[a];
+  const sb = a === 'casa' && typeof saldoBancos === 'function' ? saldoBancos() : null;
+  const campos = a === 'loja'
+    ? `<div class="cx-ini-2"><label>💳 No banco<input type="text" inputmode="decimal" id="cxSaldoBanco" placeholder="0,00"></label><label>💵 Na gaveta<input type="text" inputmode="decimal" id="cxSaldoGaveta" placeholder="0,00"></label></div>
+       <div class="cx-ini-tot"><span>Total da loja agora</span><b id="cxSaldoTot">R$ 0,00</b></div><input type="hidden" id="cxSaldoIn" value="">`
+    : `<div class="cx-ini-row"><input type="text" inputmode="decimal" id="cxSaldoIn" placeholder="0,00">${a === 'rep' ? '' : ''}</div>`;
+  return `<div class="card cx-ini"><h2>${CX_AREAS[a][0]} Começar o caixa ${nome}</h2>
+    <p class="sub" style="margin:2px 0 8px">O Prumo precisa saber <b>quanto tem hoje</b>, uma vez só. Depois ele vai somando as entradas e tirando as saídas sozinho.</p>
+    <ol class="cx-passos">${passos.map((p) => `<li>${p}</li>`).join('')}</ol>
+    ${a === 'loja' ? '<p class="small muted" style="margin:0 0 8px">Exemplo: banco R$ 3.200 e gaveta R$ 300 → total R$ 3.500.</p>' : ''}
+    ${campos}
+    <div class="cx-ini-bt">${a === 'rep' ? '<button class="btn" data-cx-saldo-zero="rep">Começar com R$ 0</button>' : ''}${sb != null ? `<button class="btn" data-cx-saldo-bancos>Usar o saldo dos bancos (${fmt(sb)})</button>` : ''}<button class="btn primary" data-cx-saldo-ok="${a}">Começar</button></div>
+    <p class="small muted" style="margin:8px 0 0">✓ Não precisa ser exato: dá para corrigir depois em <b>conferir</b>. As contas fixas que já pagou você marca com ✓ Paguei.</p></div>`;
+};
+document.addEventListener('input', (e) => {
+  if (!e.target.matches('#cxSaldoBanco, #cxSaldoGaveta')) return;
+  const t = (num($('#cxSaldoBanco')?.value, 0) || 0) + (num($('#cxSaldoGaveta')?.value, 0) || 0); const r = r2(isFinite(t) ? t : 0);
+  $('#cxSaldoIn').value = ($('#cxSaldoBanco').value.trim() || $('#cxSaldoGaveta').value.trim()) ? valorTxt(r) : ''; $('#cxSaldoTot').textContent = fmt(r);
+}, true);
+document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-cx-saldo-zero]')) { cxSetSaldo(e.target.closest('[data-cx-saldo-zero]').dataset.cxSaldoZero, 0); changed(); toast('Caixa começado ✔'); }
+  if (e.target.closest('[data-cx-saldo-bancos]')) { const i = $('#cxSaldoIn'); if (i) i.value = valorTxt(saldoBancos() || 0); }
+}, true);
+CEL_NOVIDADES['7.0'] = ['Novo: Painel da loja com gráficos (vendas por dia, meta × realizado, como os clientes pagam, para onde vai o dinheiro)', 'Começar o caixa mais fácil: banco + gaveta'];
 
 /* ---------- início ---------- */
 (async function boot() {
