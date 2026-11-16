@@ -919,6 +919,15 @@ body.cel .cx-tab table { font-size: 11px; } body.cel .cx-tab th, body.cel .cx-ta
 .fd-pe { display: flex; gap: 8px; justify-content: space-between; } .fd-pe .btn { padding: 11px 14px; } .fd-pe .btn.primary { flex: 1; }
 body.cel .fd { width: 100%; padding: 14px; } body.cel .fd-corpo { max-height: 68vh; }
 #tab-caixa > .cx-cta, #tab-caixa > .cx-fm { max-width: 720px; }
+/* v6.8: PDV */
+.fd-pdv-btn { border: 0; border-radius: 12px; background: #2b6b5a; color: #fff; font: inherit; font-weight: 800; font-size: 14.5px; padding: 11px; cursor: pointer; }
+.fd-pdv-ok { background: color-mix(in srgb, var(--ok) 12%, var(--panel)); border: 1px solid color-mix(in srgb, var(--ok) 35%, var(--line)); border-radius: 12px; padding: 8px 11px; font-size: 12.5px; color: var(--ok); }
+.fd-pdv-ok.erro { background: color-mix(in srgb, var(--warn) 12%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); color: var(--fg); }
+.fd-tag { display: inline-block; background: color-mix(in srgb, var(--ok) 15%, var(--panel)); color: var(--ok); border-radius: 6px; padding: 0 5px; font-size: 10.5px; font-weight: 700; margin-left: 6px; vertical-align: 1px; }
+.cx-pdv-ban { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 13px; margin-bottom: 10px; max-width: 720px; box-sizing: border-box; }
+.cx-pdv-ban > span { display: grid; gap: 4px; flex: 1; } .cx-pdv-ban small { color: var(--muted); font-size: 12px; }
+.cx-pdv-ban.novo { background: color-mix(in srgb, var(--warn) 10%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); }
+.cx-pdv-dia { display: flex; justify-content: space-between; gap: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 10px; padding: 8px 11px; font: inherit; font-size: 13px; cursor: pointer; text-align: left; } .cx-pdv-dia b { color: #2b6b5a; }
 </style>
 </head>
 <body>
@@ -3839,7 +3848,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '6.7';
+const APP_VERSAO = '6.9';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -10268,8 +10277,8 @@ CEL_NOVIDADES['6.2'] = ['Prumo também no celular da Helen (com Consultório e o
 const CX_AREAS = { loja: ['🏪', 'Loja'], rep: ['💼', 'Representação'], casa: ['🏠', 'Casa'] };
 const CX_TAXAS_PADRAO = [3.15, 3.39, 6.12, 6.85, 7.57, 8.28, 8.99, 9.69, 10.38, 11.06, 11.74, 12.4];
 const CX_SEMENTE = [
-  { id: 'fx-loja-parcela', area: 'loja', nome: 'Parcela da compra da loja', valor: 5000, dia: 0, inicio: '2026-11', mesesEsp: { 12: 9000 }, restante: 75000, categoria: 'Outros', obs: 'Total R$ 110 mil · R$ 20 mil de entrada · 3 parcelas de R$ 5 mil já pagas' },
-  { id: 'fx-loja-emprestimo', area: 'loja', nome: 'Empréstimo da entrada', valor: 667, dia: 0, inicio: '2026-11', categoria: 'Outros', obs: 'Confira o dia do vencimento e quantas parcelas faltam' },
+  { id: 'fx-loja-parcela', area: 'loja', nome: 'Parcela da compra da loja', valor: 5000, dia: 0, inicio: '2026-11', mesesEsp: { '2026-12': 9000 }, restante: 75000, categoria: 'Outros', obs: 'Total R$ 110 mil · R$ 20 mil de entrada · 3 parcelas de R$ 5 mil já pagas' },
+  { id: 'fx-loja-emprestimo', area: 'loja', nome: 'Empréstimo da entrada', valor: 667, dia: 0, inicio: '2026-11', categoria: 'Outros', perguntar: 'parcelas' },
   { id: 'fx-loja-aluguel', area: 'loja', nome: 'Aluguel', valor: 3800, dia: 10, inicio: '2026-11', categoria: 'Aluguel do ponto' },
   { id: 'fx-loja-luz', area: 'loja', nome: 'Luz', valor: 470, dia: 5, inicio: '2026-11', categoria: 'Energia e internet', obs: 'valor médio' },
   { id: 'fx-loja-agua', area: 'loja', nome: 'Água', valor: 230, dia: 26, inicio: '2026-11', categoria: 'Outros', obs: 'valor médio' },
@@ -10289,6 +10298,11 @@ function cxGarantir(d) {
     CX_SEMENTE.forEach((f) => { if (!d.fixas.some((x) => x.id === f.id) && !exc[f.id]) d.fixas.push(JSON.parse(JSON.stringify(f))); });
     if (d.loja) d.loja.taxaDebito = 1.37, d.loja.taxaCredito = 3.15;
     d.caixa.semeado = true;
+  }
+  if (!d.caixa.mig69) { // v6.9: os R$ 9 mil são só em dez/2026; o empréstimo pergunta quantas parcelas faltam
+    const p = d.fixas.find((f) => f.id === 'fx-loja-parcela'); if (p && p.mesesEsp && Number(p.mesesEsp[12]) === 9000) p.mesesEsp = { '2026-12': 9000 };
+    const e = d.fixas.find((f) => f.id === 'fx-loja-emprestimo'); if (e && !e.parcelas && !e.restante) { e.perguntar = 'parcelas'; if (/Confira o dia/.test(e.obs || '')) e.obs = ''; }
+    d.caixa.mig69 = true;
   }
   return d;
 }
@@ -10314,7 +10328,12 @@ const cxDiaSem = (d) => ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'][new D
 
 /* ---------- vendas: taxa por parcela ---------- */
 function cxTaxaParc(n) { const t = db.loja.taxasCred || CX_TAXAS_PADRAO; n = Math.max(1, Math.min(12, Math.round(Number(n) || 1))); return Number(t[n - 1]) || 0; }
+function cxCustoPct() { // custo real da mercadoria (vem do PDV); sem dados do PDV, usa o % informado
+  const ini = addDias(hoje(), -60); const vs = db.loja.vendas.filter((v) => v.data >= ini && Number.isFinite(Number(v.custo)) && v.custo !== undefined && v.custo !== null && vendaBruta(v) > 0);
+  const b = soma(vs, vendaBruta); return b >= 300 ? soma(vs, (v) => Number(v.custo)) / b * 100 : Number(db.loja.custoPct) || 0;
+}
 function cxTaxaVenda(v) {
+  if (v.taxaPdv !== undefined && v.taxaPdv !== null && Number.isFinite(Number(v.taxaPdv))) return Number(v.taxaPdv);
   const L = db.loja; const cred1 = Array.isArray(L.taxasCred) ? Number(L.taxasCred[0]) || 0 : L.taxaCredito || 0;
   return (Number(v.debito) || 0) * (L.taxaDebito || 0) / 100 + (Number(v.credito) || 0) * cred1 / 100 + (Number(v.creditoP) || 0) * cxTaxaParc(v.vezes || 2) / 100;
 }
@@ -10331,14 +10350,14 @@ formVenda = function (v) {
     note: 'O cartão (débito e crédito) cai na conta no próximo dia útil, já sem a taxa da maquininha.',
     onSave: (x) => { const z = (n) => (isFinite(n) ? r2(n) : 0); const base = { data: x.data, pix: z(x.pix), debito: z(x.debito), credito: z(x.credito), creditoP: z(x.creditoP), vezes: Number(x.vezes) || 2, dinheiro: z(x.dinheiro), obs: (x.obs || '').trim() };
       if (!vendaBruta(base)) return 'Informe pelo menos um valor.';
-      if (novo) { const dup = db.loja.vendas.find((y) => y.data === base.data); if (dup && !confirm('Já existe lançamento para esse dia. Somar a ele?')) return 'Escolha outra data ou edite o lançamento existente.'; if (dup) { for (const k of ['pix', 'debito', 'credito', 'creditoP', 'dinheiro']) dup[k] = r2((Number(dup[k]) || 0) + base[k]); if (base.creditoP) dup.vezes = base.vezes; return; } db.loja.vendas.push({ id: uid(), ...base }); } else Object.assign(v, base); } });
+      if (novo) { const dup = db.loja.vendas.find((y) => y.data === base.data); if (dup && !confirm('Já existe lançamento para esse dia. Somar a ele?')) return 'Escolha outra data ou edite o lançamento existente.'; if (dup) { for (const k of ['pix', 'debito', 'credito', 'creditoP', 'dinheiro']) dup[k] = r2((Number(dup[k]) || 0) + base[k]); if (base.creditoP) dup.vezes = base.vezes; delete dup.taxaPdv; return; } db.loja.vendas.push({ id: uid(), ...base }); } else { if (['pix', 'debito', 'credito', 'creditoP', 'dinheiro', 'vezes'].some((k) => Number(v[k] || 0) !== Number(base[k] || 0))) delete v.taxaPdv; Object.assign(v, base); } } });
 };
 
 /* ---------- contas fixas: ocorrências mês a mês ---------- */
 function cxOcorr(f, ateYm) {
   const out = []; if (!f.inicio) return out; let ym = f.inicio, pago = 0, n = 0;
   while (ym <= ateYm && n < 400) {
-    let v = Number((f.mesesEsp || {})[+ym.slice(5, 7)]) || Number(f.valor) || 0;
+    const me = f.mesesEsp || {}; let v = Number(me[ym]) || Number(me[+ym.slice(5, 7)]) || Number(f.valor) || 0;
     if (f.restante) { const falta = r2(Number(f.restante) - pago); if (falta <= 0.009) break; v = Math.min(v, falta); }
     if (f.parcelas && n >= Number(f.parcelas)) break;
     const dia = Number(f.dia) ? Math.min(Number(f.dia), cxUltimoDia(ym)) : cxUltimoDia(ym);
@@ -10410,13 +10429,13 @@ function cxProjecao(area, nMeses, extra = null) {
   const abertas = cxAbertas(area, fimYm);
   const rows = []; let saldo = ini;
   const fracRest = (ym) => (ym === m0 ? Math.max(0, cxUltimoDia(m0) - +H.slice(8, 10)) / cxUltimoDia(m0) : 1);
-  const L = db.loja; const mv = cxMediaVendas(); const tx = cxTaxaMedia(); const custo = (L.custoPct || 0) / 100;
+  const L = db.loja; const mv = cxMediaVendas(); const tx = cxTaxaMedia(); const custo = cxCustoPct() / 100;
   const despVar = (a) => cxMediaMes((m) => soma(despSemPL(noMes(db[a].despesas, m)).filter((d) => !cxPareceFixa(d, a)), 'valor'));
   for (let i = 0; i < nMeses; i++) {
     const ym = addM(m0, i); const fr = fracRest(ym); const ent = [], sai = [];
     if (area === 'loja') {
       const vend = mv.v * cxSazonal(ym) * fr;
-      if (vend) { ent.push({ d: `Vendas previstas${cxSazonal(ym) !== 1 ? ' (pelo mesmo mês do ano passado)' : ''}`, v: r2(vend * (1 - tx)) }); sai.push({ d: `Repor mercadoria (${L.custoPct}% do que vender)`, v: r2(vend * custo) }); }
+      if (vend) { ent.push({ d: `Vendas previstas${cxSazonal(ym) !== 1 ? ' (pelo mesmo mês do ano passado)' : ''}`, v: r2(vend * (1 - tx)) }); sai.push({ d: `Repor mercadoria (${String(r2(cxCustoPct())).replace('.', ',')}% do que vender)`, v: r2(vend * custo) }); }
       if (i === 0) cxAReceber('loja').forEach((r) => ent.push({ d: `Maquininha cai ${cxDiaSem(r.data)} ${dmy(r.data).slice(0, 5)}`, v: r.valor }));
       const dv = despVar('loja') * fr; if (dv) sai.push({ d: 'Gastos variáveis (média)', v: r2(dv) });
       if (Number(L.proLabore) > 0) sai.push({ d: 'Pró-labore → Casa', v: r2(Number(L.proLabore) * (i === 0 && soma(noMes(L.despesas, m0).filter((d) => d.categoria === 'Pró-labore'), 'valor') ? 0 : 1)) });
@@ -10446,7 +10465,7 @@ function cxCustoFixoMes(area) { return soma(db.fixas.filter((f) => f.area === ar
 
 const cxN0 = (n) => (n < -0.5 ? '−' : '') + fmt0(Math.abs(n)).replace('R$', '').trim();
 function cxMeta() { // quanto a loja precisa vender por mês para o caixa empatar
-  const L = db.loja; const tx = cxTaxaMedia(); const custo = (L.custoPct || 0) / 100; const marg = 1 - tx - custo; if (marg <= 0.02) return null;
+  const L = db.loja; const tx = cxTaxaMedia(); const custo = cxCustoPct() / 100; const marg = 1 - tx - custo; if (marg <= 0.02) return null;
   const fixo = cxCustoFixoMes('loja'); const vari = cxMediaMes((m) => soma(despSemPL(noMes(L.despesas, m)).filter((d) => !cxPareceFixa(d, 'loja')), 'valor')); const pl = Number(L.proLabore) || 0;
   const meta = (fixo + vari + pl) / marg; return { fixo, vari, pl, marg, meta, dia: meta / 26, media: cxMediaVendas().v };
 }
@@ -10535,7 +10554,7 @@ function cxFixas() {
   return `<div class="card cx-c"><div class="cx-c-h"><h3>Contas fixas: ${CX_AREAS[a][1]}</h3><button class="btn sm primary" data-cx-fixa-nova>+ Conta fixa</button></div>
   ${fx.length ? fx.map((f) => { const fim = cxFim(f); const pagas = f.restante ? db[f.area === 'casa' ? 'lancamentos' : f.area]?.despesas?.filter?.((d) => d.fixa === f.id) || [] : [];
     const falta = f.restante ? r2(Number(f.restante) - soma(pagas, 'valor')) : 0;
-    return `<div class="cx-l cx-fx ${f.espera ? 'esp' : ''}" data-cx-fixa="${f.id}"><span>${esc(f.nome)}<small>${f.espera ? '⏳ em espera · não entra na projeção' : f.dia ? `todo dia ${f.dia}` : 'último dia do mês'}${f.mesesEsp && Object.keys(f.mesesEsp).length ? ` · ${Object.entries(f.mesesEsp).map(([m, v]) => `${MC[m - 1]}: ${fmt0(v)}`).join(', ')}` : ''}${fim ? ` · termina ${MC[+fim.ym.slice(5, 7) - 1]}/${fim.ym.slice(2, 4)}` : ''}${f.restante ? ` · faltam ${fmt0(falta)}` : ''}${f.espera ? ` · ${cxEsperaTxt(f)}` : ''}${f.obs ? `<br>${esc(f.obs)}` : ''}</small></span><b>${fmt(f.valor)}</b><button class="icon-btn" data-cx-fixa-del="${f.id}" title="Excluir">🗑</button></div>`; }).join('') : '<p class="small muted">Nenhuma conta fixa ainda.</p>'}
+    return `<div class="cx-l cx-fx ${f.espera ? 'esp' : ''}" data-cx-fixa="${f.id}"><span>${esc(f.nome)}<small>${f.espera ? '⏳ em espera · não entra na projeção' : f.dia ? `todo dia ${f.dia}` : 'último dia do mês'}${f.mesesEsp && Object.keys(f.mesesEsp).length ? ` · ${Object.entries(f.mesesEsp).map(([m, v]) => (String(m).includes('-') ? `${MC[+m.slice(5, 7) - 1]}/${m.slice(2, 4)}: ${fmt0(v)}` : `todo ${MC[m - 1]}: ${fmt0(v)}`)).join(', ')}` : ''}${f.perguntar === 'parcelas' ? ' · <b class="warn">❓ quantas parcelas faltam? toque para preencher</b>' : ''}${fim ? ` · termina ${MC[+fim.ym.slice(5, 7) - 1]}/${fim.ym.slice(2, 4)}` : ''}${f.restante ? ` · faltam ${fmt0(falta)}` : ''}${f.espera ? ` · ${cxEsperaTxt(f)}` : ''}${f.obs ? `<br>${esc(f.obs)}` : ''}</small></span><b>${fmt(f.valor)}</b><button class="icon-btn" data-cx-fixa-del="${f.id}" title="Excluir">🗑</button></div>`; }).join('') : '<p class="small muted">Nenhuma conta fixa ainda.</p>'}
   ${fx.length ? `<p class="small muted" style="margin:8px 0 0">Total por mês (sem as em espera): <b>${fmt(cxCustoFixoMes(a))}</b>. Toque numa conta para editar.</p>` : ''}</div>
   <p class="small muted">Ao tocar em <b>✓ Paguei</b> no Caixa, a conta vira uma despesa ${a === 'casa' ? 'nos Lançamentos' : `na aba ${CX_AREAS[a][1]}`} e sai do saldo.</p>`;
 }
@@ -10558,7 +10577,7 @@ function cxAjustes() {
     ${t.map((v, i) => `<label>Crédito ${i + 1}x<input type="text" inputmode="decimal" data-cx-taxa="${i}" value="${String(v).replace('.', ',')}"></label>`).join('')}</div></div>
   <div class="card cx-c"><h3>Projeção</h3><div class="cx-tx">
     <label>Venda média por mês (enquanto não tiver histórico)<input type="text" inputmode="decimal" data-cfg="caixa.vendaMedia" value="${valorTxt(db.caixa.vendaMedia || 0)}"></label>
-    <label>Custo da mercadoria (% do preço de venda)<input type="text" inputmode="decimal" data-cfg="loja.custoPct" value="${L.custoPct}"></label>
+    <label>Custo da mercadoria (% do preço de venda)${cxCustoPct() !== Number(L.custoPct) ? ` · <b>real pelo PDV: ${String(r2(cxCustoPct())).replace('.', ',')}%</b>` : ''}<input type="text" inputmode="decimal" data-cfg="loja.custoPct" value="${L.custoPct}"></label>
     <label>Pró-labore mensal (0 = sem pró-labore por enquanto)<input type="text" inputmode="decimal" data-cfg="loja.proLabore" value="${valorTxt(L.proLabore || 0)}"></label>
     <label>Reserva da loja: quantos meses de contas fixas<input type="text" inputmode="decimal" data-cfg="caixa.reservaMeses" value="${db.caixa.reservaMeses || 2}"></label></div>
     <p class="small muted" style="margin:8px 0 0">Exemplo do custo: uma capinha que custa R$ 9 e vende por R$ 20 tem custo de 45%. A projeção reserva esse tanto das vendas para repor o estoque.</p></div>
@@ -10579,9 +10598,12 @@ function cxSetSaldo(a, valor) {
   const base = { id: 'saldo-' + a, area: a, valor: r2(valor - soma(cxMovs(a, H, H), 'valor')), data: H };
   if (S) Object.assign(S, base); else db.caixa.saldos.push(base);
 }
+function cxEspIni(f) { const e = Object.entries(f.mesesEsp || {})[0]; if (!e) return { espYm: '', espV: '', espAno: false }; const [k, v] = e;
+  if (String(k).includes('-')) return { espYm: k, espV: v, espAno: false };
+  const y = +ymOf(hoje()).slice(0, 4); const ym = `${y}-${pad(+k)}`; return { espYm: ym < ymOf(hoje()) ? `${y + 1}-${pad(+k)}` : ym, espV: v, espAno: true }; }
 function cxFormFixa(f) {
   const novo = !f; const a = f ? f.area : ui.cxArea;
-  const v0 = novo ? { area: a, dia: 10, inicio: ymOf(hoje()), tipoFim: 'nunca' } : { ...f, dia: f.dia || 0, tipoFim: f.restante ? 'restante' : f.parcelas ? 'parcelas' : 'nunca', dez: f.mesesEsp?.[12] ?? '', espera: !!f.espera };
+  const v0 = novo ? { area: a, dia: 10, inicio: ymOf(hoje()), tipoFim: 'nunca' } : { ...f, dia: f.dia || 0, tipoFim: f.restante ? 'restante' : f.parcelas ? 'parcelas' : f.perguntar === 'parcelas' ? 'parcelas' : 'nunca', espera: !!f.espera, ...cxEspIni(f) };
   openForm({ title: novo ? 'Nova conta fixa' : 'Editar conta fixa', values: v0,
     fields: [
       { k: 'nome', label: 'Nome', required: true, placeholder: 'Ex.: Aluguel' },
@@ -10592,13 +10614,17 @@ function cxFormFixa(f) {
       { k: 'tipoFim', label: 'Até quando', type: 'select', rerender: true, options: [{ value: 'nunca', label: 'Todo mês, sem data para acabar' }, { value: 'parcelas', label: 'Um número de parcelas' }, { value: 'restante', label: 'Até pagar um valor total' }] },
       { k: 'parcelas', label: 'Quantas parcelas faltam (contando a deste mês)', type: 'number', show: (v) => v.tipoFim === 'parcelas' },
       { k: 'restante', label: 'Quanto falta pagar no total (R$)', type: 'money', show: (v) => v.tipoFim === 'restante' },
-      { k: 'dez', label: 'Valor diferente em dezembro (R$, opcional)', type: 'money' },
+      { k: 'espYm', label: 'Mês com valor diferente (opcional)', type: 'month', half: true },
+      { k: 'espV', label: 'Valor nesse mês (R$)', type: 'money', half: true },
+      { k: 'espAno', label: 'Repetir esse valor todo ano nesse mês', type: 'checkbox' },
       { k: 'espera', label: 'Em espera: não estou pagando agora (não entra na projeção)', type: 'checkbox' },
       { k: 'obs', label: 'Observação' },
     ],
     onSave: (v) => {
       const base = { area: v.area, nome: v.nome.trim(), valor: r2(v.valor), dia: Number(v.dia) || 0, inicio: v.inicio || ymOf(hoje()), espera: !!v.espera, obs: (v.obs || '').trim(),
-        categoria: f?.categoria || (v.area === 'casa' ? 'Dívidas' : 'Outros'), mesesEsp: num(v.dez, 0) > 0 ? { 12: r2(num(v.dez, 0)) } : {} };
+        categoria: f?.categoria || (v.area === 'casa' ? 'Dívidas' : 'Outros'), mesesEsp: v.espYm && num(v.espV, 0) > 0 ? { [v.espAno ? +v.espYm.slice(5, 7) : v.espYm]: r2(num(v.espV, 0)) } : {} };
+      if (v.tipoFim === 'parcelas' && !(num(v.parcelas, 0) >= 1)) return 'Informe quantas parcelas faltam (ou escolha outra opção em "Até quando").';
+      base.perguntar = v.tipoFim === 'nunca' && f?.perguntar && !v.semFim ? f.perguntar : null;
       base.parcelas = v.tipoFim === 'parcelas' ? Math.max(1, Math.round(num(v.parcelas, 1))) : null; base.restante = v.tipoFim === 'restante' ? r2(num(v.restante, 0)) || null : null;
       if (novo) db.fixas.push({ id: uid(), ...base }); else Object.assign(f, base);
     },
@@ -10713,12 +10739,14 @@ function cxTopoLoja() {
     : `<div class="card cx-fm ok"><small>Contas da loja até o fim de ${nm}</small><b class="cx-fm-n good">✓ Já estão cobertas</b><small>Você tem ${fmt0(fm.tem)} e as contas que faltam somam ${fmt0(fm.precisa)}. O que sobrar daqui para frente adianta o mês que vem.</small></div>`;
   const cta = fech ? `<button class="cx-cta feito" data-cx-fechar><span>✓ Caixa de hoje fechado · sobrou ${fmt(hj.sobra)}</span><small>toque para corrigir ou lançar mais alguma coisa</small></button>`
     : `<button class="cx-cta" data-cx-fechar><span>✓ Fechar o caixa de hoje</span><small>leva 2 minutos · o que entrou e o que saiu</small></button>`;
-  return `${meta}${cta}
+  setTimeout(pdvBanner, 0);
+  return `<div id="cxPdvBan"></div>${meta}${cta}
   <div class="cx-g3">
     <div class="card"><small>Saldo hoje</small><b>${fmt0(fm.saldo)}</b><button class="cx-link" data-cx-ajusta="loja">conferir</button></div>
     <div class="card"><small>${prox ? `Cai ${cxRotDia(prox.data)}` : 'Cartão a cair'}</small><b class="good">${fmt0(proxV)}</b><small>maquininha</small></div>
     <div class="card"><small>${ont ? `${cxRotDia(ont.d)[0].toUpperCase() + cxRotDia(ont.d).slice(1)} sobrou` : 'Último dia'}</small><b class="${ont && ont.sobra < 0 ? 'bad' : 'good'}">${ont ? fmt0(ont.sobra) : '—'}</b>${ont ? `<small>${ont.sobra >= Math.ceil(fm.porDia) || !fm.falta ? '🎯 meta batida' : `meta ${fmt0(Math.ceil(fm.porDia))}`}</small>` : ''}</div>
   </div>
+  ${db.fixas.filter((f) => f.area === 'loja' && f.perguntar === 'parcelas').map((f) => `<div class="card cx-alerta" data-cx-fixa="${f.id}"><b>❓ Quantas parcelas faltam do ${esc(f.nome)}?</b><small>Toque para preencher quando souber. Até lá, ele entra todo mês na projeção, sem data para acabar.</small></div>`).join('')}
   <div class="cx-avulso"><span>Lançar avulso:</span><button data-cx-ent="loja">⊕ Entrada</button><button data-cx-sai="loja">⊖ Saída</button></div>`;
 }
 
@@ -10743,23 +10771,26 @@ function cxFdRender() {
   let corpo = '', pe = '';
   if (p === 1) {
     const v = fdVenda(); const cart = v.debito + v.credito + v.creditoP; const tx = cxTaxaVenda(v); const cai = cxProxUtil(FD.data);
-    const campo = (k, l, extra = '') => `<label class="fd-in"><span>${l}${extra}</span><input type="text" inputmode="decimal" data-fd-v="${k}" value="${esc(FD.v[k])}" placeholder="0,00"></label>`;
+    const campo = (k, l, extra = '') => `<label class="fd-in"><span>${l}${extra}${FD.pdv && fdNum(FD.v[k]) === pdvValor(k) && pdvValor(k) ? '<small class="fd-tag">PDV</small>' : ''}</span><input type="text" inputmode="decimal" data-fd-v="${k}" value="${esc(FD.v[k])}" placeholder="0,00"></label>`;
     corpo = `<label class="fd-data">Dia do movimento <input type="date" data-fd-data value="${FD.data}" max="${hoje()}"></label>
+      ${pdvDisponivel() ? `<button class="fd-pdv-btn" data-fd="pdv">📥 Puxar do PDV</button>` : ''}
+      ${FD.pdvMsg ? `<div class="fd-pdv-ok ${FD.pdvMsg.erro ? 'erro' : ''}">${FD.pdvMsg.txt}</div>` : ''}
       <div class="fd-tit in"><b>⊕ O que ENTROU ${cxRotDia(FD.data)}</b><small>Copie do fechamento do PDV ou da maquininha. Deixe em branco o que não teve.</small></div>
       ${campo('pix', 'Pix')}${campo('dinheiro', 'Dinheiro')}${campo('debito', 'Débito')}${campo('credito', 'Crédito à vista')}
       <div class="fd-parc">${campo('creditoP', 'Crédito parcelado')}<select data-fd-v="vezes">${Array.from({ length: 11 }, (_, i) => `<option value="${i + 2}" ${+FD.v.vezes === i + 2 ? 'selected' : ''}>${i + 2}x</option>`).join('')}</select></div>
       <div class="fd-tot"><span>Vendeu no dia</span><b id="fdTot">${fmt(vendaBruta(v))}</b></div>
       <p class="small muted" id="fdCart" style="margin:2px 0 0">${cart ? `O cartão (${fmt(cart)}) cai ${cxRotDia(cai)}, já sem a taxa: ${fmt(cart - tx)}` : 'Cartão (débito e crédito) cai no próximo dia útil, já sem a taxa.'}</p>
-      <p class="small muted fd-pdv">📥 Puxar direto do PDV: em breve</p>`;
+      ${FD.pdv ? '' : pdvDisponivel() ? '' : '<p class="small muted fd-pdv">📥 Puxar do PDV: só no PC da loja, onde fica a pasta Prumo-PDV</p>'}`;
     pe = `<button class="btn" data-fd="cancelar">Cancelar</button><button class="btn primary" data-fd="p2">Próximo: o que saiu →</button>`;
   } else if (p === 2) {
     const dia = cxDia(FD.data); const ct = fdContas();
     const ja = [...dia.comp.map((c) => ({ k: 'c:' + c.id, t: `📦 ${c.fornecedor}`, v: c.valor })), ...dia.desp.map((x) => ({ k: 'd:' + x.id, t: `🧾 ${x.descricao}`, v: x.valor })), ...dia.tr.map((t) => ({ k: 't:' + t.id, t: `🏠 Retirada p/ casa${t.obs ? ' · ' + t.obs : ''}`, v: t.valor }))];
     corpo = `<div class="fd-tit out"><b>⊖ O que SAIU ${cxRotDia(FD.data)}</b><small>Toque no tipo e digite o valor. Se não saiu nada, é só avançar.</small></div>
       <div class="fd-chips">${Object.entries(FD_TIPOS).map(([k, [ic, n]]) => `<button data-fd-add="${k}">${ic} ${n}</button>`).join('')}</div>
-      ${FD.saidas.map((s, i) => `<div class="fd-sai"><span class="fd-ic">${FD_TIPOS[s.tipo][0]}</span><div><small>${FD_TIPOS[s.tipo][1]}</small><input type="text" data-fd-s="${i}:desc" value="${esc(s.desc)}" placeholder="${FD_TIPOS[s.tipo][2]}"></div><input type="text" inputmode="decimal" class="fd-val" data-fd-s="${i}:valor" value="${esc(s.valor)}" placeholder="0,00"><button class="icon-btn" data-fd-rm="${i}">✕</button></div>`).join('')}
+      ${FD.saidas.map((s, i) => `<div class="fd-sai"><span class="fd-ic">${FD_TIPOS[s.tipo][0]}</span><div><small>${FD_TIPOS[s.tipo][1]}${s.pdv ? ` <span class="fd-tag">PDV${s.hora ? ' · ' + esc(s.hora) : ''}</span>` : ''}</small><input type="text" data-fd-s="${i}:desc" value="${esc(s.desc)}" placeholder="${FD_TIPOS[s.tipo][2]}"></div><input type="text" inputmode="decimal" class="fd-val" data-fd-s="${i}:valor" value="${esc(s.valor)}" placeholder="0,00"><button class="icon-btn" data-fd-rm="${i}">✕</button></div>`).join('')}
       ${ja.length ? `<div class="fd-ja"><small>Já lançado neste dia</small>${ja.map((x) => `<div class="cx-l"><span>${esc(x.t)}</span><b>−${fmt(x.v)}</b><button class="icon-btn" data-fd-del="${x.k}" title="Excluir">🗑</button></div>`).join('')}</div>` : ''}
       ${ct.length ? `<div class="fd-ja"><small>Contas da loja vencidas até ${cxRotDia(FD.data)}: pagou alguma ${FD.data === hoje() ? 'hoje' : 'neste dia'}?</small>${ct.map((o) => { const k = o.f.id + '|' + o.ym; return `<label class="fd-ck"><input type="checkbox" data-fd-pg="${k}" ${FD.pagar[k] ? 'checked' : ''}><span>${esc(o.f.nome)}<small>${o.data < FD.data ? 'venceu ' : 'vence '}${dmy(o.data).slice(0, 5)}</small></span><b>${fmt(o.valor)}</b></label>`; }).join('')}<p class="small muted" style="margin:4px 0 0">Se pagou num outro dia, marque ✓ Paguei na tela do Caixa e escolha o dia.</p></div>` : ''}
+      ${FD.pdv ? `<p class="small muted" style="margin:0">${FD.pdv.sangrias?.length ? `As ${FD.pdv.sangrias.length === 1 ? 'sangria do PDV entrou' : FD.pdv.sangrias.length + ' sangrias do PDV entraram'} acima. Confira o tipo de cada uma.` : 'Nenhuma sangria no PDV neste dia ✓'} O que você pagou pelo banco da loja (fora da gaveta), lance com os botões acima.</p>` : ''}
       <div class="fd-tot"><span>Saiu no dia</span><b class="bad" id="fdTotS">${fmt(fdTotSaida())}</b></div>`;
     pe = `<button class="btn" data-fd="p1">← Voltar</button><button class="btn primary" data-fd="salvar">Fechar o dia ✓</button>`;
   } else {
@@ -10769,7 +10800,10 @@ function cxFdRender() {
         ${dia.taxa ? `<div class="fd-tot"><span class="muted">Taxa da maquininha</span><b class="muted">−${fmt(dia.taxa)}</b></div>` : ''}
         <div class="fd-tot"><span class="bad">Saiu</span><b class="bad">−${fmt(dia.sai)}</b></div>
         <div class="fd-tot fd-sobra"><span>${dia.sobra >= 0 ? 'Sobrou' : 'Faltou'} no dia</span><b class="${dia.sobra >= 0 ? 'good' : 'bad'}">${fmt(Math.abs(dia.sobra))}</b></div></div>
-      ${dia.din ? `<div class="fd-box"><b>🧮 Confira a gaveta</b><small>Entraram <b>${fmt(dia.din)}</b> em dinheiro neste dia. Junto com o troco, esse valor tem que estar na gaveta.</small></div>` : ''}
+      ${dia.v && dia.v.custo != null ? `<div class="fd-box"><div class="fd-tot"><span class="muted">Custo da mercadoria vendida</span><b class="muted">${fmt(dia.v.custo)}</b></div><div class="fd-tot"><span>Lucro bruto do dia</span><b class="good">${fmt(dia.bruto - dia.taxa - dia.v.custo)}</b></div></div>` : ''}
+      ${dia.v && dia.v.qtd ? `<div class="fd-box"><div class="fd-tot"><span>🧾 Ticket médio</span><b>${fmt(dia.bruto / dia.v.qtd)}</b></div><small>${dia.v.qtd} vendas${dia.v.descontos ? ` · ${fmt(dia.v.descontos)} em descontos` : ''}</small></div>` : ''}
+      ${dia.v && dia.v.gaveta ? `<div class="fd-box"><b>🧮 Gaveta (do PDV)</b><div class="fd-tot"><span class="muted">Esperado</span><span>${fmt(dia.v.gaveta.esperado)}</span></div><div class="fd-tot"><span class="muted">Contado</span><span>${fmt(dia.v.gaveta.contado)} ${Math.abs(dia.v.gaveta.contado - dia.v.gaveta.esperado) < 1 ? '<b class="good">✓ bateu</b>' : `<b class="bad">${dia.v.gaveta.contado > dia.v.gaveta.esperado ? 'sobrou' : 'faltou'} ${fmt(Math.abs(dia.v.gaveta.contado - dia.v.gaveta.esperado))}</b>`}</span></div></div>` : ''}
+      ${dia.din && !(dia.v && dia.v.gaveta) ? `<div class="fd-box"><b>🧮 Confira a gaveta</b><small>Entraram <b>${fmt(dia.din)}</b> em dinheiro neste dia. Junto com o troco, esse valor tem que estar na gaveta.</small></div>` : ''}
       ${fm ? (metaDia ? `<div class="fd-box meta"><b class="${dia.sobra >= metaDia ? 'good' : 'warn'}">${dia.sobra >= metaDia ? `🎯 Meta do dia batida: sobrou ${fmt0(dia.sobra)} (meta ${fmt0(metaDia)})` : `Sobrou ${fmt0(Math.max(0, dia.sobra))}, a meta era ${fmt0(metaDia)}`}</b>
           <small>${fm.falta > 0 ? `Para fechar ${MESES[+fm.m0.slice(5, 7) - 1]} agora faltam <b>${fmt0(fm.falta)}</b> · ${fmt0(Math.ceil(fm.porDia))} por dia nos ${fm.dias} dias que faltam.` : `✓ As contas de ${MESES[+fm.m0.slice(5, 7) - 1]} estão cobertas!`}</small></div>`
         : `<div class="fd-box meta"><b class="good">✓ As contas de ${MESES[+fm.m0.slice(5, 7) - 1]} estão cobertas</b><small>O que sobrar agora adianta o mês que vem.</small></div>`)
@@ -10787,15 +10821,20 @@ function fdAtualizarTotais() {
 function fdSalvar() {
   const v = fdVenda(); const d = FD.data; const tem = vendaBruta(v) > 0; const ex = db.loja.vendas.find((x) => x.data === d);
   for (const s of FD.saidas) if (String(s.valor).trim() && !(fdNum(s.valor) > 0)) return fdErro(`Confira o valor de ${FD_TIPOS[s.tipo][1]}.`);
-  if (ex && tem) Object.assign(ex, v); else if (tem) db.loja.vendas.push({ id: uid(), data: d, ...v, obs: '' }); else if (ex) db.loja.vendas = db.loja.vendas.filter((x) => x !== ex);
+  const P = FD.pdv; const extra = {};
+  if (P) { extra.pdv = P.gerado_em || true; extra.qtd = Number(P.vendas_qtd) || 0; extra.custo = r2(Number(P.custo_mercadoria) || 0); extra.descontos = r2(Number(P.descontos) || 0); if (P.gaveta) extra.gaveta = { abertura: Number(P.gaveta.abertura) || 0, esperado: Number(P.gaveta.esperado) || 0, contado: Number(P.gaveta.contado) || 0 };
+    if (['pix', 'dinheiro', 'debito', 'credito', 'creditoP'].every((k) => Math.abs(v[k] - pdvValor(k)) < 0.005)) extra.taxaPdv = r2(Number(P.taxas_total) || 0); }
+  if (ex && tem) { Object.assign(ex, v, extra); if (P && extra.taxaPdv === undefined) delete ex.taxaPdv; if (!P && ex.taxaPdv !== undefined && ['pix', 'dinheiro', 'debito', 'credito', 'creditoP'].some((k) => Math.abs((Number(ex[k]) || 0) - v[k]) >= 0.005)) delete ex.taxaPdv; }
+  else if (tem) db.loja.vendas.push({ id: uid(), data: d, ...v, ...extra, obs: '' }); else if (ex) db.loja.vendas = db.loja.vendas.filter((x) => x !== ex);
   for (const s of FD.saidas) {
     const val = fdNum(s.valor); if (!(val > 0)) continue; const desc = String(s.desc || '').trim();
-    if (s.tipo === 'merc') db.loja.compras.push({ id: uid(), data: d, fornecedor: desc || 'Mercadoria', valor: val, obs: '' });
-    else if (s.tipo === 'ret') db.transf.push({ id: uid(), de: 'loja', para: 'casa', valor: val, data: d, obs: desc || 'retirada' });
-    else db.loja.despesas.push({ id: uid(), data: d, descricao: desc || FD_TIPOS[s.tipo][1], categoria: { mat: 'Manutenção', conta: 'Outros' }[s.tipo] || 'Outros', valor: val });
+    const pk = s.pdv ? { pdv: s.pdv } : {};
+    if (s.tipo === 'merc') db.loja.compras.push({ id: uid(), data: d, fornecedor: desc || 'Mercadoria', valor: val, obs: '', ...pk });
+    else if (s.tipo === 'ret') db.transf.push({ id: uid(), de: 'loja', para: 'casa', valor: val, data: d, obs: desc || 'retirada', ...pk });
+    else db.loja.despesas.push({ id: uid(), data: d, descricao: desc || FD_TIPOS[s.tipo][1], categoria: { mat: 'Manutenção', conta: 'Outros' }[s.tipo] || 'Outros', valor: val, ...pk });
   }
   fdContas().forEach((o) => { if (FD.pagar[o.f.id + '|' + o.ym]) cxPagar(o, o.valor, d); });
-  marcarFechado('loja', d); FD.passo = 3; FD.saidas = []; FD.pagar = {};
+  marcarFechado('loja', d); FD.passo = 3; FD.saidas = []; FD.pagar = {}; FD.pdv = null; FD.pdvMsg = null;
   changed(); cxFdRender(); toast('Dia fechado ✔');
 }
 document.addEventListener('click', (e) => {
@@ -10807,6 +10846,7 @@ document.addEventListener('click', (e) => {
     if (v === 'p1') { FD.passo = 1; return cxFdRender(); }
     if (v === 'p2') { FD.passo = 2; return cxFdRender(); }
     if (v === 'salvar') return fdSalvar();
+    if (v === 'pdv') return pdvPuxar();
   }
   if ((v = g('data-fd-add'))) { FD.saidas.push({ tipo: v, desc: '', valor: '' }); cxFdRender(); const ins = $$('.fd-val'); ins[ins.length - 1]?.focus(); return; }
   if ((v = g('data-fd-rm'))) { FD.saidas.splice(+v, 1); return cxFdRender(); }
@@ -10825,7 +10865,7 @@ document.addEventListener('change', (e) => {
   if (!FD || !e.target.closest('.fd')) return; const i = e.target;
   if (i.dataset.fdV) { FD.v[i.dataset.fdV] = i.value; fdAtualizarTotais(); }
   if (i.dataset.fdPg !== undefined && i.dataset.fdPg) { FD.pagar[i.dataset.fdPg] = i.checked; fdAtualizarTotais(); }
-  if (i.matches('[data-fd-data]') && i.value && i.value <= hoje()) { const keep = FD.saidas; cxFechar(i.value); FD.saidas = keep; cxFdRender(); }
+  if (i.matches('[data-fd-data]') && i.value && i.value <= hoje()) { const keep = FD.saidas.filter((x) => !x.pdv); cxFechar(i.value); FD.saidas = keep; cxFdRender(); }
 });
 $('#dlg').addEventListener('close', () => { if (FD) FD = null; });
 
@@ -10852,6 +10892,71 @@ function cxFimCard(h, i) { // acha o fim do cartão do caixa (contando as divs a
   return h.indexOf('<div class="cel-hoje-pe">', i);
 }
 CEL_NOVIDADES['6.7'] = ['Caixa da loja: quanto falta para fechar o mês e a meta de quanto precisa sobrar por dia', 'Novo: Fechar o caixa de hoje em 3 passos (entrou, saiu, resumo)'];
+
+/* =================== v6.8: puxar do PDV (pasta Prumo-PDV no PC da loja) =================== */
+let pdvDir = null, pdvDirOk = false;
+const pdvDisponivel = () => !CELULAR && typeof window.showDirectoryPicker === 'function';
+idb.get('pdv-dir').then((h) => { if (h) pdvDir = h; }).catch(() => {});
+async function pdvPasta(pedir) { // devolve a pasta com permissão, ou null
+  if (pdvDir) {
+    try { let p = await pdvDir.queryPermission({ mode: 'read' }); if (p !== 'granted' && pedir) p = await pdvDir.requestPermission({ mode: 'read' }); if (p === 'granted') return (pdvDirOk = true, pdvDir); } catch (e) { /* pede de novo */ }
+    if (!pedir) return null;
+  }
+  if (!pedir) return null;
+  try {
+    const h = await window.showDirectoryPicker({ id: 'prumo-pdv', mode: 'read' });
+    if (!/pdv/i.test(h.name) && !confirm(`A pasta escolhida é "${h.name}". O PDV salva na pasta "Prumo-PDV". Usar esta mesmo assim?`)) return null;
+    pdvDir = h; pdvDirOk = true; idb.set('pdv-dir', h).catch(() => {}); return h;
+  } catch (e) { return null; }
+}
+async function pdvLer(dir, data) {
+  try { const fh = await dir.getFileHandle(`fechamento-${data}.json`); const j = JSON.parse(await (await fh.getFile()).text()); return j && j.origem === 'pdv' && j.data === data ? j : { erro: 'O arquivo desse dia não parece ser do PDV.' }; }
+  catch (e) { return e && e.name === 'NotFoundError' ? null : { erro: 'Não consegui ler o arquivo do PDV desse dia.' }; }
+}
+function pdvValor(k) {
+  const P = FD && FD.pdv; if (!P) return 0; const f = P.formas || {};
+  if (k === 'credito') return r2(Number(f.credito_vista) || 0);
+  if (k === 'creditoP') return r2(soma(f.credito_parcelado || [], (x) => Number(x.valor) || 0));
+  return r2(Number(f[k]) || 0);
+}
+const PDV_TIPO = [[/retir|casa|pr[oó].?labore/i, 'ret'], [/limp|sacol|materia|papel|fita/i, 'mat'], [/lanch|caf[eé]|[aá]gua|almo[cç]|comid/i, 'lanche'], [/frete|motoboy|entreg|uber|correio/i, 'frete'], [/fornec|mercador|pe[cç]a|capinha|pel[ií]cula|compra/i, 'merc'], [/luz|energia|internet|aluguel|conta|boleto/i, 'conta']];
+async function pdvPuxar() {
+  const dir = await pdvPasta(true); if (!dir) { FD.pdvMsg = { erro: true, txt: 'Escolha a pasta <b>Prumo-PDV</b> (fica na sua pasta pessoal) para o Prumo ler os fechamentos.' }; return cxFdRender(); }
+  const j = await pdvLer(dir, FD.data);
+  if (!j) { FD.pdvMsg = { erro: true, txt: `O PDV ainda não tem o resumo de ${cxRotDia(FD.data)}. Feche o caixa no PDV (ou use "Gerar resumo para o Prumo" lá) e tente de novo.` }; return cxFdRender(); }
+  if (j.erro) { FD.pdvMsg = { erro: true, txt: j.erro }; return cxFdRender(); }
+  FD.pdv = j; const f = j.formas || {}; const parc = (f.credito_parcelado || []).slice().sort((a, b) => (Number(b.valor) || 0) - (Number(a.valor) || 0));
+  const t = (n) => (n ? valorTxt(r2(n)) : '');
+  FD.v = { pix: t(pdvValor('pix')), dinheiro: t(pdvValor('dinheiro')), debito: t(pdvValor('debito')), credito: t(pdvValor('credito')), creditoP: t(pdvValor('creditoP')), vezes: parc[0] ? Math.max(2, Math.min(12, Number(parc[0].parcelas) || 2)) : FD.v.vezes };
+  // sangrias viram saídas (sem repetir as que já entraram antes)
+  const ja = new Set([...db.loja.despesas, ...db.loja.compras, ...db.transf].map((x) => x.pdv).filter(Boolean));
+  FD.saidas = FD.saidas.filter((x) => !x.pdv);
+  (j.sangrias || []).forEach((sg, i) => { const key = `${j.data}#${i}`; if (ja.has(key) || !(Number(sg.valor) > 0)) return;
+    const tipo = (PDV_TIPO.find(([re]) => re.test(sg.motivo || '')) || [0, 'outro'])[1];
+    FD.saidas.push({ tipo, desc: sg.motivo || 'Sangria', valor: valorTxt(r2(Number(sg.valor))), pdv: key, hora: sg.hora || '' }); });
+  const outros = soma(f.outros || [], (x) => Number(x.valor) || 0);
+  FD.pdvMsg = { txt: `✓ Lido do PDV: ${cxRotDia(j.data)} · ${j.vendas_qtd || 0} ${Number(j.vendas_qtd) === 1 ? 'venda' : 'vendas'}${j.gerado_em ? ` · gerado às ${String(j.gerado_em).slice(11, 16)}` : ''}${(f.credito_parcelado || []).length > 1 ? `<br>Parcelado em mais de um jeito (${f.credito_parcelado.map((x) => `${x.parcelas}x ${fmt(x.valor)}`).join(', ')}): a taxa usada é a exata do PDV.` : ''}${outros ? `<br>${fmt(outros)} em vale/outros não entram como dinheiro.` : ''}` };
+  cxFdRender();
+}
+async function pdvBanner() {
+  const el = $('#cxPdvBan'); if (!el || !pdvDisponivel()) return;
+  if (!pdvDir) { el.innerHTML = `<div class="card cx-pdv-ban"><span><b>📥 Ligar o PDV ao Prumo</b><small>Escolha uma vez a pasta Prumo-PDV e o Prumo avisa quando tiver dia fechado no PDV para trazer.</small></span><button class="btn sm" data-pdv-ligar>Escolher pasta</button></div>`; return; }
+  const dir = await pdvPasta(false);
+  if (!dir) { el.innerHTML = `<div class="card cx-pdv-ban"><span><b>📥 Ver se o PDV tem dias novos</b><small>O navegador pede sua permissão para ler a pasta Prumo-PDV.</small></span><button class="btn sm" data-pdv-ligar>Ver agora</button></div>`; return; }
+  const dias = [];
+  try { for await (const [nome] of dir.entries()) { const m = /^fechamento-(\d{4}-\d{2}-\d{2})\.json$/.exec(nome); if (m && m[1] >= addDias(hoje(), -31) && m[1] <= hoje() && !diaFechado('loja', m[1])) dias.push(m[1]); } } catch (e) { return; }
+  dias.sort();
+  const el2 = $('#cxPdvBan'); if (!el2) return;
+  if (!dias.length) { el2.innerHTML = ''; return; }
+  const info = await Promise.all(dias.slice(0, 6).map(async (d) => ({ d, j: await pdvLer(dir, d) })));
+  el2.innerHTML = `<div class="card cx-pdv-ban novo"><span><b>📥 O PDV tem ${dias.length === 1 ? '1 dia' : dias.length + ' dias'} para trazer</b>${info.map(({ d, j }) => `<button class="cx-pdv-dia" data-pdv-dia="${d}">${cxRotDia(d)}${j && !j.erro ? ` · ${j.vendas_qtd || 0} vendas · ${fmt(j.bruto || 0)}` : ''} <b>Trazer →</b></button>`).join('')}</span></div>`;
+}
+document.addEventListener('click', async (e) => {
+  if (e.target.closest('[data-pdv-ligar]')) { const d = await pdvPasta(true); if (d) pdvBanner(); return; }
+  const b = e.target.closest('[data-pdv-dia]'); if (b) { cxFechar(b.dataset.pdvDia); await pdvPuxar(); }
+});
+CEL_NOVIDADES['6.9'] = ['Parcela da loja: R$ 9 mil só em dezembro de 2026', 'Contas fixas: valor diferente num mês específico (ou todo ano)', 'Lembrete para preencher quantas parcelas faltam do empréstimo'];
+CEL_NOVIDADES['6.8'] = ['📥 Puxar do PDV: as vendas e as sangrias do dia entram sozinhas (no PC da loja)', 'Custo real da mercadoria e taxa exata vindos do PDV', 'Resumo do dia com lucro bruto, ticket médio e gaveta'];
 
 /* ---------- início ---------- */
 (async function boot() {
