@@ -1109,6 +1109,28 @@ body.md-aberto .cel-folha-o { z-index: 160; } body.md-aberto .toast, body.md-abe
 .vg-modf label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:5px 0}.vg-modf input{width:110px;text-align:right}
 .vg-ini-bt{display:flex;gap:6px;margin-top:8px}.vg-ini-bt button{flex:1;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:10px;padding:6px 2px;font-size:20px;cursor:pointer}.vg-ini-bt small{display:block;font-size:10px;color:var(--muted)}
 @media(max-width:520px){.vg-hb{grid-template-columns:110px 1fr 62px}}
+/* v7.7 carro / GNV */
+.vg-pt{display:flex;gap:4px;margin:6px 0 2px}
+.vg-pt button{flex:1;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:9px;padding:8px 2px;font-size:13px;font-weight:600;cursor:pointer}
+.vg-pt button.on{background:var(--brand,#1f4e6b);border-color:var(--brand,#1f4e6b);color:#fff}
+.vg-cb button{padding:10px 4px;font-size:14px}
+.vg-ops{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.vg-ops button{text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:12px;padding:10px 12px;cursor:pointer}
+.vg-ops button small{display:block;color:var(--muted);margin-top:2px;font-weight:400}
+.vg-ops button.on{border:2px solid var(--brand,#1f4e6b);background:color-mix(in srgb,var(--brand,#1f4e6b) 8%,var(--panel))}
+.vg-chk{display:flex;align-items:center;gap:6px;font-size:13px;border:1px solid var(--line);border-radius:10px;padding:6px 10px;color:var(--fg)}
+.vg-chk input[type=checkbox]{width:18px;height:18px;margin:0}
+.vg-cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center}
+.vg-cmp>div{position:relative;border:1px solid var(--line);border-radius:12px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.vg-cmp small{color:var(--muted);font-size:11px}.vg-cmp b{font-size:17px}
+.vg-cmp .win{border:2px solid #2f7d4f;background:color-mix(in srgb,#2f7d4f 9%,var(--panel))}
+.vg-cmp .pill,.vg-cmp .prec{display:inline-block;border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;margin-top:3px}
+.vg-cmp .pill{background:color-mix(in srgb,#2f7d4f 15%,transparent);color:#2f7d4f}.vg-cmp .prec{background:color-mix(in srgb,#d9822b 15%,transparent);color:#b0661c}
+.vg-x{position:absolute;top:2px;right:4px;border:0;background:none;color:var(--muted);font-size:11px;cursor:pointer;opacity:.5}
+.vg-100{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:13px;color:var(--muted)}.vg-100 b{color:var(--fg)}
+.vg-precos{display:flex;gap:8px;margin-bottom:8px}.vg-precos span{flex:1;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:12px;color:var(--muted)}.vg-precos b{display:block;font-size:18px;color:var(--fg)}
+.vg-link{display:flex;justify-content:space-between;align-items:center;cursor:pointer}.vg-link small{display:block;color:var(--muted)}.vg-link>b{font-size:22px;color:var(--muted)}
+.vg-heroi .btn{background:rgba(255,255,255,.16);color:#fff;border-color:transparent}
 
 /* =================== v7.5: cores =================== */
 :root { --brand: #1f4e6b; }
@@ -4050,7 +4072,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '7.6';
+const APP_VERSAO = '7.7';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -11881,8 +11903,8 @@ CEL_NOVIDADES['7.4'] = ['✋ Leitura avulsa: escolha qualquer livro e capítulo 
 /* =================== v7.6: Representação · Viagens (lançar em 2 toques, onde mais gasto, mês, economizar) =================== */
 const VG = { comb: ['⛽', 'Combustível', 'Combustível'], almoco: ['🍽', 'Almoço', 'Viagens e alimentação'], lanche: ['☕', 'Café/lanche', 'Viagens e alimentação'], besteira: ['🍬', 'Doce/besteira', 'Viagens e alimentação'], pedagio: ['🛣', 'Pedágio', 'Viagens e alimentação'], estac: ['🅿️', 'Estacionamento', 'Viagens e alimentação'], hotel: ['🏨', 'Hotel', 'Viagens e alimentação'], carro: ['🔧', 'Carro', 'Veículo'], outro: ['➕', 'Outro', 'Viagens e alimentação'] };
 const VG_DESAFIOS = [['marmita', '🥪', 'Trouxe almoço de casa', 'almoco', 30], ['semdoce', '🍬', 'Sem doce nem lanche à toa', 'besteira', 10], ['cafe', '☕', 'Café de casa (garrafa)', 'lanche', 8], ['posto', '⛽', 'Abasteci no posto mais barato', null, 8]];
-(function () { const _e = ensureModules; ensureModules = function (d) { d = _e(d); if (d.rep) d.rep.viagem = Object.assign({ orcMes: 1000, orcViagem: 150, dias: [2, 5], modelos: { 2: [['comb', 110], ['almoco', 30]], 5: [['comb', 110], ['almoco', 30]] } }, d.rep.viagem || {}); if (!Array.isArray(d.vgEco)) d.vgEco = []; return d; }; })();
-COLECOES.push(['vgEco']); if (db) { ensureModules(db); }
+(function () { const _e = ensureModules; ensureModules = function (d) { d = _e(d); if (d.rep) d.rep.viagem = Object.assign({ tanque: 50, cilindro: 15, orcMes: 1000, orcViagem: 150, dias: [2, 5], modelos: { 2: [['comb', 110], ['almoco', 30]], 5: [['comb', 110], ['almoco', 30]] } }, d.rep.viagem || {}); if (!Array.isArray(d.vgEco)) d.vgEco = []; if (!Array.isArray(d.vgTestes)) d.vgTestes = []; return d; }; })();
+COLECOES.push(['vgEco'], ['vgTestes']); if (db) { ensureModules(db); }
 const VGC = () => db.rep.viagem;
 function vgTipo(d) { // de que tipo é o gasto (os antigos são deduzidos pela categoria e pela descrição)
   if (d.vg && VG[d.vg]) return d.vg; const t = cxSemAc(d.descricao);
@@ -11892,7 +11914,9 @@ function vgTipo(d) { // de que tipo é o gasto (os antigos são deduzidos pela c
   if (/almoc|marmit|restaur|refeic|prato/.test(t)) return 'almoco'; if (/doce|chocolate|sorvete|bala|refri|salgad/.test(t)) return 'besteira'; if (/cafe|lanche|padaria/.test(t)) return 'lanche';
   return d.categoria === 'Viagens e alimentação' ? 'outro' : null;
 }
-const vgGastos = (de, ate) => db.rep.despesas.filter((d) => d.data >= de && d.data <= ate && vgTipo(d));
+const vgGastos = (de, ate) => db.rep.despesas.filter((d) => d.data >= de && d.data <= ate && !d.fora && vgTipo(d));
+const vgAbast = () => db.rep.despesas.filter((d) => vgTipo(d) === 'comb');
+const vgComb = (d) => (d.comb === 'gnv' ? 'gnv' : 'gas');
 const vgDiasViagem = (L) => [...new Set(L.map((d) => d.data))].sort();
 const vgEhDia = (d) => VGC().dias.includes(new Date(d + 'T12:00').getDay());
 const vgNomeDia = (d) => ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'][new Date(d + 'T12:00').getDay()];
@@ -11904,8 +11928,8 @@ function vgViagensRestantes(ym) { const H = hoje(); const fim = `${ym}-${pad(cxU
 /* ---------- tela ---------- */
 ui.vgSub = ui.vgSub || 'hoje'; ui.vgPer = ui.vgPer || 'mes';
 function repViagens() {
-  const subs = [['hoje', '🚗 Hoje'], ['onde', '📊 Onde gasto'], ['mes', '🗓 Mês'], ['eco', '🌱 Economizar']];
-  return `<div class="vg"><div class="vg-seg">${subs.map(([k, l]) => `<button class="${ui.vgSub === k ? 'on' : ''}" data-vg-sub="${k}">${l}</button>`).join('')}</div>${{ hoje: vgHoje, onde: vgOnde, mes: vgMes, eco: vgEco }[ui.vgSub]()}</div>`;
+  const subs = [['hoje', '🚗 Hoje'], ['onde', '📊 Onde gasto'], ['mes', '🗓 Mês'], ['eco', '🌱 Economizar'], ['carro', '⛽ Carro']];
+  return `<div class="vg"><div class="vg-seg">${subs.map(([k, l]) => `<button class="${ui.vgSub === k ? 'on' : ''}" data-vg-sub="${k}">${l}</button>`).join('')}</div>${{ hoje: vgHoje, onde: vgOnde, mes: vgMes, eco: vgEco, carro: vgCarroTela }[ui.vgSub]()}</div>`;
 }
 function vgHoje() {
   const H = hoje(); const L = vgGastos(H, H).sort((a, b) => (a.id < b.id ? -1 : 1)); const tot = soma(L, 'valor'); const C = VGC(); const wd = new Date(H + 'T12:00').getDay();
@@ -11917,7 +11941,7 @@ function vgHoje() {
   return `${hero}
     <div class="card vg-c"><div class="vg-h"><h3>Lançar gasto</h3><small class="muted">2 toques</small></div><div class="vg-grade">${Object.entries(VG).map(([k, [ic, n]]) => `<button data-vg-lancar="${k}"><span>${ic}</span>${n}</button>`).join('')}</div>
       ${mod.length && viajando ? `<div class="vg-mod"><span><b>Modelo da ${vgNomeDia(H)}</b><small>${mod.map(([t, v]) => `${VG[t][0]} ${fmt0(v)}`).join(' · ')}</small></span><button class="btn sm primary" data-vg-modelo="${wd}">Lançar ✓</button></div>` : ''}</div>
-    <div class="card vg-c"><div class="vg-h"><h3>Hoje</h3><b>${fmt(tot)}</b></div>${L.length ? L.map((d) => `<div class="cx-l" data-vg-ed="${d.id}"><span>${VG[vgTipo(d)][0]} ${esc(d.descricao)}<small>${[d.local, d.cliente, d.litros ? `${String(d.litros).replace('.', ',')} L` : ''].filter(Boolean).map(esc).join(' · ')}</small></span><b>${fmt(d.valor)}</b></div>`).join('') : '<p class="small muted" style="margin:0">Nada lançado hoje.</p>'}</div>
+    <div class="card vg-c"><div class="vg-h"><h3>Hoje</h3><b>${fmt(tot)}</b></div>${L.length ? L.map((d) => `<div class="cx-l" data-vg-ed="${d.id}"><span>${VG[vgTipo(d)][0]} ${esc(d.descricao)}<small>${[d.local, d.cliente, d.litros ? `${String(d.litros).replace('.', ',')} ${vgComb(d) === 'gnv' ? 'm³ GNV' : 'L'}` : ''].filter(Boolean).map(esc).join(' · ')}</small></span><b>${fmt(d.valor)}</b></div>`).join('') : '<p class="small muted" style="margin:0">Nada lançado hoje.</p>'}</div>
     ${uiAjuda('Toque num botão, digite o valor e pronto · o <b>modelo</b> lança de uma vez o que se repete · toque num gasto para corrigir.')}`;
 }
 function vgPeriodo(per) { const H = hoje();
@@ -11972,43 +11996,118 @@ function vgEco() {
   const m = ui.mes; const E = db.vgEco.filter((e) => ymOf(e.data) === m); const tot = soma(E, 'valor'); const C = VGC(); const H = hoje();
   const ini = `${m}-01`, fim = `${m}-${pad(cxUltimoDia(m))}`; const L = vgGastos(ini, fim); const best = soma(L.filter((d) => vgTipo(d) === 'besteira'), 'valor'); const lan = soma(L.filter((d) => vgTipo(d) === 'lanche'), 'valor');
   const des = VG_DESAFIOS.map(([k, ic, n, t, pad_]) => { const v = r2(t ? Math.max(pad_, vgMediaTipo(t)) : pad_); const feito = db.vgEco.some((e) => e.tipo === k && e.data === H); return { k, ic, n, v, feito }; });
-  const carro = vgCarro();
   return `<div class="card vg-eco"><small>Você já economizou em ${MESES[+m.slice(5, 7) - 1]}</small><b>${fmt0(tot)}</b><small>${tot >= C.orcViagem ? `equivale a ${String(r2(tot / C.orcViagem)).replace('.', ',')} ${tot / C.orcViagem >= 2 ? 'viagens' : 'viagem'} de graça 🎉` : `cada "Fiz ✓" soma aqui · ${fmt0(C.orcViagem - tot)} para pagar uma viagem inteira`}</small></div>
     <div class="card vg-c"><div class="vg-h"><h3>Desafios de hoje</h3><small class="muted">toque quando fizer</small></div>${des.map((x) => `<div class="vg-des ${x.feito ? 'feito' : ''}"><span>${x.ic} ${x.n}<small>economia de ~${fmt0(x.v)}</small></span><button class="btn sm ${x.feito ? '' : 'primary'}" data-vg-des="${x.k}:${x.v}" ${x.feito ? 'disabled' : ''}>${x.feito ? '✓ feito' : 'Fiz ✓'}</button></div>`).join('')}</div>
     ${best || lan ? `<div class="card vg-c"><h3>💡 Onde dá para cortar</h3>${best ? `<p class="small" style="margin:0 0 4px">🍬 Doces e besteiras em ${MESES[+m.slice(5, 7) - 1]}: <b class="bad">${fmt0(best)}</b>. Sem eles, sobraria isso a mais no mês.</p>` : ''}${lan ? `<p class="small" style="margin:0">☕ Cafés e lanches: <b>${fmt0(lan)}</b>. Uma garrafa de café de casa corta boa parte.</p>` : ''}</div>` : ''}
-    <div class="card vg-c"><h3>⛽ Seu carro</h3>${carro.n >= 2 ? `<div class="cx-l"><span>Consumo médio</span><b>${String(r2(carro.kml)).replace('.', ',')} km/l</b></div><div class="cx-l"><span>Custo por km</span><b>${fmt(carro.pkm)}</b></div>` : ''}${carro.posto ? `<div class="cx-l"><span>Posto mais barato da sua rota<small>${fmt(carro.posto[1])} o litro</small></span><b class="good">${esc(carro.posto[0])}</b></div>` : ''}
-      ${carro.n < 2 && !carro.posto ? '<p class="small muted" style="margin:0">Ao lançar o combustível, coloque os <b>litros</b>, o <b>km do painel</b> e o <b>posto</b>. Depois de 2 abastecimentos aparece o consumo, o custo por km e o posto mais barato.</p>' : ''}</div>`;
+    <div class="card vg-c vg-link" data-vg-sub="carro"><span>⛽ <b>Gasolina × GNV</b><small>teste qual compensa mais e veja quanto custa cada km</small></span><b>›</b></div>`;
 }
-function vgCarro() {
-  const C = db.rep.despesas.filter((d) => vgTipo(d) === 'comb' && Number(d.litros) > 0).sort((a, b) => (a.data < b.data ? -1 : a.data > b.data ? 1 : (Number(a.km) || 0) - (Number(b.km) || 0)));
-  const comKm = C.filter((d) => Number(d.km) > 0); let kml = 0, pkm = 0;
-  if (comKm.length >= 2) { const km = Number(comKm[comKm.length - 1].km) - Number(comKm[0].km); const lit = soma(comKm.slice(1), (d) => Number(d.litros)); const gasto = soma(comKm.slice(1), 'valor'); if (km > 0 && lit > 0) { kml = km / lit; pkm = gasto / km; } }
-  const postos = {}; C.filter((d) => d.local).forEach((d) => { const k = d.local.trim(); postos[k] = postos[k] || []; postos[k].push(d.valor / d.litros); });
-  const lista = Object.entries(postos).map(([k, v]) => [k, soma(v, (x) => x) / v.length]).sort((a, b) => a[1] - b[1]);
-  return { n: kml ? comKm.length : 0, kml, pkm, posto: lista.length >= 2 ? lista[0] : null };
+/* ---------- v7.7: Carro · gasolina × GNV e teste de combustível ---------- */
+const VG_MODOS = { gas: ['⛽', 'Só gasolina', 'Gasolina'], gnv: ['🔵', 'Só GNV', 'GNV'], mix: ['🔀', 'Intercalar', 'Intercalado'] };
+const VG_PT_GAS = [['0.05', 'Reserva'], ['0.25', '¼'], ['0.5', '½'], ['0.75', '¾'], ['1', 'Cheio']];
+const VG_PT_GNV = [['0', 'Vazio'], ['0.25', '¼'], ['0.5', '½'], ['0.75', '¾'], ['1', 'Cheio']];
+const vgNum = (x, c = 2) => Number(x).toLocaleString('pt-BR', { maximumFractionDigits: c });
+function vgPrecos() { // último preço de cada combustível (R$ por litro ou por m³)
+  const L = vgAbast().filter((d) => Number(d.litros) > 0).sort((a, b) => (a.data < b.data ? -1 : a.data > b.data ? 1 : (a.ts || 0) - (b.ts || 0)));
+  const ult = (c) => { const x = L.filter((d) => vgComb(d) === c).pop(); return x ? x.valor / x.litros : 0; }; return { gas: ult('gas'), gnv: ult('gnv') };
+}
+const vgTesteAtivo = () => db.vgTestes.find((t) => !t.fim);
+function vgTesteConta(t) {
+  const fim = t.fim || hoje();
+  const A = vgAbast().filter((d) => d.data <= fim && (d.data > t.ini || (d.data === t.ini && (d.ts || 0) > (t.ts || 0))));
+  const por = (c) => { const x = A.filter((d) => vgComb(d) === c); return { v: soma(x, 'valor'), l: soma(x, (d) => Number(d.litros) || 0), n: x.length }; };
+  const G = por('gas'), N = por('gnv'); const pr = vgPrecos(); const C = VGC();
+  const pG = G.l ? G.v / G.l : pr.gas, pN = N.l ? N.v / N.l : pr.gnv;
+  let ajuste = 0;
+  if (t.fim && t.jeito === 'ponteiro') ajuste = (t.ptGasIni - t.ptGasFim) * C.tanque * (pG || 0) + (t.ptGnvIni - t.ptGnvFim) * C.cilindro * (pN || 0);
+  const kmFim = t.kmFim || Math.max(0, ...A.map((d) => Number(d.km) || 0)); const km = kmFim > t.kmIni ? kmFim - t.kmIni : 0;
+  const gasto = G.v + N.v; const custo = Math.max(0, gasto + ajuste);
+  const dias = Math.max(1, Math.round((new Date(fim + 'T12:00') - new Date(t.ini + 'T12:00')) / 864e5));
+  const aviso = t.modo === 'gas' && N.n ? 'entrou GNV num teste só de gasolina' : t.modo === 'gnv' && G.n ? 'entrou gasolina num teste só de GNV' : '';
+  return { A, G, N, gasto, ajuste, custo, km, pkm: km ? custo / km : 0, dias, aviso, prec: !t.fim ? 'parcial' : t.jeito === 'cheio' ? 'exato' : '±5%' };
+}
+function vgResultados() { const out = {}; db.vgTestes.filter((t) => t.fim).sort((a, b) => (a.fim < b.fim ? -1 : 1)).forEach((t) => { const r = vgTesteConta(t); if (r.pkm) out[t.modo] = { t, r }; }); return out; }
+function vgKmMes() { const F = db.vgTestes.filter((t) => t.fim).map(vgTesteConta).filter((r) => r.km && r.dias >= 7); return F.length ? Math.round(soma(F, (r) => (r.km / r.dias) * 30) / F.length / 50) * 50 : 0; }
+function vgPtBotoes(grp, lista, sel) { return `<div class="vg-pt" data-grp="${grp}">${lista.map(([v, n]) => `<button class="${String(sel) === v ? 'on' : ''}" data-v="${v}">${n}</button>`).join('')}</div>`; }
+const vgPtNome = (lista, v) => (lista.find(([x]) => +x === +v) || [, '?'])[1];
+function vgCarroTela() {
+  const C = VGC(); const pr = vgPrecos(); const T = vgTesteAtivo(); const R = vgResultados(); const kmMes = vgKmMes();
+  const ultimos = vgAbast().sort((a, b) => (a.data < b.data ? 1 : a.data > b.data ? -1 : (b.ts || 0) - (a.ts || 0))).slice(0, 6);
+  let ativo = '';
+  if (T) { const r = vgTesteConta(T); const M = VG_MODOS[T.modo]; const dia = Math.min(T.dias, r.dias); const venceu = r.dias >= T.dias;
+    ativo = `<div class="card vg-heroi"><small>Teste em andamento · desde ${dmy(T.ini).slice(0, 5)} · ${T.jeito === 'cheio' ? 'completando' : 'do meu jeito'}</small><b style="font-size:21px">${M[0]} ${M[1]} · dia ${dia} de ${T.dias}</b>
+      <div class="vg-bar"><i style="width:${Math.min(100, (r.dias / T.dias) * 100)}%"></i></div>
+      <small>${r.km ? `rodou <b>${vgNum(r.km, 0)} km</b> · ` : ''}gastou <b>${fmt0(r.gasto)}</b> em ${r.A.length} ${r.A.length === 1 ? 'abastecimento' : 'abastecimentos'}${r.km && r.gasto ? ` · ~${fmt(r.gasto / r.km)} por km` : ''}</small>
+      ${!r.km ? '<small>💡 Coloque o km do painel quando abastecer para ver o custo por km durante o teste.</small>' : ''}
+      ${r.aviso ? `<small>⚠️ ${r.aviso}</small>` : ''}${venceu ? '<small>⏰ Chegou o dia de terminar o teste.</small>' : ''}
+      <div class="vg-2" style="margin-top:10px"><button class="btn" data-vg-teste-fim>Terminar teste</button><button class="btn" data-vg-teste-cancelar>Cancelar</button></div></div>`; }
+  const modos = Object.keys(VG_MODOS); const tem = modos.filter((m) => R[m]); const melhor = tem.sort((a, b) => R[a].r.pkm - R[b].r.pkm)[0];
+  const pior = tem.length > 1 ? tem[tem.length - 1] : null;
+  const resultado = `<div class="card vg-c"><h3>Resultado dos testes</h3><div class="vg-cmp">${modos.map((m) => { const x = R[m]; const M = VG_MODOS[m];
+      if (!x) return `<div><small>${M[0]} ${M[2]}</small><b>—</b><small>ainda não testado</small></div>`;
+      return `<div class="${m === melhor && tem.length > 1 ? 'win' : ''}">${m === melhor && tem.length > 1 ? '<span class="pill">mais barato</span>' : `<small>${M[0]} ${M[2]}</small>`}<b class="${m === melhor && tem.length > 1 ? 'good' : m === pior ? 'bad' : ''}">${fmt(x.r.pkm)}</b><small>por km</small><small>${m === melhor && tem.length > 1 ? `${M[0]} ${M[2]} · ` : ''}${MC[+x.t.fim.slice(5, 7) - 1]} · ${vgNum(x.r.km, 0)} km</small><span class="${x.r.prec === 'exato' ? 'pill' : 'prec'}">${x.r.prec === 'exato' ? 'exato' : '±5% · meu jeito'}</span><button class="vg-x" data-vg-teste-del="${x.t.id}" title="Apagar este resultado">✕</button></div>`; }).join('')}</div>
+      ${pior && kmMes ? `<p style="font-size:14px;margin:10px 0 0">Rodando <b>${vgNum(kmMes, 0)} km por mês</b>, ${{ gas: 'rodar só na gasolina', gnv: 'rodar só no GNV', mix: 'intercalar' }[melhor]} economiza <b class="good">${fmt0((R[pior].r.pkm - R[melhor].r.pkm) * kmMes)} por mês</b> em relação a ${{ gas: 'só gasolina', gnv: 'só GNV', mix: 'intercalar' }[pior]}.</p>` : `<p class="small muted" style="margin:8px 0 0">${tem.length ? 'Faça o teste dos outros modos para comparar.' : 'Faça um teste de cada modo (uns 30 dias cada) para ver qual compensa mais.'}</p>`}
+      ${tem.length ? `<div class="vg-100">${tem.map((m) => `<span>${VG_MODOS[m][0]} 100 km: <b>${fmt0(R[m].r.pkm * 100)}</b></span>`).join('')}</div>` : ''}</div>`;
+  const tz = ui.vgTz || { modo: 'gnv', jeito: 'ponteiro' };
+  const comecar = T ? '' : `<div class="card vg-c"><h3>🧪 Começar um teste</h3>
+      ${vgPtBotoes('modo', Object.entries(VG_MODOS).map(([k, v]) => [k, `${v[0]} ${v[1]}`]), tz.modo)}
+      <p class="small" style="margin:10px 0 0"><b>Como vai abastecer?</b></p>
+      <div class="vg-ops" data-grp="jeito"><button data-v="cheio" class="${tz.jeito === 'cheio' ? 'on' : ''}"><b>✅ Completando</b><small>Começa e termina com tanque e cilindro cheios. Resultado exato.</small></button><button data-v="ponteiro" class="${tz.jeito === 'ponteiro' ? 'on' : ''}"><b>⛽ Do meu jeito (sem completar)</b><small>Abasteça como sempre. No começo e no fim você marca o ponteiro, e o app corrige a diferença.</small></button></div>
+      <div class="vg-ptrs" ${tz.jeito === 'cheio' ? 'hidden' : ''}><p class="small" style="margin:10px 0 0"><b>Ponteiro da gasolina agora</b></p>${vgPtBotoes('ptg', VG_PT_GAS, '0.5')}<p class="small" style="margin:8px 0 0"><b>Ponteiro do GNV agora</b></p>${vgPtBotoes('ptn', VG_PT_GNV, '0.5')}</div>
+      <div class="vg-2" style="margin-top:10px"><input id="vgTkm" type="text" inputmode="numeric" placeholder="Km do painel agora"><label class="vg-chk">Duração <input id="vgTdias" type="text" inputmode="numeric" value="30" style="width:52px;text-align:center"> dias</label></div>
+      <button class="btn primary" style="width:100%;margin-top:10px" data-vg-teste-ini>Começar teste</button>
+      <p class="small muted" style="margin:8px 0 0">Durante o teste, lance <b>todo</b> combustível que entrar no carro: viagem, cidade e fim de semana. O km do painel mede tudo.</p></div>`;
+  const precos = `<div class="card vg-c"><div class="vg-h"><h3>⛽ Abastecimentos</h3><button class="btn sm primary" data-vg-lancar="comb">+ Abastecer</button></div>
+      ${pr.gas || pr.gnv ? `<div class="vg-precos">${pr.gas ? `<span>⛽ Gasolina<b>${fmt(pr.gas)}</b><small>o litro</small></span>` : ''}${pr.gnv ? `<span>🔵 GNV<b>${fmt(pr.gnv)}</b><small>o m³</small></span>` : ''}</div>` : ''}
+      ${ultimos.length ? ultimos.map((d) => `<div class="cx-l" data-vg-ed="${d.id}"><span>${vgComb(d) === 'gnv' ? '🔵 GNV' : '⛽ Gasolina'} · ${dmy(d.data).slice(0, 5)}<small>${[d.litros ? `${vgNum(d.litros)} ${vgComb(d) === 'gnv' ? 'm³' : 'L'}` : '', d.km ? `${vgNum(d.km, 0)} km` : '', d.completou ? 'completou' : '', d.fora ? 'fora da viagem' : '', d.local].filter(Boolean).map(esc).join(' · ')}</small></span><b>${fmt(d.valor)}</b></div>`).join('') : '<p class="small muted" style="margin:0">Nenhum abastecimento ainda.</p>'}
+      <div class="vg-cfg" style="margin-top:10px"><label>Tanque (litros)<input type="text" inputmode="decimal" data-vg-cfg="tanque" value="${vgNum(C.tanque)}"></label><label>Cilindro GNV (m³)<input type="text" inputmode="decimal" data-vg-cfg="cilindro" value="${vgNum(C.cilindro)}"></label></div></div>`;
+  return ativo + comecar + resultado + precos + uiAjuda('O teste compara o <b>custo por km</b>, que é justo mesmo quando um mês tem mais viagens que o outro.');
+}
+function vgTesteComecar() {
+  const km = num($('#vgTkm')?.value, 0); if (!(km > 0)) return toast('Coloque o km do painel.');
+  const sel = (g) => $(`[data-grp="${g}"] .on`)?.dataset.v; const jeito = sel('jeito') || 'ponteiro'; const modo = sel('modo') || 'gnv';
+  const t = { id: uid(), ts: Date.now(), ini: hoje(), modo, jeito, kmIni: Math.round(km), dias: Math.max(7, Math.round(num($('#vgTdias')?.value, 30)) || 30) };
+  if (jeito === 'ponteiro') { t.ptGasIni = +(sel('ptg') || 0.5); t.ptGnvIni = +(sel('ptn') || 0.5); } else { t.ptGasIni = 1; t.ptGnvIni = 1; }
+  ui.vgTz = { modo, jeito }; db.vgTestes.push(t); changed(); toast(`🧪 Teste ${VG_MODOS[modo][1].toLowerCase()} começou`);
+}
+function vgTesteTerminarForm() {
+  const t = vgTesteAtivo(); if (!t) return; const r = vgTesteConta(t);
+  vgJanela(`<h3 style="margin:0 0 4px">Terminar teste · ${VG_MODOS[t.modo][1]}</h3><p class="small muted" style="margin:0 0 8px">Começou em ${dmy(t.ini)} com ${vgNum(t.kmIni, 0)} km.${t.jeito === 'cheio' ? ' Complete o tanque e o cilindro, lance esse abastecimento e depois termine.' : ''}</p>
+    <input id="vgTkmFim" type="text" inputmode="numeric" placeholder="Km do painel agora" value="${r.km ? t.kmIni + r.km : ''}" style="width:100%">
+    ${t.jeito === 'ponteiro' ? `<p class="small" style="margin:10px 0 0"><b>Ponteiro da gasolina agora</b></p>${vgPtBotoes('ptgf', VG_PT_GAS, '0.5')}<p class="small" style="margin:8px 0 0"><b>Ponteiro do GNV agora</b></p>${vgPtBotoes('ptnf', VG_PT_GNV, '0.5')}` : ''}
+    <div class="vg-bts"><button class="btn" data-vg-cancelar>Voltar</button><button class="btn primary" data-vg-teste-fim-ok>Ver resultado</button></div>`);
+}
+function vgTesteTerminar() {
+  const t = vgTesteAtivo(); if (!t) return; const km = num($('#vgTkmFim')?.value, 0); if (!(km > t.kmIni)) return toast(`O km precisa ser maior que ${vgNum(t.kmIni, 0)}.`);
+  const sel = (g) => $(`[data-grp="${g}"] .on`)?.dataset.v; t.kmFim = Math.round(km); t.fim = hoje();
+  if (t.jeito === 'ponteiro') { t.ptGasFim = +(sel('ptgf') || 0.5); t.ptGnvFim = +(sel('ptnf') || 0.5); } else { t.ptGasFim = 1; t.ptGnvFim = 1; }
+  const r = vgTesteConta(t); vgFecharJanela(); changed(); toast(r.pkm ? `🧪 ${VG_MODOS[t.modo][2]}: ${fmt(r.pkm)} por km` : 'Teste terminado');
 }
 
 /* ---------- lançar ---------- */
 function vgJanela(html) { if (CELULAR && typeof celFolha === 'function') return celFolha(html); const d = $('#dlg'); d.classList.remove('wide'); d.innerHTML = `<div class="vg-dlg">${html}</div>`; d.onclick = (e) => { if (e.target === d) d.close(); }; if (!d.open) d.showModal(); }
 function vgFecharJanela() { if (CELULAR && typeof celFecharFolha === 'function') celFecharFolha(); const d = $('#dlg'); if (d.open) d.close(); }
 function vgLancar(t, d) {
-  const ed = d || null; t = ed ? vgTipo(ed) : t; const med = vgMediaTipo(t);
+  const ed = d || null; t = ed ? vgTipo(ed) : t; const med = vgMediaTipo(t); const cb = ed ? vgComb(ed) : ui.vgUltComb || 'gas'; const pr = vgPrecos();
   vgJanela(`<h3 style="margin:0 0 6px">${VG[t][0]} ${VG[t][1]}${ed ? ' · editar' : ''}</h3>
+    ${t === 'comb' ? `<div class="vg-pt vg-cb" data-grp="comb">${[['gas', '⛽ Gasolina'], ['gnv', '🔵 GNV']].map(([k, n]) => `<button class="${cb === k ? 'on' : ''}" data-v="${k}">${n}</button>`).join('')}</div>` : ''}
     <input class="vg-valor" id="vgV" type="text" inputmode="decimal" placeholder="0,00" value="${ed ? valorTxt(ed.valor) : ''}">
     <div class="vg-tipos">${Object.entries(VG).map(([k, [ic, n]]) => `<button class="${k === t ? 'on' : ''}" data-vg-tipo="${k}" title="${n}">${ic}</button>`).join('')}</div>
-    <div class="vg-extra"><input id="vgLocal" placeholder="${t === 'comb' ? 'Posto (opcional)' : 'Onde? (opcional)'}" value="${esc(ed?.local || '')}">
-      ${t === 'comb' ? `<div class="vg-2"><input id="vgLit" type="text" inputmode="decimal" placeholder="Litros" value="${ed?.litros ? String(ed.litros).replace('.', ',') : ''}"><input id="vgKm" type="text" inputmode="numeric" placeholder="Km do painel" value="${ed?.km || ''}"></div>` : `<input id="vgCli" placeholder="Cliente visitado (opcional)" value="${esc(ed?.cliente || '')}">`}
+    <div class="vg-extra"><input id="vgLocal" type="text" placeholder="${t === 'comb' ? 'Posto (opcional)' : 'Onde? (opcional)'}" value="${esc(ed?.local || '')}">
+      ${t === 'comb' ? `<div class="vg-2"><input id="vgLit" type="text" inputmode="decimal" placeholder="${cb === 'gnv' ? 'm³' : 'Litros'}" value="${ed?.litros ? String(ed.litros).replace('.', ',') : ''}"><input id="vgKm" type="text" inputmode="numeric" placeholder="Km do painel" value="${ed?.km || ''}"></div>
+        <div class="vg-2"><label class="vg-chk"><input type="checkbox" id="vgCheio" ${ed?.completou ? 'checked' : ''}> Completei</label><label class="vg-chk"><input type="checkbox" id="vgFora" ${(ed ? ed.fora : !vgEhDia(hoje())) ? 'checked' : ''}> Fora da viagem</label></div>` : `<input id="vgCli" type="text" placeholder="Cliente visitado (opcional)" value="${esc(ed?.cliente || '')}">`}
       <input id="vgData" type="date" value="${ed ? ed.data : hoje()}"></div>
-    ${med ? `<p class="small muted" style="margin:6px 0 0">💡 Sua média de ${VG[t][1].toLowerCase()} por viagem: <b>${fmt0(med)}</b></p>` : ''}
+    ${t === 'comb' && (pr.gas || pr.gnv) ? `<p class="small muted" style="margin:6px 0 0">💡 ${[pr.gas ? `gasolina ${fmt(pr.gas)} o litro` : '', pr.gnv ? `GNV ${fmt(pr.gnv)} o m³` : ''].filter(Boolean).join(' · ')} (últimos)</p>` : ''}
+    ${t === 'comb' ? '<p class="small muted" style="margin:4px 0 0">"Fora da viagem": cidade, fim de semana. Entra no teste do carro, mas não no orçamento da viagem.</p>' : ''}
+    ${med && t !== 'comb' ? `<p class="small muted" style="margin:6px 0 0">💡 Sua média de ${VG[t][1].toLowerCase()} por viagem: <b>${fmt0(med)}</b></p>` : ''}
     <div class="vg-bts">${ed ? `<button class="btn" data-vg-del="${ed.id}">🗑</button>` : ''}<button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-vg-salvar="${t}|${ed ? ed.id : ''}">${ed ? 'Salvar' : 'Lançar ✓'}</button></div>`);
   setTimeout(() => { const i = $('#vgV'); if (i) { i.focus(); i.select(); } }, 120);
 }
 function vgSalvar(t, id) {
   const v = num($('#vgV')?.value, NaN); if (!isFinite(v) || v <= 0) return toast('Digite o valor.');
   const base = { data: $('#vgData')?.value || hoje(), descricao: VG[t][1], categoria: VG[t][2], valor: r2(v), vg: t, local: ($('#vgLocal')?.value || '').trim() || undefined };
-  if (t === 'comb') { const l = num($('#vgLit')?.value, 0), k = num($('#vgKm')?.value, 0); if (l > 0) base.litros = r2(l); if (k > 0) base.km = Math.round(k); } else { const c = ($('#vgCli')?.value || '').trim(); if (c) base.cliente = c; }
+  if (t === 'comb') { const l = num($('#vgLit')?.value, 0), k = num($('#vgKm')?.value, 0); base.comb = $('.vg-cb .on')?.dataset.v || 'gas'; ui.vgUltComb = base.comb; base.descricao = base.comb === 'gnv' ? 'GNV' : 'Gasolina'; base.litros = l > 0 ? r2(l) : undefined; base.km = k > 0 ? Math.round(k) : undefined; base.completou = !!$('#vgCheio')?.checked || undefined; base.fora = !!$('#vgFora')?.checked || undefined; } else { const c = ($('#vgCli')?.value || '').trim(); if (c) base.cliente = c; }
   const ex = id && db.rep.despesas.find((d) => d.id === id);
-  if (ex) { if (ex.descricao && ex.descricao !== VG[vgTipo(ex)][1]) base.descricao = ex.descricao; Object.assign(ex, base); } else db.rep.despesas.push({ id: uid(), ...base });
+  if (ex) { if (t !== 'comb' && ex.descricao && ex.descricao !== VG[vgTipo(ex)][1]) base.descricao = ex.descricao; Object.assign(ex, base); } else db.rep.despesas.push({ id: uid(), ts: Date.now(), ...base });
   vgFecharJanela(); changed(); toast(`${VG[t][0]} ${fmt(v)} lançado`);
 }
 function vgEditarModelo(wd) {
@@ -12031,9 +12130,17 @@ document.addEventListener('click', (e) => {
   if ((b = g('data-vg-ed-mod'))) return vgEditarModelo(+b.dataset.vgEdMod);
   if ((b = g('data-vg-mod-ok'))) { const wd = +b.dataset.vgModOk; VGC().modelos[wd] = $$('[data-vg-mv]').map((i) => [i.dataset.vgMv, r2(num(i.value, 0))]).filter(([, v]) => v > 0); vgFecharJanela(); changed(); return toast('Modelo salvo'); }
   if ((b = g('data-vg-des'))) { const [k, v] = b.dataset.vgDes.split(':'); if (!db.vgEco.some((x) => x.tipo === k && x.data === hoje())) { db.vgEco.push({ id: uid(), data: hoje(), tipo: k, valor: r2(+v) }); changed(); toast(`🌱 +${fmt0(+v)} economizados`); } return; }
+  if ((b = e.target.closest('[data-grp] > [data-v]'))) { const grp = b.parentElement; $$('[data-v]', grp).forEach((x) => x.classList.toggle('on', x === b));
+    if (grp.dataset.grp === 'comb') { const i = $('#vgLit'); if (i) i.placeholder = b.dataset.v === 'gnv' ? 'm³' : 'Litros'; }
+    if (grp.dataset.grp === 'jeito') { const w = $('.vg-ptrs'); if (w) w.hidden = b.dataset.v === 'cheio'; } return; }
+  if (g('data-vg-teste-ini')) return vgTesteComecar();
+  if (g('data-vg-teste-fim')) return vgTesteTerminarForm();
+  if (g('data-vg-teste-fim-ok')) return vgTesteTerminar();
+  if (g('data-vg-teste-cancelar')) { const t = vgTesteAtivo(); if (t && confirm('Cancelar o teste em andamento? Os abastecimentos continuam lançados.')) { db.vgTestes = db.vgTestes.filter((x) => x.id !== t.id); changed(); } return; }
+  if ((b = g('data-vg-teste-del'))) { if (confirm('Apagar o resultado deste teste?')) { db.vgTestes = db.vgTestes.filter((x) => x.id !== b.dataset.vgTesteDel); changed(); } return; }
   if ((b = g('data-vg-ir'))) { ui.sub.rep = 'viagens'; ui.vgSub = 'hoje'; if (CELULAR && typeof celFecharFolha === 'function') celFecharFolha(); return setTab('rep'); }
 });
-document.addEventListener('change', (e) => { const i = e.target.closest('[data-vg-cfg]'); if (!i) return; const v = num(i.value, 0); if (v > 0) { VGC()[i.dataset.vgCfg] = r2(v); changed(); } });
+document.addEventListener('change', (e) => { const i = e.target.closest('[data-vg-cfg]'); if (!i) return; const v = num(i.value, 0); if (v > 0) { VGC()[i.dataset.vgCfg] = r2(v); changed(); } else toast('Valor inválido'); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.id === 'vgV') { const b = $('[data-vg-salvar]'); if (b) b.click(); } });
 
 /* ---------- Representação: Viagens como primeira aba ---------- */
@@ -12052,7 +12159,8 @@ if (CELULAR && typeof celHoje === 'function' && CEL_PERFIL !== 'hel') {
     const k = h.indexOf('<div class="card cel-heroi'); return k < 0 ? h : h.slice(0, k) + card + h.slice(k);
   };
 }
-CEL_NOVIDADES['7.6'] = ['🚗 Representação › Viagens: lançar em 2 toques, modelo da terça e da sexta, orçamento da viagem', '📊 Onde mais gasto (dia, semana, mês, ano) e Terça × Sexta', '🌱 Economizar: desafios, quanto já economizou e o consumo do carro'];
+CEL_NOVIDADES['7.6'] = ['🚗 Representação › Viagens: lançar em 2 toques, modelo da terça e da sexta, orçamento da viagem', '📊 Onde mais gasto (dia, semana, mês, ano) e Terça × Sexta', '🌱 Economizar: desafios e quanto já economizou'];
+CEL_NOVIDADES['7.7'] = ['⛽ Gasolina ou GNV no abastecimento, com "Completei" e "Fora da viagem"', '🧪 Teste de combustível: só gasolina, só GNV ou intercalando, completando ou do seu jeito (pelo ponteiro)', '📊 Resultado lado a lado: custo por km e quanto economiza por mês'];
 
 /* =================== v7.5: cores · azul petróleo (geral), preto e amarelo (Loja e Caixa da loja); Consultório e Ritmo ficam como estão =================== */
 const _renderAll75 = renderAll;
