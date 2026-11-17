@@ -1025,6 +1025,43 @@ body.cel .ui-li { flex-wrap: wrap; } body.cel .ui-li .ui-ac { width: 100%; displ
 .ini-dia { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 6px; } .ini-dia > b { font-size: 13.5px; }
 .ini-cat { padding: 6px 0; border-top: 1px solid var(--line); cursor: pointer; } .ini-cat > div:first-child { display: flex; justify-content: space-between; font-size: 14px; } .ini-cat .bar { height: 6px; background: var(--panel-2); border-radius: 6px; overflow: hidden; margin-top: 5px; } .ini-cat .bar i { display: block; height: 100%; background: var(--accent); } .ini-cat .bar i.warn { background: var(--warn); } .ini-cat .bar i.bad { background: var(--bad); }
 .ini-pers { display: grid; } .ini-pers-l { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); } .ini-pers-l label { display: flex; gap: 10px; align-items: center; font-size: 15px; } .ini-pers-l input { width: 20px; height: 20px; } .ini-pers-l .icon-btn { font-size: 17px; padding: 4px 10px; }
+/* v7.3: Meu dia */
+.md-top { display: grid; gap: 10px; }
+.md-stories { display: flex; gap: 14px; align-items: center; overflow-x: auto; padding: 2px 0; }
+.md-st { border: 0; background: none; color: var(--muted); font: inherit; font-size: 11.5px; display: grid; justify-items: center; gap: 4px; cursor: pointer; padding: 0; }
+.md-ring { width: 62px; height: 62px; border-radius: 50%; padding: 3px; background: conic-gradient(#e1b25c, #d9772b, #2b6b5a, #e1b25c); display: block; box-sizing: border-box; }
+.md-ring span { width: 100%; height: 100%; border-radius: 50%; background: var(--bg); border: 3px solid var(--bg); box-sizing: border-box; display: grid; place-items: center; font-size: 25px; }
+.md-st.feito .md-ring { background: var(--line); }
+.md-fogo { margin-left: auto; text-align: center; font-weight: 800; font-size: 17px; white-space: nowrap; } .md-fogo small { display: block; font-weight: 500; font-size: 11px; color: var(--muted); }
+.md-semana { padding: 11px 13px; } .md-sem-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; } .md-sem-h small { color: var(--muted); font-size: 12px; }
+.md-dots { display: flex; gap: 5px; margin-top: 8px; } .md-dots i { flex: 1; max-width: 40px; aspect-ratio: 1; border-radius: 10px; display: grid; place-items: center; font-style: normal; font-size: 11.5px; font-weight: 700; background: var(--panel-2); color: var(--muted); }
+.md-dots i.ok { background: #2b6b5a; color: #fff; } .md-dots i.g { background: #e1b25c; color: #2a2010; } .md-dots i.h { outline: 2px solid var(--fg); outline-offset: -2px; } .md-dots i.f { opacity: .45; }
+.md-cta { margin-top: 10px; width: 100%; border: 0; border-radius: 14px; background: #2b6b5a; color: #fff; font: inherit; padding: 12px; display: grid; gap: 2px; text-align: left; cursor: pointer; } .md-cta span { font-weight: 800; font-size: 15px; } .md-cta small { opacity: .85; font-size: 12px; }
+.md-volta { display: grid; gap: 4px; padding: 11px 13px; background: color-mix(in srgb, var(--warn) 10%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 35%, var(--line)); } .md-volta small { color: var(--muted); } .md-volta .btn { justify-self: start; margin-top: 4px; }
+.md-junto { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 13px; } .md-junto small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+body.md-aberto { overflow: hidden; }
+#mdStory { position: fixed; inset: 0; z-index: 150; color: #f4f2ec; overflow-y: auto; background: #1b1d2c; }
+#mdStory.md-bible { background: linear-gradient(170deg, #2a2f4a, #15172a); } #mdStory.md-din { background: linear-gradient(170deg, #1f4b40, #10201b); } #mdStory.md-ora { background: linear-gradient(170deg, #4a3420, #1e140b); } #mdStory.md-sem { background: linear-gradient(170deg, #3b2a4a, #18121f); } #mdStory.md-fim { background: linear-gradient(170deg, #2b6b5a, #12302a); }
+.md-in { max-width: 460px; margin: 0 auto; padding: calc(12px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom)); display: grid; gap: 10px; }
+.md-barras { display: flex; gap: 4px; } .md-barras i { flex: 1; height: 3px; border-radius: 3px; background: rgba(255,255,255,.25); } .md-barras i.on { background: #fff; }
+.md-cab { display: flex; justify-content: space-between; align-items: center; font-size: 13px; opacity: .9; margin-bottom: 6px; } .md-cab button { border: 0; background: none; color: inherit; font-size: 20px; padding: 4px 8px; cursor: pointer; }
+.md-big { font-family: Georgia, serif; font-size: 28px; line-height: 1.2; margin: 2px 0 4px; } .md-mut { color: rgba(255,255,255,.7); font-size: 13px; margin: 0; }
+.md-card { background: rgba(255,255,255,.09); border-radius: 16px; padding: 12px 14px; display: grid; gap: 4px; font-size: 14.5px; border: 0; color: inherit; text-align: left; font-family: inherit; } .md-card b { font-size: 13.5px; } .md-card small { opacity: .7; }
+.md-treino { cursor: pointer; } .md-ln { display: flex; justify-content: space-between; padding: 5px 0; border-top: 1px solid rgba(255,255,255,.12); } .md-ln:first-child { border-top: 0; } .md-cit { font-style: italic; opacity: .9; font-size: 13.5px; }
+.md-links { display: grid; gap: 6px; }
+#mdStory textarea { width: 100%; box-sizing: border-box; min-height: 92px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.22); border-radius: 14px; color: #fff; font: inherit; font-size: 15.5px; padding: 12px; resize: vertical; } #mdStory textarea::placeholder { color: rgba(255,255,255,.55); }
+.md-btn { display: block; text-align: center; border-radius: 14px; padding: 13px; font: inherit; font-weight: 800; font-size: 15px; cursor: pointer; text-decoration: none; border: 0; width: 100%; box-sizing: border-box; } .md-btn.w { background: #fff; color: #1f1e1b; } .md-btn.gh { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.45); }
+.md-rod { display: flex; justify-content: center; gap: 18px; } .md-rod button { border: 0; background: none; color: rgba(255,255,255,.7); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; }
+.md-chips { display: flex; flex-wrap: wrap; gap: 7px; } .md-chips button { border: 0; background: rgba(255,255,255,.14); color: #fff; border-radius: 999px; padding: 8px 12px; font: inherit; font-size: 13.5px; cursor: pointer; } .md-chips button.on { background: #fff; color: #1f1e1b; font-weight: 700; }
+.md-fim { text-align: center; display: grid; gap: 8px; padding-top: 30px; } .md-ok { font-size: 64px; } .md-n { font-size: 48px; font-weight: 800; }
+.md-versao { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 8px; } .md-versao select { width: auto; }
+.md-planos { display: grid; gap: 7px; } .md-planos button { border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); border-radius: 13px; padding: 10px 12px; font: inherit; text-align: left; display: grid; gap: 2px; cursor: pointer; } .md-planos button.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); } .md-planos small { color: var(--muted); font-size: 12px; }
+.md-extra { margin-top: 10px; display: grid; gap: 6px; } .md-chips2 { display: flex; flex-wrap: wrap; gap: 6px; } .md-chips2 button { border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 12px; padding: 8px 11px; font: inherit; font-size: 13.5px; display: grid; cursor: pointer; } .md-chips2 small { color: var(--muted); font-size: 11px; }
+.md-dn { border-top: 1px solid var(--line); padding: 9px 0; } .md-dn small { color: var(--muted); font-size: 12px; } .md-dn div { font-size: 15px; margin-top: 3px; font-style: italic; }
+.md-cq { display: flex; gap: 11px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); } .md-cq-i { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; flex: none; } .md-cq small { display: block; color: var(--muted); font-size: 12px; }
+.md-vd { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); } .md-vd button { border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 9px; padding: 6px 9px; font: inherit; font-size: 12.5px; margin-left: 4px; cursor: pointer; } .md-vd button.p { background: var(--accent); color: #fff; border-color: var(--accent); } .md-vd.feito { opacity: .6; }
+body.md-aberto .cel-folha-o { z-index: 160; } body.md-aberto .toast, body.md-aberto #toastAcao { z-index: 170; }
+.md-in { align-content: start; min-height: 100%; box-sizing: border-box; } .md-fim { padding-top: 10vh; }
 </style>
 </head>
 <body>
@@ -3945,7 +3982,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '7.2';
+const APP_VERSAO = '7.3';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -11489,6 +11526,257 @@ document.addEventListener('click', (e) => {
 }, true);
 document.addEventListener('change', (e) => { const c = e.target.closest('[data-ini-on]'); if (!c) return; const p = iniPref(); const k = c.dataset.iniOn; p.off = c.checked ? p.off.filter((x) => x !== k) : [...new Set([...p.off, k])]; iniSalvar(p); renderAll(); });
 CEL_NOVIDADES['7.2'] = ['Início novo: aviso importante no topo, lançar rápido, próximas contas e onde mais gastou', 'Últimos 7 dias: toque num dia para ver o que gastou', '⚙ Personalizar o Início: ligar, desligar e mudar a ordem dos blocos', 'O Caixa da loja saiu do Início (fica em Mais › Caixa)'];
+
+/* =================== v7.3: Meu dia (stories), plano de leitura, sequência, Volta sem culpa, Conquistas, Diário e Helen junto =================== */
+const MD_LIVROS = [['Gênesis', 'GEN', 50], ['Êxodo', 'EXO', 40], ['Levítico', 'LEV', 27], ['Números', 'NUM', 36], ['Deuteronômio', 'DEU', 34], ['Josué', 'JOS', 24], ['Juízes', 'JDG', 21], ['Rute', 'RUT', 4], ['1 Samuel', '1SA', 31], ['2 Samuel', '2SA', 24], ['1 Reis', '1KI', 22], ['2 Reis', '2KI', 25], ['1 Crônicas', '1CH', 29], ['2 Crônicas', '2CH', 36], ['Esdras', 'EZR', 10], ['Neemias', 'NEH', 13], ['Ester', 'EST', 10], ['Jó', 'JOB', 42], ['Salmos', 'PSA', 150], ['Provérbios', 'PRO', 31], ['Eclesiastes', 'ECC', 12], ['Cânticos', 'SNG', 8], ['Isaías', 'ISA', 66], ['Jeremias', 'JER', 52], ['Lamentações', 'LAM', 5], ['Ezequiel', 'EZK', 48], ['Daniel', 'DAN', 12], ['Oseias', 'HOS', 14], ['Joel', 'JOL', 3], ['Amós', 'AMO', 9], ['Obadias', 'OBA', 1], ['Jonas', 'JON', 4], ['Miqueias', 'MIC', 7], ['Naum', 'NAM', 3], ['Habacuque', 'HAB', 3], ['Sofonias', 'ZEP', 3], ['Ageu', 'HAG', 2], ['Zacarias', 'ZEC', 14], ['Malaquias', 'MAL', 4],
+  ['Mateus', 'MAT', 28], ['Marcos', 'MRK', 16], ['Lucas', 'LUK', 24], ['João', 'JHN', 21], ['Atos', 'ACT', 28], ['Romanos', 'ROM', 16], ['1 Coríntios', '1CO', 16], ['2 Coríntios', '2CO', 13], ['Gálatas', 'GAL', 6], ['Efésios', 'EPH', 6], ['Filipenses', 'PHP', 4], ['Colossenses', 'COL', 4], ['1 Tessalonicenses', '1TH', 5], ['2 Tessalonicenses', '2TH', 3], ['1 Timóteo', '1TI', 6], ['2 Timóteo', '2TI', 4], ['Tito', 'TIT', 3], ['Filemom', 'PHM', 1], ['Hebreus', 'HEB', 13], ['Tiago', 'JAS', 5], ['1 Pedro', '1PE', 5], ['2 Pedro', '2PE', 3], ['1 João', '1JN', 5], ['2 João', '2JN', 1], ['3 João', '3JN', 1], ['Judas', 'JUD', 1], ['Apocalipse', 'REV', 22]];
+const MD_IDX = Object.fromEntries(MD_LIVROS.map((l, i) => [l[1], i]));
+const MD_VERSOES = [['NAA', 1840], ['NVI', 129], ['ARA', 1608], ['NVT', 1930], ['NTLH', 211], ['ARC', 212]];
+const MD_CRONO = 'GEN JOB EXO LEV NUM DEU JOS JDG RUT 1SA 2SA 1CH PSA 1KI PRO ECC SNG 2KI 2CH JON AMO HOS MIC ISA NAM ZEP HAB JER LAM JOL OBA EZK DAN EZR HAG ZEC EST NEH MAL MAT MRK LUK JHN ACT JAS GAL 1TH 2TH 1CO 2CO ROM EPH PHP COL PHM 1TI TIT 2TI 1PE 2PE HEB JUD 1JN 2JN 3JN REV'.split(' ');
+const MD_PAULO = [['ACT', 9, 9], ['ACT', 11, 14], ['GAL'], ['ACT', 15, 17], ['1TH'], ['2TH'], ['ACT', 18, 19], ['1CO'], ['2CO'], ['ROM'], ['ACT', 20, 28], ['EPH'], ['PHP'], ['COL'], ['PHM'], ['1TI'], ['TIT'], ['2TI']];
+const MD_MODELOS = [
+  ['ano', '📘 Bíblia em 1 ano', 'Gênesis a Apocalipse, uns 3 a 4 capítulos por dia'],
+  ['crono', '⏳ Bíblia em ordem cronológica', 'Na ordem em que os fatos aconteceram (aproximada, livro a livro) · 1 ano'],
+  ['tempo', '🗓 A Bíblia no meu tempo', 'Você escolhe em quantos meses quer ler a Bíblia toda'],
+  ['cristo', '✝️ A vida de Cristo', 'Os 4 Evangelhos, 1 capítulo por dia · 89 dias'],
+  ['paulo', '✉️ A vida de Paulo', 'Atos com as cartas na ordem em que ele escreveu · 106 dias'],
+  ['rth', '🔥 Romanos, Tiago e Hebreus', '1 capítulo por dia · 34 dias'],
+  ['nt', '📗 Novo Testamento em 260 dias', '1 capítulo por dia'],
+  ['pv', '🌿 Provérbios em 31 dias', '1 capítulo por dia, um para cada dia do mês'],
+  ['sl', '🎵 Salmos em 150 dias', '1 salmo por dia'],
+  ['livro', '📖 Um livro', 'Escolha o livro e quantos capítulos por dia'],
+];
+const MD_PERGUNTAS = ['O que este texto mostra sobre quem Deus é?', 'O que ele me pede para mudar ou obedecer hoje?', 'Que promessa eu posso levar para o meu dia?', 'Onde eu me vejo nesta passagem?', 'O que Jesus faria no meu lugar hoje, a partir disto?', 'Pelo que este texto me leva a agradecer?', 'Que pecado ou peso eu preciso entregar, à luz disto?', 'Que verdade daqui eu quero lembrar quando vier a dificuldade?', 'Como isto muda o jeito de eu tratar a Helen, a família e os clientes hoje?', 'Qual palavra ou frase mais me tocou, e por quê?', 'O que este texto diz sobre graça e recomeço?', 'Que oração nasce desta leitura?'];
+const MD_INTENCOES = ['agradecer', 'entregar', 'pedir', 'me comprometer'];
+(function () { const _e = ensureModules; ensureModules = function (d) { d = _e(d); if (!Array.isArray(d.diario)) d.diario = []; if (!Array.isArray(d.planos)) d.planos = []; return d; }; })();
+COLECOES.push(['diario'], ['planos']); if (db) { if (!Array.isArray(db.diario)) db.diario = []; if (!Array.isArray(db.planos)) db.planos = []; }
+const mdQuem = () => (typeof CEL_PERFIL !== 'undefined' && CEL_PERFIL === 'hel' ? 'hel' : 'mat');
+const mdNome = (q) => (q === 'hel' ? 'Helen' : 'Matheus');
+const mdOutro = (q) => (q === 'hel' ? 'mat' : 'hel');
+const mdDe = (q, tipo) => (db.diario || []).filter((x) => x.quem === q && (!tipo || x.tipo === tipo));
+function mdAdd(e) { db.diario.push({ id: uid(), quem: mdQuem(), data: hoje(), ...e }); }
+
+/* ---------- planos de leitura ---------- */
+const mdCaps = (cods) => cods.flatMap((c) => { const i = MD_IDX[c]; return Array.from({ length: MD_LIVROS[i][2] }, (_, k) => [i, k + 1]); });
+const mdDistribuir = (flat, n) => Array.from({ length: n }, (_, d) => flat.slice(Math.round((d * flat.length) / n), Math.round(((d + 1) * flat.length) / n))).filter((x) => x.length);
+const MD_TODOS = MD_LIVROS.map((l) => l[1]);
+function mdDiasDoPlano(p) {
+  if (!p) return []; const umPorDia = (flat) => flat.map((x) => [x]);
+  switch (p.modelo) {
+    case 'ano': return mdDistribuir(mdCaps(MD_TODOS), 365);
+    case 'crono': return mdDistribuir(mdCaps(MD_CRONO), 365);
+    case 'tempo': return mdDistribuir(mdCaps(MD_TODOS), Math.max(30, Math.round((Number(p.meses) || 12) * 30.44)));
+    case 'cristo': return umPorDia(mdCaps(['MAT', 'MRK', 'LUK', 'JHN']));
+    case 'paulo': return umPorDia(MD_PAULO.flatMap(([c, a, b]) => { const i = MD_IDX[c]; const ini = a || 1, fim = b || MD_LIVROS[i][2]; return Array.from({ length: fim - ini + 1 }, (_, k) => [i, ini + k]); }));
+    case 'rth': return umPorDia(mdCaps(['ROM', 'JAS', 'HEB']));
+    case 'nt': return umPorDia(mdCaps(MD_TODOS.slice(39)));
+    case 'pv': return umPorDia(mdCaps(['PRO']));
+    case 'sl': return umPorDia(mdCaps(['PSA']));
+    case 'livro': { const flat = mdCaps([p.livro || 'ROM']); const k = Math.max(1, Number(p.porDia) || 1); return Array.from({ length: Math.ceil(flat.length / k) }, (_, d) => flat.slice(d * k, d * k + k)); }
+    default: return [];
+  }
+}
+function mdRef(caps) { // [[livro, cap], …] → "Gênesis 1–3 · Mateus 1"
+  const g = []; caps.forEach(([b, c]) => { const u = g[g.length - 1]; if (u && u.b === b && u.f === c - 1) u.f = c; else g.push({ b, i: c, f: c }); });
+  return g.map((x) => `${MD_LIVROS[x.b][0]} ${x.i}${x.f > x.i ? '–' + x.f : ''}`).join(' · ');
+}
+function mdLink(b, c, p) { const v = MD_VERSOES.find(([s]) => s === (p?.versao || 'NAA')) || MD_VERSOES[0]; return `https://www.bible.com/bible/${v[1]}/${MD_LIVROS[b][1]}.${c}.${v[0]}`; }
+const mdPlano = (q = mdQuem()) => (db.planos || []).filter((p) => p.quem === q && p.ativo).sort((a, b) => (a.inicio < b.inicio ? 1 : -1))[0] || null;
+function mdProgresso(p) {
+  const dias = mdDiasDoPlano(p); const lidas = mdDe(p.quem, 'leitura').filter((x) => x.plano === p.id);
+  const feitos = new Set(lidas.map((x) => x.dia)); let prox = 0; while (feitos.has(prox)) prox++;
+  const desde = Math.floor((new Date(hoje()) - new Date(p.inicio)) / 864e5) + 1; const esperado = Math.min(dias.length, Math.max(1, desde));
+  const hojeLido = lidas.find((x) => x.data === hoje());
+  return { dias, total: dias.length, feitos: feitos.size, prox, hojeLido, atras: Math.max(0, esperado - feitos.size - (hojeLido ? 0 : 1)), fim: prox >= dias.length };
+}
+
+/* ---------- sequência ("dias no prumo") com 1 dia de graça por semana ---------- */
+const mdSemanaDe = (d) => { const x = new Date(d + 'T12:00'); const w = (x.getDay() + 6) % 7; return addDias(d, -w); };
+function mdSequencia(q = mdQuem()) {
+  const feitos = new Set(mdDe(q, 'dia').map((x) => x.data)); const H = hoje(); const graca = new Set(); const usada = new Set();
+  let d = feitos.has(H) ? H : addDias(H, -1), n = 0;
+  for (let i = 0; i < 500; i++) {
+    if (feitos.has(d)) n++; else { const s = mdSemanaDe(d); if (n > 0 && !usada.has(s) && feitos.has(addDias(d, -1))) { usada.add(s); graca.add(d); } else break; }
+    d = addDias(d, -1);
+  }
+  return { n, graca, feitos, hoje: feitos.has(H) };
+}
+function mdRecorde(q = mdQuem()) { const ds = [...new Set(mdDe(q, 'dia').map((x) => x.data))].sort(); let best = 0, cur = 0, ant = null; ds.forEach((d) => { cur = ant && addDias(ant, 1) === d ? cur + 1 : 1; best = Math.max(best, cur); ant = d; }); return Math.max(best, mdSequencia(q).n); }
+
+/* ---------- Volta sem culpa ---------- */
+function mdDiasSemRegistro() {
+  const marcados = new Set(mdDe(mdQuem(), 'ontem').map((x) => x.ref)); const com = new Set(db.lancamentos.map((l) => l.data)); const out = [];
+  for (let i = 1; i <= 14; i++) { const d = addDias(hoje(), -i); if (com.has(d) || marcados.has(d)) break; out.push(d); }
+  return out.reverse();
+}
+
+/* ---------- conquistas ---------- */
+function mdConquistas(q = mdQuem()) {
+  const C = []; const add = (data, ic, cor, t, sub) => C.push({ data, ic, cor, t, sub });
+  const lei = mdDe(q, 'leitura').sort((a, b) => (a.data < b.data ? -1 : 1));
+  [1, 7, 21, 50, 100, 200, 365].forEach((m) => { if (lei.length >= m) add(lei[m - 1].data, '📖', '#2a2f4a', m === 1 ? 'Primeira leitura com propósito' : `${m} leituras da Bíblia`, lei[m - 1].ref); });
+  const notas = mdDe(q).filter((x) => (x.tipo === 'leitura' || x.tipo === 'linha') && x.texto).sort((a, b) => (a.data < b.data ? -1 : 1));
+  [1, 10, 50, 100].forEach((m) => { if (notas.length >= m) add(notas[m - 1].data, '✍️', '#2b6b5a', m === 1 ? 'Primeira anotação no Diário com Deus' : `${m} anotações no diário`, m === 1 ? `"${notas[0].texto.slice(0, 40)}${notas[0].texto.length > 40 ? '…' : ''}"` : ''); });
+  const ds = [...new Set(mdDe(q, 'dia').map((x) => x.data))].sort(); let cur = 0, ant = null; const marcos = new Set();
+  ds.forEach((d) => { cur = ant && addDias(ant, 1) === d ? cur + 1 : 1; ant = d; [3, 7, 14, 21, 30, 50, 100, 200, 365].forEach((m) => { if (cur === m && !marcos.has(m)) { marcos.add(m); add(d, '🔥', '#4a3420', `${m} dias seguidos no prumo`, ''); } }); });
+  mdDe(q, 'fimplano').forEach((x) => add(x.data, '🏁', '#1f4b40', `Plano concluído: ${x.ref}`, 'parabéns pela constância'));
+  const voltas = mdDe(q, 'volta').sort((a, b) => (a.data < b.data ? -1 : 1)); voltas.forEach((x, i) => add(x.data, '🤝', '#3b2a4a', i === 0 ? 'Voltou e pôs tudo em dia' : `Voltou de novo (${i + 1}ª vez)`, 'cada volta conta'));
+  if (q === 'mat') { try { const f = Object.keys(db.diasFechados?.loja || {}).filter((k) => db.diasFechados.loja[k]).sort(); [7, 30, 100].forEach((m) => { if (f.length >= m) add(f[m - 1], '🏪', '#1f3b5c', `${m} dias de caixa da loja fechados`, ''); }); } catch (e) {} }
+  try { const dq = (db.dividas || []).filter((d) => d.situacao === 'quitada' || d.quitadaEm); dq.forEach((d) => add(d.quitadaEm || hoje(), '🎉', '#2b6b5a', `Dívida quitada: ${d.credor || d.nome || ''}`, 'Recomeço')); } catch (e) {}
+  return C.sort((a, b) => (a.data < b.data ? 1 : -1));
+}
+
+/* ---------- Início: stories, semana e Helen junto ---------- */
+function mdTopo() {
+  const q = mdQuem(); const S = mdSequencia(q); const H = hoje(); const ini = mdSemanaDe(H); const p = mdPlano(q); const pr = p ? mdProgresso(p) : null;
+  const dots = Array.from({ length: 7 }, (_, i) => { const d = addDias(ini, i); const c = S.feitos.has(d) ? 'ok' : S.graca.has(d) ? 'g' : d === H ? 'h' : d > H ? 'f' : 'n'; return `<i class="${c}">${'STQQSSD'[i]}</i>`; }).join('');
+  const volta = mdDiasSemRegistro(); const o = mdOutro(q); const So = mdSequencia(o); const temOutro = mdDe(o, 'dia').length > 0;
+  const apoioHoje = mdDe(q, 'apoio').some((x) => x.para === o && x.data === H); const recebi = (db.diario || []).filter((x) => x.tipo === 'apoio' && x.para === q && x.data >= addDias(H, -1));
+  return `<div class="md-top">
+    <div class="md-stories"><button class="md-st ${S.hoje ? 'feito' : ''}" data-md="dia"><span class="md-ring"><span>☀️</span></span>Meu dia</button><button class="md-st feito" data-md="conquistas"><span class="md-ring"><span>🏆</span></span>Conquistas</button><button class="md-st feito" data-md="diario"><span class="md-ring"><span>📖</span></span>Diário</button>
+      <span class="md-fogo">🔥 ${S.n} ${S.n === 1 ? 'dia' : 'dias'}<small>no prumo</small></span></div>
+    ${volta.length >= 2 ? `<div class="card md-volta"><b>🤝 Bem-vindo de volta</b><small>Faz ${volta.length} dias sem anotar. Sem culpa: dá para pôr em dia em 2 minutos.</small><button class="btn sm primary" data-md="volta">Pôr em dia</button></div>` : ''}
+    <div class="card md-semana"><div class="md-sem-h"><b>Esta semana</b><small>${[...S.graca].some((d) => d >= ini) ? 'dia de graça usado ✓' : '1 dia de graça disponível'}</small></div><div class="md-dots">${dots}</div>
+      ${S.hoje ? `<p class="small" style="margin:6px 0 0">✅ Dia no prumo${pr && !pr.fim ? ` · amanhã: <b>${mdRef(pr.dias[pr.prox])}</b>` : ''}</p>` : `<button class="md-cta" data-md="dia"><span>☀️ Meu dia de hoje</span><small>${p && pr && !pr.fim ? mdRef(pr.dias[pr.prox]) + ' · ' : 'escolher um plano de leitura · '}ontem · uma linha · 2 minutos</small></button>`}</div>
+    ${temOutro || recebi.length ? `<div class="card md-junto"><span>${q === 'mat' ? '🌿' : '🧭'} <b>${mdNome(o)}</b> · 🔥 ${So.n}${So.hoje ? ' · <span class="good">fechou o dia ✓</span>' : ''}${recebi.length ? `<small>🙌 ${mdNome(o)} torceu por você${recebi.some((x) => x.data === H) ? ' hoje' : ' ontem'}</small>` : ''}</span><button class="btn sm ${apoioHoje ? '' : 'primary'}" data-md="apoio" ${apoioHoje ? 'disabled' : ''}>${apoioHoje ? '🙌 enviado' : '🙌'}</button></div>` : ''}
+  </div>`;
+}
+if (CELULAR && typeof celHoje === 'function') {
+  const _celHoje73 = celHoje;
+  celHoje = function () { const h = _celHoje73(); let t = ''; try { t = mdTopo(); } catch (e) { t = ''; } const k = h.indexOf('<div class="cel-ola">'); if (k < 0) return h; const f = h.indexOf('</div>', k) + 6; return h.slice(0, f) + t + h.slice(f); };
+}
+
+/* ---------- os stories ---------- */
+let MD = null;
+function mdPassos() {
+  const q = mdQuem(); const n = mdDe(q, 'dia').length; const dom = new Date(hoje() + 'T12:00').getDay() === 0;
+  const P = ['leitura', 'ontem']; if (n >= 7) P.push('linha'); if (dom && n >= 3) P.push('semana'); P.push('fim'); return P;
+}
+function mdAbrir() { MD = { passos: mdPassos(), i: 0, nota: '', linha: '', intencao: '', semana: '', novas: mdConquistas().length }; mdRender(); }
+function mdFechar() { const o = $('#mdStory'); if (o) o.remove(); MD = null; document.body.classList.remove('md-aberto'); renderAll(); }
+function mdRender() {
+  let o = $('#mdStory'); if (!o) { o = document.createElement('div'); o.id = 'mdStory'; document.body.appendChild(o); mdGestos(o); } document.body.classList.add('md-aberto');
+  const q = mdQuem(); const passo = MD.passos[MD.i]; const barras = MD.passos.map((_, i) => `<i class="${i <= MD.i ? 'on' : ''}"></i>`).join('');
+  const cab = (ic, t) => `<div class="md-barras">${barras}</div><div class="md-cab"><span>${ic} ${t}</span><button data-md="fechar" aria-label="Fechar">✕</button></div>`;
+  let c = '', cls = '';
+  if (passo === 'leitura') {
+    cls = 'bible'; const p = mdPlano(q);
+    if (!p) c = `${cab('📖', 'Leitura com propósito')}<div class="md-big">Vamos escolher um plano?</div><p class="md-mut">Você lê no YouVersion e anota aqui o que Deus falou. Dá para trocar de plano quando quiser.</p><button class="md-btn w" data-md="planos">Escolher o plano</button><button class="md-btn gh" data-md="prox">Hoje não</button>`;
+    else { const pr = mdProgresso(p);
+      if (pr.fim) c = `${cab('📖', 'Leitura com propósito')}<div class="md-big">🏁 Você terminou<br>${esc(p.nome)}!</div><p class="md-mut">Que tal escolher o próximo?</p><button class="md-btn w" data-md="planos">Escolher o próximo plano</button><button class="md-btn gh" data-md="prox">Depois</button>`;
+      else { const dia = pr.hojeLido ? pr.hojeLido.dia : pr.prox; const caps = pr.dias[dia]; const pg = MD_PERGUNTAS[(dia + (p.inicio.charCodeAt(9) || 0)) % MD_PERGUNTAS.length];
+        c = `${cab('📖', 'Leitura com propósito')}<div class="md-mut">${esc(p.nome)} · dia ${dia + 1} de ${pr.total}${pr.atras > 1 && !pr.hojeLido ? ` · siga de onde parou, sem culpa` : ''}</div><div class="md-big">${mdRef(caps)}</div>
+          <div class="md-links">${caps.map(([b, ch]) => `<a class="md-btn gh" href="${mdLink(b, ch, p)}" target="_blank" rel="noopener">Ler ${MD_LIVROS[b][0]} ${ch} ↗</a>`).join('')}</div>
+          <div class="md-card"><b>Para pensar</b><div>${pg}</div></div>
+          <textarea id="mdNota" placeholder="✍️ O que Deus falou comigo hoje…">${esc(pr.hojeLido?.texto || MD.nota)}</textarea>
+          <button class="md-btn w" data-md="li">${pr.hojeLido ? 'Salvar e continuar →' : 'Li ✓'}</button><div class="md-rod"><button data-md="planos">trocar o plano</button><button data-md="prox">pular hoje</button></div>`; } }
+  } else if (passo === 'ontem') {
+    cls = 'din'; const d = addDias(hoje(), -1); const L = db.lancamentos.filter((l) => l.data === d && l.tipo === 'Despesa'); const ja = mdDe(q, 'ontem').some((x) => x.ref === d);
+    let F = []; try { F = celFrequentes().slice(0, 4); } catch (e) {}
+    c = `${cab('💸', `Ontem, ${cxDiaSem(d)} ${dmy(d).slice(0, 5)}`)}<div class="md-big">${L.length ? `Você anotou<br>${fmt0(soma(L, 'valor'))} em ${L.length} ${L.length === 1 ? 'gasto' : 'gastos'}` : 'Nada anotado ontem'}</div>
+      ${L.length ? `<div class="md-card">${L.slice(0, 6).map((l) => `<div class="md-ln"><span>${esc(l.descricao)}</span><b>${fmt(l.valor)}</b></div>`).join('')}${L.length > 6 ? `<small>+ ${L.length - 6}</small>` : ''}</div>` : ''}
+      <div class="md-mut">Faltou alguma coisa?</div><div class="md-chips">${F.map((x, i) => `<button data-md-chip="${i}">+ ${esc(x.desc)}</button>`).join('')}<button data-md="addontem">+ Outro</button></div>
+      <button class="md-btn w" data-md="ontem-ok">${L.length ? 'Está tudo aí ✓' : 'Já anotei / estou em dia ✓'}</button>${L.length ? '' : '<button class="md-btn gh" data-md="ontem-nada">Não gastei nada ontem</button>'}${ja ? '<p class="md-mut" style="text-align:center">✓ já conferido</p>' : ''}`;
+  } else if (passo === 'linha') {
+    cls = 'ora'; const ja = mdDe(q, 'linha').find((x) => x.data === hoje() && x.intencao !== 'semana');
+    c = `${cab('🙏', 'Uma linha')}<div class="md-big">Hoje eu quero…</div><div class="md-chips">${MD_INTENCOES.map((t) => `<button class="${(MD.intencao || ja?.intencao) === t ? 'on' : ''}" data-md-int="${t}">${t}</button>`).join('')}</div>
+      <textarea id="mdLinha" placeholder="Escreva uma frase de oração, gratidão ou compromisso…">${esc(MD.linha || ja?.texto || '')}</textarea>
+      ${q === 'mat' ? '<button class="md-card md-treino" data-md="treino"><b>🏋️ Treino de hoje</b><div>toque para ver</div></button>' : ''}
+      <button class="md-btn w" data-md="linha">Pronto ✓</button><div class="md-rod"><button data-md="prox">pular</button></div>`;
+  } else if (passo === 'semana') {
+    cls = 'sem'; const ini = addDias(hoje(), -6); const lei = mdDe(q, 'leitura').filter((x) => x.data >= ini).length; const dias = mdDe(q, 'dia').filter((x) => x.data >= ini).length;
+    const g = soma(db.lancamentos.filter((l) => l.tipo === 'Despesa' && l.data >= ini), 'valor'); const ga = soma(db.lancamentos.filter((l) => l.tipo === 'Despesa' && l.data >= addDias(ini, -7) && l.data < ini), 'valor');
+    const notas = mdDe(q).filter((x) => x.data >= ini && x.texto && (x.tipo === 'leitura' || x.tipo === 'linha')).slice(-3);
+    c = `${cab('🗓', 'Domingo de revisão')}<div class="md-big">Sua semana</div>
+      <div class="md-card"><div class="md-ln"><span>📖 Leituras</span><b>${lei} de 7</b></div><div class="md-ln"><span>☀️ Dias no prumo</span><b>${dias} de 7</b></div><div class="md-ln"><span>💸 Gastos da casa</span><b>${fmt0(g)}${ga ? ` <small>${g <= ga ? '↓' : '↑'} ${pct(Math.abs(g / ga - 1))}</small>` : ''}</b></div></div>
+      ${notas.length ? `<div class="md-card"><b>Você anotou</b>${notas.map((x) => `<div class="md-cit">"${esc(x.texto.slice(0, 90))}"</div>`).join('')}</div>` : ''}
+      <textarea id="mdSemana" placeholder="O que eu levo para a próxima semana?">${esc(MD.semana)}</textarea><button class="md-btn w" data-md="semana">Guardar ✓</button><div class="md-rod"><button data-md="prox">pular</button></div>`;
+  } else {
+    cls = 'fim'; const S = mdSequencia(q); const C = mdConquistas(q); const nova = C.length > MD.novas ? C[0] : null;
+    c = `${cab('✅', 'Pronto')}<div class="md-fim"><div class="md-ok">✅</div><div class="md-big">Dia no prumo</div><div class="md-n">🔥 ${S.n}</div><div class="md-mut">${S.n === 1 ? 'dia' : 'dias seguidos'}${mdRecorde(q) === S.n && S.n > 2 ? ' · seu recorde!' : ''}</div>
+      ${nova ? `<div class="md-card" style="text-align:left"><b>🏆 Conquista nova</b><div>${esc(nova.t)}</div></div>` : ''}
+      <p class="md-mut">Até amanhã. Um dia de cada vez.</p><button class="md-btn w" data-md="fechar">Concluir</button></div>`;
+  }
+  o.className = 'md-' + cls; o.innerHTML = `<div class="md-in">${c}</div>`;
+}
+function mdFecharDia() { const q = mdQuem(); if (!mdDe(q, 'dia').some((x) => x.data === hoje())) { mdAdd({ tipo: 'dia' }); changed(); } }
+function mdProx() { if (MD.i < MD.passos.length - 1) { MD.i++; if (MD.passos[MD.i] === 'fim') mdFecharDia(); mdRender(); } else mdFechar(); }
+function mdGestos(o) { let x0 = null; o.addEventListener('touchstart', (e) => { if (e.target.closest('textarea, input, a, button')) return; x0 = e.touches[0].clientX; }, { passive: true });
+  o.addEventListener('touchend', (e) => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) < 60 || !MD) return; if (dx < 0) mdProx(); else if (MD.i > 0) { MD.i--; mdRender(); } }); }
+function mdLancar(txt) { celLancar(); setTimeout(() => { const i = $('#celRpIn'); if (!i) return; i.value = txt; i.focus(); const p = txt.indexOf(' ') > 0 ? txt.indexOf(' ') + 1 : txt.length; i.setSelectionRange(p, p); i.dispatchEvent(new Event('input', { bubbles: true })); }, 80); }
+
+/* ---------- folhas: planos, diário, conquistas, volta ---------- */
+function mdPlanos() {
+  const p = mdPlano(); const v = p?.versao || 'NAA';
+  celFolha(`<h3 style="margin:0 0 4px">📖 Escolha o plano de leitura</h3><p class="small muted" style="margin:0 0 8px">Você lê no YouVersion e anota no Prumo. Pode trocar quando quiser: o que já leu fica guardado.</p>
+    <label class="md-versao">Tradução no YouVersion <select id="mdVersao">${MD_VERSOES.map(([s]) => `<option ${s === v ? 'selected' : ''}>${s}</option>`).join('')}</select></label>
+    <div class="md-planos">${MD_MODELOS.map(([k, n, d]) => `<button data-md-plano="${k}" class="${p?.modelo === k ? 'on' : ''}"><b>${n}</b><small>${d}</small></button>`).join('')}</div>
+    <div id="mdPlanoExtra"></div>`);
+}
+function mdPlanoExtra(k) {
+  const el = $('#mdPlanoExtra'); if (!el) return;
+  if (k === 'tempo') el.innerHTML = `<div class="md-extra"><b>Em quanto tempo?</b><div class="md-chips2">${[3, 6, 9, 12, 18, 24].map((m) => `<button data-md-criar="tempo:${m}">${m} meses<small>~${Math.ceil(1189 / (m * 30.44))} cap./dia</small></button>`).join('')}</div></div>`;
+  else if (k === 'livro') el.innerHTML = `<div class="md-extra"><b>Qual livro?</b><select id="mdLivro">${MD_LIVROS.map(([n, c]) => `<option value="${c}" ${c === 'ROM' ? 'selected' : ''}>${n}</option>`).join('')}</select><b style="margin-top:8px">Quantos capítulos por dia?</b><div class="md-chips2">${[1, 2, 3].map((n) => `<button data-md-criar="livro:${n}">${n} por dia</button>`).join('')}</div></div>`;
+  else mdCriarPlano(k);
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function mdCriarPlano(k, extra) {
+  const q = mdQuem(); const nome = (MD_MODELOS.find((m) => m[0] === k) || [0, 'Plano'])[1].replace(/^\S+\s/, '');
+  db.planos.filter((p) => p.quem === q && p.ativo).forEach((p) => { p.ativo = false; });
+  const p = { id: uid(), quem: q, modelo: k, nome, inicio: hoje(), ativo: true, versao: $('#mdVersao')?.value || 'NAA' };
+  if (k === 'tempo') { p.meses = +extra; p.nome = `A Bíblia em ${extra} meses`; }
+  if (k === 'livro') { p.livro = $('#mdLivro')?.value || 'ROM'; p.porDia = +extra; p.nome = `${MD_LIVROS[MD_IDX[p.livro]][0]} · ${extra} cap. por dia`; }
+  db.planos.push(p); changed(); celFecharFolha(); toast(`📖 ${p.nome}: ${mdDiasDoPlano(p).length} dias. Bom começo!`);
+  if (MD) { MD.passos = mdPassos(); mdRender(); }
+}
+function mdDiario() {
+  const q = mdQuem(); const N = mdDe(q).filter((x) => x.texto && ['leitura', 'linha'].includes(x.tipo)).sort((a, b) => (a.data < b.data ? 1 : -1));
+  celFolha(`<h3 style="margin:0 0 4px">📖 Diário com Deus</h3><p class="small muted" style="margin:0 0 8px">Tudo que você anotou nas leituras e nas suas linhas. 🔒 Fica com os dados do Prumo.</p>
+    ${N.length ? N.slice(0, 120).map((x) => `<div class="md-dn"><small>${cxDiaSem(x.data)} ${dmy(x.data)}${x.ref ? ' · ' + esc(x.ref) : ''}${x.intencao ? ' · ' + esc(x.intencao) : ''}</small><div>"${esc(x.texto)}"</div></div>`).join('') : '<p class="small muted">Ainda vazio. Na próxima leitura, escreva uma frase do que Deus falou com você.</p>'}`);
+}
+function mdConqFolha() {
+  const C = mdConquistas(); const S = mdSequencia();
+  celFolha(`<h3 style="margin:0 0 2px">🏆 Minhas conquistas</h3><p class="small muted" style="margin:0 0 8px">Cada uma é uma prova de que você está saindo. 🔥 Agora: ${S.n} · recorde: ${mdRecorde()}</p>
+    ${C.length ? C.map((c) => `<div class="md-cq"><span class="md-cq-i" style="background:${c.cor}">${c.ic}</span><span><b>${esc(c.t)}</b><small>${cxDiaSem(c.data)} ${dmy(c.data)}${c.sub ? ' · ' + esc(c.sub) : ''}</small></span></div>`).join('') : '<p class="small muted">As conquistas aparecem conforme você fecha os dias, lê e anota. A primeira está a um "Meu dia" de distância.</p>'}`);
+}
+function mdVolta() {
+  const dias = mdDiasSemRegistro();
+  celFolha(`<h3 style="margin:0 0 4px">🤝 Bem-vindo de volta</h3><p class="small muted" style="margin:0 0 8px">Sem culpa. Para cada dia, escolha: <b>Nada</b> (não gastou), <b>Anotar</b> ou <b>Pular</b> (não lembra, tudo bem).</p>
+    ${dias.map((d) => `<div class="md-vd" data-md-dia="${d}"><span>${cxDiaSem(d)} ${dmy(d).slice(0, 5)}</span><span><button data-md-v="nada:${d}">Nada</button><button class="p" data-md-v="anotar:${d}">Anotar</button><button data-md-v="pular:${d}">Pular</button></span></div>`).join('')}
+    <p class="small muted" style="margin:8px 0">💡 O extrato do banco ou o "Colar aviso do banco" ajudam a lembrar.</p><button class="btn primary" style="width:100%" data-md="volta-ok">Pronto, recomeçar hoje</button>`);
+}
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if ((b = g('data-md'))) {
+    const a = b.dataset.md; e.stopPropagation();
+    if (a === 'dia') { celFecharFolha?.(); return mdAbrir(); }
+    if (a === 'fechar') return mdFechar();
+    if (a === 'prox') return mdProx();
+    if (a === 'planos') return mdPlanos();
+    if (a === 'diario') return mdDiario();
+    if (a === 'conquistas') return mdConqFolha();
+    if (a === 'volta') return mdVolta();
+    if (a === 'treino') { mdFechar(); return setTimeout(() => $('[data-cel-tab="treino"]')?.click(), 50); }
+    if (a === 'li') { const p = mdPlano(); const pr = mdProgresso(p); const txt = ($('#mdNota')?.value || '').trim(); const dia = pr.hojeLido ? pr.hojeLido.dia : pr.prox; const ref = mdRef(pr.dias[dia]);
+      if (pr.hojeLido) { pr.hojeLido.texto = txt; } else { mdAdd({ tipo: 'leitura', plano: p.id, dia, ref, texto: txt }); if (dia === pr.total - 1) mdAdd({ tipo: 'fimplano', ref: p.nome }); }
+      changed(); return mdProx(); }
+    if (a === 'ontem-ok' || a === 'ontem-nada') { const d = addDias(hoje(), -1); if (!mdDe(mdQuem(), 'ontem').some((x) => x.ref === d)) mdAdd({ tipo: 'ontem', ref: d, texto: a === 'ontem-nada' ? 'nada' : 'ok' }); changed(); return mdProx(); }
+    if (a === 'addontem') { return mdLancar(' ontem'); }
+    if (a === 'linha') { const t = ($('#mdLinha')?.value || '').trim(); const ja = mdDe(mdQuem(), 'linha').find((x) => x.data === hoje() && x.intencao !== 'semana'); if (t || MD.intencao) { if (ja) Object.assign(ja, { texto: t, intencao: MD.intencao || ja.intencao }); else mdAdd({ tipo: 'linha', texto: t, intencao: MD.intencao }); changed(); } return mdProx(); }
+    if (a === 'semana') { const t = ($('#mdSemana')?.value || '').trim(); if (t) { mdAdd({ tipo: 'linha', intencao: 'semana', texto: t, ref: 'Revisão da semana' }); changed(); } return mdProx(); }
+    if (a === 'volta-ok') { mdAdd({ tipo: 'volta' }); changed(); celFecharFolha(); return toast('🤝 Tudo em dia. Hoje é um novo começo.'); }
+    if (a === 'apoio') { const q = mdQuem(); if (!mdDe(q, 'apoio').some((x) => x.para === mdOutro(q) && x.data === hoje())) { mdAdd({ tipo: 'apoio', para: mdOutro(q) }); changed(); toast(`🙌 ${mdNome(mdOutro(q))} vai ver que você torceu por ${q === 'mat' ? 'ela' : 'ele'}!`); } return; }
+  }
+  if ((b = g('data-md-chip'))) { const x = celFrequentes()[+b.dataset.mdChip]; if (x) mdLancar(`${x.desc}  ontem${x.pal ? ' ' + x.pal : ''}`); return; }
+  if ((b = g('data-md-int'))) { MD.intencao = b.dataset.mdInt; MD.linha = $('#mdLinha')?.value || ''; return mdRender(); }
+  if ((b = g('data-md-plano'))) return mdPlanoExtra(b.dataset.mdPlano);
+  if ((b = g('data-md-criar'))) { const [k, v] = b.dataset.mdCriar.split(':'); return mdCriarPlano(k, v); }
+  if ((b = g('data-md-v'))) { const [acao, d] = b.dataset.mdV.split(':'); const linha = b.closest('.md-vd');
+    if (acao === 'anotar') { celFecharFolha(); return setTimeout(() => mdLancar(`  dia ${+d.slice(8, 10)}`), 60); }
+    if (!mdDe(mdQuem(), 'ontem').some((x) => x.ref === d)) mdAdd({ tipo: 'ontem', ref: d, texto: acao }); changed(); if (linha) { linha.classList.add('feito'); linha.querySelector('span:last-child').innerHTML = acao === 'nada' ? '✓ nada' : '↷ pulado'; } }
+}, true);
+document.addEventListener('input', (e) => { if (!MD) return; if (e.target.id === 'mdNota') MD.nota = e.target.value; if (e.target.id === 'mdLinha') MD.linha = e.target.value; if (e.target.id === 'mdSemana') MD.semana = e.target.value; });
+CEL_NOVIDADES['7.3'] = ['☀️ Meu dia: leitura com propósito, ontem e uma linha, em 2 minutos', '📖 Planos de leitura (1 ano, cronológica, no seu tempo, vida de Cristo, vida de Paulo, Romanos/Tiago/Hebreus…) abrindo no YouVersion', '🔥 Dias no prumo com 1 dia de graça por semana', '🤝 Volta sem culpa, 🏆 Conquistas, ✍️ Diário com Deus e 🙌 Helen junto'];
 
 /* ---------- início ---------- */
 (async function boot() {
