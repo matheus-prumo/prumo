@@ -1065,6 +1065,50 @@ body.md-aberto .cel-folha-o { z-index: 160; } body.md-aberto .toast, body.md-abe
 .md-abas { display: flex; background: rgba(255,255,255,.1); border-radius: 12px; padding: 3px; gap: 3px; } .md-abas button { flex: 1; border: 0; background: none; color: #fff; font: inherit; font-size: 13.5px; padding: 8px; border-radius: 9px; cursor: pointer; } .md-abas button.on { background: #fff; color: #1f1e1b; font-weight: 700; }
 .md-livro { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.1); border-radius: 12px; padding: 6px 6px 6px 12px; font-size: 13px; } .md-livro select { flex: 1; background: transparent; color: #fff; border: 0; font: inherit; font-size: 16px; font-weight: 700; } .md-livro option { color: #1f1e1b; }
 .md-caps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; max-height: 38vh; overflow-y: auto; } .md-caps button { border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #fff; border-radius: 10px; padding: 9px 0; font: inherit; font-size: 14px; cursor: pointer; } .md-caps button.lido { background: #1f4b40; border-color: var(--brand, #1f4e6b); } .md-caps button.on { background: #fff; color: #1f1e1b; font-weight: 800; }
+/* v7.6 viagens */
+.vg-seg{display:flex;gap:6px;margin:0 0 12px;overflow-x:auto}
+.vg-seg button{flex:1;white-space:nowrap;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:8px 12px;font-weight:600;cursor:pointer;font-size:13px}
+.vg-seg button.on{background:var(--brand,#1f4e6b);border-color:var(--brand,#1f4e6b);color:#fff}
+.vg-heroi{background:var(--brand,#1f4e6b);color:#fff;border:0;margin-bottom:12px}
+.vg-heroi small{display:block;opacity:.85}.vg-heroi>b{display:block;font-size:30px;margin:4px 0 8px}.vg-heroi>b span{font-size:15px;opacity:.75;font-weight:500}
+.vg-heroi.neg{background:#a33a2a}.vg-heroi.calmo{background:var(--panel);color:var(--fg);border:1px solid var(--line)}.vg-heroi.calmo>b{font-size:20px}
+.vg-bar{position:relative;height:10px;border-radius:6px;background:rgba(255,255,255,.25);margin-bottom:8px;overflow:visible}
+.vg-bar i{display:block;height:100%;border-radius:6px;background:#fff}
+.vg-bar u{position:absolute;top:-4px;bottom:-4px;width:2px;background:#ffd166}
+.vg-bar.claro{background:var(--line)}.vg-bar.claro i{background:var(--brand,#1f4e6b)}
+.vg-c{margin-bottom:12px}.vg-c h3{margin:0 0 8px;font-size:15px}
+.vg-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.vg-h h3{margin-bottom:8px}
+.vg-grade{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.vg-grade button{border:1px solid var(--line);background:var(--bg,#f6f6f3);color:var(--fg);border-radius:12px;padding:10px 4px;font-size:12px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.vg-grade button span{font-size:24px}.vg-grade button:active{transform:scale(.96)}
+.vg-mod{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;padding:10px;border-radius:10px;background:color-mix(in srgb,var(--brand,#1f4e6b) 10%,transparent)}
+.vg-mod small{display:block;color:var(--muted)}
+.vg-k2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.vg-k2 .card{margin:0}.vg-k2 small{display:block;color:var(--muted);font-size:12px}.vg-k2 b{display:block;font-size:22px;margin:2px 0}
+.vg-hb{display:grid;grid-template-columns:130px 1fr 70px;align-items:center;gap:8px;margin:6px 0;font-size:13px}
+.vg-hb i{display:block;height:12px;border-radius:6px;background:var(--brand,#1f4e6b);min-width:3px}.vg-hb i.y{background:#d9822b}.vg-hb b{text-align:right}
+.vg-ts{display:flex;justify-content:space-around;align-items:flex-end;height:140px;padding-top:6px}
+.vg-ts>div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;text-align:center}
+.vg-ts i{display:block;width:56px;border-radius:8px 8px 0 0;background:var(--brand,#1f4e6b)}.vg-ts i.s{background:#6fa8cc}
+.vg-vb{position:relative;display:flex;align-items:flex-end;gap:4px;height:110px;margin-top:22px;border-bottom:1px solid var(--line)}
+.vg-lim{position:absolute;left:0;right:0;border-top:2px dashed #d9822b;pointer-events:none;z-index:1}
+.vg-vb>div:not(.vg-lim){flex:1;display:flex;justify-content:center;align-items:flex-end;height:100%;min-width:0}
+.vg-vb i{position:relative;display:block;width:70%;max-width:34px;border-radius:5px 5px 0 0;background:var(--brand,#1f4e6b)}
+.vg-vb i.s{background:#6fa8cc}.vg-vb i.bad{background:#c0452f}
+.vg-vb i small{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:10px;color:var(--muted);white-space:nowrap;margin-bottom:2px;font-style:normal}
+.vg-vbr{display:flex;gap:4px}.vg-vbr span{flex:1;text-align:center;font-size:11px;color:var(--muted);padding-top:3px}
+.vg-cfg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}.vg-cfg label{font-size:12px;color:var(--muted)}.vg-cfg input{width:100%;margin-top:3px;text-align:right}
+.vg-eco{background:#2f7d4f;color:#fff;border:0;margin-bottom:12px}.vg-eco small{display:block;opacity:.9}.vg-eco b{display:block;font-size:30px;margin:4px 0}
+.vg-des{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}.vg-des:first-of-type{border-top:0}
+.vg-des small{display:block;color:var(--muted)}.vg-des.feito span{opacity:.6}
+.vg-valor{width:100%;font-size:30px;font-weight:700;text-align:center;padding:10px;border-radius:12px;margin:4px 0 8px}
+.vg-tipos{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.vg-tipos button{font-size:20px;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:4px 7px;cursor:pointer;opacity:.55}.vg-tipos button.on{opacity:1;border-color:var(--brand,#1f4e6b);box-shadow:0 0 0 2px color-mix(in srgb,var(--brand,#1f4e6b) 30%,transparent)}
+.vg-extra{display:flex;flex-direction:column;gap:6px}.vg-extra input{width:100%}.vg-2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.vg-bts{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+.vg-dlg{padding:16px;min-width:min(380px,90vw)}
+.vg-modf label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:5px 0}.vg-modf input{width:110px;text-align:right}
+.vg-ini-bt{display:flex;gap:6px;margin-top:8px}.vg-ini-bt button{flex:1;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:10px;padding:6px 2px;font-size:20px;cursor:pointer}.vg-ini-bt small{display:block;font-size:10px;color:var(--muted)}
+@media(max-width:520px){.vg-hb{grid-template-columns:110px 1fr 62px}}
 
 /* =================== v7.5: cores =================== */
 :root { --brand: #1f4e6b; }
@@ -4006,7 +4050,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '7.5';
+const APP_VERSAO = '7.6';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -11833,6 +11877,182 @@ function mdAvulsaHtml(cab, abas, p) {
 }
 document.addEventListener('change', (e) => { if (e.target.id === 'mdLivroAv' && MD) { MD.livro = e.target.value; MD.cap = null; mdRender(); } });
 CEL_NOVIDADES['7.4'] = ['✋ Leitura avulsa: escolha qualquer livro e capítulo (conta como a leitura do dia, sem mexer no plano)', 'Capítulos já lidos de cada livro ficam marcados'];
+
+/* =================== v7.6: Representação · Viagens (lançar em 2 toques, onde mais gasto, mês, economizar) =================== */
+const VG = { comb: ['⛽', 'Combustível', 'Combustível'], almoco: ['🍽', 'Almoço', 'Viagens e alimentação'], lanche: ['☕', 'Café/lanche', 'Viagens e alimentação'], besteira: ['🍬', 'Doce/besteira', 'Viagens e alimentação'], pedagio: ['🛣', 'Pedágio', 'Viagens e alimentação'], estac: ['🅿️', 'Estacionamento', 'Viagens e alimentação'], hotel: ['🏨', 'Hotel', 'Viagens e alimentação'], carro: ['🔧', 'Carro', 'Veículo'], outro: ['➕', 'Outro', 'Viagens e alimentação'] };
+const VG_DESAFIOS = [['marmita', '🥪', 'Trouxe almoço de casa', 'almoco', 30], ['semdoce', '🍬', 'Sem doce nem lanche à toa', 'besteira', 10], ['cafe', '☕', 'Café de casa (garrafa)', 'lanche', 8], ['posto', '⛽', 'Abasteci no posto mais barato', null, 8]];
+(function () { const _e = ensureModules; ensureModules = function (d) { d = _e(d); if (d.rep) d.rep.viagem = Object.assign({ orcMes: 1000, orcViagem: 150, dias: [2, 5], modelos: { 2: [['comb', 110], ['almoco', 30]], 5: [['comb', 110], ['almoco', 30]] } }, d.rep.viagem || {}); if (!Array.isArray(d.vgEco)) d.vgEco = []; return d; }; })();
+COLECOES.push(['vgEco']); if (db) { ensureModules(db); }
+const VGC = () => db.rep.viagem;
+function vgTipo(d) { // de que tipo é o gasto (os antigos são deduzidos pela categoria e pela descrição)
+  if (d.vg && VG[d.vg]) return d.vg; const t = cxSemAc(d.descricao);
+  if (d.categoria === 'Combustível' || /combust|gasolina|etanol|alcool|diesel|posto/.test(t)) return 'comb';
+  if (d.categoria === 'Veículo' || /oficina|pneu|oleo|lavag|mecan/.test(t)) return 'carro';
+  if (/pedagio/.test(t)) return 'pedagio'; if (/estacion/.test(t)) return 'estac'; if (/hotel|pousada|hosped/.test(t)) return 'hotel';
+  if (/almoc|marmit|restaur|refeic|prato/.test(t)) return 'almoco'; if (/doce|chocolate|sorvete|bala|refri|salgad/.test(t)) return 'besteira'; if (/cafe|lanche|padaria/.test(t)) return 'lanche';
+  return d.categoria === 'Viagens e alimentação' ? 'outro' : null;
+}
+const vgGastos = (de, ate) => db.rep.despesas.filter((d) => d.data >= de && d.data <= ate && vgTipo(d));
+const vgDiasViagem = (L) => [...new Set(L.map((d) => d.data))].sort();
+const vgEhDia = (d) => VGC().dias.includes(new Date(d + 'T12:00').getDay());
+const vgNomeDia = (d) => ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'][new Date(d + 'T12:00').getDay()];
+function vgMediaDia(wd, antesDe) { const ini = addDias(antesDe, -120); const L = vgGastos(ini, addDias(antesDe, -1)).filter((d) => new Date(d.data + 'T12:00').getDay() === wd); const ds = vgDiasViagem(L); return ds.length ? soma(L, 'valor') / ds.length : 0; }
+function vgMediaTipo(t) { const L = vgGastos(addDias(hoje(), -90), hoje()).filter((d) => vgTipo(d) === t); const ds = vgDiasViagem(L); return ds.length ? soma(L, 'valor') / ds.length : 0; }
+function vgViagensRestantes(ym) { const H = hoje(); const fim = `${ym}-${pad(cxUltimoDia(ym))}`; let d = ymOf(H) === ym ? H : `${ym}-01`; const out = []; const comHoje = vgGastos(H, H).length;
+  while (d <= fim) { if (vgEhDia(d) && !(d === H && comHoje)) out.push(d); d = addDias(d, 1); } return out; }
+
+/* ---------- tela ---------- */
+ui.vgSub = ui.vgSub || 'hoje'; ui.vgPer = ui.vgPer || 'mes';
+function repViagens() {
+  const subs = [['hoje', '🚗 Hoje'], ['onde', '📊 Onde gasto'], ['mes', '🗓 Mês'], ['eco', '🌱 Economizar']];
+  return `<div class="vg"><div class="vg-seg">${subs.map(([k, l]) => `<button class="${ui.vgSub === k ? 'on' : ''}" data-vg-sub="${k}">${l}</button>`).join('')}</div>${{ hoje: vgHoje, onde: vgOnde, mes: vgMes, eco: vgEco }[ui.vgSub]()}</div>`;
+}
+function vgHoje() {
+  const H = hoje(); const L = vgGastos(H, H).sort((a, b) => (a.id < b.id ? -1 : 1)); const tot = soma(L, 'valor'); const C = VGC(); const wd = new Date(H + 'T12:00').getDay();
+  const viajando = vgEhDia(H) || L.length; const med = vgMediaDia(wd, H); const prox = vgViagensRestantes(ymOf(H))[0] || vgViagensRestantes(addM(ymOf(H), 1))[0];
+  const mod = (C.modelos[wd] || []).filter(([t]) => !L.some((d) => vgTipo(d) === t));
+  const hero = viajando ? `<div class="card vg-heroi ${tot > C.orcViagem ? 'neg' : ''}"><small>Gasto desta viagem · ${vgNomeDia(H)}, ${dmy(H).slice(0, 5)}</small><b>${fmt0(tot)} <span>de ${fmt0(C.orcViagem)}</span></b><div class="vg-bar"><i style="width:${Math.min(100, (tot / C.orcViagem) * 100)}%"></i></div>
+      <small>${tot <= C.orcViagem ? `sobram <b>${fmt0(C.orcViagem - tot)}</b>` : `passou <b>${fmt0(tot - C.orcViagem)}</b> do orçamento`}${med ? ` · média das ${vgNomeDia(H)}s: ${fmt0(med)}${tot && tot < med ? ' 👏' : ''}` : ''}</small></div>`
+    : `<div class="card vg-heroi calmo"><small>Hoje não é dia de viagem</small><b>${prox ? `Próxima: ${vgNomeDia(prox)}, ${dmy(prox).slice(0, 5)}` : 'Sem viagem marcada'}</b><small>Orçamento por viagem: ${fmt0(C.orcViagem)} · dá para lançar mesmo assim nos botões abaixo</small></div>`;
+  return `${hero}
+    <div class="card vg-c"><div class="vg-h"><h3>Lançar gasto</h3><small class="muted">2 toques</small></div><div class="vg-grade">${Object.entries(VG).map(([k, [ic, n]]) => `<button data-vg-lancar="${k}"><span>${ic}</span>${n}</button>`).join('')}</div>
+      ${mod.length && viajando ? `<div class="vg-mod"><span><b>Modelo da ${vgNomeDia(H)}</b><small>${mod.map(([t, v]) => `${VG[t][0]} ${fmt0(v)}`).join(' · ')}</small></span><button class="btn sm primary" data-vg-modelo="${wd}">Lançar ✓</button></div>` : ''}</div>
+    <div class="card vg-c"><div class="vg-h"><h3>Hoje</h3><b>${fmt(tot)}</b></div>${L.length ? L.map((d) => `<div class="cx-l" data-vg-ed="${d.id}"><span>${VG[vgTipo(d)][0]} ${esc(d.descricao)}<small>${[d.local, d.cliente, d.litros ? `${String(d.litros).replace('.', ',')} L` : ''].filter(Boolean).map(esc).join(' · ')}</small></span><b>${fmt(d.valor)}</b></div>`).join('') : '<p class="small muted" style="margin:0">Nada lançado hoje.</p>'}</div>
+    ${uiAjuda('Toque num botão, digite o valor e pronto · o <b>modelo</b> lança de uma vez o que se repete · toque num gasto para corrigir.')}`;
+}
+function vgPeriodo(per) { const H = hoje();
+  if (per === 'dia') { const ult = vgDiasViagem(vgGastos(addDias(H, -60), H)).pop() || H; return { ini: ult, fim: ult, ant: null, rot: ult === H ? 'hoje' : `${vgNomeDia(ult)} ${dmy(ult).slice(0, 5)}` }; }
+  if (per === 'semana') { const i = mdSemanaDe(H); return { ini: i, fim: addDias(i, 6), ant: [addDias(i, -7), addDias(i, -1)], rot: 'esta semana', antR: 'semana passada' }; }
+  if (per === 'ano') { const y = ui.mes.slice(0, 4); return { ini: `${y}-01-01`, fim: `${y}-12-31`, ant: [`${+y - 1}-01-01`, `${+y - 1}-12-31`], rot: y, antR: String(+y - 1) }; }
+  const m = ui.mes, p = addM(m, -1); return { ini: `${m}-01`, fim: `${m}-${pad(cxUltimoDia(m))}`, ant: [`${p}-01`, `${p}-${pad(cxUltimoDia(p))}`], rot: nomeMes(m), antR: MESES[+p.slice(5, 7) - 1] }; }
+function vgOnde() {
+  const P = vgPeriodo(ui.vgPer); const L = vgGastos(P.ini, P.fim); const tot = soma(L, 'valor'); const ds = vgDiasViagem(L); const A = P.ant ? soma(vgGastos(P.ant[0], P.ant[1]), 'valor') : 0;
+  const por = Object.keys(VG).map((k) => [k, soma(L.filter((d) => vgTipo(d) === k), 'valor')]).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]); const mx = por[0]?.[1] || 1;
+  const ter = vgGastos(addDias(hoje(), -120), hoje()); const porDia = (wd) => { const x = ter.filter((d) => new Date(d.data + 'T12:00').getDay() === wd); const n = vgDiasViagem(x).length; return { n, m: n ? soma(x, 'valor') / n : 0, x }; };
+  const T = porDia(2), S = porDia(5); let expl = '';
+  if (T.n && S.n) { const dif = Object.keys(VG).map((k) => [k, soma(S.x.filter((d) => vgTipo(d) === k), 'valor') / S.n - soma(T.x.filter((d) => vgTipo(d) === k), 'valor') / T.n]).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))[0];
+    const caro = S.m > T.m ? 'sexta' : 'terça'; expl = `A ${caro} custa <b>${fmt0(Math.abs(S.m - T.m))} a mais</b>${dif && Math.abs(dif[1]) >= 3 ? `, principalmente em ${VG[dif[0]][1].toLowerCase()} (${fmt0(Math.abs(dif[1]))} de diferença)` : ''}.`; }
+  const mxTS = Math.max(T.m, S.m, 1);
+  return `<div class="pn-per" style="margin-bottom:10px">${[['dia', 'Dia'], ['semana', 'Semana'], ['mes', 'Mês'], ['ano', 'Ano']].map(([k, l]) => `<button class="${ui.vgPer === k ? 'on' : ''}" data-vg-per="${k}">${l}</button>`).join('')}</div>
+    <div class="vg-k2"><div class="card"><small>${P.rot}</small><b>${fmt0(tot)}</b>${P.ant ? `<small>${A ? pnDelta(tot, A, false) + ' vs ' + P.antR : 'sem comparação'}</small>` : ''}</div><div class="card"><small>Por viagem</small><b>${ds.length ? fmt0(tot / ds.length) : '—'}</b><small>${ds.length} ${ds.length === 1 ? 'viagem' : 'viagens'}</small></div></div>
+    <div class="card vg-c"><h3>Por categoria</h3>${por.length ? por.map(([k, v]) => `<div class="vg-hb"><span>${VG[k][0]} ${VG[k][1]}</span><i style="width:${(v / mx) * 100}%" class="${k === 'besteira' ? 'y' : ''}"></i><b>${fmt0(v)}</b></div>`).join('') : '<p class="small muted" style="margin:0">Nenhum gasto de viagem nesse período.</p>'}</div>
+    ${vgGraficoTempo(P)}
+    <div class="card vg-c"><div class="vg-h"><h3>Terça × Sexta</h3><small class="muted">média por viagem · 4 meses</small></div>
+      <div class="vg-ts">${[['Terça', T], ['Sexta', S]].map(([n, x], i) => `<div><small>${x.n ? fmt0(x.m) : '—'}</small><i class="${i ? 's' : ''}" style="height:${(x.m / mxTS) * 90 + 4}px"></i><span>${n}<br><small>${x.n} viagens</small></span></div>`).join('')}</div>
+      ${expl ? `<p class="small" style="margin:6px 0 0">${expl}</p>` : ''}</div>
+    ${uiAjuda('Mude o período nos botões de cima · o mês e o ano seguem as setas do topo.')}`;
+}
+function vgGraficoTempo(P) {
+  let pts = [];
+  if (ui.vgPer === 'ano') { const y = P.ini.slice(0, 4); pts = Array.from({ length: 12 }, (_, i) => { const m = `${y}-${pad(i + 1)}`; return { r: MC[i], v: soma(vgGastos(`${m}-01`, `${m}-31`), 'valor') }; }); }
+  else if (ui.vgPer === 'mes') pts = vgDiasViagem(vgGastos(P.ini, P.fim)).map((d) => ({ r: dmy(d).slice(0, 2), v: soma(vgGastos(d, d), 'valor'), s: new Date(d + 'T12:00').getDay() === 5 }));
+  else if (ui.vgPer === 'semana') pts = Array.from({ length: 7 }, (_, i) => { const d = addDias(P.ini, i); return { r: 'STQQSSD'[i], v: soma(vgGastos(d, d), 'valor'), s: new Date(d + 'T12:00').getDay() === 5 }; });
+  else return '';
+  if (!pts.some((p) => p.v)) return ''; const mx = Math.max(...pts.map((p) => p.v), VGC().orcViagem * (ui.vgPer === 'ano' ? 0 : 1), 1); const lim = ui.vgPer === 'ano' ? VGC().orcMes : VGC().orcViagem; const mx2 = Math.max(mx, lim);
+  return `<div class="card vg-c"><div class="vg-h"><h3>${ui.vgPer === 'ano' ? 'Cada mês' : ui.vgPer === 'mes' ? 'Cada viagem' : 'Cada dia'}</h3><small class="muted">traço = orçamento (${fmt0(lim)})</small></div>
+    <div class="vg-vb"><div class="vg-lim" style="bottom:${(lim / mx2) * 100}%"></div>${pts.map((p) => `<div title="${p.r}: ${fmt(p.v)}"><i class="${p.v > lim ? 'bad' : p.s ? 's' : ''}" style="height:${Math.max(p.v ? 3 : 1, (p.v / mx2) * 100)}%"><small>${p.v ? fmtK(p.v) : ''}</small></i></div>`).join('')}</div><div class="vg-vbr">${pts.map((p) => `<span>${p.r}</span>`).join('')}</div></div></div>`;
+}
+function vgMes() {
+  const m = ui.mes; const C = VGC(); const ini = `${m}-01`, fim = `${m}-${pad(cxUltimoDia(m))}`; const L = vgGastos(ini, fim); const tot = soma(L, 'valor'); const ds = vgDiasViagem(L);
+  const rest = vgViagensRestantes(m); const total = ds.length + rest.length; const cabe = rest.length ? Math.max(0, C.orcMes - tot) / rest.length : 0; const ritmo = total ? (ds.length / total) * 100 : 0;
+  const ped = db.rep.pedidos.filter((p) => ymOf(p.data) === m); const gerada = soma(ped, comissao); const recebida = soma(db.rep.pedidos.filter((p) => p.status === 'recebida' && ymOf(p.recebidoEm || '') === m), (p) => Number(p.valorRecebido ?? comissao(p)) || 0);
+  const ret = tot ? gerada / tot : 0;
+  return `<div class="card vg-heroi ${tot > C.orcMes ? 'neg' : ''}"><small>Já gastei em viagens · ${nomeMes(m)}</small><b>${fmt0(tot)} <span>de ${fmt0(C.orcMes)}</span></b>
+      <div class="vg-bar"><i style="width:${Math.min(100, (tot / C.orcMes) * 100)}%"></i>${total ? `<u style="left:${ritmo}%" title="onde deveria estar pelo número de viagens"></u>` : ''}</div>
+      <small>${rest.length ? `faltam <b>${rest.length} ${rest.length === 1 ? 'viagem' : 'viagens'}</b> (${rest.slice(0, 4).map((d) => `${vgNomeDia(d).slice(0, 3)} ${+d.slice(8, 10)}`).join(', ')}) · cabe <b>${fmt0(cabe)}</b> por viagem` : tot <= C.orcMes ? `mês fechado ${fmt0(C.orcMes - tot)} abaixo do orçamento 🎉` : 'mês fechado acima do orçamento'}</small></div>
+    ${vgGraficoTempo({ ini, fim })}
+    <div class="card vg-c"><div class="vg-h"><h3>💰 Vale a pena?</h3>${tot && !gerada ? '<small class="muted">sem pedidos no mês</small>' : ''}${tot && gerada ? `<b class="${ret >= 2 ? 'good' : ret >= 1 ? 'warn' : 'bad'}">${ret >= 2 ? 'sim' : ret >= 1 ? 'por pouco' : 'ainda não'}</b>` : ''}</div>
+      <div class="cx-l"><span>Comissões geradas no mês<small>pelos pedidos tirados</small></span><b class="good">${fmt0(gerada)}</b></div><div class="cx-l"><span>Comissões recebidas no mês</span><b>${fmt0(recebida)}</b></div><div class="cx-l"><span>Gasto com viagens</span><b>${fmt0(tot)}</b></div>
+      ${tot && gerada ? `<div class="cx-l"><span>Cada R$ 1 de viagem trouxe</span><b class="good">${fmt(ret)}</b></div>` : ''}</div>
+    <div class="card vg-c"><h3>⚙ Orçamento e modelos</h3>
+      <div class="vg-cfg"><label>Orçamento do mês<input type="text" inputmode="decimal" data-vg-cfg="orcMes" value="${valorTxt(C.orcMes)}"></label><label>Orçamento por viagem<input type="text" inputmode="decimal" data-vg-cfg="orcViagem" value="${valorTxt(C.orcViagem)}"></label></div>
+      ${C.dias.map((wd) => `<div class="cx-l"><span>Modelo da ${vgNomeDia(addDias(hoje(), (wd - new Date(hoje() + 'T12:00').getDay() + 7) % 7))}<small>${(C.modelos[wd] || []).map(([t, v]) => `${VG[t][0]} ${fmt0(v)}`).join(' · ') || 'vazio'}</small></span><button class="btn sm" data-vg-ed-mod="${wd}">Editar</button></div>`).join('')}</div>`;
+}
+function vgEco() {
+  const m = ui.mes; const E = db.vgEco.filter((e) => ymOf(e.data) === m); const tot = soma(E, 'valor'); const C = VGC(); const H = hoje();
+  const ini = `${m}-01`, fim = `${m}-${pad(cxUltimoDia(m))}`; const L = vgGastos(ini, fim); const best = soma(L.filter((d) => vgTipo(d) === 'besteira'), 'valor'); const lan = soma(L.filter((d) => vgTipo(d) === 'lanche'), 'valor');
+  const des = VG_DESAFIOS.map(([k, ic, n, t, pad_]) => { const v = r2(t ? Math.max(pad_, vgMediaTipo(t)) : pad_); const feito = db.vgEco.some((e) => e.tipo === k && e.data === H); return { k, ic, n, v, feito }; });
+  const carro = vgCarro();
+  return `<div class="card vg-eco"><small>Você já economizou em ${MESES[+m.slice(5, 7) - 1]}</small><b>${fmt0(tot)}</b><small>${tot >= C.orcViagem ? `equivale a ${String(r2(tot / C.orcViagem)).replace('.', ',')} ${tot / C.orcViagem >= 2 ? 'viagens' : 'viagem'} de graça 🎉` : `cada "Fiz ✓" soma aqui · ${fmt0(C.orcViagem - tot)} para pagar uma viagem inteira`}</small></div>
+    <div class="card vg-c"><div class="vg-h"><h3>Desafios de hoje</h3><small class="muted">toque quando fizer</small></div>${des.map((x) => `<div class="vg-des ${x.feito ? 'feito' : ''}"><span>${x.ic} ${x.n}<small>economia de ~${fmt0(x.v)}</small></span><button class="btn sm ${x.feito ? '' : 'primary'}" data-vg-des="${x.k}:${x.v}" ${x.feito ? 'disabled' : ''}>${x.feito ? '✓ feito' : 'Fiz ✓'}</button></div>`).join('')}</div>
+    ${best || lan ? `<div class="card vg-c"><h3>💡 Onde dá para cortar</h3>${best ? `<p class="small" style="margin:0 0 4px">🍬 Doces e besteiras em ${MESES[+m.slice(5, 7) - 1]}: <b class="bad">${fmt0(best)}</b>. Sem eles, sobraria isso a mais no mês.</p>` : ''}${lan ? `<p class="small" style="margin:0">☕ Cafés e lanches: <b>${fmt0(lan)}</b>. Uma garrafa de café de casa corta boa parte.</p>` : ''}</div>` : ''}
+    <div class="card vg-c"><h3>⛽ Seu carro</h3>${carro.n >= 2 ? `<div class="cx-l"><span>Consumo médio</span><b>${String(r2(carro.kml)).replace('.', ',')} km/l</b></div><div class="cx-l"><span>Custo por km</span><b>${fmt(carro.pkm)}</b></div>` : ''}${carro.posto ? `<div class="cx-l"><span>Posto mais barato da sua rota<small>${fmt(carro.posto[1])} o litro</small></span><b class="good">${esc(carro.posto[0])}</b></div>` : ''}
+      ${carro.n < 2 && !carro.posto ? '<p class="small muted" style="margin:0">Ao lançar o combustível, coloque os <b>litros</b>, o <b>km do painel</b> e o <b>posto</b>. Depois de 2 abastecimentos aparece o consumo, o custo por km e o posto mais barato.</p>' : ''}</div>`;
+}
+function vgCarro() {
+  const C = db.rep.despesas.filter((d) => vgTipo(d) === 'comb' && Number(d.litros) > 0).sort((a, b) => (a.data < b.data ? -1 : a.data > b.data ? 1 : (Number(a.km) || 0) - (Number(b.km) || 0)));
+  const comKm = C.filter((d) => Number(d.km) > 0); let kml = 0, pkm = 0;
+  if (comKm.length >= 2) { const km = Number(comKm[comKm.length - 1].km) - Number(comKm[0].km); const lit = soma(comKm.slice(1), (d) => Number(d.litros)); const gasto = soma(comKm.slice(1), 'valor'); if (km > 0 && lit > 0) { kml = km / lit; pkm = gasto / km; } }
+  const postos = {}; C.filter((d) => d.local).forEach((d) => { const k = d.local.trim(); postos[k] = postos[k] || []; postos[k].push(d.valor / d.litros); });
+  const lista = Object.entries(postos).map(([k, v]) => [k, soma(v, (x) => x) / v.length]).sort((a, b) => a[1] - b[1]);
+  return { n: kml ? comKm.length : 0, kml, pkm, posto: lista.length >= 2 ? lista[0] : null };
+}
+
+/* ---------- lançar ---------- */
+function vgJanela(html) { if (CELULAR && typeof celFolha === 'function') return celFolha(html); const d = $('#dlg'); d.classList.remove('wide'); d.innerHTML = `<div class="vg-dlg">${html}</div>`; d.onclick = (e) => { if (e.target === d) d.close(); }; if (!d.open) d.showModal(); }
+function vgFecharJanela() { if (CELULAR && typeof celFecharFolha === 'function') celFecharFolha(); const d = $('#dlg'); if (d.open) d.close(); }
+function vgLancar(t, d) {
+  const ed = d || null; t = ed ? vgTipo(ed) : t; const med = vgMediaTipo(t);
+  vgJanela(`<h3 style="margin:0 0 6px">${VG[t][0]} ${VG[t][1]}${ed ? ' · editar' : ''}</h3>
+    <input class="vg-valor" id="vgV" type="text" inputmode="decimal" placeholder="0,00" value="${ed ? valorTxt(ed.valor) : ''}">
+    <div class="vg-tipos">${Object.entries(VG).map(([k, [ic, n]]) => `<button class="${k === t ? 'on' : ''}" data-vg-tipo="${k}" title="${n}">${ic}</button>`).join('')}</div>
+    <div class="vg-extra"><input id="vgLocal" placeholder="${t === 'comb' ? 'Posto (opcional)' : 'Onde? (opcional)'}" value="${esc(ed?.local || '')}">
+      ${t === 'comb' ? `<div class="vg-2"><input id="vgLit" type="text" inputmode="decimal" placeholder="Litros" value="${ed?.litros ? String(ed.litros).replace('.', ',') : ''}"><input id="vgKm" type="text" inputmode="numeric" placeholder="Km do painel" value="${ed?.km || ''}"></div>` : `<input id="vgCli" placeholder="Cliente visitado (opcional)" value="${esc(ed?.cliente || '')}">`}
+      <input id="vgData" type="date" value="${ed ? ed.data : hoje()}"></div>
+    ${med ? `<p class="small muted" style="margin:6px 0 0">💡 Sua média de ${VG[t][1].toLowerCase()} por viagem: <b>${fmt0(med)}</b></p>` : ''}
+    <div class="vg-bts">${ed ? `<button class="btn" data-vg-del="${ed.id}">🗑</button>` : ''}<button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-vg-salvar="${t}|${ed ? ed.id : ''}">${ed ? 'Salvar' : 'Lançar ✓'}</button></div>`);
+  setTimeout(() => { const i = $('#vgV'); if (i) { i.focus(); i.select(); } }, 120);
+}
+function vgSalvar(t, id) {
+  const v = num($('#vgV')?.value, NaN); if (!isFinite(v) || v <= 0) return toast('Digite o valor.');
+  const base = { data: $('#vgData')?.value || hoje(), descricao: VG[t][1], categoria: VG[t][2], valor: r2(v), vg: t, local: ($('#vgLocal')?.value || '').trim() || undefined };
+  if (t === 'comb') { const l = num($('#vgLit')?.value, 0), k = num($('#vgKm')?.value, 0); if (l > 0) base.litros = r2(l); if (k > 0) base.km = Math.round(k); } else { const c = ($('#vgCli')?.value || '').trim(); if (c) base.cliente = c; }
+  const ex = id && db.rep.despesas.find((d) => d.id === id);
+  if (ex) { if (ex.descricao && ex.descricao !== VG[vgTipo(ex)][1]) base.descricao = ex.descricao; Object.assign(ex, base); } else db.rep.despesas.push({ id: uid(), ...base });
+  vgFecharJanela(); changed(); toast(`${VG[t][0]} ${fmt(v)} lançado`);
+}
+function vgEditarModelo(wd) {
+  const atual = Object.fromEntries((VGC().modelos[wd] || []).map(([t, v]) => [t, v]));
+  vgJanela(`<h3 style="margin:0 0 4px">Modelo da ${['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'][wd]}</h3><p class="small muted" style="margin:0 0 8px">O que você gasta quase sempre nesse dia. Deixe em branco o que não entra.</p>
+    <div class="vg-modf">${Object.entries(VG).filter(([k]) => !['hotel', 'carro', 'outro', 'besteira'].includes(k)).map(([k, [ic, n]]) => `<label><span>${ic} ${n}</span><input type="text" inputmode="decimal" data-vg-mv="${k}" value="${atual[k] ? valorTxt(atual[k]) : ''}" placeholder="0,00"></label>`).join('')}</div>
+    <div class="vg-bts"><button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-vg-mod-ok="${wd}">Salvar modelo</button></div>`);
+}
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if ((b = g('data-vg-sub'))) { ui.vgSub = b.dataset.vgSub; return renderAll(); }
+  if ((b = g('data-vg-per'))) { ui.vgPer = b.dataset.vgPer; return renderAll(); }
+  if ((b = g('data-vg-lancar'))) return vgLancar(b.dataset.vgLancar);
+  if ((b = g('data-vg-tipo'))) { const v = $('#vgV')?.value; const id = $('[data-vg-salvar]')?.dataset.vgSalvar.split('|')[1]; const ex = id && db.rep.despesas.find((d) => d.id === id); if (ex) ex.vg = b.dataset.vgTipo; vgLancar(b.dataset.vgTipo, ex || null); setTimeout(() => { const i = $('#vgV'); if (i && v) i.value = v; }, 130); return; }
+  if ((b = g('data-vg-salvar'))) { const [t, id] = b.dataset.vgSalvar.split('|'); return vgSalvar(t, id); }
+  if (g('data-vg-cancelar')) return vgFecharJanela();
+  if ((b = g('data-vg-del'))) { if (confirm('Excluir este gasto?')) { db.rep.despesas = db.rep.despesas.filter((d) => d.id !== b.dataset.vgDel); vgFecharJanela(); changed(); } return; }
+  if ((b = g('data-vg-ed'))) { const d = db.rep.despesas.find((x) => x.id === b.dataset.vgEd); if (d) vgLancar(null, d); return; }
+  if ((b = g('data-vg-modelo'))) { const wd = +b.dataset.vgModelo; const H = hoje(); const L = vgGastos(H, H); let n = 0; (VGC().modelos[wd] || []).forEach(([t, v]) => { if (!L.some((d) => vgTipo(d) === t)) { db.rep.despesas.push({ id: uid(), data: H, descricao: VG[t][1], categoria: VG[t][2], valor: r2(v), vg: t }); n++; } }); changed(); return toast(`${n} ${n === 1 ? 'gasto lançado' : 'gastos lançados'}. Toque em um para corrigir o valor.`); }
+  if ((b = g('data-vg-ed-mod'))) return vgEditarModelo(+b.dataset.vgEdMod);
+  if ((b = g('data-vg-mod-ok'))) { const wd = +b.dataset.vgModOk; VGC().modelos[wd] = $$('[data-vg-mv]').map((i) => [i.dataset.vgMv, r2(num(i.value, 0))]).filter(([, v]) => v > 0); vgFecharJanela(); changed(); return toast('Modelo salvo'); }
+  if ((b = g('data-vg-des'))) { const [k, v] = b.dataset.vgDes.split(':'); if (!db.vgEco.some((x) => x.tipo === k && x.data === hoje())) { db.vgEco.push({ id: uid(), data: hoje(), tipo: k, valor: r2(+v) }); changed(); toast(`🌱 +${fmt0(+v)} economizados`); } return; }
+  if ((b = g('data-vg-ir'))) { ui.sub.rep = 'viagens'; ui.vgSub = 'hoje'; if (CELULAR && typeof celFecharFolha === 'function') celFecharFolha(); return setTab('rep'); }
+});
+document.addEventListener('change', (e) => { const i = e.target.closest('[data-vg-cfg]'); if (!i) return; const v = num(i.value, 0); if (v > 0) { VGC()[i.dataset.vgCfg] = r2(v); changed(); } });
+document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.id === 'vgV') { const b = $('[data-vg-salvar]'); if (b) b.click(); } });
+
+/* ---------- Representação: Viagens como primeira aba ---------- */
+renderRep = function () {
+  const el = $('#tab-rep'); const sub = subAtual('rep', 'viagens');
+  el.innerHTML = subnav('rep', [['viagens', '🚗 Viagens'], ['resultado', 'Resultado'], ['pedidos', 'Pedidos'], ['despesas', 'Despesas'], ['representadas', 'Representadas']]) + { viagens: repViagens, resultado: repResultado, pedidos: repPedidos, despesas: () => tabelaDespesas('rep', ui.mes), representadas: repRepresentadas }[sub]();
+};
+/* ---------- Início do celular: card da viagem na terça e na sexta ---------- */
+if (CELULAR && typeof celHoje === 'function' && CEL_PERFIL !== 'hel') {
+  const _celHoje76 = celHoje;
+  celHoje = function () {
+    const h = _celHoje76(); const H = hoje(); let card = '';
+    try { const L = vgGastos(H, H); if (!vgEhDia(H) && !L.length) return h; const tot = soma(L, 'valor'); const C = VGC();
+      card = `<div class="card cel-c vg-ini"><div class="cel-c-h"><h3>🚗 Viagem de hoje</h3><b>${fmt0(tot)} <small class="muted">/ ${fmt0(C.orcViagem)}</small></b></div><div class="vg-bar claro"><i style="width:${Math.min(100, (tot / C.orcViagem) * 100)}%"></i></div>
+        <div class="vg-ini-bt">${['comb', 'almoco', 'lanche', 'pedagio'].map((k) => `<button data-vg-lancar="${k}">${VG[k][0]}<small>${VG[k][1].split('/')[0]}</small></button>`).join('')}<button data-vg-ir>➕<small>mais</small></button></div></div>`; } catch (e) { return h; }
+    const k = h.indexOf('<div class="card cel-heroi'); return k < 0 ? h : h.slice(0, k) + card + h.slice(k);
+  };
+}
+CEL_NOVIDADES['7.6'] = ['🚗 Representação › Viagens: lançar em 2 toques, modelo da terça e da sexta, orçamento da viagem', '📊 Onde mais gasto (dia, semana, mês, ano) e Terça × Sexta', '🌱 Economizar: desafios, quanto já economizou e o consumo do carro'];
 
 /* =================== v7.5: cores · azul petróleo (geral), preto e amarelo (Loja e Caixa da loja); Consultório e Ritmo ficam como estão =================== */
 const _renderAll75 = renderAll;
