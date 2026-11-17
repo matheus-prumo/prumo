@@ -285,7 +285,7 @@ body.em-sala { overflow: hidden; }
 /* =================== v4.0: interface nova =================== */
 :root {
   --bg: #f4f3ef; --panel: #ffffff; --panel-2: #f2f0eb; --line: #e6e3db; --muted: #6a675f;
-  --accent: #2b6b5a; --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--panel));
+  --accent: var(--brand, #1f4e6b); --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--panel));
   --r: 14px; --card-sh: 0 1px 2px rgba(30, 28, 22, .05), 0 6px 20px rgba(30, 28, 22, .045);
   --sans: "Segoe UI Variable Text", "Segoe UI", "Inter", system-ui, -apple-system, Roboto, "Helvetica Neue", sans-serif;
 }
@@ -657,7 +657,7 @@ body.cel .filters select { max-width: 46%; }
 #celBar .ci { font-size: 19px; line-height: 22px; height: 22px; display: grid; place-items: center; }
 #celBar .ci svg { width: 21px; height: 21px; }
 #celBar button.on { color: var(--accent); font-weight: 700; }
-#celFab { position: fixed; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); z-index: 41; border: 0; border-radius: 999px; background: #2b6b5a; color: #fff; font-weight: 700; font-size: 15px; padding: 14px 20px; box-shadow: 0 6px 18px rgba(0, 0, 0, .22); cursor: pointer; }
+#celFab { position: fixed; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); z-index: 41; border: 0; border-radius: 999px; background: var(--brand, #1f4e6b); color: #fff; font-weight: 700; font-size: 15px; padding: 14px 20px; box-shadow: 0 6px 18px rgba(0, 0, 0, .22); cursor: pointer; }
 #celFab[hidden] { display: none; }
 .cel-folha-o { position: fixed; inset: 0; z-index: 60; background: rgba(0, 0, 0, .35); display: flex; align-items: flex-end; }
 .cel-folha-o[hidden] { display: none; }
@@ -719,7 +719,7 @@ body.cel-hoje-on #filters { display: none !important; }
 body.cel #tab-config .cfg > .card:first-child { display: none; }
 .cel-hoje { display: grid; gap: 10px; }
 .cel-ola small { display: block; color: var(--muted); font-size: 13px; } .cel-ola b { font-size: 20px; font-family: Georgia, serif; font-weight: 400; }
-.cel-heroi { background: #2b6b5a; color: #fff; border: 0; display: grid; gap: 4px; padding: 16px; }
+.cel-heroi { background: var(--brand, #1f4e6b); color: #fff; border: 0; display: grid; gap: 4px; padding: 16px; }
 .cel-heroi small { opacity: .88; font-size: 12.5px; } .cel-heroi b { font-size: 32px; font-variant-numeric: tabular-nums; line-height: 1.1; } .cel-heroi b span { font-size: 15px; opacity: .8; font-weight: 500; }
 .cel-heroi .bar { height: 7px; background: rgba(255, 255, 255, .25); border-radius: 9px; overflow: hidden; } .cel-heroi .bar i { display: block; height: 100%; background: #fff; border-radius: 9px; }
 .cel-heroi .btn { justify-self: start; margin-top: 6px; background: rgba(255, 255, 255, .16); color: inherit; border-color: transparent; }
@@ -838,7 +838,7 @@ body.cel .cel-l span, body.cel .cel-c-h h3 { min-width: 0; }
 .cx-btns small { font-weight: 500; font-size: 11.5px; opacity: .8; }
 .cx-in { background: color-mix(in srgb, var(--ok) 14%, var(--panel)); color: var(--ok); }
 .cx-out { background: color-mix(in srgb, var(--bad) 13%, var(--panel)); color: var(--bad); }
-.cx-heroi { background: #2b6b5a; color: #fff; border: 0; display: grid; gap: 4px; padding: 16px; margin-bottom: 12px; }
+.cx-heroi { background: var(--brand, #1f4e6b); color: #fff; border: 0; display: grid; gap: 4px; padding: 16px; margin-bottom: 12px; }
 .cx-heroi.neg { background: #a8402f; }
 .cx-heroi small { opacity: .88; font-size: 12.5px; } .cx-heroi b { font-size: 32px; font-variant-numeric: tabular-nums; line-height: 1.1; }
 .cx-ajusta { justify-self: start; margin-top: 6px; background: rgba(255,255,255,.16); color: inherit; border: 0; border-radius: 9px; padding: 6px 11px; font: inherit; font-size: 12.5px; cursor: pointer; }
@@ -856,10 +856,10 @@ body.cel .cel-l span, body.cel .cel-c-h h3 { min-width: 0; }
 .cx-alerta { background: color-mix(in srgb, var(--warn) 12%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); padding: 12px 14px; margin-bottom: 12px; display: grid; gap: 4px; cursor: pointer; }
 .cx-alerta b { color: var(--bad); } .cx-alerta small { color: var(--muted); font-size: 12.5px; }
 .cx-ok { padding: 12px 14px; margin-bottom: 12px; display: grid; gap: 3px; } .cx-ok b { color: var(--ok); } .cx-ok small { color: var(--muted); font-size: 12.5px; }
-.cx-bar { height: 8px; background: var(--panel-2); border-radius: 8px; overflow: hidden; margin: 7px 0; } .cx-bar i { display: block; height: 100%; background: #2b6b5a; border-radius: 8px; }
+.cx-bar { height: 8px; background: var(--panel-2); border-radius: 8px; overflow: hidden; margin: 7px 0; } .cx-bar i { display: block; height: 100%; background: var(--brand, #1f4e6b); border-radius: 8px; }
 .cx-ch { display: flex; align-items: flex-end; gap: 6px; height: 130px; padding-top: 4px; }
 .cx-chm { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; height: 100%; min-width: 0; }
-.cx-chm i { display: block; width: 100%; max-width: 54px; background: #2b6b5a; border-radius: 5px 5px 0 0; } .cx-chm i.neg { background: var(--bad); border-radius: 0 0 5px 5px; }
+.cx-chm i { display: block; width: 100%; max-width: 54px; background: var(--brand, #1f4e6b); border-radius: 5px 5px 0 0; } .cx-chm i.neg { background: var(--bad); border-radius: 0 0 5px 5px; }
 .cx-chm small { font-size: 11px; color: var(--muted); } .cx-chv { font-size: 10px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .cx-tab { overflow-x: auto; } .cx-tab table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
 .cx-tab th, .cx-tab td { padding: 5px 4px; text-align: right; border: 0; white-space: nowrap; } .cx-tab th { color: var(--muted); font-weight: 600; } .cx-tab td:first-child, .cx-tab th:first-child { text-align: left; }
@@ -885,7 +885,7 @@ body.cel .cx-tab table { font-size: 11px; } body.cel .cx-tab th, body.cel .cx-ta
 .cx-fm > small { color: var(--muted); font-size: 12.5px; } .cx-fm-n { font-size: 26px; color: var(--bad); font-variant-numeric: tabular-nums; }
 .cx-fm-meta { font-size: 14.5px; margin-top: 4px; } .cx-fm .cx-bar { background: color-mix(in srgb, var(--warn) 18%, var(--panel)); margin: 4px 0; }
 .cx-fm-det summary { cursor: pointer; color: var(--muted); font-size: 12.5px; margin-top: 4px; }
-.cx-cta { width: 100%; border: 0; border-radius: 14px; background: #2b6b5a; color: #fff; font: inherit; padding: 14px; display: grid; gap: 2px; justify-items: center; cursor: pointer; margin-bottom: 10px; box-shadow: 0 4px 14px rgba(43,107,90,.25); }
+.cx-cta { width: 100%; border: 0; border-radius: 14px; background: var(--brand, #1f4e6b); color: #fff; font: inherit; padding: 14px; display: grid; gap: 2px; justify-items: center; cursor: pointer; margin-bottom: 10px; box-shadow: 0 4px 14px rgba(43,107,90,.25); }
 .cx-cta span { font-size: 16px; font-weight: 800; } .cx-cta small { font-size: 12px; opacity: .85; }
 .cx-cta.feito { background: var(--panel); color: var(--ok); border: 1.5px solid color-mix(in srgb, var(--ok) 45%, var(--line)); box-shadow: none; }
 .cx-g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 8px; max-width: 720px; }
@@ -895,14 +895,14 @@ body.cel .cx-tab table { font-size: 11px; } body.cel .cx-tab th, body.cel .cx-ta
 .cx-avulso button { border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 10px; padding: 6px 11px; font: inherit; font-size: 12.5px; cursor: pointer; }
 .fd { display: grid; gap: 8px; padding: 16px 18px; width: min(460px, 92vw); box-sizing: border-box; }
 .fd-h { display: flex; align-items: baseline; justify-content: space-between; } .fd-h h2 { margin: 0; font-family: Georgia, serif; font-weight: 400; } .fd-h small { color: var(--muted); }
-.fd-steps { display: flex; gap: 4px; } .fd-steps span { flex: 1; height: 5px; border-radius: 5px; background: var(--line); } .fd-steps .on { background: #2b6b5a; }
+.fd-steps { display: flex; gap: 4px; } .fd-steps span { flex: 1; height: 5px; border-radius: 5px; background: var(--line); } .fd-steps .on { background: var(--brand, #1f4e6b); }
 .fd-corpo { display: grid; gap: 7px; max-height: 64vh; overflow: auto; padding: 2px; }
 .fd-data { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--muted); } .fd-data input { width: auto; }
 .fd-tit { border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px; } .fd-tit b { font-size: 15px; } .fd-tit small { color: var(--muted); font-size: 12px; }
 .fd-tit.in { background: color-mix(in srgb, var(--ok) 13%, var(--panel)); } .fd-tit.in b { color: var(--ok); }
 .fd-tit.out { background: color-mix(in srgb, var(--bad) 12%, var(--panel)); } .fd-tit.out b { color: var(--bad); }
 .fd-in { display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 1px solid var(--line); background: var(--panel); border-radius: 12px; padding: 6px 6px 6px 12px; font-size: 14.5px; }
-.fd-in input { width: 130px; text-align: right; font-size: 17px; font-weight: 700; border: 0; border-bottom: 2px solid #2b6b5a; border-radius: 0; background: transparent; padding: 6px 4px; }
+.fd-in input { width: 130px; text-align: right; font-size: 17px; font-weight: 700; border: 0; border-bottom: 2px solid var(--brand, #1f4e6b); border-radius: 0; background: transparent; padding: 6px 4px; }
 .fd-parc { display: flex; gap: 6px; align-items: stretch; } .fd-parc .fd-in { flex: 1; } .fd-parc .fd-in input { width: 100px; } .fd-parc select { width: 74px; border-radius: 12px; }
 .fd-tot { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; padding: 3px 2px; } .fd-tot b { font-size: 16px; font-variant-numeric: tabular-nums; }
 .fd-pdv { border: 1.5px dashed var(--line); border-radius: 10px; padding: 7px; text-align: center; margin: 4px 0 0; }
@@ -920,20 +920,20 @@ body.cel .cx-tab table { font-size: 11px; } body.cel .cx-tab th, body.cel .cx-ta
 body.cel .fd { width: 100%; padding: 14px; } body.cel .fd-corpo { max-height: 68vh; }
 #tab-caixa > .cx-cta, #tab-caixa > .cx-fm { max-width: 720px; }
 /* v6.8: PDV */
-.fd-pdv-btn { border: 0; border-radius: 12px; background: #2b6b5a; color: #fff; font: inherit; font-weight: 800; font-size: 14.5px; padding: 11px; cursor: pointer; }
+.fd-pdv-btn { border: 0; border-radius: 12px; background: var(--brand, #1f4e6b); color: #fff; font: inherit; font-weight: 800; font-size: 14.5px; padding: 11px; cursor: pointer; }
 .fd-pdv-ok { background: color-mix(in srgb, var(--ok) 12%, var(--panel)); border: 1px solid color-mix(in srgb, var(--ok) 35%, var(--line)); border-radius: 12px; padding: 8px 11px; font-size: 12.5px; color: var(--ok); }
 .fd-pdv-ok.erro { background: color-mix(in srgb, var(--warn) 12%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); color: var(--fg); }
 .fd-tag { display: inline-block; background: color-mix(in srgb, var(--ok) 15%, var(--panel)); color: var(--ok); border-radius: 6px; padding: 0 5px; font-size: 10.5px; font-weight: 700; margin-left: 6px; vertical-align: 1px; }
 .cx-pdv-ban { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 13px; margin-bottom: 10px; max-width: 720px; box-sizing: border-box; }
 .cx-pdv-ban > span { display: grid; gap: 4px; flex: 1; } .cx-pdv-ban small { color: var(--muted); font-size: 12px; }
 .cx-pdv-ban.novo { background: color-mix(in srgb, var(--warn) 10%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); }
-.cx-pdv-dia { display: flex; justify-content: space-between; gap: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 10px; padding: 8px 11px; font: inherit; font-size: 13px; cursor: pointer; text-align: left; } .cx-pdv-dia b { color: #2b6b5a; }
+.cx-pdv-dia { display: flex; justify-content: space-between; gap: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 10px; padding: 8px 11px; font: inherit; font-size: 13px; cursor: pointer; text-align: left; } .cx-pdv-dia b { color: var(--brand, #1f4e6b); }
 /* v7.0: painel da loja */
 .pn { display: grid; gap: 12px; }
 .pn-top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
 .pn-per { display: flex; gap: 3px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 11px; padding: 3px; overflow-x: auto; max-width: 100%; }
 .pn-per button { border: 0; background: none; color: var(--muted); font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
-.pn-per button.on { background: #2b6b5a; color: #fff; font-weight: 700; }
+.pn-per button.on { background: var(--brand, #1f4e6b); color: #fff; font-weight: 700; }
 .pn-livre { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); } .pn-livre input { width: auto; }
 .pn-kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
 .pn-k { margin: 0; padding: 11px 12px; border-top: 4px solid var(--c); display: grid; gap: 2px; } .pn-k small { color: var(--muted); font-size: 12px; } .pn-k b { font-size: 21px; font-variant-numeric: tabular-nums; } .pn-k span { font-size: 12px; color: var(--muted); }
@@ -946,8 +946,8 @@ body.cel .fd { width: 100%; padding: 14px; } body.cel .fd-corpo { max-height: 68
 .pn-bm { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; } .pn-bm small { font-size: 11px; color: var(--muted); }
 .pn-bb { flex: 1; width: 100%; max-width: 46px; position: relative; display: flex; align-items: flex-end; justify-content: center; }
 .pn-bb i { display: block; width: 55%; border-radius: 4px 4px 0 0; position: relative; z-index: 1; } .pn-bb .pn-meta { position: absolute; left: 0; width: 100%; bottom: 0; background: var(--line); z-index: 0; opacity: .8; }
-.pn-v { background: #2b6b5a; } .pn-ok { background: #2f7d4f; } .pn-atual { background: #d9772b; }
-.pn-n { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: #2b6b5a; color: #fff; font-size: 11px; margin-right: 7px; }
+.pn-v { background: var(--brand, #1f4e6b); } .pn-ok { background: #2f7d4f; } .pn-atual { background: #d9772b; }
+.pn-n { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: var(--brand, #1f4e6b); color: #fff; font-size: 11px; margin-right: 7px; }
 @media (max-width: 1100px) { .pn-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } .pn-g2, .pn-g3 { grid-template-columns: 1fr; } }
 body.cel .pn-kpis { grid-template-columns: 1fr 1fr; } body.cel .pn-k:last-child { grid-column: 1 / -1; } body.cel .pn-k b { font-size: 18px; } body.cel .pn-svg { height: 150px; }
 .cx-passos { margin: 0 0 8px; padding-left: 20px; display: grid; gap: 4px; font-size: 14px; }
@@ -1029,19 +1029,19 @@ body.cel .ui-li { flex-wrap: wrap; } body.cel .ui-li .ui-ac { width: 100%; displ
 .md-top { display: grid; gap: 10px; }
 .md-stories { display: flex; gap: 14px; align-items: center; overflow-x: auto; padding: 2px 0; }
 .md-st { border: 0; background: none; color: var(--muted); font: inherit; font-size: 11.5px; display: grid; justify-items: center; gap: 4px; cursor: pointer; padding: 0; }
-.md-ring { width: 62px; height: 62px; border-radius: 50%; padding: 3px; background: conic-gradient(#e1b25c, #d9772b, #2b6b5a, #e1b25c); display: block; box-sizing: border-box; }
+.md-ring { width: 62px; height: 62px; border-radius: 50%; padding: 3px; background: conic-gradient(#e1b25c, #d9772b, var(--brand, #1f4e6b), #e1b25c); display: block; box-sizing: border-box; }
 .md-ring span { width: 100%; height: 100%; border-radius: 50%; background: var(--bg); border: 3px solid var(--bg); box-sizing: border-box; display: grid; place-items: center; font-size: 25px; }
 .md-st.feito .md-ring { background: var(--line); }
 .md-fogo { margin-left: auto; text-align: center; font-weight: 800; font-size: 17px; white-space: nowrap; } .md-fogo small { display: block; font-weight: 500; font-size: 11px; color: var(--muted); }
 .md-semana { padding: 11px 13px; } .md-sem-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; } .md-sem-h small { color: var(--muted); font-size: 12px; }
 .md-dots { display: flex; gap: 5px; margin-top: 8px; } .md-dots i { flex: 1; max-width: 40px; aspect-ratio: 1; border-radius: 10px; display: grid; place-items: center; font-style: normal; font-size: 11.5px; font-weight: 700; background: var(--panel-2); color: var(--muted); }
-.md-dots i.ok { background: #2b6b5a; color: #fff; } .md-dots i.g { background: #e1b25c; color: #2a2010; } .md-dots i.h { outline: 2px solid var(--fg); outline-offset: -2px; } .md-dots i.f { opacity: .45; }
-.md-cta { margin-top: 10px; width: 100%; border: 0; border-radius: 14px; background: #2b6b5a; color: #fff; font: inherit; padding: 12px; display: grid; gap: 2px; text-align: left; cursor: pointer; } .md-cta span { font-weight: 800; font-size: 15px; } .md-cta small { opacity: .85; font-size: 12px; }
+.md-dots i.ok { background: var(--brand, #1f4e6b); color: #fff; } .md-dots i.g { background: #e1b25c; color: #2a2010; } .md-dots i.h { outline: 2px solid var(--fg); outline-offset: -2px; } .md-dots i.f { opacity: .45; }
+.md-cta { margin-top: 10px; width: 100%; border: 0; border-radius: 14px; background: var(--brand, #1f4e6b); color: #fff; font: inherit; padding: 12px; display: grid; gap: 2px; text-align: left; cursor: pointer; } .md-cta span { font-weight: 800; font-size: 15px; } .md-cta small { opacity: .85; font-size: 12px; }
 .md-volta { display: grid; gap: 4px; padding: 11px 13px; background: color-mix(in srgb, var(--warn) 10%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 35%, var(--line)); } .md-volta small { color: var(--muted); } .md-volta .btn { justify-self: start; margin-top: 4px; }
 .md-junto { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 13px; } .md-junto small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
 body.md-aberto { overflow: hidden; }
 #mdStory { position: fixed; inset: 0; z-index: 150; color: #f4f2ec; overflow-y: auto; background: #1b1d2c; }
-#mdStory.md-bible { background: linear-gradient(170deg, #2a2f4a, #15172a); } #mdStory.md-din { background: linear-gradient(170deg, #1f4b40, #10201b); } #mdStory.md-ora { background: linear-gradient(170deg, #4a3420, #1e140b); } #mdStory.md-sem { background: linear-gradient(170deg, #3b2a4a, #18121f); } #mdStory.md-fim { background: linear-gradient(170deg, #2b6b5a, #12302a); }
+#mdStory.md-bible { background: linear-gradient(170deg, #2a2f4a, #15172a); } #mdStory.md-din { background: linear-gradient(170deg, #1f4b40, #10201b); } #mdStory.md-ora { background: linear-gradient(170deg, #4a3420, #1e140b); } #mdStory.md-sem { background: linear-gradient(170deg, #3b2a4a, #18121f); } #mdStory.md-fim { background: linear-gradient(170deg, var(--brand, #1f4e6b), #12302a); }
 .md-in { max-width: 460px; margin: 0 auto; padding: calc(12px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom)); display: grid; gap: 10px; }
 .md-barras { display: flex; gap: 4px; } .md-barras i { flex: 1; height: 3px; border-radius: 3px; background: rgba(255,255,255,.25); } .md-barras i.on { background: #fff; }
 .md-cab { display: flex; justify-content: space-between; align-items: center; font-size: 13px; opacity: .9; margin-bottom: 6px; } .md-cab button { border: 0; background: none; color: inherit; font-size: 20px; padding: 4px 8px; cursor: pointer; }
@@ -1062,6 +1062,30 @@ body.md-aberto { overflow: hidden; }
 .md-vd { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); } .md-vd button { border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 9px; padding: 6px 9px; font: inherit; font-size: 12.5px; margin-left: 4px; cursor: pointer; } .md-vd button.p { background: var(--accent); color: #fff; border-color: var(--accent); } .md-vd.feito { opacity: .6; }
 body.md-aberto .cel-folha-o { z-index: 160; } body.md-aberto .toast, body.md-aberto #toastAcao { z-index: 170; }
 .md-in { align-content: start; min-height: 100%; box-sizing: border-box; } .md-fim { padding-top: 10vh; }
+.md-abas { display: flex; background: rgba(255,255,255,.1); border-radius: 12px; padding: 3px; gap: 3px; } .md-abas button { flex: 1; border: 0; background: none; color: #fff; font: inherit; font-size: 13.5px; padding: 8px; border-radius: 9px; cursor: pointer; } .md-abas button.on { background: #fff; color: #1f1e1b; font-weight: 700; }
+.md-livro { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.1); border-radius: 12px; padding: 6px 6px 6px 12px; font-size: 13px; } .md-livro select { flex: 1; background: transparent; color: #fff; border: 0; font: inherit; font-size: 16px; font-weight: 700; } .md-livro option { color: #1f1e1b; }
+.md-caps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; max-height: 38vh; overflow-y: auto; } .md-caps button { border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #fff; border-radius: 10px; padding: 9px 0; font: inherit; font-size: 14px; cursor: pointer; } .md-caps button.lido { background: #1f4b40; border-color: var(--brand, #1f4e6b); } .md-caps button.on { background: #fff; color: #1f1e1b; font-weight: 800; }
+
+/* =================== v7.5: cores =================== */
+:root { --brand: #1f4e6b; }
+body:not(.tema-cons):not(.tema-mat):not(.tema-loja) { --accent: #1f4e6b; --accent-fg: #ffffff; --accent-soft: #e2ecf2; --c1: #1f4e6b; --bg: #f3f5f6; --panel-2: #eef2f5; --line: #dde3e8; --muted: #5f6b74; --fg: #17212a; --grid: #e8edf0; --brand: #1f4e6b; }
+body.tema-loja { --accent: #1a1a17; --accent-fg: #ffc400; --accent-soft: #fff3c4; --c1: #1a1a17; --bg: #f6f5f0; --panel-2: #f1efe6; --line: #e3dfce; --muted: #7a776a; --fg: #1a1a17; --ok: #1f8a4c; --bad: #c0392b; --brand: #1a1a17; --grid: #ece9dc; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=light]) body:not(.tema-cons):not(.tema-mat):not(.tema-loja) { --accent: #6fa8cc; --accent-fg: #0d1820; --accent-soft: #1c2a36; --c1: #6fa8cc; --bg: #11161b; --panel: #19212a; --panel-2: #212b35; --line: #2b3641; --muted: #94a1ab; --fg: #e8edf1; --grid: #1f2830; --brand: #1f4e6b; }
+  :root:not([data-theme=light]) body.tema-loja { --accent: #ffc400; --accent-fg: #1a1a17; --accent-soft: #3a3214; --c1: #ffc400; --bg: #121210; --panel: #1c1c19; --panel-2: #25251f; --line: #34332a; --muted: #a6a290; --fg: #f1efe6; --ok: #4cc27d; --bad: #e8705f; --brand: #1a1a17; --grid: #26251f; }
+}
+:root[data-theme=dark] body:not(.tema-cons):not(.tema-mat):not(.tema-loja) { --accent: #6fa8cc; --accent-fg: #0d1820; --accent-soft: #1c2a36; --c1: #6fa8cc; --bg: #11161b; --panel: #19212a; --panel-2: #212b35; --line: #2b3641; --muted: #94a1ab; --fg: #e8edf1; --grid: #1f2830; --brand: #1f4e6b; }
+:root[data-theme=dark] body.tema-loja { --accent: #ffc400; --accent-fg: #1a1a17; --accent-soft: #3a3214; --c1: #ffc400; --bg: #121210; --panel: #1c1c19; --panel-2: #25251f; --line: #34332a; --muted: #a6a290; --fg: #f1efe6; --ok: #4cc27d; --bad: #e8705f; --brand: #1a1a17; --grid: #26251f; }
+/* loja: detalhes em preto e amarelo */
+body.tema-loja .cx-cta { background: #ffc400; color: #1a1a17; box-shadow: 0 4px 14px rgba(255, 196, 0, .3); }
+body.tema-loja .cx-cta.feito { background: var(--panel); color: var(--ok); box-shadow: none; }
+body.tema-loja .cx-heroi { background: #1a1a17; } body.tema-loja .cx-heroi b { color: #ffc400; }
+body.tema-loja .pn-per button.on, body.tema-loja .cx-seg button.on { background: #1a1a17; color: #ffc400; }
+body.tema-loja #tab-loja th, body.tema-loja #tab-caixa th { background: #1a1a17; color: #ffc400; }
+body.tema-loja .pn-k { border-top-color: var(--c, #ffc400); }
+body.tema-loja .fd-pdv-btn, body.tema-loja .fd-steps .on { background: #1a1a17; color: #ffc400; }
+body.tema-loja .fd-in input { border-bottom-color: #1a1a17; }
+body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on { background: #ffc400; color: #1a1a17; }
 </style>
 </head>
 <body>
@@ -3982,7 +4006,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '7.3';
+const APP_VERSAO = '7.5';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -11154,12 +11178,12 @@ function pnLinha(P, M) {
   const passo = Math.max(1, Math.ceil(pts.length / 8));
   return `<svg class="pn-svg" viewBox="0 0 ${W} ${H + 8}" preserveAspectRatio="none">${grade}
     ${meta ? `<line x1="${L}" x2="${W}" y1="${y(meta)}" y2="${y(meta)}" stroke="var(--bad)" stroke-dasharray="5 4"/>` : ''}
-    <polyline fill="none" stroke="#2b6b5a" stroke-width="2.5" stroke-linejoin="round" points="${pts.map((p, i) => `${x(i)},${y(p.v)}`).join(' ')}"/>
-    ${pts.map((p, i) => `<circle cx="${x(i)}" cy="${y(p.v)}" r="${pts.length > 40 ? 1.8 : 3}" fill="${meta && p.v >= meta ? '#2f7d4f' : '#2b6b5a'}"><title>${p.r}: ${fmt(p.v)}</title></circle>`).join('')}
+    <polyline fill="none" stroke="var(--c1)" stroke-width="2.5" stroke-linejoin="round" points="${pts.map((p, i) => `${x(i)},${y(p.v)}`).join(' ')}"/>
+    ${pts.map((p, i) => `<circle cx="${x(i)}" cy="${y(p.v)}" r="${pts.length > 40 ? 1.8 : 3}" fill="${meta && p.v >= meta ? '#2f7d4f' : 'var(--c1)'}"><title>${p.r}: ${fmt(p.v)}</title></circle>`).join('')}
     ${pts.map((p, i) => (i % passo === 0 || i === pts.length - 1 ? `<text x="${x(i)}" y="${H + 4}" text-anchor="middle" font-size="10" fill="var(--muted)">${p.r}</text>` : '')).join('')}</svg>`;
 }
 function pnRosca(n) {
-  const fs = [['Pix', 'pix', '#2b6b5a'], ['Crédito', null, '#d9772b'], ['Débito', 'debito', '#5a5fa8'], ['Dinheiro', 'dinheiro', '#c9a85c']].map(([l, k, c]) => ({ l, c, v: k ? soma(n.vs, (v) => Number(v[k]) || 0) : soma(n.vs, (v) => (Number(v.credito) || 0) + (Number(v.creditoP) || 0)) }));
+  const fs = [['Pix', 'pix', 'var(--c1)'], ['Crédito', null, '#d9772b'], ['Débito', 'debito', '#5a5fa8'], ['Dinheiro', 'dinheiro', '#c9a85c']].map(([l, k, c]) => ({ l, c, v: k ? soma(n.vs, (v) => Number(v[k]) || 0) : soma(n.vs, (v) => (Number(v.credito) || 0) + (Number(v.creditoP) || 0)) }));
   const tot = soma(fs, 'v'); if (!tot) return '<p class="small muted">Sem vendas nesse período.</p>';
   let ac = 0; const R = 15.9155;
   const arcos = fs.filter((f) => f.v > 0).map((f) => { const p = f.v / tot * 100; const s = `<circle cx="21" cy="21" r="${R}" fill="none" stroke="${f.c}" stroke-width="6.5" stroke-dasharray="${p} ${100 - p}" stroke-dashoffset="${25 - ac}"/>`; ac += p; return s; }).join('');
@@ -11544,7 +11568,8 @@ const MD_MODELOS = [
   ['nt', '📗 Novo Testamento em 260 dias', '1 capítulo por dia'],
   ['pv', '🌿 Provérbios em 31 dias', '1 capítulo por dia, um para cada dia do mês'],
   ['sl', '🎵 Salmos em 150 dias', '1 salmo por dia'],
-  ['livro', '📖 Um livro', 'Escolha o livro e quantos capítulos por dia'],
+  ['livro', '📖 Um livro', 'Escolha o livro e quantos capítulos por dia (1, 2 ou 3)'],
+  ['avulsa', '✋ Só leitura avulsa', 'Sem plano: cada dia você escolhe o livro e o capítulo que quiser'],
 ];
 const MD_PERGUNTAS = ['O que este texto mostra sobre quem Deus é?', 'O que ele me pede para mudar ou obedecer hoje?', 'Que promessa eu posso levar para o meu dia?', 'Onde eu me vejo nesta passagem?', 'O que Jesus faria no meu lugar hoje, a partir disto?', 'Pelo que este texto me leva a agradecer?', 'Que pecado ou peso eu preciso entregar, à luz disto?', 'Que verdade daqui eu quero lembrar quando vier a dificuldade?', 'Como isto muda o jeito de eu tratar a Helen, a família e os clientes hoje?', 'Qual palavra ou frase mais me tocou, e por quê?', 'O que este texto diz sobre graça e recomeço?', 'Que oração nasce desta leitura?'];
 const MD_INTENCOES = ['agradecer', 'entregar', 'pedir', 'me comprometer'];
@@ -11637,7 +11662,7 @@ function mdTopo() {
       <span class="md-fogo">🔥 ${S.n} ${S.n === 1 ? 'dia' : 'dias'}<small>no prumo</small></span></div>
     ${volta.length >= 2 ? `<div class="card md-volta"><b>🤝 Bem-vindo de volta</b><small>Faz ${volta.length} dias sem anotar. Sem culpa: dá para pôr em dia em 2 minutos.</small><button class="btn sm primary" data-md="volta">Pôr em dia</button></div>` : ''}
     <div class="card md-semana"><div class="md-sem-h"><b>Esta semana</b><small>${[...S.graca].some((d) => d >= ini) ? 'dia de graça usado ✓' : '1 dia de graça disponível'}</small></div><div class="md-dots">${dots}</div>
-      ${S.hoje ? `<p class="small" style="margin:6px 0 0">✅ Dia no prumo${pr && !pr.fim ? ` · amanhã: <b>${mdRef(pr.dias[pr.prox])}</b>` : ''}</p>` : `<button class="md-cta" data-md="dia"><span>☀️ Meu dia de hoje</span><small>${p && pr && !pr.fim ? mdRef(pr.dias[pr.prox]) + ' · ' : 'escolher um plano de leitura · '}ontem · uma linha · 2 minutos</small></button>`}</div>
+      ${S.hoje ? `<p class="small" style="margin:6px 0 0">✅ Dia no prumo${pr && !pr.fim && p.modelo !== 'avulsa' ? ` · amanhã: <b>${mdRef(pr.dias[pr.prox])}</b>` : ''}</p>` : `<button class="md-cta" data-md="dia"><span>☀️ Meu dia de hoje</span><small>${p && p.modelo === 'avulsa' ? 'leitura avulsa · ' : p && pr && !pr.fim ? mdRef(pr.dias[pr.prox]) + ' · ' : 'escolher um plano de leitura · '}ontem · uma linha · 2 minutos</small></button>`}</div>
     ${temOutro || recebi.length ? `<div class="card md-junto"><span>${q === 'mat' ? '🌿' : '🧭'} <b>${mdNome(o)}</b> · 🔥 ${So.n}${So.hoje ? ' · <span class="good">fechou o dia ✓</span>' : ''}${recebi.length ? `<small>🙌 ${mdNome(o)} torceu por você${recebi.some((x) => x.data === H) ? ' hoje' : ' ontem'}</small>` : ''}</span><button class="btn sm ${apoioHoje ? '' : 'primary'}" data-md="apoio" ${apoioHoje ? 'disabled' : ''}>${apoioHoje ? '🙌 enviado' : '🙌'}</button></div>` : ''}
   </div>`;
 }
@@ -11660,12 +11685,14 @@ function mdRender() {
   const cab = (ic, t) => `<div class="md-barras">${barras}</div><div class="md-cab"><span>${ic} ${t}</span><button data-md="fechar" aria-label="Fechar">✕</button></div>`;
   let c = '', cls = '';
   if (passo === 'leitura') {
-    cls = 'bible'; const p = mdPlano(q);
-    if (!p) c = `${cab('📖', 'Leitura com propósito')}<div class="md-big">Vamos escolher um plano?</div><p class="md-mut">Você lê no YouVersion e anota aqui o que Deus falou. Dá para trocar de plano quando quiser.</p><button class="md-btn w" data-md="planos">Escolher o plano</button><button class="md-btn gh" data-md="prox">Hoje não</button>`;
+    cls = 'bible'; const p = mdPlano(q); const soAvulsa = p && p.modelo === 'avulsa'; const aba = soAvulsa ? 'avulsa' : MD.aba || 'plano';
+    const abas = p && !soAvulsa ? `<div class="md-abas"><button class="${aba === 'plano' ? 'on' : ''}" data-md-aba="plano">📅 Do plano</button><button class="${aba === 'avulsa' ? 'on' : ''}" data-md-aba="avulsa">✋ Avulsa</button></div>` : '';
+    if (aba === 'avulsa' || soAvulsa) c = mdAvulsaHtml(cab, abas, p);
+    else if (!p) c = `${cab('📖', 'Leitura com propósito')}<div class="md-big">Vamos escolher um plano?</div><p class="md-mut">Você lê no YouVersion e anota aqui o que Deus falou. Dá para trocar de plano quando quiser.</p><button class="md-btn w" data-md="planos">Escolher o plano</button><button class="md-btn gh" data-md="prox">Hoje não</button>`;
     else { const pr = mdProgresso(p);
       if (pr.fim) c = `${cab('📖', 'Leitura com propósito')}<div class="md-big">🏁 Você terminou<br>${esc(p.nome)}!</div><p class="md-mut">Que tal escolher o próximo?</p><button class="md-btn w" data-md="planos">Escolher o próximo plano</button><button class="md-btn gh" data-md="prox">Depois</button>`;
       else { const dia = pr.hojeLido ? pr.hojeLido.dia : pr.prox; const caps = pr.dias[dia]; const pg = MD_PERGUNTAS[(dia + (p.inicio.charCodeAt(9) || 0)) % MD_PERGUNTAS.length];
-        c = `${cab('📖', 'Leitura com propósito')}<div class="md-mut">${esc(p.nome)} · dia ${dia + 1} de ${pr.total}${pr.atras > 1 && !pr.hojeLido ? ` · siga de onde parou, sem culpa` : ''}</div><div class="md-big">${mdRef(caps)}</div>
+        c = `${cab('📖', 'Leitura com propósito')}${abas}<div class="md-mut">${esc(p.nome)} · dia ${dia + 1} de ${pr.total}${pr.atras > 1 && !pr.hojeLido ? ` · siga de onde parou, sem culpa` : ''}</div><div class="md-big">${mdRef(caps)}</div>
           <div class="md-links">${caps.map(([b, ch]) => `<a class="md-btn gh" href="${mdLink(b, ch, p)}" target="_blank" rel="noopener">Ler ${MD_LIVROS[b][0]} ${ch} ↗</a>`).join('')}</div>
           <div class="md-card"><b>Para pensar</b><div>${pg}</div></div>
           <textarea id="mdNota" placeholder="✍️ O que Deus falou comigo hoje…">${esc(pr.hojeLido?.texto || MD.nota)}</textarea>
@@ -11717,6 +11744,7 @@ function mdPlanoExtra(k) {
   const el = $('#mdPlanoExtra'); if (!el) return;
   if (k === 'tempo') el.innerHTML = `<div class="md-extra"><b>Em quanto tempo?</b><div class="md-chips2">${[3, 6, 9, 12, 18, 24].map((m) => `<button data-md-criar="tempo:${m}">${m} meses<small>~${Math.ceil(1189 / (m * 30.44))} cap./dia</small></button>`).join('')}</div></div>`;
   else if (k === 'livro') el.innerHTML = `<div class="md-extra"><b>Qual livro?</b><select id="mdLivro">${MD_LIVROS.map(([n, c]) => `<option value="${c}" ${c === 'ROM' ? 'selected' : ''}>${n}</option>`).join('')}</select><b style="margin-top:8px">Quantos capítulos por dia?</b><div class="md-chips2">${[1, 2, 3].map((n) => `<button data-md-criar="livro:${n}">${n} por dia</button>`).join('')}</div></div>`;
+  else if (k === 'avulsa') mdCriarPlano('avulsa');
   else mdCriarPlano(k);
   el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
@@ -11732,7 +11760,7 @@ function mdCriarPlano(k, extra) {
 function mdDiario() {
   const q = mdQuem(); const N = mdDe(q).filter((x) => x.texto && ['leitura', 'linha'].includes(x.tipo)).sort((a, b) => (a.data < b.data ? 1 : -1));
   celFolha(`<h3 style="margin:0 0 4px">📖 Diário com Deus</h3><p class="small muted" style="margin:0 0 8px">Tudo que você anotou nas leituras e nas suas linhas. 🔒 Fica com os dados do Prumo.</p>
-    ${N.length ? N.slice(0, 120).map((x) => `<div class="md-dn"><small>${cxDiaSem(x.data)} ${dmy(x.data)}${x.ref ? ' · ' + esc(x.ref) : ''}${x.intencao ? ' · ' + esc(x.intencao) : ''}</small><div>"${esc(x.texto)}"</div></div>`).join('') : '<p class="small muted">Ainda vazio. Na próxima leitura, escreva uma frase do que Deus falou com você.</p>'}`);
+    ${N.length ? N.slice(0, 120).map((x) => `<div class="md-dn"><small>${cxDiaSem(x.data)} ${dmy(x.data)}${x.ref ? ' · ' + esc(x.ref) : ''}${x.avulsa ? ' · avulsa' : ''}${x.intencao ? ' · ' + esc(x.intencao) : ''}</small><div>"${esc(x.texto)}"</div></div>`).join('') : '<p class="small muted">Ainda vazio. Na próxima leitura, escreva uma frase do que Deus falou com você.</p>'}`);
 }
 function mdConqFolha() {
   const C = mdConquistas(); const S = mdSequencia();
@@ -11757,6 +11785,9 @@ document.addEventListener('click', (e) => {
     if (a === 'conquistas') return mdConqFolha();
     if (a === 'volta') return mdVolta();
     if (a === 'treino') { mdFechar(); return setTimeout(() => $('[data-cel-tab="treino"]')?.click(), 50); }
+    if (a === 'li-avulsa') { const L = MD.livro, ch = MD.cap; if (!ch) return toast('Escolha o capítulo.'); const txt = ($('#mdNota')?.value || '').trim(); const ref = `${MD_LIVROS[MD_IDX[L]][0]} ${ch}`;
+      const ja = mdDe(mdQuem(), 'leitura').find((x) => x.avulsa && x.data === hoje() && x.ref === ref); if (ja) ja.texto = txt || ja.texto; else mdAdd({ tipo: 'leitura', avulsa: true, livro: L, cap: ch, ref, texto: txt });
+      try { lsSet('md-ultimo-livro', L); } catch (er) {} MD.cap = null; MD.nota = ''; changed(); return mdProx(); }
     if (a === 'li') { const p = mdPlano(); const pr = mdProgresso(p); const txt = ($('#mdNota')?.value || '').trim(); const dia = pr.hojeLido ? pr.hojeLido.dia : pr.prox; const ref = mdRef(pr.dias[dia]);
       if (pr.hojeLido) { pr.hojeLido.texto = txt; } else { mdAdd({ tipo: 'leitura', plano: p.id, dia, ref, texto: txt }); if (dia === pr.total - 1) mdAdd({ tipo: 'fimplano', ref: p.nome }); }
       changed(); return mdProx(); }
@@ -11770,6 +11801,8 @@ document.addEventListener('click', (e) => {
   if ((b = g('data-md-chip'))) { const x = celFrequentes()[+b.dataset.mdChip]; if (x) mdLancar(`${x.desc}  ontem${x.pal ? ' ' + x.pal : ''}`); return; }
   if ((b = g('data-md-int'))) { MD.intencao = b.dataset.mdInt; MD.linha = $('#mdLinha')?.value || ''; return mdRender(); }
   if ((b = g('data-md-plano'))) return mdPlanoExtra(b.dataset.mdPlano);
+  if ((b = g('data-md-aba'))) { MD.aba = b.dataset.mdAba; MD.nota = $('#mdNota')?.value || MD.nota; return mdRender(); }
+  if ((b = g('data-md-cap'))) { MD.cap = +b.dataset.mdCap; MD.nota = $('#mdNota')?.value || MD.nota; return mdRender(); }
   if ((b = g('data-md-criar'))) { const [k, v] = b.dataset.mdCriar.split(':'); return mdCriarPlano(k, v); }
   if ((b = g('data-md-v'))) { const [acao, d] = b.dataset.mdV.split(':'); const linha = b.closest('.md-vd');
     if (acao === 'anotar') { celFecharFolha(); return setTimeout(() => mdLancar(`  dia ${+d.slice(8, 10)}`), 60); }
@@ -11777,6 +11810,35 @@ document.addEventListener('click', (e) => {
 }, true);
 document.addEventListener('input', (e) => { if (!MD) return; if (e.target.id === 'mdNota') MD.nota = e.target.value; if (e.target.id === 'mdLinha') MD.linha = e.target.value; if (e.target.id === 'mdSemana') MD.semana = e.target.value; });
 CEL_NOVIDADES['7.3'] = ['☀️ Meu dia: leitura com propósito, ontem e uma linha, em 2 minutos', '📖 Planos de leitura (1 ano, cronológica, no seu tempo, vida de Cristo, vida de Paulo, Romanos/Tiago/Hebreus…) abrindo no YouVersion', '🔥 Dias no prumo com 1 dia de graça por semana', '🤝 Volta sem culpa, 🏆 Conquistas, ✍️ Diário com Deus e 🙌 Helen junto'];
+
+/* ---------- v7.4: leitura avulsa (qualquer livro, qualquer capítulo) ---------- */
+function mdLidosLivro(cod, q = mdQuem()) { // capítulos já lidos desse livro (avulsos e dos planos)
+  const i = MD_IDX[cod]; const S = new Set();
+  mdDe(q, 'leitura').forEach((x) => { if (x.avulsa) { if (x.livro === cod) S.add(+x.cap); return; } const p = (db.planos || []).find((y) => y.id === x.plano); if (!p) return; (mdDiasDoPlano(p)[x.dia] || []).forEach(([b, c]) => { if (b === i) S.add(c); }); });
+  return S;
+}
+function mdAvulsaHtml(cab, abas, p) {
+  if (!MD.livro) { let u = null; try { u = lsGet('md-ultimo-livro'); } catch (e) {} MD.livro = u && MD_IDX[u] != null ? u : 'HEB'; }
+  const i = MD_IDX[MD.livro]; const n = MD_LIVROS[i][2]; const lidos = mdLidosLivro(MD.livro); const ch = MD.cap;
+  const pg = MD_PERGUNTAS[(new Date().getDate() + i) % MD_PERGUNTAS.length];
+  return `${cab('📖', 'Leitura com propósito')}${abas}
+    <label class="md-livro"><span>Livro</span><select id="mdLivroAv">${MD_LIVROS.map(([nm, c]) => `<option value="${c}" ${c === MD.livro ? 'selected' : ''}>${nm}</option>`).join('')}</select></label>
+    <div class="md-mut">Capítulo · ${lidos.size ? `já leu ${lidos.size} de ${n}` : `${n} capítulos`}</div>
+    <div class="md-caps">${Array.from({ length: n }, (_, k) => k + 1).map((c) => `<button class="${c === ch ? 'on' : lidos.has(c) ? 'lido' : ''}" data-md-cap="${c}">${c}</button>`).join('')}</div>
+    ${ch ? `<a class="md-btn gh" href="${mdLink(i, ch, p)}" target="_blank" rel="noopener">Ler ${MD_LIVROS[i][0]} ${ch} ↗ (${esc(p?.versao || 'NAA')})</a>
+      <div class="md-card"><b>Para pensar</b><div>${pg}</div></div>
+      <textarea id="mdNota" placeholder="✍️ O que Deus falou comigo hoje…">${esc(MD.nota)}</textarea>
+      <button class="md-btn w" data-md="li-avulsa">Li ✓</button>` : '<p class="md-mut" style="text-align:center;margin-top:6px">Toque no capítulo que você quer ler</p>'}
+    <div class="md-rod"><button data-md="planos">${p && p.modelo !== 'avulsa' ? 'trocar o plano' : 'escolher um plano'}</button><button data-md="prox">pular hoje</button></div>`;
+}
+document.addEventListener('change', (e) => { if (e.target.id === 'mdLivroAv' && MD) { MD.livro = e.target.value; MD.cap = null; mdRender(); } });
+CEL_NOVIDADES['7.4'] = ['✋ Leitura avulsa: escolha qualquer livro e capítulo (conta como a leitura do dia, sem mexer no plano)', 'Capítulos já lidos de cada livro ficam marcados'];
+
+/* =================== v7.5: cores · azul petróleo (geral), preto e amarelo (Loja e Caixa da loja); Consultório e Ritmo ficam como estão =================== */
+const _renderAll75 = renderAll;
+renderAll = function () { try { document.body.classList.toggle('tema-loja', ui.tab === 'loja' || (ui.tab === 'caixa' && (ui.cxArea || 'loja') === 'loja')); } catch (e) {} return _renderAll75.apply(this, arguments); };
+try { const m = document.querySelector('meta[name=theme-color]'); if (m && m.content === '#2b6b5a') m.content = '#1f4e6b'; } catch (e) {}
+CEL_NOVIDADES['7.5'] = ['Cores novas: azul petróleo no Prumo e preto e amarelo na Loja (o Consultório continua igual)'];
 
 /* ---------- início ---------- */
 (async function boot() {
