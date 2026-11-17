@@ -1011,6 +1011,20 @@ body.cel .ui-li { flex-wrap: wrap; } body.cel .ui-li .ui-ac { width: 100%; displ
 .ui-leg { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); } .ui-leg i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; } .ui-leg i.ln { height: 2px; width: 14px; background: var(--c3); vertical-align: 3px; }
 .cx-nome { cursor: pointer; } .cx-lapis { font-style: normal; font-size: 11px; color: var(--muted); opacity: .7; }
 @media (max-width: 1100px) { .ui-kpis { grid-template-columns: 1fr 1fr; } }
+/* v7.2: Início do celular */
+.ini-saldo { display: flex; gap: 6px; align-items: stretch; margin-top: 8px; } .ini-saldo button { border: 0; background: rgba(255,255,255,.14); color: inherit; border-radius: 10px; font: inherit; font-size: 12.5px; padding: 7px 10px; text-align: left; cursor: pointer; flex: 1; } .ini-saldo .ini-x { flex: none; width: 34px; text-align: center; padding: 0; }
+.ini-aviso { display: flex; gap: 10px; align-items: center; border-radius: 14px; padding: 10px 12px; font-size: 13.5px; border: 1px solid; cursor: pointer; }
+.ini-aviso.bad { background: color-mix(in srgb, var(--bad) 12%, var(--panel)); border-color: color-mix(in srgb, var(--bad) 35%, var(--line)); } .ini-aviso.warn { background: color-mix(in srgb, var(--warn) 12%, var(--panel)); border-color: color-mix(in srgb, var(--warn) 35%, var(--line)); }
+.ini-aviso > span:nth-child(2) { flex: 1; min-width: 0; } .ini-aviso small { color: var(--muted); } .ini-aviso-i { font-size: 18px; }
+.ini-mais { border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 999px; font: inherit; font-size: 12px; font-weight: 700; padding: 3px 9px; flex: none; }
+.ini-rapido { display: grid; gap: 6px; } .ini-campo { display: flex; gap: 8px; align-items: center; width: 100%; border: 1px solid var(--line); background: var(--panel); color: var(--muted); border-radius: 14px; padding: 12px 13px; font: inherit; font-size: 14.5px; text-align: left; cursor: pointer; }
+.ini-chips { padding-top: 0; }
+.ini-7 { display: flex; gap: 6px; align-items: flex-end; margin-top: 4px; } .ini-7 button { flex: 1; border: 0; background: none; color: var(--muted); font: inherit; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px 0; border-radius: 10px; cursor: pointer; min-width: 0; }
+.ini-7 i { display: block; width: 70%; max-width: 34px; background: var(--accent); border-radius: 6px 6px 2px 2px; opacity: .85; } .ini-7 i.z { opacity: .25; } .ini-7 small { font-size: 10.5px; min-height: 13px; white-space: nowrap; } .ini-7 span { font-size: 11.5px; }
+.ini-7 .hj span { color: var(--fg); font-weight: 700; } .ini-7 .sel { background: var(--accent-soft, var(--panel-2)); } .ini-7 .sel i { opacity: 1; }
+.ini-dia { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 6px; } .ini-dia > b { font-size: 13.5px; }
+.ini-cat { padding: 6px 0; border-top: 1px solid var(--line); cursor: pointer; } .ini-cat > div:first-child { display: flex; justify-content: space-between; font-size: 14px; } .ini-cat .bar { height: 6px; background: var(--panel-2); border-radius: 6px; overflow: hidden; margin-top: 5px; } .ini-cat .bar i { display: block; height: 100%; background: var(--accent); } .ini-cat .bar i.warn { background: var(--warn); } .ini-cat .bar i.bad { background: var(--bad); }
+.ini-pers { display: grid; } .ini-pers-l { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); } .ini-pers-l label { display: flex; gap: 10px; align-items: center; font-size: 15px; } .ini-pers-l input { width: 20px; height: 20px; } .ini-pers-l .icon-btn { font-size: 17px; padding: 4px 10px; }
 </style>
 </head>
 <body>
@@ -3931,7 +3945,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '7.1';
+const APP_VERSAO = '7.2';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -11399,6 +11413,82 @@ lojaPainel = function () { const h = _lojaPainel71(); if (!h.includes('pn-g3')) 
 const _cxHoje71 = cxHoje;
 cxHoje = function () { return _cxHoje71() + uiAjuda(`${ehToque() ? 'Toque' : 'Clique'} no nome de uma conta para mudar dia, valor ou parcelas · <b>✓ Paguei</b> tira do saldo · <b>Fechar o caixa de hoje</b> lança o que entrou e o que saiu.`); };
 CEL_NOVIDADES['7.1'] = ['Menu reorganizado em grupos, com contadores (e ☰ para recolher no computador)', 'Contas a pagar: pílulas com quantidade, busca, categoria e Exportar Excel', 'Gráfico do ano no Painel e na Loja', 'Caixa: toque no nome da conta para editar'];
+
+/* =================== v7.2: Início do celular reorganizado (só visual e organização) =================== */
+const INI_BLOCOS = [['aviso', 'Aviso mais importante'], ['rapido', 'Lançar rápido'], ['contas', 'Próximas contas'], ['hoje', 'Gastos de hoje'], ['7dias', 'Últimos 7 dias'], ['onde', 'Onde mais gastou'], ['treino', 'Treino de hoje'], ['cons', 'Consultório hoje'], ['caixa', 'Caixa da loja']];
+function iniPref() { let p = {}; try { p = JSON.parse(lsGet('cel-inicio') || '{}'); } catch (e) {} const ordem = (p.ordem || []).filter((k) => INI_BLOCOS.some(([x]) => x === k)); INI_BLOCOS.forEach(([k]) => { if (!ordem.includes(k)) ordem.push(k); }); return { ordem, off: p.off || ['caixa'], semSaldo: !!p.semSaldo }; }
+function iniSalvar(p) { try { lsSet('cel-inicio', JSON.stringify(p)); } catch (e) {} }
+function iniPedaco(h, titulo) { // recorta o cartão (div balanceada) que tem esse título
+  const k = h.indexOf(`<h3>${titulo}`); if (k < 0) return ''; const i = h.lastIndexOf('<div class="card', k); if (i < 0) return '';
+  let n = 0; const re = /<\/?div\b/g; re.lastIndex = i; let m; while ((m = re.exec(h))) { if (m[0] === '<div') n++; else { n--; if (n === 0) return h.slice(i, h.indexOf('>', m.index) + 1); } } return '';
+}
+function iniHeroi(h) {
+  const i = h.indexOf('<div class="card cel-heroi'); if (i < 0) return ''; let n = 0; const re = /<\/?div\b/g; re.lastIndex = i; let m, fim = -1; while ((m = re.exec(h))) { if (m[0] === '<div') n++; else { n--; if (n === 0) { fim = h.indexOf('>', m.index) + 1; break; } } }
+  let x = h.slice(i, fim); const p = iniPref();
+  x = x.replace(/<button class="btn sm" data-sub="planejar:contas">Informar saldos para ver quanto dá para gastar<\/button>/, p.semSaldo ? '' : '<div class="ini-saldo"><button data-sub="planejar:contas">Informe os saldos e veja quanto dá para gastar por dia</button><button class="ini-x" data-ini-semsaldo title="Não mostrar mais">✕</button></div>');
+  return x;
+}
+function iniAviso() {
+  let av = []; try { av = gerarAvisos(); } catch (e) { return ''; }
+  const a = av.find((x) => x.nivel === 'bad') || av.find((x) => x.nivel === 'warn'); if (!a) return '';
+  const resto = av.filter((x) => x.nivel !== 'info').length - 1;
+  return `<div class="ini-aviso ${a.nivel}" ${a.tab ? `data-cel-ir="${a.tab}"` : ''}><span class="ini-aviso-i">${a.nivel === 'bad' ? '⚠️' : '🔔'}</span><span>${a.texto}${a.tab ? ' <small>· toque para ver</small>' : ''}</span>${resto > 0 ? `<button class="ini-mais" data-cel-acao="avisos">+${resto}</button>` : ''}</div>`;
+}
+function iniRapido() {
+  let F = []; try { F = celFrequentes().slice(0, 6); } catch (e) {}
+  return `<div class="ini-rapido"><button class="ini-campo" data-ini-lancar>⚡ <span>Escreva o gasto: pizza 72 nubank</span></button>
+    ${F.length ? `<div class="cel-chips ini-chips">${F.map((x, i) => `<button data-ini-chip="${i}"><b>${esc(x.desc)}</b><small>~${fmt0(x.med)}</small></button>`).join('')}</div>` : ''}</div>`;
+}
+function ini7Dias() {
+  const H = hoje(); const dias = Array.from({ length: 7 }, (_, i) => addDias(H, i - 6)); const v = dias.map((d) => soma(db.lancamentos.filter((l) => l.data === d && l.tipo === 'Despesa'), 'valor')); const mx = Math.max(1, ...v); const tot = soma(v, (x) => x);
+  const DS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']; const sel = ui.iniDia && dias.includes(ui.iniDia) ? ui.iniDia : null;
+  const doDia = sel ? db.lancamentos.filter((l) => l.data === sel && l.tipo === 'Despesa') : [];
+  return `<div class="card cel-c"><div class="cel-c-h"><h3>Últimos 7 dias</h3><b>${fmt0(tot)}</b></div>
+    <div class="ini-7">${dias.map((d, i) => `<button class="${d === H ? 'hj' : ''} ${d === sel ? 'sel' : ''}" data-ini-dia="${d}"><small>${v[i] ? fmtK(v[i]) : ''}</small><i style="height:${Math.max(3, (v[i] / mx) * 70)}px" class="${v[i] ? '' : 'z'}"></i><span>${d === H ? 'hoje' : DS[new Date(d + 'T12:00').getDay()]}</span></button>`).join('')}</div>
+    ${sel ? `<div class="ini-dia"><b>${cxRotDia(sel)[0].toUpperCase() + cxRotDia(sel).slice(1)} · ${fmt(soma(doDia, 'valor'))}</b>${doDia.length ? doDia.slice(0, 6).map((l) => `<div class="cel-l" data-edit-l="${l.id}"><span>${esc(l.descricao)}<small>${esc(l.categoria)}</small></span><b>${fmt(l.valor)}</b></div>`).join('') : '<p class="small muted" style="margin:4px 0 0">Nenhum gasto nesse dia.</p>'}</div>` : `<p class="small muted" style="margin:6px 0 0">Média de ${fmt0(tot / 7)} por dia · toque num dia para ver o que gastou</p>`}</div>`;
+}
+function iniOnde() {
+  const H = hoje(); const mb = ui.membro; ui.membro = ''; let o = []; try { o = orcamento(ymOf(H)).filter((c) => c.gasto > 0).sort((a, b) => b.gasto - a.gasto).slice(0, 3); } catch (e) {} ui.membro = mb;
+  if (!o.length) return '';
+  return `<div class="card cel-c"><div class="cel-c-h"><h3>Onde mais gastou</h3><small class="muted">${MESES[+H.slice(5, 7) - 1]}</small></div>${o.map((c) => { const u = c.meta ? c.gasto / c.meta : null;
+    return `<div class="ini-cat" data-cel-ir="lancamentos"><div><span>${esc(c.nome)}</span><b class="${u > 1 ? 'bad' : ''}">${fmt0(c.gasto)}${c.meta ? ` <small class="muted">/ ${fmt0(c.meta)}</small>` : ''}</b></div>${c.meta ? `<div class="bar"><i class="${u > 1 ? 'bad' : u >= 0.8 ? 'warn' : ''}" style="width:${Math.min(100, u * 100)}%"></i></div>` : '<small class="muted">sem limite definido</small>'}</div>`; }).join('')}</div>`;
+}
+if (CELULAR && typeof celHoje === 'function') {
+  const _celHoje72 = celHoje;
+  celHoje = function () {
+    const h = _celHoje72(); const p = iniPref(); const ola = h.slice(h.indexOf('<div class="cel-ola">'), h.indexOf('</div>', h.indexOf('<div class="cel-ola">')) + 6);
+    let sync = ''; try { sync = typeof celAvisoSync === 'function' ? celAvisoSync() : ''; } catch (e) {}
+    const B = {
+      aviso: () => iniAviso(), rapido: () => iniRapido(),
+      contas: () => iniPedaco(h, 'Vence nos próximos 7 dias').replace('<h3>Vence nos próximos 7 dias</h3>', '<h3>Próximas contas · 7 dias</h3>'),
+      hoje: () => iniPedaco(h, 'Gastos de hoje'), '7dias': () => ini7Dias(), onde: () => iniOnde(),
+      treino: () => iniPedaco(h, '🏋️ Treino de hoje') || iniPedaco(h, '🏃 Corrida de hoje') || iniPedaco(h, '😴 Hoje é descanso'),
+      cons: () => iniPedaco(h, '🌿 Consultório hoje'), caixa: () => iniPedaco(h, '🏪 Caixa da loja'),
+    };
+    const corpo = p.ordem.filter((k) => !p.off.includes(k)).map((k) => { try { return B[k](); } catch (e) { return ''; } }).join('');
+    const pe = h.slice(h.indexOf('<div class="cel-hoje-pe">'));
+    return `<div class="cel-hoje">${ola}${sync}${iniHeroi(h)}${corpo}${pe.replace('<button class="btn" data-cel-painel>', '<button class="btn" data-ini-pers>⚙ Personalizar</button><button class="btn" data-cel-painel>')}`;
+  };
+}
+function iniPersonalizar() {
+  const p = iniPref(); const nomes = Object.fromEntries(INI_BLOCOS);
+  const vis = p.ordem.filter((k) => (k === 'cons' ? CEL_PERFIL === 'hel' : true));
+  celFolha(`<h3 style="margin:0 0 4px">⚙ Personalizar o Início</h3><p class="small muted" style="margin:0 0 8px">Ligue ou desligue cada bloco e use as setas para mudar a ordem.</p>
+    <div class="ini-pers">${vis.map((k, i) => `<div class="ini-pers-l"><label><input type="checkbox" data-ini-on="${k}" ${p.off.includes(k) ? '' : 'checked'}> ${nomes[k]}</label><span><button class="icon-btn" data-ini-mover="${k}:-1" ${i === 0 ? 'disabled' : ''}>↑</button><button class="icon-btn" data-ini-mover="${k}:1" ${i === vis.length - 1 ? 'disabled' : ''}>↓</button></span></div>`).join('')}</div>
+    ${p.semSaldo ? '<button class="btn sm" data-ini-volta-saldo style="margin-top:8px">Mostrar de novo o "Informar saldos"</button>' : ''}`);
+}
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if (g('data-ini-semsaldo')) { e.stopPropagation(); const p = iniPref(); p.semSaldo = true; iniSalvar(p); toast('Ok, não mostro mais. Dá para voltar em ⚙ Personalizar.'); return renderAll(); }
+  if (g('data-ini-volta-saldo')) { const p = iniPref(); p.semSaldo = false; iniSalvar(p); celFecharFolha(); return renderAll(); }
+  if (g('data-ini-lancar')) { e.stopPropagation(); setTimeout(() => celLancar(), 0); return; }
+  if ((b = g('data-ini-chip'))) { e.stopPropagation(); const n = +b.dataset.iniChip; setTimeout(() => { celLancar(); setTimeout(() => { const c = $(`[data-cel-chip="${n}"]`); if (c) c.click(); }, 80); }, 0); return; }
+  if ((b = g('data-ini-dia'))) { ui.iniDia = ui.iniDia === b.dataset.iniDia ? null : b.dataset.iniDia; return renderAll(); }
+  if (g('data-ini-pers')) return iniPersonalizar();
+  if ((b = g('data-ini-mover'))) { const [k, d] = b.dataset.iniMover.split(':'); const p = iniPref(); const i = p.ordem.indexOf(k), j = i + +d; if (j >= 0 && j < p.ordem.length) { [p.ordem[i], p.ordem[j]] = [p.ordem[j], p.ordem[i]]; iniSalvar(p); iniPersonalizar(); renderAll(); } }
+}, true);
+document.addEventListener('change', (e) => { const c = e.target.closest('[data-ini-on]'); if (!c) return; const p = iniPref(); const k = c.dataset.iniOn; p.off = c.checked ? p.off.filter((x) => x !== k) : [...new Set([...p.off, k])]; iniSalvar(p); renderAll(); });
+CEL_NOVIDADES['7.2'] = ['Início novo: aviso importante no topo, lançar rápido, próximas contas e onde mais gastou', 'Últimos 7 dias: toque num dia para ver o que gastou', '⚙ Personalizar o Início: ligar, desligar e mudar a ordem dos blocos', 'O Caixa da loja saiu do Início (fica em Mais › Caixa)'];
 
 /* ---------- início ---------- */
 (async function boot() {
