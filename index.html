@@ -1131,6 +1131,48 @@ body.md-aberto .cel-folha-o { z-index: 160; } body.md-aberto .toast, body.md-abe
 .vg-precos{display:flex;gap:8px;margin-bottom:8px}.vg-precos span{flex:1;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:12px;color:var(--muted)}.vg-precos b{display:block;font-size:18px;color:var(--fg)}
 .vg-link{display:flex;justify-content:space-between;align-items:center;cursor:pointer}.vg-link small{display:block;color:var(--muted)}.vg-link>b{font-size:22px;color:var(--muted)}
 .vg-heroi .btn{background:rgba(255,255,255,.16);color:#fff;border-color:transparent}
+/* v7.8 menu por área + painel */
+.nav-areas{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:4px 0 6px}
+.nav-areas button{display:flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:10px;padding:7px 8px;font-size:12.5px;cursor:pointer;white-space:nowrap;overflow:hidden}
+.nav-areas button span{font-size:15px}.nav-areas button b{font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.nav-areas button.on{background:var(--brand,#1f4e6b);border-color:var(--brand,#1f4e6b);color:#fff}
+.nav-area-t{font-weight:800;font-size:15px;margin:8px 4px 0;color:var(--fg)}
+.nav-box{display:flex;flex-direction:column;gap:2px}
+.nav button.tab-btn.sub2{padding-top:6px;padding-bottom:6px}
+.nav .nav2-dot{width:18px;text-align:center;opacity:.55;font-size:14px}
+body.nav-mini .nav-areas{grid-template-columns:1fr;gap:4px}body.nav-mini .nav-areas b,body.nav-mini .nav-area-t{display:none}body.nav-mini .nav-areas button{justify-content:center;padding:6px 0}
+@media (max-width:1180px){body:not(.nav-aberto) .nav-areas{grid-template-columns:1fr;gap:4px}body:not(.nav-aberto) .nav-areas b,body:not(.nav-aberto) .nav-area-t{display:none}body:not(.nav-aberto) .nav-areas button{justify-content:center;padding:6px 0}}
+body.tema-loja .nav-areas button.on{background:#ffc400;border-color:#ffc400;color:#1a1a17}
+body.tema-cons .nav-areas button.on{background:var(--accent);border-color:var(--accent)}
+/* celular: gaveta */
+.cel-hb{flex:none;width:38px;height:38px;border-radius:11px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font-size:19px;margin-right:6px;cursor:pointer}
+#celGaveta{position:fixed;inset:0;z-index:300;pointer-events:none}
+#celGaveta .cg-fundo{position:absolute;inset:0;background:#0007;opacity:0;transition:opacity .2s}
+#celGaveta .cg-painel{position:absolute;top:0;bottom:0;left:0;width:min(84vw,330px);background:var(--panel);transform:translateX(-102%);transition:transform .22s ease;display:flex;flex-direction:column;box-shadow:6px 0 30px #0004;padding-top:env(safe-area-inset-top)}
+#celGaveta.on{pointer-events:auto}#celGaveta.on .cg-fundo{opacity:1}#celGaveta.on .cg-painel{transform:none}
+.cg-topo{display:flex;justify-content:space-between;align-items:center;padding:16px 16px 6px}.cg-topo b{font-size:20px}.cg-topo button{border:0;background:none;font-size:18px;color:var(--muted);cursor:pointer}
+.cg-corpo{flex:1;overflow-y:auto;padding:0 12px 30px;display:flex;flex-direction:column;gap:2px;position:static!important;width:auto!important;height:auto!important;border:0!important;background:none!important}
+.cg-corpo .grp{font-size:10.5px;letter-spacing:.08em;color:var(--muted);margin:12px 6px 2px;font-weight:700;display:block!important}
+.cg-corpo .tab-btn{display:flex!important;align-items:center;gap:10px;width:100%!important;height:auto!important;justify-content:flex-start!important;border:0;background:none;color:var(--fg);padding:10px 10px!important;border-radius:10px;font-size:15px;text-align:left}
+.cg-corpo .tab-btn .lbl{display:inline!important}.cg-corpo .tab-btn.active{background:color-mix(in srgb,var(--brand,#1f4e6b) 12%,transparent);color:var(--brand,#1f4e6b);font-weight:700}
+.cg-corpo .tab-btn svg{width:19px;height:19px}.cg-corpo .nav-area-t{display:block!important}
+.cg-corpo .nav-areas{grid-template-columns:1fr 1fr!important}.cg-corpo .nav-areas b{display:inline!important}.cg-corpo .nav-areas button{justify-content:flex-start!important;padding:9px 10px!important;font-size:13.5px}
+/* blocos do painel */
+.pv-ks{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.pv-ks.cel{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.pv-k{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:14px;padding:11px 13px}
+.pv-k small{display:block;font-size:10.5px;letter-spacing:.05em;color:var(--muted);font-weight:700}.pv-k b{display:block;font-size:21px;margin:4px 0 2px;color:var(--c)}.pv-k i{font-size:11px;color:var(--muted);font-style:normal}
+.pv-ks.cel .pv-k b{font-size:18px}
+.pv-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.pv-h h3{margin:0;font-size:15px}.pv-h b{font-size:16px}
+.pv-sub{font-size:12px;color:var(--muted);margin:2px 0 8px}
+.pv-svg{width:100%;height:110px;display:block}.pv-svg .z{stroke:var(--line);stroke-dasharray:4 4}.pv-svg .l{fill:none;stroke:var(--brand,#1f4e6b);stroke-width:2.2;vector-effect:non-scaling-stroke}.pv-svg .a{fill:color-mix(in srgb,var(--brand,#1f4e6b) 12%,transparent)}.pv-svg .p{fill:var(--brand,#1f4e6b)}
+.pv-eixo{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted)}
+.pv-3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0 4px;text-align:center}.pv-3 small{display:block;font-size:10px;letter-spacing:.05em;color:var(--muted);font-weight:700}.pv-3 b{font-size:15px}
+.pv-l{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid var(--line);cursor:pointer;font-size:14px}.pv-l small{display:block;color:var(--muted);font-size:11.5px;font-weight:400}.pv-l>b{text-align:right;white-space:nowrap}
+.pv-h+.pv-l{border-top:0;margin-top:4px}
+.pv-cof{padding:8px 0;border-top:1px solid var(--line);cursor:pointer}.pv-h+.pv-cof{border-top:0}.pv-cof>div:first-child{display:flex;justify-content:space-between;font-size:14px}.pv-cof b small{color:var(--muted);font-weight:400}.pv-cof>small{font-size:11px;color:var(--muted)}
+.pv-bar{height:7px;border-radius:5px;background:var(--line);margin:5px 0 3px;overflow:hidden}.pv-bar i{display:block;height:100%;border-radius:5px}
+@media(max-width:1100px){.pv-ks:not(.cel){grid-template-columns:repeat(3,1fr)}}
+.cg-corpo .nav-areas.a3{grid-template-columns:1fr 1fr 1fr!important}.cg-corpo .nav-areas.a3 button{justify-content:center!important;flex-direction:column;gap:2px;font-size:12.5px}
 
 /* =================== v7.5: cores =================== */
 :root { --brand: #1f4e6b; }
@@ -4072,7 +4114,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '7.7';
+const APP_VERSAO = '7.8';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -11542,6 +11584,7 @@ cxHoje = function () { return _cxHoje71() + uiAjuda(`${ehToque() ? 'Toque' : 'Cl
 CEL_NOVIDADES['7.1'] = ['Menu reorganizado em grupos, com contadores (e ☰ para recolher no computador)', 'Contas a pagar: pílulas com quantidade, busca, categoria e Exportar Excel', 'Gráfico do ano no Painel e na Loja', 'Caixa: toque no nome da conta para editar'];
 
 /* =================== v7.2: Início do celular reorganizado (só visual e organização) =================== */
+const INI_EXTRA = {};
 const INI_BLOCOS = [['aviso', 'Aviso mais importante'], ['rapido', 'Lançar rápido'], ['contas', 'Próximas contas'], ['hoje', 'Gastos de hoje'], ['7dias', 'Últimos 7 dias'], ['onde', 'Onde mais gastou'], ['treino', 'Treino de hoje'], ['cons', 'Consultório hoje'], ['caixa', 'Caixa da loja']];
 function iniPref() { let p = {}; try { p = JSON.parse(lsGet('cel-inicio') || '{}'); } catch (e) {} const ordem = (p.ordem || []).filter((k) => INI_BLOCOS.some(([x]) => x === k)); INI_BLOCOS.forEach(([k]) => { if (!ordem.includes(k)) ordem.push(k); }); return { ordem, off: p.off || ['caixa'], semSaldo: !!p.semSaldo }; }
 function iniSalvar(p) { try { lsSet('cel-inicio', JSON.stringify(p)); } catch (e) {} }
@@ -11592,7 +11635,7 @@ if (CELULAR && typeof celHoje === 'function') {
       treino: () => iniPedaco(h, '🏋️ Treino de hoje') || iniPedaco(h, '🏃 Corrida de hoje') || iniPedaco(h, '😴 Hoje é descanso'),
       cons: () => iniPedaco(h, '🌿 Consultório hoje'), caixa: () => iniPedaco(h, '🏪 Caixa da loja'),
     };
-    const corpo = p.ordem.filter((k) => !p.off.includes(k)).map((k) => { try { return B[k](); } catch (e) { return ''; } }).join('');
+    const corpo = p.ordem.filter((k) => !p.off.includes(k)).map((k) => { try { return (B[k] || INI_EXTRA[k])(); } catch (e) { return ''; } }).join('');
     const pe = h.slice(h.indexOf('<div class="cel-hoje-pe">'));
     return `<div class="cel-hoje">${ola}${sync}${iniHeroi(h)}${corpo}${pe.replace('<button class="btn" data-cel-painel>', '<button class="btn" data-ini-pers>⚙ Personalizar</button><button class="btn" data-cel-painel>')}`;
   };
@@ -12161,6 +12204,147 @@ if (CELULAR && typeof celHoje === 'function' && CEL_PERFIL !== 'hel') {
 }
 CEL_NOVIDADES['7.6'] = ['🚗 Representação › Viagens: lançar em 2 toques, modelo da terça e da sexta, orçamento da viagem', '📊 Onde mais gasto (dia, semana, mês, ano) e Terça × Sexta', '🌱 Economizar: desafios e quanto já economizou'];
 CEL_NOVIDADES['7.7'] = ['⛽ Gasolina ou GNV no abastecimento, com "Completei" e "Fora da viagem"', '🧪 Teste de combustível: só gasolina, só GNV ou intercalando, completando ou do seu jeito (pelo ponteiro)', '📊 Resultado lado a lado: custo por km e quanto economiza por mês'];
+
+/* =================== v7.8: menu por área (Casa · Loja · Representação · Consultório) e painel rolando =================== */
+/* ---------- 1) áreas do menu ---------- */
+const NAV_AREAS = [
+  ['casa', '🏠', 'Casa', [['DIA A DIA', [['painel'], ['lancamentos'], ['caixa', null, 'Caixa de casa', 'casa']]], ['CONTAS', [['contas'], ['planejar'], ['recomeco']]], ['CRESCER', [['metas'], ['invest']]]]],
+  ['loja', '🏪', 'Loja', [['LOJA', [['loja', 'painel', 'Painel da loja'], ['loja', 'vendas', 'Vendas do dia'], ['caixa', null, 'Caixa da loja', 'loja'], ['loja', 'resultado', 'Resultado'], ['loja', 'despesas', 'Despesas'], ['loja', 'compras', 'Compras'], ['loja', 'ajustes', 'Ajustes']]]]],
+  ['rep', '🚗', 'Representação', [['REPRESENTAÇÃO', [['rep', 'viagens', 'Viagens'], ['caixa', null, 'Caixa da representação', 'rep'], ['rep', 'pedidos', 'Pedidos'], ['rep', 'resultado', 'Resultado'], ['rep', 'despesas', 'Despesas'], ['rep', 'representadas', 'Representadas']]]]],
+  ['cons', '🌿', 'Consultório', [['CONSULTÓRIO', [['cons', 'hoje', 'Hoje'], ['cons', 'agenda', 'Agenda'], ['cons', 'pacientes', 'Pacientes'], ['cons', 'prontuario', 'Prontuário'], ['cons', 'atendimentos', 'Atendimentos'], ['cons', 'recebimentos', 'Recebimentos'], ['cons', 'resultado', 'Resultado'], ['cons', 'documentos', 'Documentos'], ['cons', 'supervisao', 'Supervisão'], ['cons', 'despesas', 'Despesas'], ['cons', 'site', 'Meu site'], ['cons', 'ajustes', 'Ajustes']]]]],
+];
+const NAV_FIXOS = [['RITMO', [['mat'], ['hel']]], ['SISTEMA', [['ir'], ['config']]]];
+const NAV_NOMES = { painel: 'Painel', lancamentos: 'Lançamentos', caixa: 'Caixa', contas: 'Contas a pagar', planejar: 'Planejar', recomeco: 'Recomeço', metas: 'Metas e cofrinhos', invest: 'Investimentos', loja: 'Loja', rep: 'Representação', cons: 'Consultório', mat: 'Matheus', hel: 'Helen', ir: 'Imposto de Renda', config: 'Configurações' };
+const NAV_ICO = {}; $$('.nav .tab-btn').forEach((b) => { const i = $('.ico', b) || $('svg', b); if (i) NAV_ICO[b.dataset.tab] = i.outerHTML; const l = $('.lbl', b); if (l && !NAV_NOMES[b.dataset.tab]) NAV_NOMES[b.dataset.tab] = l.textContent.trim(); });
+function navAreaDe(tab) {
+  if (tab === 'loja' || tab === 'rep' || tab === 'cons') return tab;
+  if (tab === 'caixa') return ui.cxArea === 'loja' || ui.cxArea === 'rep' ? ui.cxArea : 'casa';
+  if (['mat', 'hel', 'ir', 'config'].includes(tab)) return null; return 'casa';
+}
+const navEscondidos = () => (CELULAR && typeof CEL_ESCONDE !== 'undefined' ? CEL_ESCONDE : []);
+const navAreasVis = () => NAV_AREAS.filter(([k]) => !navEscondidos().includes(k));
+function navAreaAtual() { if (ui.tab !== ui._navTab) { ui._navTab = ui.tab; const a = navAreaDe(ui.tab); if (a) ui.area = a; } if (!ui.area) { try { ui.area = lsGet('nav-area') || 'casa'; } catch (e) { ui.area = 'casa'; } } if (!navAreasVis().some(([k]) => k === ui.area)) ui.area = navAreasVis()[0][0]; return ui.area; }
+function navItemAtivo(tab, sub, cx) {
+  if (tab !== ui.tab) return false; if (tab === 'caixa') return (ui.cxArea || 'casa') === cx || (!['loja', 'rep'].includes(ui.cxArea) && cx === 'casa');
+  if (!sub) return true; const cur = ui.sub?.[tab]; const prim = { loja: 'painel', rep: 'viagens', cons: 'hoje' }[tab]; return (cur || prim) === sub || (tab === 'cons' && sub === 'prontuario' && cur === 'pront');
+}
+function navItens(grupos) {
+  const esc_ = navEscondidos();
+  return grupos.map(([g, its]) => { const vis = its.filter(([t]) => !esc_.includes(t)); if (!vis.length) return '';
+    return `<div class="grp">${g}</div>${vis.map(([t, sub, nome, cx]) => `<button class="tab-btn nav2 ${sub || cx ? 'sub2' : ''} ${navItemAtivo(t, sub, cx) ? 'active' : ''}" data-tab="${t}" data-nav-tab="${t}" ${sub ? `data-nav-sub="${sub}"` : ''} ${cx ? `data-nav-cx="${cx}"` : ''}>${sub || cx ? `<span class="ico nav2-dot">${sub ? '•' : '◫'}</span>` : NAV_ICO[t] || '<span class="ico">•</span>'}<span class="lbl">${esc(nome || NAV_NOMES[t] || t)}</span></button>`).join('')}`; }).join('');
+}
+function navHtml() {
+  const a = navAreaAtual(); const A = NAV_AREAS.find(([k]) => k === a);
+  return `<div class="nav-areas ${navAreasVis().length === 3 ? 'a3' : ''}">${navAreasVis().map(([k, ic, n]) => `<button class="${k === a ? 'on' : ''}" data-nav-area="${k}" title="${n}"><span>${ic}</span><b>${n === 'Representação' ? 'Rep.' : n}</b></button>`).join('')}</div>
+    <div class="nav-area-t">${A[1]} ${A[2]}</div>${navItens(A[3])}${navItens(NAV_FIXOS)}`;
+}
+function navDesenhar() {
+  if (CELULAR) return; const nav = $('.nav'); if (!nav) return; let box = $('#navArea', nav);
+  if (!box) { $$(':scope > .grp, :scope > .tab-btn', nav).forEach((x) => x.remove()); box = document.createElement('div'); box.id = 'navArea'; box.className = 'nav-box'; const br = $('.brand', nav); br.after(box); }
+  box.innerHTML = navHtml();
+}
+function navIr(b) {
+  const t = b.dataset.navTab; if (b.dataset.navSub) { ui.sub = ui.sub || {}; ui.sub[t] = b.dataset.navSub; if (t === 'rep' && b.dataset.navSub === 'viagens') ui.vgSub = ui.vgSub || 'hoje'; }
+  if (b.dataset.navCx) ui.cxArea = b.dataset.navCx; if (navAreaDe(t)) ui.area = navAreaDe(t);
+  if (typeof celGavetaFechar === 'function') celGavetaFechar(); setTab(t);
+}
+document.addEventListener('click', (e) => {
+  const ar = e.target.closest('[data-nav-area]');
+  if (ar) { e.stopPropagation(); const k = ar.dataset.navArea; ui.area = k; try { lsSet('nav-area', k); } catch (x) {}
+    const A = NAV_AREAS.find(([x]) => x === k); const [t, sub, , cx] = A[3][0][1].find(([t]) => !navEscondidos().includes(t)) || A[3][0][1][0];
+    if (sub) { ui.sub = ui.sub || {}; ui.sub[t] = sub; } if (cx) ui.cxArea = cx;
+    if (CELULAR) { celGavetaDesenhar(); return; } return setTab(t); }
+  const b = e.target.closest('[data-nav-tab]'); if (b) { e.stopPropagation(); return navIr(b); }
+}, true);
+
+/* ---------- 2) celular: ☰ abre o menu do lado ---------- */
+function celGavetaDesenhar() { const g = $('#celGaveta .cg-corpo'); if (g) g.innerHTML = navHtml(); }
+function celGavetaAbrir() {
+  let g = $('#celGaveta'); if (!g) { g = document.createElement('div'); g.id = 'celGaveta'; g.innerHTML = '<div class="cg-fundo" data-cg-fechar></div><aside class="cg-painel"><div class="cg-topo"><b>⚓ Prumo</b><button data-cg-fechar aria-label="Fechar">✕</button></div><div class="cg-corpo"></div></aside>'; document.body.appendChild(g); }
+  celGavetaDesenhar(); requestAnimationFrame(() => g.classList.add('on')); document.body.classList.add('cg-aberta');
+}
+function celGavetaFechar() { const g = $('#celGaveta'); if (g) g.classList.remove('on'); document.body.classList.remove('cg-aberta'); }
+document.addEventListener('click', (e) => { if (e.target.closest('[data-cg-fechar]')) { e.stopPropagation(); celGavetaFechar(); } if (e.target.closest('#celHb')) { e.stopPropagation(); celGavetaAbrir(); } }, true);
+if (CELULAR) { let x0 = null; document.addEventListener('touchstart', (e) => { x0 = $('#celGaveta.on') ? e.touches[0].clientX : null; }, { passive: true }); document.addEventListener('touchend', (e) => { if (x0 != null && x0 - e.changedTouches[0].clientX > 60) celGavetaFechar(); x0 = null; }, { passive: true }); }
+
+/* ---------- 3) peças do painel (casa) ---------- */
+function pvNum(ym) {
+  const mb = ui.membro, ct = ui.categoria; ui.membro = ''; ui.categoria = ''; let t; try { t = totais(lancs({ mes: ym })); } finally { ui.membro = mb; ui.categoria = ct; }
+  const fim = `${ym}-${pad(cxUltimoDia(ym))}`; const H = hoje();
+  const doMes = db.contasPagar.filter((c) => ymOf(c.vencimento) === ym); const pagas = doMes.filter((c) => c.status === 'Pago');
+  const abertas = db.contasPagar.filter((c) => c.status !== 'Pago' && c.vencimento <= fim);
+  let fat = 0; try { faturas([addM(ym, -1), ym]).forEach((f) => [addM(ym, -1), ym].forEach((m, i) => { const v = vencFat(f.conta, m); if (ymOf(v) === ym && v >= H && !abertas.some((c) => cxSemAc(c.descricao).includes(cxSemAc(f.conta.nome)))) fat += f.valores[i]; })); } catch (e) {}
+  return { r: t.r, d: t.d, s: t.s, pago: soma(pagas, 'valor'), falta: soma(abertas, 'valor') + fat, fat, nAb: abertas.length };
+}
+function pvKpis(ym, cel) {
+  const n = pvNum(ym); const k = (cor, rot, v, sub) => `<div class="pv-k" style="--c:${cor}"><small>${rot}</small><b>${fmt0(v)}</b><i>${sub}</i></div>`;
+  return `<div class="pv-ks ${cel ? 'cel' : ''}">${k('var(--bad,#c0452f)', 'GASTOS DO MÊS', n.d, 'tudo que saiu')}${k('var(--good,#2f7d4f)', 'ENTRADAS', n.r, 'recebido no mês')}${k('var(--brand,#1f4e6b)', 'JÁ PAGUEI', n.pago, 'contas quitadas')}${k('var(--warn,#d9822b)', 'FALTA PAGAR', n.falta, n.fat ? 'pendentes + fatura' : `${n.nAb} ${n.nAb === 1 ? 'conta pendente' : 'contas pendentes'}`)}${cel ? '' : k(n.s >= 0 ? 'var(--good,#2f7d4f)' : 'var(--bad,#c0452f)', n.s >= 0 ? 'SOBRA' : 'FALTA', Math.abs(n.s), n.s >= 0 ? 'entradas − gastos' : 'gastou mais que entrou')}</div>`;
+}
+function pvSaldo(ym) {
+  const dias = cxUltimoDia(ym); const L = db.lancamentos.filter((l) => ymOf(l.data) === ym && (l.tipo === 'Receita' || l.tipo === 'Despesa'));
+  const H = hoje(); const ate = ymOf(H) === ym ? +H.slice(8, 10) : ymOf(H) > ym ? dias : 0; if (!ate || !L.length) return '';
+  let acc = 0; const pts = []; for (let d = 1; d <= ate; d++) { const ds = `${ym}-${pad(d)}`; L.filter((l) => l.data === ds).forEach((l) => { acc += l.tipo === 'Receita' ? l.valor : -l.valor; }); pts.push(acc); }
+  const mx = Math.max(...pts, 0), mn = Math.min(...pts, 0); const W = 300, Hh = 90; const y = (v) => 6 + (Hh - 12) * (1 - (v - mn) / (mx - mn || 1)); const x = (i) => (i / Math.max(1, dias - 1)) * W;
+  const linha = pts.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' '); const fimV = pts[pts.length - 1];
+  return `<div class="pv-h"><h3>Evolução do saldo</h3><b class="${fimV >= 0 ? 'good' : 'bad'}">${fimV >= 0 ? '' : '−'}${fmt0(Math.abs(fimV))}</b></div><p class="pv-sub">entradas menos gastos, dia a dia · ${MESES[+ym.slice(5, 7) - 1]}</p>
+    <svg class="pv-svg" viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="none"><line x1="0" x2="${W}" y1="${y(0)}" y2="${y(0)}" class="z"/><polygon points="0,${y(0)} ${linha} ${x(pts.length - 1)},${y(0)}" class="a"/><polyline points="${linha}" class="l"/><circle cx="${x(pts.length - 1)}" cy="${y(fimV)}" r="3.5" class="p"/></svg>
+    <div class="pv-eixo"><span>1</span><span>${Math.round(dias / 2)}</span><span>${dias}</span></div>`;
+}
+function pvContas(ym, max = 6) {
+  const H = hoje(); const L = db.contasPagar.filter((c) => ymOf(c.vencimento) === ym).sort((a, b) => (a.status === 'Pago') - (b.status === 'Pago') || (a.vencimento < b.vencimento ? -1 : 1));
+  if (!L.length) return `<div class="pv-h"><h3>Contas do mês</h3></div><p class="pv-sub" style="margin:0">Nenhuma conta a pagar com vencimento em ${MESES[+ym.slice(5, 7) - 1]}.</p>`;
+  const ab = L.filter((c) => c.status !== 'Pago'); const venc = ab.filter((c) => c.vencimento < H);
+  return `<div class="pv-h"><h3>Contas do mês</h3><button class="btn sm" data-go="contas">Ver todas</button></div>
+    <div class="pv-3"><span><small>TOTAL</small><b>${fmt0(soma(L, 'valor'))}</b></span><span><small>PRÓXIMAS</small><b>${fmt0(soma(ab.filter((c) => c.vencimento >= H), 'valor'))}</b></span><span><small>VENCIDAS</small><b class="${venc.length ? 'bad' : ''}">${fmt0(soma(venc, 'valor'))}</b></span></div>
+    ${L.slice(0, max).map((c) => { const pg = c.status === 'Pago'; const at = !pg && c.vencimento < H; return `<div class="pv-l" data-go="contas"><span>${esc(c.descricao)}<small>${esc(c.categoria || '')}${c.categoria ? ' · ' : ''}dia ${+c.vencimento.slice(8, 10)}</small></span><b class="${pg ? 'good' : at ? 'bad' : ''}">${fmt(c.valor)}<small>${pg ? '✓ paga' : at ? 'atrasada' : 'a pagar'}</small></b></div>`; }).join('')}${L.length > max ? `<p class="pv-sub" style="margin:6px 0 0">e mais ${L.length - max}</p>` : ''}`;
+}
+function pvCartoes() {
+  const C = db.contas.filter((c) => c.tipo === 'cartao'); if (!C.length) return ''; const H = hoje(); const ms = [-1, 0, 1, 2].map((i) => addM(ymOf(H), i)); const F = faturas(ms);
+  return `<div class="pv-h"><h3>💳 Cartões</h3></div>${F.map((f) => { const j = ms.findIndex((m) => vencFat(f.conta, m) >= H); if (j < 0) return ''; const prox = f.valores[j + 1] || 0;
+    return `<div class="pv-l" data-go="planejar"><span>${esc(f.conta.nome)}<small>fecha dia ${f.conta.fechamento || '?'} · vence ${dmy(vencFat(f.conta, ms[j])).slice(0, 5)}</small></span><b>${fmt(f.valores[j])}<small>${prox ? `próxima ${fmt0(prox)}` : 'fatura atual'}</small></b></div>`; }).join('')}`;
+}
+function pvCofrinhos() {
+  if (!db.metas.length) return ''; const cores = ['#2f7d4f', '#1f4e6b', '#d9822b', '#7a4fa0', '#c0452f'];
+  return `<div class="pv-h"><h3>🐷 Cofrinhos e metas</h3><button class="btn sm" data-go="metas">Gerenciar</button></div>${db.metas.slice(0, 5).map((m, i) => { const f = m.alvo ? Math.min(1, (m.acumulado || 0) / m.alvo) : 0;
+    return `<div class="pv-cof" data-go="metas"><div><span>${esc(m.nome)}</span><b>${fmt0(m.acumulado || 0)}<small> de ${fmt0(m.alvo || 0)}</small></b></div><div class="pv-bar"><i style="width:${f * 100}%;background:${cores[i % 5]}"></i></div><small>${Math.round(f * 100)}% do objetivo</small></div>`; }).join('')}`;
+}
+
+/* ---------- 4) PC: novos blocos no painel (dá para ligar, desligar e mudar a ordem em ⚙ Personalizar) ---------- */
+(function () {
+  const novos = [['kpis5', 'Resumo em cartões', 'Gastos, entradas, já paguei, falta pagar e sobra'], ['saldo', 'Evolução do saldo', 'Entradas menos gastos, dia a dia'], ['contasmes', 'Contas do mês', 'Total, próximas, vencidas e a lista']];
+  WIDGETS.unshift(...novos);
+  const ordem = ['passos', 'avisos', 'kpis5', 'saldo', 'contasmes', 'faturas', 'metas', 'rapido', 'resumo']; const resto = WIDGETS.map((w) => w[0]).filter((k) => !ordem.includes(k));
+  const nova = [...ordem.filter((k) => WIDGETS.some((w) => w[0] === k)), ...resto]; WIDGETS.sort((a, b) => nova.indexOf(a[0]) - nova.indexOf(b[0]));
+  PAINEL_PADRAO.ordem = WIDGETS.map((w) => w[0]);
+  try { const s = JSON.parse(lsGet('ff-painel') || 'null'); if (s && Array.isArray(s.ordem) && !s.ordem.includes('kpis5')) lsSet('ff-painel', JSON.stringify({ ordem: [...PAINEL_PADRAO.ordem], ocultos: s.ocultos || [] })); } catch (e) {}
+})();
+const _renderPainel78 = renderPainel;
+renderPainel = function () {
+  const r = _renderPainel78.apply(this, arguments); if (CELULAR && !ui.celPainel) return r; if (!db) return r;
+  const el = $('#tab-painel'); const g = el && $('.painel-g', el); if (!g || $('[data-wid="kpis5"]', g)) return r;
+  try { const sal = pvSaldo(ui.mes);
+    g.insertAdjacentHTML('afterbegin', `<div class="wide pv" data-wid="kpis5">${pvKpis(ui.mes)}</div>${sal ? `<div class="card pv" data-wid="saldo">${sal}</div>` : ''}<div class="card pv" data-wid="contasmes">${pvContas(ui.mes)}</div>`);
+    aplicarLayoutPainel(el); } catch (e) { console.warn('painel 7.8', e); }
+  return r;
+};
+
+/* ---------- 5) celular: os mesmos blocos no Início ---------- */
+if (CELULAR && typeof INI_BLOCOS !== 'undefined') {
+  const add = [['resumo4', 'Resumo em cartões'], ['saldo', 'Evolução do saldo'], ['contasmes', 'Contas do mês'], ['cartoes', 'Cartões'], ['cofrinhos', 'Cofrinhos e metas']];
+  INI_BLOCOS.splice(2, 0, ...add);
+  try { const p = JSON.parse(lsGet('cel-inicio') || '{}'); if (Array.isArray(p.ordem) && p.ordem.length && !p.ordem.includes('resumo4')) { const i = Math.max(0, p.ordem.indexOf('rapido') + 1); p.ordem.splice(i, 0, ...add.map((x) => x[0])); lsSet('cel-inicio', JSON.stringify(p)); } } catch (e) {}
+  const pvCel = { resumo4: () => pvKpis(ymOf(hoje()), true), saldo: () => { const s = pvSaldo(ymOf(hoje())); return s ? `<div class="card cel-c pv">${s}</div>` : ''; }, contasmes: () => `<div class="card cel-c pv">${pvContas(ymOf(hoje()), 5)}</div>`, cartoes: () => { const s = pvCartoes(); return s ? `<div class="card cel-c pv">${s}</div>` : ''; }, cofrinhos: () => { const s = pvCofrinhos(); return s ? `<div class="card cel-c pv">${s}</div>` : ''; } };
+  Object.assign(INI_EXTRA, pvCel);
+}
+
+/* ---------- 6) desenhar a cada render ---------- */
+const _renderAll78 = renderAll;
+renderAll = function () {
+  _renderAll78.apply(this, arguments);
+  try { navDesenhar(); if (typeof navAtualizar === 'function') navAtualizar(); } catch (e) { console.warn('nav 7.8', e); }
+  if (CELULAR) { const t = $('.top'); if (t && !$('#celHb', t)) t.insertAdjacentHTML('afterbegin', '<button id="celHb" class="cel-hb" aria-label="Menu">☰</button>'); if ($('#celGaveta.on')) celGavetaDesenhar(); }
+};
+CEL_NOVIDADES['7.8'] = ['☰ Menu do lado com Casa · Loja · Representação · Consultório', 'Início com resumo em cartões, evolução do saldo, contas do mês, cartões e cofrinhos', '⚙ Personalizar continua: ligue, desligue e mude a ordem de tudo'];
 
 /* =================== v7.5: cores · azul petróleo (geral), preto e amarelo (Loja e Caixa da loja); Consultório e Ritmo ficam como estão =================== */
 const _renderAll75 = renderAll;
