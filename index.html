@@ -1173,6 +1173,32 @@ body.tema-cons .nav-areas button.on{background:var(--accent);border-color:var(--
 .pv-bar{height:7px;border-radius:5px;background:var(--line);margin:5px 0 3px;overflow:hidden}.pv-bar i{display:block;height:100%;border-radius:5px}
 @media(max-width:1100px){.pv-ks:not(.cel){grid-template-columns:repeat(3,1fr)}}
 .cg-corpo .nav-areas.a3{grid-template-columns:1fr 1fr 1fr!important}.cg-corpo .nav-areas.a3 button{justify-content:center!important;flex-direction:column;gap:2px;font-size:12.5px}
+/* v7.9 leituras e devoção */
+.lei-alerta{background:color-mix(in srgb,#d9822b 14%,var(--panel));border:1px solid color-mix(in srgb,#d9822b 45%,transparent);color:var(--fg);border-radius:12px;padding:9px 12px;font-size:13px;margin-bottom:10px}
+.lei-card{background:var(--brand,#1f4e6b);color:#fff;border:0;margin-bottom:12px}
+.lei-ch{display:flex;flex-direction:column;margin-bottom:4px}.lei-ch b{font-size:15px}.lei-ch small{color:#cfe0ea;font-size:12px}
+.lei-it{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid #ffffff22;cursor:pointer;font-size:14.5px}.lei-it:first-of-type{border-top:0}
+.lei-it small{display:block;color:#cfe0ea;font-size:12px}.lei-it>b{margin-left:auto;color:#ffd166;font-size:13px}
+.lei-ck{width:22px;height:22px;border-radius:7px;border:2px solid #ffffffaa;flex:none;display:grid;place-items:center;font-size:13px}
+.lei-it.ok .lei-ck{background:#2f7d4f;border-color:#2f7d4f}.lei-it.ok>span:nth-child(2){opacity:.7}
+.lei-min{width:100%;margin-top:8px;border:1px dashed #ffffff88;background:#ffffff14;color:#fff;border-radius:11px;padding:9px;font-weight:600;font-size:13px;cursor:pointer}
+.lei-feito{margin-bottom:12px;font-size:14px}
+.lei-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}@media(max-width:900px){.lei-cols{grid-template-columns:1fr}}
+.lei-c{margin-bottom:12px}.lei-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.lei-h h3{margin:0;font-size:15px}
+.lei-sub{font-size:12.5px;color:var(--muted);margin:4px 0 6px}
+.lei-caps{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:6px 0}.lei-caps b{font-size:11.5px;text-align:center;border-radius:6px;padding:5px 0;background:var(--bg,#eef2f5);color:var(--muted);font-weight:600}.lei-caps b.on{background:#2f7d4f;color:#fff}.lei-caps b.h{background:var(--brand,#1f4e6b);color:#fff}
+.lei-bts{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 4px}.lei-bts .btn{text-decoration:none}
+.lei-prov{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;margin-top:6px;border-top:1px solid var(--line);color:var(--fg);text-decoration:none;font-size:14px}.lei-prov small{display:block;color:var(--muted);font-size:11.5px}.lei-prov>b{color:var(--brand,#1f4e6b);font-size:13px}
+.lei-notas label{display:block;margin-top:6px;font-size:12px}.lei-notas b{display:block;margin-bottom:2px}.lei-notas textarea,.lei-rv textarea{width:100%;resize:vertical;font:inherit;font-size:13.5px}
+.lei-tr{margin-top:10px}.lei-tr:first-of-type{margin-top:6px}.lei-trh{font-size:10.5px;letter-spacing:.07em;font-weight:800;color:var(--muted);margin-bottom:3px}
+.lei-bk{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;font-size:14.5px}.lei-bk small{display:block;color:var(--muted);font-size:12px}
+.lei-bar{height:7px;border-radius:5px;background:var(--line);margin:5px 0 2px;overflow:hidden}.lei-bar i{display:block;height:100%;background:var(--brand,#1f4e6b);border-radius:5px}
+.lei-fila{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.7}.lei-fila button{border:0;background:none;padding:0;color:var(--fg);font:inherit;font-size:12.5px;text-decoration:underline dotted;cursor:pointer}
+.lei-ap{font-size:13.5px;padding:7px 0;border-top:1px solid var(--line)}.lei-h+.lei-ap{border-top:0;margin-top:4px}.lei-ap small{display:block;color:var(--muted);font-size:11.5px}
+.lei-rv{padding:8px 0;border-top:1px solid var(--line)}.lei-h+.lei-rv{border-top:0}.lei-rv label{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}.lei-rv label small{width:100%;padding-left:26px;color:var(--muted);font-size:11.5px}.lei-rv .btn,.lei-rv textarea{margin:6px 0 0 26px;width:calc(100% - 26px)}.lei-rv .btn{width:auto}
+.lei-rv input[type=checkbox]{width:18px;height:18px;margin:0}
+.lei-lab{display:block;font-size:12.5px;color:var(--muted);margin-top:8px}.lei-lab input,.lei-lab select,.lei-lab textarea{display:block;width:100%;margin-top:3px}
+.lei-acs{display:flex;flex-direction:column;gap:6px}.lei-acs .btn{text-align:left}
 
 /* =================== v7.5: cores =================== */
 :root { --brand: #1f4e6b; }
@@ -2140,7 +2166,7 @@ function renderAll() {
   $('#fCat').hidden = !ui.categoria || !['painel', 'lancamentos'].includes(ui.tab); $('#fCat').textContent = `${ui.categoria}  ✕`;
   $('#fCat').title = 'Remover filtro de categoria';
   renderBanner();
-  ({ painel: renderPainel, lancamentos: renderLancamentos, contas: renderContas, metas: renderMetas, recomeco: renderRecomeco, caixa: renderCaixa, loja: renderLoja, rep: renderRep, cons: renderCons, mat: () => renderRitmo('mat'), hel: () => renderRitmo('hel'), ir: renderIR, planejar: renderPlanejar, invest: renderInvest, config: renderConfig })[ui.tab]();
+  ({ painel: renderPainel, lancamentos: renderLancamentos, contas: renderContas, metas: renderMetas, recomeco: renderRecomeco, caixa: renderCaixa, loja: renderLoja, rep: renderRep, cons: renderCons, mat: () => renderRitmo('mat'), hel: () => renderRitmo('hel'), ir: renderIR, planejar: renderPlanejar, invest: renderInvest, config: renderConfig, leit: () => renderLeituras() })[ui.tab]();
   renderSave(); atualizarSino();
   { const bm = $('#btnMais'); if (bm) bm.innerHTML = $('#btnNovo').hidden ? `${ICON.mais}Novo` : ICON.seta; }
   { const dt = $('#saveStatus .dot'), sm = $('#saveMini'); if (sm) { sm.style.color = dt ? dt.style.background : ''; sm.title = ($('#saveStatus b')?.textContent || 'Salvamento') + ' · abrir Configurações'; } }
@@ -4114,7 +4140,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '7.8';
+const APP_VERSAO = '7.9';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -12345,6 +12371,230 @@ renderAll = function () {
   if (CELULAR) { const t = $('.top'); if (t && !$('#celHb', t)) t.insertAdjacentHTML('afterbegin', '<button id="celHb" class="cel-hb" aria-label="Menu">☰</button>'); if ($('#celGaveta.on')) celGavetaDesenhar(); }
 };
 CEL_NOVIDADES['7.8'] = ['☰ Menu do lado com Casa · Loja · Representação · Consultório', 'Início com resumo em cartões, evolução do saldo, contas do mês, cartões e cofrinhos', '⚙ Personalizar continua: ligue, desligue e mude a ordem de tudo'];
+
+/* =================== v7.9: Leituras e Devoção (livros em 3 trilhas, Bíblia, devocional da noite, regras simples) =================== */
+const LEI_TR = { esp: ['✝️', 'Espiritual'], pra: ['💼', 'Prático'], dev: ['🌙', 'Devocional da noite'] };
+const LEI_META = 10;
+const LEI_SEMENTE = [
+  ['seja-homem', 'Seja Homem', 'esp', 'lendo'], ['terapia-guerrilha', 'Terapia de Guerrilha', 'esp', 'proximo'],
+  ['deixe-de-ser-pobre', 'Deixe de Ser Pobre', 'pra', 'lendo'], ['vendas-nao-ocorrem', 'Vendas Não Ocorrem por Acaso', 'pra', 'proximo'], ['bora-vender', 'Bora Vender', 'pra', 'proximo'], ['armas-persuasao', 'As Armas da Persuasão 2.0', 'pra', 'proximo'],
+  ['priorize-deus', 'Priorize Deus', 'dev', 'lendo'], ['dia-a-dia-edwards', 'Dia a Dia com Jonathan Edwards', 'dev', 'proximo'],
+  ['rei-dividendos', 'O Rei dos Dividendos', null, 'prateleira'], ['nasceu-para-vender', 'Você Nasceu para Vender Muito', null, 'prateleira'], ['seis-licoes', 'As Seis Lições', null, 'prateleira'], ['vida-de-leitura', 'Como Cultivar uma Vida de Leitura', null, 'prateleira'],
+];
+(function () { const _e = ensureModules; ensureModules = function (d) { d = _e(d); ['livros', 'livroReg', 'aplicacoes'].forEach((k) => { if (!Array.isArray(d[k])) d[k] = []; }); return d; }; })();
+COLECOES.push(['livros'], ['livroReg'], ['aplicacoes']); if (db) ensureModules(db);
+function leiSemente() {
+  if (!db || db.livros.length) return false;
+  LEI_SEMENTE.forEach(([id, titulo, trilha, status], i) => db.livros.push({ id: 'lv-' + id, titulo, trilha, status, ordem: i, pagina: 0, total: 0, criado: hoje() }));
+  // Bíblia: plano Marcos → João → Romanos no lugar do plano atual (o que já foi lido fica guardado)
+  if (!db.planos.some((p) => p.modelo === 'mjr' && p.quem === 'mat')) { const ant = db.planos.find((p) => p.quem === 'mat' && p.ativo); db.planos.filter((p) => p.quem === 'mat' && p.ativo).forEach((p) => { p.ativo = false; }); db.planos.push({ id: 'plano-mjr', quem: 'mat', modelo: 'mjr', nome: 'Marcos → João → Romanos', inicio: hoje(), ativo: true, versao: ant?.versao || 'NAA' }); }
+  return true;
+}
+MD_MODELOS.splice(0, 0, ['mjr', '✝️ Marcos → João → Romanos', '1 capítulo por dia · 53 dias']);
+{ const _dd = mdDiasDoPlano; mdDiasDoPlano = function (p) { return p && p.modelo === 'mjr' ? mdCaps(['MRK', 'JHN', 'ROM']).map((x) => [x]) : _dd(p); }; }
+
+/* ---------- contas do dia ---------- */
+const leiQ = 'mat';
+const leiAdd = (e) => db.diario.push({ id: uid(), quem: leiQ, data: hoje(), ...e });
+const leiDia = (tipo, d = hoje()) => (db.diario || []).filter((x) => x.quem === leiQ && x.tipo === tipo && x.data === d);
+const leiPlano = () => mdPlano(leiQ);
+function leiBibliaHoje(d = hoje()) { const p = leiPlano(); return (db.diario || []).some((x) => x.quem === leiQ && x.tipo === 'leitura' && x.data === d && (!p || x.plano === p.id || x.avulsa)); }
+const leiCumprido = (d) => leiBibliaHoje(d) || leiDia('minimo', d).length > 0;
+const leiAtual = (tr) => db.livros.find((l) => l.trilha === tr && l.status === 'lendo');
+const leiFila = (tr) => db.livros.filter((l) => l.trilha === tr && l.status === 'proximo').sort((a, b) => a.ordem - b.ordem);
+const leiPrateleira = () => db.livros.filter((l) => l.status === 'prateleira').sort((a, b) => a.ordem - b.ordem);
+const leiPct = (l) => (l.total ? Math.min(100, Math.round((l.pagina / l.total) * 100)) : null);
+function leiHojeLivro(l, d = hoje()) { const R = db.livroReg.filter((r) => r.livro === l.id && r.data === d); return { pags: soma(R, (r) => Math.max(0, r.ate - r.de)), feito: soma(R, (r) => Math.max(0, r.ate - r.de)) >= LEI_META || R.some((r) => r.fim) }; }
+function leiPendencias() {
+  const H = hoje(); const P = []; const p = leiPlano(); const pr = p ? mdProgresso(p) : null;
+  const lidoH = (db.diario || []).filter((x) => x.quem === leiQ && x.tipo === 'leitura' && x.data === H).map((x) => x.ref).filter(Boolean);
+  P.push({ k: 'biblia', ic: '✝️', t: lidoH.length ? `Bíblia · ${lidoH.join(', ')}` : pr && !pr.fim ? `Bíblia · ${mdRef(pr.dias[pr.prox])}` : 'Bíblia', s: `+ Provérbios ${+H.slice(8, 10)}`, ok: leiBibliaHoje() });
+  ['esp', 'pra'].forEach((tr) => { const l = leiAtual(tr); if (!l) return; const h = leiHojeLivro(l); P.push({ k: 'livro', id: l.id, ic: LEI_TR[tr][0], t: l.titulo, s: h.feito ? `+${h.pags} páginas hoje` : `${l.pagina ? `parou na p. ${l.pagina} · ` : ''}meta: ${LEI_META} páginas${h.pags ? ` (faltam ${LEI_META - h.pags})` : ''}`, pct: leiPct(l), ok: h.feito }); });
+  const dv = leiAtual('dev'); const tarde = new Date().getHours() * 60 + new Date().getMinutes() >= 20 * 60 + 50;
+  P.push({ k: 'juntos', ic: '🌙', t: 'Devocional com a Helen · 21h', s: `${dv ? dv.titulo + ' · ' : ''}${tarde ? '<b>é agora</b>' : '"Fizemos juntos"'}`, pct: dv ? leiPct(dv) : null, ok: leiDia('juntos').length > 0 });
+  if (new Date(H + 'T12:00').getDay() === 0) { const r = leiRevisao(); P.push({ k: 'revisao', ic: '☀️', t: 'Revisão semanal', s: `${[r.fin, r.apr, r.pri].filter(Boolean).length} de 3`, ok: r.fin && r.apr && r.pri }); }
+  return P;
+}
+function leiAlerta() { const H = hoje(), O = addDias(H, -1); if (leiCumprido(H) || leiCumprido(O)) return ''; const algo = (db.diario || []).some((x) => x.quem === leiQ && (x.tipo === 'leitura' || x.tipo === 'minimo') && x.data < O) || db.livroReg.some((r) => r.data < O); if (!algo) return '';
+  return `<div class="lei-alerta">⚠️ Ontem ficou em branco. Tudo bem, só não deixe passar o 2º dia. Dia difícil? Use a <b>versão mínima</b>.</div>`; }
+
+/* ---------- card do dia (Início do celular e painel do PC) ---------- */
+function leiCard() {
+  if (!db || !db.livros.length) return ''; const P = leiPendencias(); const falta = P.filter((x) => !x.ok); const min = leiDia('minimo').length > 0;
+  if (!falta.length) return '';
+  return `${leiAlerta()}<div class="card lei-card"><div class="lei-ch"><b>📖 Falta hoje · ${P.length - falta.length} de ${P.length}</b>${min ? '<small>🌧 dia cumprido na versão mínima ✓</small>' : ''}</div>
+    ${P.map((x) => `<div class="lei-it ${x.ok ? 'ok' : ''}" data-lei-it="${x.k}${x.id ? ':' + x.id : ''}"><span class="lei-ck">${x.ok ? '✓' : ''}</span><span>${x.ic} ${esc(x.t)}<small>${x.s}</small></span>${x.pct != null ? `<b>${x.pct}%</b>` : ''}</div>`).join('')}
+    ${min || leiCumprido(hoje()) ? '' : '<button class="lei-min" data-lei-min>🌧 Dia ruim? Versão mínima: 1 versículo + 1 oração</button>'}</div>`;
+}
+
+/* ---------- tela Leituras e Devoção ---------- */
+function renderLeituras() {
+  leiSemente(); const el = $('#tab-leit'); if (!el) return; const H = hoje(); const p = leiPlano(); const pr = p ? mdProgresso(p) : null; const dia = +H.slice(8, 10);
+  const nota = leiDia('nota3')[0] || {};
+  let biblia = '';
+  if (p && pr) { const cur = pr.dias[pr.prox] || []; const [b, c] = cur[0] || [];
+    const livroCur = cur[0] ? MD_LIVROS[b][1] : null; const caps = livroCur ? pr.dias.map((x, i) => [x[0], i]).filter(([x]) => MD_LIVROS[x[0]][1] === livroCur) : [];
+    const lidosDias = new Set(mdDe(leiQ, 'leitura').filter((x) => x.plano === p.id).map((x) => x.dia));
+    biblia = `<div class="lei-h"><h3>✝️ Bíblia · ${esc(p.nome)}</h3><button class="btn sm" data-md-planos-lei>Trocar</button></div>
+      <p class="lei-sub">${pr.fim ? 'Plano concluído 🎉' : `${MD_LIVROS[b][0]} · capítulo ${c} de ${MD_LIVROS[b][2]} · ${pr.feitos} de ${pr.total} no plano`}</p>
+      ${caps.length ? `<div class="lei-caps">${caps.map(([x, i]) => `<b class="${lidosDias.has(i) ? 'on' : i === pr.prox ? 'h' : ''}">${x[1]}</b>`).join('')}</div>` : ''}
+      ${pr.fim ? '' : `<div class="lei-bts"><a class="btn" href="${mdLink(b, c, p)}" target="_blank" rel="noopener">Abrir no YouVersion</a><button class="btn primary" data-lei-li>${leiBibliaHoje() ? '✓ Li mais um' : `✓ Li ${MD_LIVROS[b][0]} ${c}`}</button></div>`}`; }
+  else biblia = `<div class="lei-h"><h3>✝️ Bíblia</h3></div><button class="btn primary" data-md-planos-lei>Escolher plano</button>`;
+  const prov = `<a class="lei-prov" href="${mdLink(MD_IDX.PRO, dia, p)}" target="_blank" rel="noopener"><span>📜 Provérbios do dia · <b>Provérbios ${dia}</b><small>o capítulo é o dia do mês</small></span><b>Abrir ›</b></a>`;
+  const notas = `<div class="lei-notas">${[['diz', 'O que diz'], ['revela', 'O que revela de Deus'], ['fazer', 'O que vou fazer hoje']].map(([k, n]) => `<label><b>${n}</b><textarea rows="2" data-lei-nota="${k}" placeholder="…">${esc(nota[k] || '')}</textarea></label>`).join('')}</div>`;
+  const trilhas = Object.entries(LEI_TR).map(([tr, [ic, n]]) => { const l = leiAtual(tr); const f = leiFila(tr); const pc = l ? leiPct(l) : null; const h = l ? leiHojeLivro(l) : null;
+    return `<div class="lei-tr"><div class="lei-trh">${ic} ${n.toUpperCase()}</div>${l ? `<div class="lei-bk" data-lei-reg="${l.id}"><span>${esc(l.titulo)}<small>${l.total ? `p. ${l.pagina} de ${l.total}` : l.pagina ? `p. ${l.pagina}` : 'toque para registrar a página'}${h.pags ? ` · hoje +${h.pags}${h.feito ? ' ✓' : ''}` : ''}</small></span><b>${pc != null ? pc + '%' : '›'}</b></div>${pc != null ? `<div class="lei-bar"><i style="width:${pc}%"></i></div>` : ''}`
+      : `<p class="lei-sub" style="margin:2px 0">Nenhum livro lendo agora.${f.length ? ` <button class="btn sm" data-lei-ativar="${f[0].id}">Começar ${esc(f[0].titulo)}</button>` : ''}</p>`}
+      ${f.length ? `<div class="lei-fila">Próximo${f.length > 1 ? 's' : ''}: ${f.map((x) => `<button data-lei-livro="${x.id}">${esc(x.titulo)}</button>`).join(' · ')}</div>` : ''}</div>`; }).join('');
+  const prat = leiPrateleira(); const conc = db.livros.filter((l) => l.status === 'concluido');
+  const ap = [...db.aplicacoes].sort((a, b) => (a.data < b.data ? 1 : -1)); const verAp = ui.leiAp ? ap : ap.slice(0, 5);
+  const rv = leiRevisao(); const dom = new Date(H + 'T12:00').getDay() === 0;
+  const revisao = `<div class="card lei-c"><div class="lei-h"><h3>☀️ Revisão semanal${dom ? '' : ' <small class="muted">· domingo</small>'}</h3></div>
+    ${[['fin', 'Finanças da semana', 'veja o resumo da semana do Prumo', '<button class="btn sm" data-lei-fin>Abrir resumo</button>'], ['apr', 'Aprendizado da semana', '', `<textarea rows="2" data-lei-rv="aprTxt" placeholder="O que aprendi esta semana…">${esc(rv.aprTxt || '')}</textarea>`], ['pri', 'Prioridade da próxima semana', '', `<textarea rows="2" data-lei-rv="priTxt" placeholder="A coisa mais importante da próxima semana…">${esc(rv.priTxt || '')}</textarea>`]].map(([k, n, s, extra]) => `<div class="lei-rv"><label><input type="checkbox" data-lei-rvck="${k}" ${rv[k] ? 'checked' : ''}> <b>${n}</b>${s ? `<small>${s}</small>` : ''}</label>${extra}</div>`).join('')}</div>`;
+  el.innerHTML = `<div class="lei">${leiCard() || `<div class="card lei-feito">✅ <b>Tudo feito hoje.</b> Que Deus abençoe o seu descanso.</div>`}
+    <div class="lei-cols"><div>
+      <div class="card lei-c">${biblia}${prov}${notas}</div>
+      <div class="card lei-c"><div class="lei-h"><h3>🌙 Devocional da noite · 21h</h3><button class="btn sm ${leiDia('juntos').length ? '' : 'primary'}" data-lei-it="juntos">${leiDia('juntos').length ? '✓ Fizemos juntos' : 'Fizemos juntos'}</button></div><p class="lei-sub">Com a Helen. ${leiSeq('juntos')} ${leiSeq('juntos') === 1 ? 'noite seguida' : 'noites seguidas'}.</p><button class="btn sm" data-lei-ics>🔔 Lembrete diário às 20h50</button></div>
+      ${revisao}
+    </div><div>
+      <div class="card lei-c"><div class="lei-h"><h3>📚 Livros</h3><button class="btn sm" data-lei-novo>+ Livro</button></div>${trilhas}
+        ${prat.length ? `<div class="lei-tr"><div class="lei-trh">🗄 PRATELEIRA</div><div class="lei-fila">${prat.map((x) => `<button data-lei-livro="${x.id}">${esc(x.titulo)}</button>`).join(' · ')}</div></div>` : ''}
+        ${conc.length ? `<div class="lei-tr"><div class="lei-trh">✅ CONCLUÍDOS · ${conc.length}</div><div class="lei-fila">${conc.map((x) => `<button data-lei-livro="${x.id}">${esc(x.titulo)}</button>`).join(' · ')}</div></div>` : ''}</div>
+      <div class="card lei-c"><div class="lei-h"><h3>🗒 Aplicações práticas</h3>${ap.length > 5 ? `<button class="btn sm" data-lei-ap>${ui.leiAp ? 'Menos' : `Ver todas (${ap.length})`}</button>` : ''}</div>
+        ${verAp.length ? verAp.map((a) => { const l = db.livros.find((x) => x.id === a.livro); return `<div class="lei-ap">${esc(a.texto)}<small>${esc(l ? l.titulo : '')}${a.cap ? ` · cap. ${esc(String(a.cap))}` : ''} · ${dmy(a.data).slice(0, 5)}</small></div>`; }).join('') : '<p class="lei-sub" style="margin:0">Ao terminar um capítulo, escreva em 1 frase o que vai pôr em prática. Fica tudo aqui.</p>'}</div>
+    </div></div>
+    ${uiAjuda('Dia cumprido = Bíblia lida ou versão mínima · dia perdido não vira atraso: amanhã começa limpo · meta de 10 páginas por livro.')}</div>`;
+}
+function leiSeq(tipo) { let d = leiDia(tipo).length ? hoje() : addDias(hoje(), -1), n = 0; while (leiDia(tipo, d).length && n < 999) { n++; d = addDias(d, -1); } return n; }
+function leiRevisao() { const H = hoje(); const dom = addDias(mdSemanaDe(H), 6); return (db.diario || []).find((x) => x.quem === leiQ && x.tipo === 'revisao' && x.semana === dom) || { semana: dom }; }
+function leiRevSalvar(campos) { const r = leiRevisao(); if (!r.id) { Object.assign(r, { id: uid(), quem: leiQ, tipo: 'revisao', data: hoje() }); db.diario.push(r); } Object.assign(r, campos); changed(); }
+
+/* ---------- janelas ---------- */
+const leiJanela = (h) => vgJanela(h); const leiFechar = () => vgFecharJanela();
+function leiRegistrar(id) {
+  const l = db.livros.find((x) => x.id === id); if (!l) return; const h = leiHojeLivro(l);
+  leiJanela(`<h3 style="margin:0 0 2px">${LEI_TR[l.trilha]?.[0] || '📘'} ${esc(l.titulo)}</h3><p class="small muted" style="margin:0 0 8px">${l.pagina ? `Parou na página ${l.pagina}` : 'Primeiro registro'}${h.pags ? ` · hoje +${h.pags}` : ''} · meta ${LEI_META} páginas por dia</p>
+    <label class="lei-lab">Página em que parei hoje<input class="vg-valor" id="leiPag" type="text" inputmode="numeric" placeholder="${(l.pagina || 0) + LEI_META}"></label>
+    ${l.total ? '' : '<label class="lei-lab">Total de páginas do livro<input id="leiTot" type="text" inputmode="numeric" placeholder="ex.: 196"></label>'}
+    <label class="vg-chk" style="margin-top:8px"><input type="checkbox" id="leiCap"> Terminei um capítulo</label>
+    <div id="leiCapBox" hidden><div class="vg-2" style="grid-template-columns:90px 1fr;margin-top:6px"><input id="leiCapN" type="text" inputmode="numeric" placeholder="Cap."><input id="leiApl" type="text" placeholder="Aplicação prática (1 frase)"></div></div>
+    <div class="vg-bts"><button class="btn" data-lei-acoes="${l.id}">⋯</button><button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-lei-salvar="${l.id}">Salvar</button></div>`);
+  setTimeout(() => $('#leiPag')?.focus(), 120);
+}
+function leiSalvarReg(id) {
+  const l = db.livros.find((x) => x.id === id); const pag = Math.round(num($('#leiPag')?.value, 0)); const tot = Math.round(num($('#leiTot')?.value, 0));
+  if (tot > 0) l.total = tot; const capOk = $('#leiCap')?.checked; const apl = ($('#leiApl')?.value || '').trim();
+  if (!(pag > 0) && !(capOk && apl)) return toast('Digite a página em que parou.');
+  if (pag > 0) { if (pag < l.pagina && !confirm(`A página ${pag} é menor que a ${l.pagina}. Corrigir assim mesmo?`)) return; db.livroReg.push({ id: uid(), livro: l.id, data: hoje(), de: Math.min(l.pagina, pag), ate: pag }); l.pagina = pag; }
+  if (capOk && apl) db.aplicacoes.push({ id: uid(), data: hoje(), livro: l.id, cap: ($('#leiCapN')?.value || '').trim(), texto: apl });
+  const terminou = l.total && l.pagina >= l.total; leiFechar(); changed();
+  if (terminou) { if (confirm(`Chegou ao fim de "${l.titulo}"? Marcar como concluído?`)) leiConcluir(l.id); }
+  else { const h = leiHojeLivro(l); toast(h.feito ? `📖 Meta do dia cumprida · ${leiPct(l) ?? ''}${l.total ? '%' : ''}` : `📖 +${h.pags} páginas · faltam ${LEI_META - h.pags} para a meta`); }
+}
+function leiConcluir(id) {
+  const l = db.livros.find((x) => x.id === id); if (!l) return; l.status = 'concluido'; l.fim = hoje(); if (l.total) l.pagina = l.total;
+  const reg = db.livroReg.find((r) => r.livro === l.id && r.data === hoje()); if (reg) reg.fim = true; else db.livroReg.push({ id: uid(), livro: l.id, data: hoje(), de: l.pagina, ate: l.pagina, fim: true });
+  const prox = l.trilha && leiFila(l.trilha)[0]; if (prox) prox.status = 'lendo'; changed();
+  toast(prox ? `🎉 Concluído! Agora: ${prox.titulo}` : '🎉 Livro concluído!');
+}
+function leiAcoes(id) {
+  const l = db.livros.find((x) => x.id === id); if (!l) return; const tem = l.trilha && leiAtual(l.trilha);
+  const tr = Object.entries(LEI_TR);
+  leiJanela(`<h3 style="margin:0 0 4px">${esc(l.titulo)}</h3><p class="small muted" style="margin:0 0 10px">${{ lendo: 'Lendo agora', proximo: 'Na fila', prateleira: 'Na prateleira', concluido: 'Concluído' }[l.status]}${l.trilha ? ' · ' + LEI_TR[l.trilha][1] : ''}${l.total ? ` · ${l.pagina} de ${l.total} páginas` : ''}</p>
+    <div class="lei-acs">
+      ${l.status === 'lendo' ? `<button class="btn primary" data-lei-reg="${l.id}">Registrar página</button><button class="btn" data-lei-concluir="${l.id}">✅ Concluí este livro</button>` : ''}
+      ${l.status === 'proximo' && !tem ? `<button class="btn primary" data-lei-ativar="${l.id}">Começar a ler agora</button>` : ''}
+      ${l.status === 'proximo' ? `<button class="btn" data-lei-subir="${l.id}">↑ Ler antes dos outros da fila</button>` : ''}
+      ${l.status !== 'lendo' ? tr.filter(([k]) => !(l.status === 'proximo' && l.trilha === k)).map(([k, [ic, n]]) => `<button class="btn" data-lei-mover="${l.id}:${k}">${ic} Pôr na fila: ${n}</button>`).join('') : ''}
+      ${l.status !== 'prateleira' ? `<button class="btn" data-lei-mover="${l.id}:prat">🗄 Mandar para a prateleira</button>` : ''}
+      <button class="btn" data-lei-editar="${l.id}">✏️ Nome e total de páginas</button>
+    </div><div class="vg-bts"><button class="btn" data-vg-cancelar>Fechar</button></div>`);
+}
+function leiEditar(id) {
+  const l = id ? db.livros.find((x) => x.id === id) : null;
+  leiJanela(`<h3 style="margin:0 0 8px">${l ? 'Editar livro' : 'Novo livro'}</h3>
+    <label class="lei-lab">Título<input id="leiTit" type="text" value="${esc(l?.titulo || '')}"></label>
+    <label class="lei-lab">Total de páginas (opcional)<input id="leiTot2" type="text" inputmode="numeric" value="${l?.total || ''}"></label>
+    ${l ? '' : `<label class="lei-lab">Onde colocar<select id="leiOnde">${Object.entries(LEI_TR).map(([k, [ic, n]]) => `<option value="${k}">${ic} Fila: ${n}</option>`).join('')}<option value="prat">🗄 Prateleira</option></select></label>`}
+    <div class="vg-bts">${l ? `<button class="btn" data-lei-apagar="${l.id}">🗑</button>` : ''}<button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-lei-ed-ok="${l ? l.id : ''}">Salvar</button></div>`);
+}
+function leiMinimo() {
+  const p = leiPlano(); const d = +hoje().slice(8, 10);
+  leiJanela(`<h3 style="margin:0 0 4px">🌧 Versão mínima</h3><p class="small muted" style="margin:0 0 10px">Dia difícil acontece. 1 versículo e 1 oração, e o dia conta como cumprido.</p>
+    <a class="btn" href="${mdLink(MD_IDX.PRO, d, p)}" target="_blank" rel="noopener" style="display:block;text-align:center;margin-bottom:8px">Abrir Provérbios ${d}</a>
+    <label class="lei-lab">Versículo que li (opcional)<input id="leiVers" type="text" placeholder="ex.: Pv ${d}.1"></label>
+    <label class="lei-lab">Minha oração (opcional)<textarea id="leiOra" rows="2"></textarea></label>
+    <div class="vg-bts"><button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-lei-min-ok>Fiz ✓</button></div>`);
+}
+function leiIcs() {
+  const dt = hoje().replace(/-/g, ''); const z = (s) => s.replace(/[,;]/g, (m) => '\\' + m);
+  const t = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Prumo//Devocional//PT', 'BEGIN:VEVENT', `UID:prumo-devocional-${dt}@prumo`, `DTSTAMP:${dt}T120000Z`, `DTSTART;TZID=America/Sao_Paulo:${dt}T205000`, `DTEND;TZID=America/Sao_Paulo:${dt}T210000`, 'RRULE:FREQ=DAILY', `SUMMARY:${z('🌙 Devocional com a Helen às 21h')}`, `DESCRIPTION:${z('Priorize Deus · depois marque "Fizemos juntos" no Prumo')}`, 'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Devocional às 21h', 'TRIGGER:PT0M', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([t], { type: 'text/calendar' })); a.download = 'prumo-devocional-2050.ics'; document.body.appendChild(a); a.click(); a.remove();
+  toast('Arquivo baixado: abra e toque em "Adicionar à agenda"', 6000);
+}
+function leiLi() {
+  const p = leiPlano(); if (!p) return; const pr = mdProgresso(p); if (pr.fim) return;
+  leiAdd({ tipo: 'leitura', plano: p.id, dia: pr.prox, ref: mdRef(pr.dias[pr.prox]) }); if (pr.prox === pr.total - 1) leiAdd({ tipo: 'fimplano', ref: p.nome });
+  if (!mdDe(leiQ, 'dia').some((x) => x.data === hoje())) leiAdd({ tipo: 'dia' }); changed(); toast(`✝️ ${mdRef(pr.dias[pr.prox])} lido`);
+}
+
+/* ---------- cliques ---------- */
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if ((b = g('data-lei-it'))) { e.stopPropagation(); const [k, id] = b.dataset.leiIt.split(':');
+    if (k === 'livro') return leiRegistrar(id);
+    if (k === 'juntos') { const j = leiDia('juntos'); if (j.length) { if (confirm('Desmarcar "Fizemos juntos" de hoje?')) { db.diario = db.diario.filter((x) => !j.includes(x)); changed(); } } else { leiAdd({ tipo: 'juntos' }); changed(); toast('🌙 Devocional de hoje feito. Boa noite!'); } return; }
+    if (k === 'biblia' || k === 'revisao') { ui.tab = 'leit'; if (CELULAR && typeof celFecharFolha === 'function') celFecharFolha(); return setTab('leit'); } return; }
+  if (g('data-lei-min')) { e.stopPropagation(); return leiMinimo(); }
+  if (g('data-lei-min-ok')) { leiAdd({ tipo: 'minimo', vers: ($('#leiVers')?.value || '').trim(), oracao: ($('#leiOra')?.value || '').trim() }); if (!mdDe(leiQ, 'dia').some((x) => x.data === hoje())) leiAdd({ tipo: 'dia' }); leiFechar(); changed(); return toast('🌧 Dia cumprido. Amanhã é um novo dia.'); }
+  if (g('data-lei-li')) return leiLi();
+  if ((b = g('data-lei-reg'))) { e.stopPropagation(); return leiRegistrar(b.dataset.leiReg); }
+  if ((b = g('data-lei-salvar'))) return leiSalvarReg(b.dataset.leiSalvar);
+  if ((b = g('data-lei-acoes'))) return leiAcoes(b.dataset.leiAcoes);
+  if ((b = g('data-lei-livro'))) return leiAcoes(b.dataset.leiLivro);
+  if ((b = g('data-lei-concluir'))) { leiFechar(); if (confirm('Marcar como concluído? O próximo da fila começa automaticamente.')) leiConcluir(b.dataset.leiConcluir); return; }
+  if ((b = g('data-lei-ativar'))) { const l = db.livros.find((x) => x.id === b.dataset.leiAtivar); if (l && !leiAtual(l.trilha)) { l.status = 'lendo'; leiFechar(); changed(); toast(`📖 Lendo agora: ${l.titulo}`); } else toast('Já tem um livro "lendo agora" nessa trilha. Conclua ele primeiro.'); return; }
+  if ((b = g('data-lei-subir'))) { const l = db.livros.find((x) => x.id === b.dataset.leiSubir); const f = leiFila(l.trilha); l.ordem = (f[0]?.ordem ?? 0) - 1; leiFechar(); changed(); return; }
+  if ((b = g('data-lei-mover'))) { const [id, para] = b.dataset.leiMover.split(':'); const l = db.livros.find((x) => x.id === id); if (para === 'prat') { l.status = 'prateleira'; l.trilha = null; } else { l.trilha = para; l.status = 'proximo'; l.ordem = Math.max(0, ...db.livros.map((x) => x.ordem || 0)) + 1; } leiFechar(); changed(); return toast(para === 'prat' ? '🗄 Na prateleira' : `Na fila: ${LEI_TR[para][1]}`); }
+  if ((b = g('data-lei-editar'))) return leiEditar(b.dataset.leiEditar);
+  if (g('data-lei-novo')) return leiEditar(null);
+  if ((b = g('data-lei-ed-ok'))) { const t = ($('#leiTit')?.value || '').trim(); if (!t) return toast('Digite o título.'); const tot = Math.round(num($('#leiTot2')?.value, 0)); const id = b.dataset.leiEdOk;
+    if (id) { const l = db.livros.find((x) => x.id === id); l.titulo = t; l.total = tot > 0 ? tot : l.total; } else { const onde = $('#leiOnde')?.value || 'prat'; db.livros.push({ id: uid(), titulo: t, trilha: onde === 'prat' ? null : onde, status: onde === 'prat' ? 'prateleira' : 'proximo', ordem: Math.max(0, ...db.livros.map((x) => x.ordem || 0)) + 1, pagina: 0, total: tot > 0 ? tot : 0, criado: hoje() }); }
+    leiFechar(); return changed(); }
+  if ((b = g('data-lei-apagar'))) { if (confirm('Apagar este livro da lista?')) { db.livros = db.livros.filter((x) => x.id !== b.dataset.leiApagar); leiFechar(); changed(); } return; }
+  if (g('data-lei-ap')) { ui.leiAp = !ui.leiAp; return renderAll(); }
+  if (g('data-lei-ics')) return leiIcs();
+  if (g('data-md-planos-lei')) { if (typeof mdPlanos === 'function' && CELULAR) return mdPlanos(); return toast('Para trocar o plano, use o celular em Meu dia › Escolher plano.'); }
+  if (g('data-lei-fin')) { leiRevSalvar({ fin: true }); setTab('painel'); setTimeout(() => $('[data-resumo-sem]')?.click(), 150); return; }
+}, true);
+document.addEventListener('change', (e) => {
+  let t;
+  if ((t = e.target.closest('#leiCap'))) { const bx = $('#leiCapBox'); if (bx) bx.hidden = !t.checked; return; }
+  if ((t = e.target.closest('[data-lei-nota]'))) { let n = leiDia('nota3')[0]; if (!n) { leiAdd({ tipo: 'nota3' }); n = leiDia('nota3')[0]; } n[t.dataset.leiNota] = t.value.trim(); changed(); return; }
+  if ((t = e.target.closest('[data-lei-rv]'))) return leiRevSalvar({ [t.dataset.leiRv]: t.value.trim() });
+  if ((t = e.target.closest('[data-lei-rvck]'))) return leiRevSalvar({ [t.dataset.leiRvck]: t.checked });
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.id === 'leiPag') { const b = $('[data-lei-salvar]'); if (b) b.click(); } });
+
+/* ---------- onde aparece ---------- */
+TITLES.leit = 'Leituras e Devoção';
+if (!$('#tab-leit')) { const s = document.createElement('section'); s.id = 'tab-leit'; s.className = 'tab'; s.hidden = true; ($('#tab-config') || document.body).after(s); }
+NAV_NOMES.leit = 'Leituras e Devoção'; NAV_ICO.leit = '<span class="ico" style="font-size:16px">📖</span>';
+NAV_FIXOS[0][1].splice(0, 0, ['leit']);
+if (typeof CEL_MAIS !== 'undefined') CEL_MAIS.splice(0, 0, ['leit', 'Leituras e Devoção']);
+if (typeof CEL_GRUPOS !== 'undefined') { const g = CEL_GRUPOS.find((x) => x[0] === 'CRESCER'); if (g) g[1].unshift('leit'); }
+if (CELULAR && typeof CEL_ESCONDE !== 'undefined' && CEL_PERFIL === 'hel') CEL_ESCONDE.push('leit');
+// celular: card no topo do Início (pode desligar em ⚙ Personalizar)
+if (CELULAR && typeof INI_BLOCOS !== 'undefined' && CEL_PERFIL !== 'hel') {
+  INI_BLOCOS.splice(0, 0, ['leituras', 'Leituras e Devoção de hoje']); INI_EXTRA.leituras = () => leiCard();
+  try { const p = JSON.parse(lsGet('cel-inicio') || '{}'); if (Array.isArray(p.ordem) && p.ordem.length && !p.ordem.includes('leituras')) { p.ordem.unshift('leituras'); lsSet('cel-inicio', JSON.stringify(p)); } } catch (e) {}
+}
+// PC: bloco no painel (pode desligar em ⚙ Personalizar)
+WIDGETS.splice(Math.max(0, WIDGETS.findIndex((w) => w[0] === 'kpis5')), 0, ['leituras', 'Leituras e Devoção de hoje', 'O que falta do dia: Bíblia, livros e devocional']); PAINEL_PADRAO.ordem = WIDGETS.map((w) => w[0]);
+try { const s = JSON.parse(lsGet('ff-painel') || 'null'); if (s && Array.isArray(s.ordem) && !s.ordem.includes('leituras')) { const i = Math.max(0, s.ordem.indexOf('kpis5')); s.ordem.splice(i, 0, 'leituras'); lsSet('ff-painel', JSON.stringify(s)); } } catch (e) {}
+{ const _rp79 = renderPainel; renderPainel = function () { const r = _rp79.apply(this, arguments); if (CELULAR && !ui.celPainel) return r; try { leiSemente(); const g = $('#tab-painel .painel-g'); const c = leiCard(); if (g && c && !$('[data-wid="leituras"]', g)) { g.insertAdjacentHTML('afterbegin', `<div class="wide" data-wid="leituras">${c}</div>`); aplicarLayoutPainel($('#tab-painel')); } } catch (e) { console.warn('leituras', e); } return r; }; }
+{ const _ra79 = renderAll; renderAll = function () { try { if (db && leiSemente()) { changed(); return; } } catch (e) {} return _ra79.apply(this, arguments); }; }
+CEL_NOVIDADES['7.9'] = ['📖 Leituras e Devoção: livros em 3 trilhas, Bíblia (Marcos → João → Romanos) e Provérbios do dia', '🌙 Devocional da noite com a Helen: "Fizemos juntos" e lembrete às 20h50', '🌧 Versão mínima para dia difícil · ☀️ revisão semanal no domingo'];
 
 /* =================== v7.5: cores · azul petróleo (geral), preto e amarelo (Loja e Caixa da loja); Consultório e Ritmo ficam como estão =================== */
 const _renderAll75 = renderAll;
