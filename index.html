@@ -4260,7 +4260,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '9.0';
+const APP_VERSAO = '9.1';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13333,6 +13333,7 @@ CEL_NOVIDADES['8.7'] = ['＋ Saiba mais em cada ação, FII e ETF do Explorar: o
 CEL_NOVIDADES['8.8'] = ['📖 No ＋ Saiba mais: toque no ⓘ para entender cada número (DY, P/L, P/VP, ROE…) e veja o Dicionário dos números de ações, FIIs e ETFs'];
 CEL_NOVIDADES['8.9'] = ['➕ No Explorar, adicione qualquer ação ou FII pelo código e copie os números da Status Invest em ✎ Números'];
 CEL_NOVIDADES['9.0'] = ['📊 Ao adicionar uma ação ou FII no Explorar, o Prumo busca os números sozinho (botão ↻ no cartão para buscar de novo)'];
+CEL_NOVIDADES['9.1'] = ['📊 Segunda fonte de números: HG Brasil (grátis). O Prumo junta brapi + HG para preencher ações e FIIs sozinho'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -13986,6 +13987,96 @@ const xaTentou = new Set();
 { const _e = invExplorar; invExplorar = function () { const h = _e.apply(this, arguments); const tipo = ui.expTipo || 'acoes';
   if ((tipo === 'acoes' || tipo === 'fiis') && db?.invest?.cot?.brapi) xaLista(tipo).filter((e) => !e.em && !xaTentou.has(e.t)).forEach((e) => { xaTentou.add(e.t); setTimeout(() => xaBuscarNumeros(tipo, e.t, true).then((r) => { if (r?.n) toast(`📊 ${e.t}: números preenchidos sozinhos`); }), 300); });
   return h; }; }
+
+/* ---------- v9.1 · segunda fonte de dados: HG Brasil Finance ---------- */
+formChaves = function () {
+  const C = garantirInvest().cot || {};
+  openForm({ title: 'Chaves das cotações', values: { brapi: C.brapi || '', hg: C.hg || '', finnhub: C.finnhub || '', alpha: C.alpha || '' },
+    note: 'Opcional. Cadastro grátis: brapi.dev e hgbrasil.com (ações e FIIs do Brasil: o Prumo usa as duas e junta os números), finnhub.io (ações dos EUA) e alphavantage.co (gráfico dos ETFs e ações dos EUA). Copie a chave e cole aqui.',
+    fields: [{ k: 'brapi', label: 'Token da brapi.dev' }, { k: 'hg', label: 'Chave da HG Brasil (números de ações e FIIs)' }, { k: 'finnhub', label: 'Chave da Finnhub' }, { k: 'alpha', label: 'Chave da Alpha Vantage (gráficos dos EUA)' }],
+    onSave: (v) => { db.invest.cot = { ...(db.invest.cot || {}), brapi: v.brapi.trim(), hg: v.hg.trim(), finnhub: v.finnhub.trim(), alpha: v.alpha.trim() }; Object.keys(LAB_CACHE).forEach((k) => { if (/^[BU]:/.test(k)) delete LAB_CACHE[k]; }); labCarregando = {}; } });
+};
+// procura um campo em qualquer lugar da resposta (a HG pode mudar o formato)
+function hgAchar(o, chaves, prof = 0) {
+  if (!o || typeof o !== 'object' || prof > 6) return null;
+  for (const k of chaves) { const p = k.split('.'); let v = o; for (const s of p) v = v && typeof v === 'object' ? v[s] : undefined; if (v != null && v !== '' && (typeof v !== 'object')) return v; }
+  for (const v of Array.isArray(o) ? o : Object.values(o)) { const r = hgAchar(v, chaves, prof + 1); if (r != null) return r; }
+  return null;
+}
+const hgNum = (v) => { const n = typeof v === 'string' ? Number(v.replace(',', '.')) : Number(v); return isFinite(n) ? n : null; };
+let hgFalhou = 0;
+async function hgGet(rota, t, extra = '') {
+  const C = db.invest.cot || {}; if (!C.hg) throw new Error('sem chave');
+  const j = await pegarJSON(`https://api.hgbrasil.com/v2/finance/${rota}?tickers=B3:${encodeURIComponent(t)}${extra}&key=${encodeURIComponent(C.hg)}&format=json-cors`);
+  if (j && (j.error || j.valid_key === false)) throw new Error(j.message || 'erro');
+  return j;
+}
+const XA_FII_MAP = [[/log[ií]st|galp/i, 'Galpões e logística'], [/shopping/i, 'Shoppings'], [/escrit|laje|corporat/i, 'Escritórios'], [/papel|receb|cri\b|t[ií]tulo|cr[eé]dito/i, 'Papel (dívidas imobiliárias)'], [/fundo de fundos|fof|multi/i, 'Fundos de fundos e multiestratégia'], [/renda urbana|varej|h[ií]brid|educa|hospital|ag[eê]nc/i, 'Renda urbana e híbridos']];
+const XA_PT_MAP = [[/segur/i, 'Seguros'], [/bolsa|mercado de capitais/i, 'Bolsa'], [/banc|financ|intermedi/i, 'Bancos'], [/sanea|[aá]gua|g[aá]s/i, 'Saneamento e gás'], [/transmiss/i, 'Energia: transmissão'], [/energia|el[eé]tric/i, 'Energia: geração e distribuição'], [/telecom|telefon/i, 'Telecom'], [/petr[oó]leo|combust/i, 'Petróleo e combustíveis'], [/papel|celulose|madeira/i, 'Papel e celulose'], [/software|tecnolog|programas/i, 'Tecnologia'], [/sa[uú]de|consumo|aliment|bebida|varej|farm/i, 'Consumo e saúde'], [/constru|incorpora|imobili/i, 'Construção'], [/rodov|shopping|explora[cç][aã]o de im/i, 'Shoppings e rodovias'], [/m[aá]quina|industr|motor|equip/i, 'Indústria']];
+async function hgNumeros(tipo, t) {
+  const got = {}; let preco = 0;
+  try { const q = await hgGet('quotes', t);
+    preco = hgNum(hgAchar(q, ['quote.value', 'price', 'current_price'])) || 0;
+    const dy = hgNum(hgAchar(q, ['dividends.yield_12m_percent', 'yield_12m_percent'])); if (dy > 0 && dy < 60) got.dy = r2(dy);
+    const nome = hgAchar(q, ['full_name', 'name', 'company_name']); if (nome) got.nome = String(nome).trim().slice(0, 60);
+    const seg = [hgAchar(q, ['segment']), hgAchar(q, ['subsector']), hgAchar(q, ['sector'])].filter(Boolean).join(' ');
+    const s = tipo === 'fiis' ? (XA_FII_MAP.find(([re]) => re.test(seg)) || [])[1] : (XA_PT_MAP.find(([re]) => re.test(seg)) || XA_SETOR_MAP.find(([re]) => re.test(seg)) || [])[1]; if (s) got.setor = s;
+    if (!got.dy) { const cash = hgNum(hgAchar(q, ['dividends.yield_12m_cash', 'yield_12m_cash'])); if (cash > 0 && preco > 0) got.dy = r2((cash / preco) * 100); }
+  } catch (e) { hgFalhou++; }
+  try { const f = await hgGet('fundamentals', t, '&days_ago=0');
+    const pl = hgNum(hgAchar(f, ['valuation.price_to_earnings_ratio', 'price_to_earnings_ratio'])); if (pl > 0 && pl < 500) got.pl = r2(pl);
+    const pvp = hgNum(hgAchar(f, ['valuation.price_to_book_ratio', 'price_to_book_ratio'])); if (pvp > 0 && pvp < 50) got.pvp = r2(pvp);
+    const roe = xaPct(hgAchar(f, ['profitability.return_on_equity', 'return_on_equity'])); if (roe != null && roe > -100 && roe < 200) got.roe = roe;
+    if (!got.dy) { const dy = hgNum(hgAchar(f, ['dividends.yield_percent', 'yield_percent'])); if (dy > 0 && dy < 60) got.dy = r2(dy); }
+  } catch (e) { /* fundamentos podem não estar no plano grátis */ }
+  return { got, preco };
+}
+// junta as duas fontes: brapi primeiro, a HG completa o que faltar
+xaBuscarNumeros = (function (orig) { return async function (tipo, t, silencioso) {
+  const C = db.invest.cot || {}; const e = xaLista(tipo).find((x) => x.t === t); if (!e) return 0;
+  const r1 = await orig.call(this, tipo, t, true);
+  const campos = tipo === 'acoes' ? ['dy', 'pl', 'pvp', 'roe'] : ['dy', 'pvp'];
+  let nHg = 0;
+  if (C.hg && campos.some((k) => e[k] == null || !e.auto)) {
+    const antes = hgFalhou; const { got, preco } = await hgNumeros(tipo, t);
+    campos.forEach((k) => { if (got[k] != null && (e[k] == null || (e.auto && !r1?.n))) { e[k] = got[k]; nHg++; } });
+    if (got.nome && (!e.nome || e.nome === t)) e.nome = got.nome; if (got.setor && !e.setor) e.setor = got.setor;
+    if (preco > 0 && !db.invest.precos[t]) db.invest.precos[t] = { p: preco, em: new Date().toISOString() };
+    if (nHg) { e.em = hoje(); e.auto = true; e.fonte = r1?.n ? 'brapi + HG Brasil' : 'HG Brasil'; }
+    if (hgFalhou > antes && !silencioso) setTimeout(() => toast('A HG Brasil não respondeu. Confira a chave e o endereço cadastrado nela (toque em "Ligar a HG Brasil" no Explorar).', 8000), 600);
+  } else if (r1?.n) e.fonte = 'brapi';
+  const n = (r1?.n || 0) + nHg; const faltam = campos.filter((k) => e[k] == null).length;
+  changed();
+  if (!silencioso) toast(n ? `📊 ${t}: ${n} números preenchidos sozinhos${e.fonte ? ' (' + e.fonte + ')' : ''}${faltam ? '. Os que faltam, copie em ✎ Números.' : ' ✔'}` : `Não consegui os números de ${t} automaticamente.${C.hg ? '' : ' Ligue a HG Brasil (grátis) para buscar mais números.'} Ou copie da Status Invest em ✎ Números.`, 8000);
+  return { n, faltam };
+}; })(xaBuscarNumeros);
+xaAt = function (e) { return e.em ? `Números ${e.auto ? 'buscados automaticamente' + (e.fonte ? ' (' + e.fonte + ')' : '') : 'copiados por você'} em ${dmy(e.em)}. Confira na Status Invest de vez em quando.` : 'Toque em ↻ para buscar os números, ou em ✎ Números para copiar da Status Invest.'; };
+// preços da lista: se a brapi falhar num código, tenta a HG
+precosDaLista = (function (orig) { return async function (tipo) {
+  const r = await orig.apply(this, arguments); const C = db.invest.cot || {};
+  if (!C.hg || !(tipo === 'acoes' || tipo === 'fiis' || tipo === 'etfbr')) return r;
+  const velho = itensExp(tipo).map((x) => x.t).filter((t) => { const p = db.invest.precos[t]; return !p || Date.now() - new Date(p.em).getTime() > 30 * 60e3; });
+  if (!velho.length) return r; let ok = 0;
+  for (const t of velho) { try { const q = await hgGet('quotes', t); const p = hgNum(hgAchar(q, ['quote.value', 'price', 'current_price'])); if (p > 0) { db.invest.precos[t] = { p, em: new Date().toISOString() }; ok++; } } catch (e) {} }
+  if (ok) { changed(); toast(`+ ${ok} preços pela HG Brasil ✔`); }
+  return r;
+}; })(precosDaLista);
+// ajuda para criar a chave
+function hgAjuda() {
+  const arquivo = location.protocol === 'file:'; const host = location.host;
+  vgJanela(`<h3 style="margin:0 0 6px">📊 Ligar a HG Brasil (grátis)</h3><p class="small" style="margin:0 0 8px">A HG Brasil completa os números que a brapi grátis não dá, principalmente dos <b>FIIs</b> (dividend yield) e, se o plano liberar, P/L, P/VP e ROE. O plano grátis dá 400 consultas por dia.</p>
+    <ol class="small sm87-ol"><li>Abra <a href="https://hgbrasil.com/" target="_blank" rel="noopener"><b>hgbrasil.com</b> ↗</a> e crie a conta grátis.</li>
+      <li>No painel, crie uma <b>chave</b> e escolha o tipo <b>"chave para uso exposto"</b> (é a que funciona dentro de aplicativos como o Prumo).</li>
+      <li>Em <b>domínios permitidos</b>, adicione: ${arquivo ? '<b>localhost</b> (aqui o Prumo abre como arquivo do computador; se não funcionar no PC, use pelo celular)' : `<b>${esc(host)}</b>`}.</li>
+      <li>Copie a chave. Volte aqui e toque em <b>Colocar a chave</b>. Cole no campo <b>Chave da HG Brasil</b> e salve.</li>
+      <li>No Explorar, toque no <b>↻</b> do cartão (ex.: MXRF11) para buscar de novo.</li></ol>
+    <p class="small muted" style="margin:8px 0 0">${arquivo ? 'Faça este passo a passo pelo celular: lá o endereço do Prumo é fixo e dá para cadastrar.' : 'Use a mesma chave no PC e no notebook: ela fica salva junto com os outros dados.'}</p>
+    <div class="row" style="gap:6px;margin-top:10px"><button class="btn primary" data-sm-chaves>Colocar a chave</button></div>`);
+}
+{ const _e = invExplorar; invExplorar = function () { let h = _e.apply(this, arguments); const tipo = ui.expTipo || 'acoes';
+  if ((tipo === 'acoes' || tipo === 'fiis') && !(db.invest.cot || {}).hg) h = h.replace('Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p>', 'Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p><p class="small" style="margin:6px 0 0">💡 Para o Prumo buscar mais números sozinho (principalmente dos FIIs): <button class="btn sm" data-hg-ajuda>Ligar a HG Brasil (grátis)</button></p>');
+  return h; }; }
+document.addEventListener('click', (ev) => { if (ev.target.closest('[data-hg-ajuda]')) hgAjuda(); }, true);
 
 /* ---------- início ---------- */
 (async function boot() {
