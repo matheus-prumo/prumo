@@ -159,7 +159,7 @@ def tesouro():
     motivos = []
     for u in TESOURO_URLS:
         try:
-            dados = baixar(u, timeout=240, tentativas=4, curl=True)
+            dados = baixar(u, timeout=240, tentativas=2, curl=True)
             break
         except Exception as e:
             motivos.append("arquivo: " + _motivo(e))
@@ -178,7 +178,7 @@ def tesouro():
         try:
             return tesouro_direto()
         except Exception as e:
-            motivos.append("Tesouro Direto: " + _motivo(e))
+            motivos.append("Tesouro Direto: " + str(e)[:120])
             raise RuntimeError(" · ".join(motivos))
     if dados is None:
         raise RuntimeError("não achei o arquivo de preços e taxas do Tesouro")
@@ -230,20 +230,91 @@ def google(sym, bolsas):
     return None
 
 
+def _td_achar(d, padrao):
+    for k, v in d.items():
+        if re.search(padrao, k, re.I) and v not in (None, "", 0):
+            return v
+    return None
+
+
+def _td_listas(x):
+    """Acha todas as listas de títulos dentro do JSON, em qualquer nível."""
+    if isinstance(x, list):
+        if x and all(isinstance(i, dict) for i in x):
+            yield x
+        for i in x:
+            yield from _td_listas(i)
+    elif isinstance(x, dict):
+        for v in x.values():
+            yield from _td_listas(v)
+
+
+def _td_plano(d):
+    out = {}
+    for k, v in d.items():
+        if isinstance(v, dict):
+            out.update(_td_plano(v))
+        else:
+            out[k] = v
+    return out
+
+
+def _td_data(v):
+    v = str(v or "")
+    m = re.search(r"(\d{4})-(\d{2})-(\d{2})", v)
+    if m:
+        return m.group(0)
+    m = re.search(r"(\d{2})/(\d{2})/(\d{4})", v)
+    return f"{m.group(3)}-{m.group(2)}-{m.group(1)}" if m else ""
+
+
 def tesouro_direto():
-    j = json.loads(baixar("https://www.tesourodireto.com.br/json/br/com/b3/tesourodireto/service/api/treasurybondsinfo.json"))
-    lista = (j.get("response") or {}).get("TrsrBdTradgList") or []
+    """Títulos à venda no site do Tesouro Direto (páginas de rentabilidade). O site do Tesouro
+    Transparente às vezes barra o GitHub; este fica em outro servidor."""
+    motivos, porchave = [], {}
+    for lado in ("investir", "resgatar"):
+        try:
+            j = json.loads(baixar(f"https://www.tesourodireto.com.br/o/rentabilidade/{lado}", timeout=60, tentativas=2))
+        except Exception as e:
+            motivos.append(f"{lado}: " + _motivo(e))
+            continue
+        achou = 0
+        for lista in _td_listas(j):
+            for bruto in lista:
+                d = _td_plano(bruto)
+                nome = str(_td_achar(d, r"name|^nm$|nome|titulo|title") or "")
+                if "tesouro" not in nome.lower():
+                    continue
+                venc = _td_data(_td_achar(d, r"matur|venc|mtrty"))
+                ano = re.search(r"(\d{4})\s*$", nome)
+                if not venc and ano:
+                    venc = ano.group(1) + "-01-01"
+                tipo = re.sub(r"\s+\d{4}$", "", nome).strip()
+                if lado == "investir":
+                    taxa = _num(_td_achar(d, r"invest.*rate|invstmt.*rate|rate.*invest|taxa|annual.*rate|rate"))
+                    pu = _num(_td_achar(d, r"unitary.*invest|untr.*invstmt|invest.*value|preco|price"))
+                else:
+                    taxa = _num(_td_achar(d, r"redemp.*rate|red.*rate|rate"))
+                    pu = _num(_td_achar(d, r"unitary.*redemp|untr.*red|redemp.*value|preco|price"))
+                if not (tipo and venc):
+                    continue
+                t = porchave.setdefault((tipo, venc), {"tipo": tipo, "venc": venc, "taxa": None, "pu": None, "taxa_resgate": None, "pu_resgate": None})
+                if lado == "investir":
+                    t["taxa"], t["pu"] = taxa, pu
+                else:
+                    t["taxa_resgate"], t["pu_resgate"] = taxa, pu
+                achou += 1
+        if not achou:
+            chaves = list(j.keys())[:4] if isinstance(j, dict) else type(j).__name__
+            motivos.append(f"{lado}: formato novo {chaves}")
     titulos = []
-    for x in lista:
-        b = x.get("TrsrBd") or {}
-        nome = b.get("nm") or ""
-        tipo = re.sub(r"\s+\d{4}$", "", nome).strip()
-        venc = (b.get("mtrtyDt") or "")[:10]
-        taxa = b.get("anulInvstmtRate") or b.get("anulRedRate")
-        if tipo and venc and taxa:
-            titulos.append({"tipo": tipo, "venc": venc, "taxa": float(taxa), "pu": b.get("untrInvstmtVal") or None, "taxa_resgate": b.get("anulRedRate"), "pu_resgate": b.get("untrRedVal")})
+    for t in porchave.values():
+        if t["taxa"] is None:  # só dá para resgatar: usa a taxa de resgate
+            t["taxa"], t["pu"] = t["taxa_resgate"], t["pu"] or t["pu_resgate"]
+        if t["taxa"] is not None:
+            titulos.append(t)
     if not titulos:
-        raise RuntimeError("Tesouro Direto não devolveu títulos")
+        raise RuntimeError("; ".join(motivos) or "sem títulos")
     titulos.sort(key=lambda x: (x["tipo"], x["venc"]))
     return {"data": datetime.date.today().isoformat(), "titulos": titulos, "fonte": "tesourodireto.com.br"}
 
