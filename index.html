@@ -1235,6 +1235,13 @@ body.tema-loja .pn-k { border-top-color: var(--c, #ffc400); }
 body.tema-loja .fd-pdv-btn, body.tema-loja .fd-steps .on { background: #1a1a17; color: #ffc400; }
 body.tema-loja .fd-in input { border-bottom-color: #1a1a17; }
 body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on { background: #ffc400; color: #1a1a17; }
+/* v8.1 ações, FIIs, ETFs e Binance */
+.lab-tk{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.lab-tk input{width:130px;text-transform:uppercase}
+.lab-sug{display:flex;gap:5px;flex-wrap:wrap;margin:-4px 0 10px}.lab-sug button{border:1px dashed var(--line);background:none;color:var(--fg);border-radius:14px;padding:3px 10px;font-size:12px;cursor:pointer}.lab-sug button.on{border-style:solid;border-color:var(--brand,#1f4e6b);color:var(--brand,#1f4e6b);font-weight:700}
+.bin-c .bin-l{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line);font-size:14px}.bin-c .bin-l small{color:var(--muted)}
+.bin-ok{display:inline-block;font-size:11.5px;font-weight:700;color:#2f7d4f;background:color-mix(in srgb,#2f7d4f 12%,transparent);border-radius:12px;padding:2px 8px}
+.bin-passos{margin:6px 0 10px 18px;padding:0;font-size:13px;line-height:1.55}
+
 </style>
 </head>
 <body>
@@ -4155,7 +4162,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '8.0';
+const APP_VERSAO = '8.1';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -6258,8 +6265,8 @@ async function atualizarCotacoes() {
 }
 function formChaves() {
   const C = garantirInvest().cot || {};
-  openForm({ title: 'Chaves das cotações', values: { brapi: C.brapi || '', finnhub: C.finnhub || '' }, note: 'Opcional. Cadastro grátis: brapi.dev (ações e FIIs do Brasil) e finnhub.io (ações dos EUA). Copie a chave (token) e cole aqui.',
-    fields: [{ k: 'brapi', label: 'Token da brapi.dev' }, { k: 'finnhub', label: 'Chave da Finnhub' }], onSave: (v) => { db.invest.cot = { brapi: v.brapi.trim(), finnhub: v.finnhub.trim() }; } });
+  openForm({ title: 'Chaves das cotações', values: { brapi: C.brapi || '', finnhub: C.finnhub || '', alpha: C.alpha || '' }, note: 'Opcional. Cadastro grátis: brapi.dev (ações e FIIs do Brasil), finnhub.io (ações dos EUA) e alphavantage.co (gráfico dos ETFs e ações dos EUA). Copie a chave (token) e cole aqui.',
+    fields: [{ k: 'brapi', label: 'Token da brapi.dev' }, { k: 'finnhub', label: 'Chave da Finnhub' }, { k: 'alpha', label: 'Chave da Alpha Vantage (gráficos dos EUA)' }], onSave: (v) => { db.invest.cot = { ...(db.invest.cot || {}), brapi: v.brapi.trim(), finnhub: v.finnhub.trim(), alpha: v.alpha.trim() }; Object.keys(LAB_CACHE).forEach((k) => { if (/^[BU]:/.test(k)) delete LAB_CACHE[k]; }); labCarregando = {}; } });
 }
 
 /* ---------- RELATÓRIO DA CARTEIRA (PDF) ---------- */
@@ -12631,6 +12638,7 @@ COLECOES.push(['labOps']); if (db) ensureModules(db);
 const LAB_CACHE = {}; let labCarregando = {};
 const labCacheLer = (s) => { if (LAB_CACHE[s]) return LAB_CACHE[s]; try { const j = JSON.parse(lsGet('lab-' + s) || 'null'); if (j) LAB_CACHE[s] = j; return j; } catch (e) { return null; } };
 async function labBuscar(sym) {
+  if (/^[BU]:/.test(sym)) return labBuscarBolsa(sym);
   const urls = ['https://data-api.binance.vision/api/v3/klines', 'https://api.binance.com/api/v3/klines'];
   let todos = []; let fim = Date.now();
   for (let volta = 0; volta < 2; volta++) {
@@ -12648,6 +12656,11 @@ function labDados(sym) {
   return c ? c.d : null;
 }
 const labUsd = () => db.invest?.usd || 5.4;
+const labEhBR = (s) => s.startsWith('B:');
+const labTk = (s) => s.replace(/^[BU]:/, '');
+const labNomeAtivo = (s) => { const m = LAB_MOEDAS.find((x) => x[0] === s); return m ? `${m[1]} (${s})` : labTk(s); };
+const labPrecoTxt = (s, v) => (labEhBR(s) ? fmt(v) : `US$ ${num2(r2(v))} <span class="muted">≈ ${labBRL(v)}</span>`);
+const labEmReais = (s, v) => (labEhBR(s) ? v : v * labUsd());
 const labBRL = (usd) => fmt(usd * labUsd());
 
 /* ---------- contas ---------- */
@@ -12688,7 +12701,7 @@ function labEixo(D) { const n = D.length; const ix = [0, Math.floor(n / 3), Math
 const LAB_PER = [['3m', '3 meses', 92], ['1a', '1 ano', 365], ['2a', '2 anos', 730], ['4a', '4 anos', 1460]];
 const labPerAtual = () => (ui.sub?.invest === 'lab' ? ui.labPerT || '4a' : ui.labPer || '1a');
 const labRegra = () => (ui.labR = Object.assign({ tipo: 'mm', rap: 20, len: 50, rsiC: 30, rsiV: 70, taxa: 0.5 }, ui.labR || {}));
-function labTopo(sym) {
+function labTopoAntigo(sym) {
   const per = labPerAtual();
   return `<div class="lab-topo"><select data-lab-sym>${LAB_MOEDAS.map(([s, n]) => `<option value="${s}" ${s === sym ? 'selected' : ''}>${s} · ${n}</option>`).join('')}</select>
     <div class="lab-pills">${LAB_PER.map(([k, l]) => `<button class="${k === per ? 'on' : ''}" data-lab-per="${k}">${l}</button>`).join('')}</div>
@@ -12697,6 +12710,8 @@ function labTopo(sym) {
 function labSemDados(sym) {
   return `<div class="card lab-c"><p style="margin:0">${labCarregando[sym] === 'erro' ? `⚠️ Não consegui buscar os preços do ${sym}. Confira a internet e toque em <button class="btn sm" data-lab-recarregar="${sym}">Tentar de novo</button>` : `⏳ Buscando o histórico do ${sym}…`}</p></div>`;
 }
+const labPeriodoTxt = (D) => (D.length > 700 ? 'dos últimos anos' : D.length > 300 ? 'do último ano' : `dos últimos ${D.length} dias`);
+const labFonte = (s) => (labEhBR(s) ? 'brapi' : s.startsWith('U:') ? 'Alpha Vantage' : 'Binance');
 const labProtecao = () => '<div class="lembrete info lab-prot"><span>🛡 <b>Modo estudo:</b> aqui nada compra ou vende de verdade. Os gráficos mostram o passado, não o futuro. O Laboratório usa dinheiro de mentira.</span></div>';
 
 /* ---------- aba 📊 Gráficos ---------- */
@@ -12704,11 +12719,11 @@ function invGraficos() {
   const sym = ui.labSym || 'BTC'; const D0 = labDados(sym); if (!D0) return labProtecao() + labTopo(sym) + labSemDados(sym);
   const R = labRegra(); const dias = LAB_PER.find((p) => p[0] === labPerAtual())[2];
   const ini = Math.max(0, D0.length - dias); const Pall = D0.map((x) => x[1]); const a = labSMA(Pall, R.rap).slice(ini), b = labSMA(Pall, R.len).slice(ini), r = labRSI(Pall).slice(ini), S = labSinais(Pall, R).slice(ini); const D = D0.slice(ini); const P = Pall.slice(ini);
-  const nome = LAB_MOEDAS.find((m) => m[0] === sym)[1]; const ult = P[P.length - 1]; const var30 = P.length > 30 ? ult / P[P.length - 31] - 1 : null; const rv = Math.round(r[r.length - 1]);
+  const ult = P[P.length - 1]; const var30 = P.length > 30 ? ult / P[P.length - 31] - 1 : null; const rv = Math.round(r[r.length - 1]);
   const acima = [a[a.length - 1], b[b.length - 1]].filter((x) => x != null && ult > x).length; const topo = Math.max(...Pall); const doTopo = ult / topo - 1;
-  const leitura = `O preço está <b>${acima === 2 ? 'acima das duas médias' : acima === 1 ? 'entre as médias' : 'abaixo das duas médias'}</b>, ${acima === 2 ? 'sinal de tendência de alta nos últimos meses' : acima === 0 ? 'sinal de tendência de queda nos últimos meses' : 'sem tendência clara'}. O RSI está em <b>${rv}</b>: ${rv >= 70 ? 'subiu rápido demais, costuma ter respiro' : rv <= 30 ? 'caiu rápido demais, costuma ter repique' : 'sem exagero para nenhum lado'}. Está ${doTopo > -0.02 ? '<b>perto do maior preço</b> dos últimos 4 anos' : `<b>${labPct(doTopo)}</b> abaixo do maior preço dos últimos 4 anos`}.`;
+  const leitura = `O preço está <b>${acima === 2 ? 'acima das duas médias' : acima === 1 ? 'entre as médias' : 'abaixo das duas médias'}</b>, ${acima === 2 ? 'sinal de tendência de alta nos últimos meses' : acima === 0 ? 'sinal de tendência de queda nos últimos meses' : 'sem tendência clara'}. O RSI está em <b>${rv}</b>: ${rv >= 70 ? 'subiu rápido demais, costuma ter respiro' : rv <= 30 ? 'caiu rápido demais, costuma ter repique' : 'sem exagero para nenhum lado'}. Está ${doTopo > -0.02 ? `<b>perto do maior preço</b> ${labPeriodoTxt(D0)}` : `<b>${labPct(doTopo)}</b> abaixo do maior preço ${labPeriodoTxt(D0)}`}.`;
   const pontos = S.map((s, i) => (s ? [i, P[i], s === 'c' ? '#2f7d4f' : '#c0452f'] : null)).filter(Boolean);
-  return `${labProtecao()}${labTopo(sym)}<div class="card lab-c"><div class="lab-h"><div><h3>${nome} (${sym}) · US$ ${num2(r2(ult))} <span class="muted">≈ ${labBRL(ult)}</span></h3><span class="muted small">${var30 != null ? `${labPct(var30)} em 30 dias · ` : ''}preço de fechamento diário · Binance</span></div></div>
+  return `${labProtecao()}${labTopo(sym)}<div class="card lab-c"><div class="lab-h"><div><h3>${labNomeAtivo(sym)} · ${labPrecoTxt(sym, ult)}</h3><span class="muted small">${var30 != null ? `${labPct(var30)} em 30 dias · ` : ''}preço de fechamento diário · ${labFonte(sym)} · ${D0.length} dias de histórico</span></div></div>
     ${labLinha([{ v: P, c: 'var(--brand,#1f4e6b)', w: 2 }, { v: R.tipo === 'mm' ? a : labSMA(Pall, 20).slice(ini), c: '#d9822b', w: 1.6 }, { v: R.tipo === 'mm' ? b : labSMA(Pall, 50).slice(ini), c: '#7a4fa0', w: 1.6 }], 230, { pontos })}${labEixo(D)}
     <div class="lab-leg"><span><i style="background:var(--brand,#1f4e6b)"></i>Preço</span><span><i style="background:#d9822b"></i>Média ${R.tipo === 'mm' ? R.rap : 20} dias</span><span><i style="background:#7a4fa0"></i>Média ${R.tipo === 'mm' ? R.len : 50} dias</span><span>🟢 compra / 🔴 venda pela regra do Laboratório</span></div>
     <p class="small muted" style="margin:10px 0 2px"><b>RSI ${rv}</b> · acima de 70 = subiu rápido demais · abaixo de 30 = caiu rápido demais</p>
@@ -12729,9 +12744,9 @@ function invLab() {
     const pts = T.S.map((s, i) => (s ? [i, T.curva[i], s === 'c' ? '#2f7d4f' : '#c0452f'] : null)).filter(Boolean);
     res = `<div class="lab-k"><div><small>SUA REGRA</small><b class="${T.ret >= 0 ? 'good' : 'bad'}">${labPct(T.ret)}</b></div><div><small>SÓ COMPRAR E SEGURAR</small><b class="${T.bh >= 0 ? 'good' : 'bad'}">${labPct(T.bh)}</b></div><div><small>ACERTOS</small><b>${T.ops ? Math.round((T.acertos / T.ops) * 100) + '%' : '—'}</b><span>${T.acertos} de ${T.ops} operações</span></div><div><small>PIOR QUEDA</small><b class="bad">${labPct(T.pior)}</b><span>segurando: ${labPct(T.piorBh)}</span></div></div>
       ${labLinha([{ v: T.P.map((p) => p / T.P[0]), c: '#9aa7b1', w: 1.8 }, { v: T.curva, c: 'var(--brand,#1f4e6b)', w: 2.2 }], 170, { pontos: pts })}${labEixo(D)}
-      <div class="lab-leg"><span><i style="background:var(--brand,#1f4e6b)"></i>Sua regra</span><span><i style="background:#9aa7b1"></i>Comprar e segurar</span><span>${sym} · ${D.length} dias · ${T.aberta ? 'a regra está comprada hoje' : 'a regra está fora hoje'}</span></div>
-      <div class="lab-leitura">${!T.ops ? 'A regra não fez nenhuma operação nesse período. Tente outros números.' : ganhou ? `Neste período a regra <b>ganhou</b> do "comprar e segurar"${T.pior > T.piorBh ? ' e ainda caiu menos nos piores momentos' : ''}. Antes de confiar, teste em <b>outras moedas e outros períodos</b>: regra boa funciona em vários, não só em um.` : `Neste período a regra <b>perdeu</b> para o simples "comprar e segurar"${T.pior > T.piorBh ? ', mas protegeu nas quedas' : ''}. É para isso que serve o teste: descobrir antes de arriscar.`}</div>`; }
-  return `${labProtecao()}${labTopo(sym)}<div class="lab-cols"><div>${regra}${res}</div></div><div>${labSimulacao()}</div></div>`;
+      <div class="lab-leg"><span><i style="background:var(--brand,#1f4e6b)"></i>Sua regra</span><span><i style="background:#9aa7b1"></i>Comprar e segurar</span><span>${labTk(sym)} · ${D.length} dias · ${T.aberta ? 'a regra está comprada hoje' : 'a regra está fora hoje'}</span></div>
+      <div class="lab-leitura">${!T.ops ? (T.aberta ? 'A regra comprou e ainda não vendeu nesse período: o resultado só fecha quando ela vender. Tente um período maior.' : 'A regra não fez nenhuma operação nesse período. Tente outros números.') : ganhou ? `Neste período a regra <b>ganhou</b> do "comprar e segurar"${T.pior > T.piorBh ? ' e ainda caiu menos nos piores momentos' : ''}. Antes de confiar, teste em <b>outras moedas e outros períodos</b>: regra boa funciona em vários, não só em um.` : `Neste período a regra <b>perdeu</b> para o simples "comprar e segurar"${T.pior > T.piorBh ? ', mas protegeu nas quedas' : ''}. É para isso que serve o teste: descobrir antes de arriscar.`}</div>`; }
+  return `${labProtecao()}${labTopo(sym)}<div class="lab-cols"><div>${regra}${res}</div></div><div>${labSimulacao()}${binCard()}</div></div>`;
 }
 
 /* ---------- simulação com dinheiro de mentira ---------- */
@@ -12739,18 +12754,18 @@ const LAB_INI = 10000;
 function labCarteira() {
   const ops = [...db.labOps].sort((a, b) => (a.ts || 0) - (b.ts || 0)); const pos = {}; let caixa = LAB_INI; const inicio = ops.find((o) => o.tipo === 'inicio');
   ops.forEach((o) => { if (o.tipo === 'compra') { caixa -= o.valor; pos[o.sym] = (pos[o.sym] || 0) + o.qtd; } else if (o.tipo === 'venda') { caixa += o.valor; pos[o.sym] = (pos[o.sym] || 0) - o.qtd; } });
-  const L = Object.entries(pos).filter(([, q]) => q > 1e-12).map(([s, q]) => { const d = labCacheLer(s)?.d; const p = d ? d[d.length - 1][1] * labUsd() : null; const custo = soma(ops.filter((o) => o.sym === s && o.tipo === 'compra'), 'valor') - soma(ops.filter((o) => o.sym === s && o.tipo === 'venda'), 'valor'); return { s, q, valor: p != null ? q * p : null, custo }; });
+  const L = Object.entries(pos).filter(([, q]) => q > 1e-12).map(([s, q]) => { const d = labCacheLer(s)?.d; const p = d ? labEmReais(s, d[d.length - 1][1]) : null; const custo = soma(ops.filter((o) => o.sym === s && o.tipo === 'compra'), 'valor') - soma(ops.filter((o) => o.sym === s && o.tipo === 'venda'), 'valor'); return { s, q, valor: p != null ? q * p : null, custo }; });
   L.forEach((x) => { if (x.valor == null) labDados(x.s); });
   const total = caixa + soma(L, (x) => x.valor ?? x.custo); return { inicio, caixa, L, total };
 }
 function labSimulacao() {
   const C = labCarteira();
-  if (!C.inicio) return `<div class="card lab-c"><h3>🎮 Simulação com dinheiro de mentira</h3><p class="small" style="margin:4px 0 10px">Você recebe <b>R$ 10.000 fictícios</b> para comprar e vender cripto como se fosse de verdade. O Prumo guarda tudo e, com o tempo, mostra se você está ganhando do "comprar e segurar".</p><button class="btn primary" data-lab-iniciar>Começar a simulação</button></div>`;
+  if (!C.inicio) return `<div class="card lab-c"><h3>🎮 Simulação com dinheiro de mentira</h3><p class="small" style="margin:4px 0 10px">Você recebe <b>R$ 10.000 fictícios</b> para comprar e vender cripto, ações, fundos imobiliários e ETFs como se fosse de verdade. O Prumo guarda tudo e, com o tempo, mostra se você está ganhando do "comprar e segurar".</p><button class="btn primary" data-lab-iniciar>Começar a simulação</button></div>`;
   const dias = Math.max(0, Math.round((new Date(hoje() + 'T12:00') - new Date(C.inicio.data + 'T12:00')) / 864e5)); const ret = C.total / LAB_INI - 1;
   const btc = labCacheLer('BTC')?.d; let bh = null; if (btc) { const i0 = btc.findIndex((x) => x[0] >= C.inicio.data); if (i0 >= 0) bh = btc[btc.length - 1][1] / btc[i0][1] - 1; }
   const falta = Math.max(0, 180 - dias); const ganhando = bh != null && ret > bh;
   return `<div class="card lab-c"><div class="lab-h"><h3>🎮 Simulação com dinheiro de mentira</h3><button class="btn sm" data-lab-zerar>Recomeçar</button></div><p class="muted small" style="margin:2px 0 8px">Começou com R$ 10.000 fictícios · há ${dias} ${dias === 1 ? 'dia' : 'dias'}</p>
-    <table class="compact lab-t"><tbody>${C.L.map((x) => `<tr><td>${x.s}</td><td class="num">${x.valor != null ? fmt0(x.valor) : '…'}</td><td class="num ${x.valor >= x.custo ? 'good' : 'bad'}">${x.valor != null && x.custo > 0 ? labPct(x.valor / x.custo - 1) : ''}</td><td class="num"><button class="btn sm" data-lab-vender="${x.s}">Vender</button></td></tr>`).join('')}
+    <table class="compact lab-t"><tbody>${C.L.map((x) => `<tr><td>${labTk(x.s)}</td><td class="num">${x.valor != null ? fmt0(x.valor) : '…'}</td><td class="num ${x.valor >= x.custo ? 'good' : 'bad'}">${x.valor != null && x.custo > 0 ? labPct(x.valor / x.custo - 1) : ''}</td><td class="num"><button class="btn sm" data-lab-vender="${x.s}">Vender</button></td></tr>`).join('')}
       <tr><td>💵 Caixa</td><td class="num">${fmt0(C.caixa)}</td><td></td><td></td></tr><tr><td><b>Total</b></td><td class="num"><b>${fmt0(C.total)}</b></td><td class="num ${ret >= 0 ? 'good' : 'bad'}"><b>${labPct(ret)}</b></td><td></td></tr></tbody></table>
     <div class="row" style="margin-top:8px;gap:6px"><button class="btn primary" data-lab-comprar>+ Comprar (simulado)</button></div>
     ${bh != null ? `<p class="small" style="margin:8px 0 0">No mesmo período, quem só comprou Bitcoin e segurou está em <b class="${bh >= 0 ? 'good' : 'bad'}">${labPct(bh)}</b>. Você está ${ganhando ? '<b class="good">ganhando</b>' : '<b class="bad">perdendo</b>'} dele.</p>` : ''}
@@ -12759,16 +12774,16 @@ function labSimulacao() {
 function labOrdem(tipo, sym) {
   const C = labCarteira(); const pos = C.L.find((x) => x.s === sym);
   vgJanela(`<h3 style="margin:0 0 4px">${tipo === 'compra' ? '+ Comprar' : 'Vender'} (simulado)</h3><p class="small muted" style="margin:0 0 8px">Dinheiro de mentira · caixa: ${fmt0(C.caixa)}</p>
-    ${tipo === 'compra' ? `<label class="lei-lab">Moeda<select id="labOs">${LAB_MOEDAS.map(([s, n]) => `<option value="${s}" ${s === (sym || ui.labSym || 'BTC') ? 'selected' : ''}>${s} · ${n}</option>`).join('')}</select></label>` : `<p style="margin:0 0 6px"><b>${sym}</b> · você tem ${pos ? fmt0(pos.valor ?? pos.custo) : 'R$ 0'}</p>`}
+    ${tipo === 'compra' ? `<label class="lei-lab">Ativo<select id="labOs">${labOpcoesSim(sym || ui.labSym || 'BTC')}</select></label>` : `<p style="margin:0 0 6px"><b>${labTk(sym)}</b> · você tem ${pos ? fmt0(pos.valor ?? pos.custo) : 'R$ 0'}</p>`}
     <label class="lei-lab">Valor em R$<input class="vg-valor" id="labOv" type="text" inputmode="decimal" placeholder="${tipo === 'compra' ? '1.000,00' : 'tudo'}"></label>
     <div class="vg-bts"><button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-lab-ok="${tipo}|${sym || ''}">${tipo === 'compra' ? 'Comprar' : 'Vender'}</button></div>`);
 }
 async function labExecutar(tipo, sym) {
   sym = tipo === 'compra' ? $('#labOs')?.value : sym; let d = labCacheLer(sym)?.d; if (!d) { toast('Buscando o preço…'); try { d = (await labBuscar(sym)).d; } catch (e) { return toast('Sem internet para buscar o preço agora.'); } }
-  const preco = d[d.length - 1][1] * labUsd(); const C = labCarteira(); let v = num($('#labOv')?.value, NaN);
+  const preco = labEmReais(sym, d[d.length - 1][1]); const C = labCarteira(); let v = num($('#labOv')?.value, NaN);
   if (tipo === 'venda') { const pos = C.L.find((x) => x.s === sym); if (!pos) return; if (!isFinite(v) || v <= 0 || v >= (pos.valor || 0)) v = pos.valor; const q = Math.min(pos.q, v / preco); db.labOps.push({ id: uid(), ts: Date.now(), data: hoje(), tipo: 'venda', sym, qtd: q, valor: r2(q * preco), preco }); }
   else { if (!isFinite(v) || v <= 0) return toast('Digite o valor.'); if (v > C.caixa + 0.01) return toast(`O caixa fictício tem ${fmt0(C.caixa)}.`); db.labOps.push({ id: uid(), ts: Date.now(), data: hoje(), tipo: 'compra', sym, qtd: v / preco, valor: r2(v), preco }); }
-  vgFecharJanela(); changed(); toast(tipo === 'compra' ? `🎮 Compra simulada de ${sym}` : `🎮 Venda simulada de ${sym}`);
+  vgFecharJanela(); changed(); toast(tipo === 'compra' ? `🎮 Compra simulada de ${labTk(sym)}` : `🎮 Venda simulada de ${labTk(sym)}`);
 }
 
 /* ---------- Explorar › ₿ Cripto ---------- */
@@ -12790,7 +12805,7 @@ document.addEventListener('click', (e) => {
   const g = (k) => e.target.closest(`[${k}]`); let b;
   if ((b = g('data-lab-per'))) { if (ui.sub?.invest === 'lab') ui.labPerT = b.dataset.labPer; else ui.labPer = b.dataset.labPer; return renderAll(); }
   if ((b = g('data-lab-tipo'))) { labRegra().tipo = b.dataset.labTipo; return renderAll(); }
-  if (g('data-lab-breve')) return toast('Ações, FIIs e ETFs entram na próxima etapa.');
+  
   if ((b = g('data-lab-recarregar'))) { labCarregando[b.dataset.labRecarregar] = false; delete LAB_CACHE[b.dataset.labRecarregar]; try { lsSet('lab-' + b.dataset.labRecarregar, ''); } catch (x) {} return renderAll(); }
   if (g('data-lab-iniciar')) { db.labOps.push({ id: uid(), ts: Date.now(), data: hoje(), tipo: 'inicio' }); changed(); return toast('🎮 Simulação começou com R$ 10.000 fictícios'); }
   if (g('data-lab-zerar')) { if (confirm('Apagar a simulação e recomeçar do zero?')) { db.labOps = []; changed(); } return; }
@@ -12813,6 +12828,126 @@ const _renderAll75 = renderAll;
 renderAll = function () { try { document.body.classList.toggle('tema-loja', ui.tab === 'loja' || (ui.tab === 'caixa' && (ui.cxArea || 'loja') === 'loja')); } catch (e) {} return _renderAll75.apply(this, arguments); };
 try { const m = document.querySelector('meta[name=theme-color]'); if (m && m.content === '#2b6b5a') m.content = '#1f4e6b'; } catch (e) {}
 CEL_NOVIDADES['7.5'] = ['Cores novas: azul petróleo no Prumo e preto e amarelo na Loja (o Consultório continua igual)'];
+
+/* =================== v8.1: Gráficos e Laboratório para ações, FIIs e ETFs · Binance só leitura =================== */
+const LAB_SUG = {
+  acao: [['B:PETR4', 'PETR4'], ['B:VALE3', 'VALE3'], ['B:ITUB4', 'ITUB4'], ['B:BBAS3', 'BBAS3'], ['B:WEGE3', 'WEGE3'], ['B:TAEE11', 'TAEE11']],
+  fii: [['B:HGLG11', 'HGLG11'], ['B:MXRF11', 'MXRF11'], ['B:KNRI11', 'KNRI11'], ['B:XPML11', 'XPML11'], ['B:VISC11', 'VISC11'], ['B:BTLG11', 'BTLG11']],
+  etf: [['B:BOVA11', 'BOVA11'], ['B:IVVB11', 'IVVB11'], ['B:SMAL11', 'SMAL11'], ['U:VOO', 'VOO 🌎'], ['U:QQQ', 'QQQ 🌎'], ['U:VT', 'VT 🌎']],
+};
+const LAB_TIPOS = [['cripto', '₿ Cripto'], ['acao', '📈 Ação'], ['fii', '🏢 FII'], ['etf', '🌎 ETF']];
+function labTipoDe(sym) { if (!/^[BU]:/.test(sym)) return 'cripto'; if (sym.startsWith('U:')) return 'etf'; const t = labTk(sym); if (Object.values(LAB_SUG.etf).some(([k]) => k === sym)) return 'etf'; return /11$/.test(t) && !/^(TAEE|SAPR|KLBN|SANB|ALUP|ENGI|BPAC|SULA|TIET|CPLE|IGTI|RNEW)11$/.test(t) ? 'fii' : 'acao'; }
+async function labBuscarBolsa(sym) {
+  const C = db.invest?.cot || {}; const t = labTk(sym); let L = null, ultimoErro = null;
+  if (sym.startsWith('B:')) {
+    for (const r of ['5y', '2y', '1y', '3mo']) {
+      try { const j = await pegarJSON(`https://brapi.dev/api/quote/${encodeURIComponent(t)}?range=${r}&interval=1d`, C.brapi ? { headers: { Authorization: 'Bearer ' + C.brapi } } : {});
+        const H = j.results?.[0]?.historicalDataPrice || []; if (H.length > 5) { L = H.filter((x) => x.close > 0).map((x) => [new Date(x.date * 1000).toISOString().slice(0, 10), +x.close]).sort((a, b) => (a[0] < b[0] ? -1 : 1)); break; } } catch (e) { ultimoErro = e; }
+    }
+    if (!L) throw ultimoErro || new Error('sem dados');
+  } else {
+    if (!C.alpha) { const e = new Error('sem chave'); e.semChave = true; throw e; }
+    const j = await pegarJSON(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${encodeURIComponent(t)}&apikey=${encodeURIComponent(C.alpha)}`);
+    const S = j['Time Series (Daily)']; if (!S) throw new Error(j.Note || j.Information || 'sem dados');
+    L = Object.entries(S).map(([d, v]) => [d, +v['4. close']]).sort((a, b) => (a[0] < b[0] ? -1 : 1));
+  }
+  const L2 = L.filter((x, i, a) => i === 0 || x[0] !== a[i - 1][0]); const o = { em: Date.now(), d: L2 }; LAB_CACHE[sym] = o; try { lsSet('lab-' + sym, JSON.stringify(o)); } catch (e) {} return o;
+}
+{ // erro de "sem chave" vira um aviso com botão
+  const _ld = labDados; labDados = function (sym) {
+    const c = labCacheLer(sym); const velho = !c || Date.now() - c.em > 6 * 3600e3;
+    if (velho && !labCarregando[sym]) { labCarregando[sym] = true; labBuscar(sym).then(() => { labCarregando[sym] = false; if (ui.tab === 'invest') renderAll(); }).catch((e) => { labCarregando[sym] = e && e.semChave ? 'chave' : 'erro'; if (ui.tab === 'invest') renderAll(); }); }
+    return c ? c.d : null;
+  };
+}
+labSemDados = function (sym) {
+  const st = labCarregando[sym]; const br = labEhBR(sym);
+  if (st === 'chave') return `<div class="card lab-c"><p style="margin:0 0 8px">🌎 Para ver o gráfico de <b>${labTk(sym)}</b> (bolsa americana) o Prumo precisa de uma chave grátis da <b>Alpha Vantage</b>.</p><button class="btn sm primary" data-lab-chaves>Colocar a chave</button></div>`;
+  if (st === 'erro') return `<div class="card lab-c"><p style="margin:0 0 8px">⚠️ Não consegui buscar os preços de <b>${labTk(sym)}</b>.</p><p class="small muted" style="margin:0 0 8px">${br ? `Confira se o código está certo. ${db.invest?.cot?.brapi ? '' : 'Sem o token da brapi, só PETR4, VALE3, ITUB4 e MGLU3 funcionam. '}` : 'Confira a internet e o código.'}</p><button class="btn sm" data-lab-recarregar="${sym}">Tentar de novo</button>${br && !db.invest?.cot?.brapi ? ' <button class="btn sm primary" data-lab-chaves>Colocar o token da brapi</button>' : ''}</div>`;
+  return `<div class="card lab-c"><p style="margin:0">⏳ Buscando o histórico de ${labTk(sym)}…</p></div>`;
+};
+function labTopo(sym) {
+  const per = labPerAtual(); const tipo = ui.labTipo || labTipoDe(sym);
+  const escolha = tipo === 'cripto'
+    ? `<select data-lab-sym>${LAB_MOEDAS.map(([s, n]) => `<option value="${s}" ${s === sym ? 'selected' : ''}>${s} · ${n}</option>`).join('')}</select>`
+    : `<div class="lab-tk"><input data-lab-tk placeholder="${tipo === 'fii' ? 'ex.: HGLG11' : tipo === 'etf' ? 'ex.: IVVB11 ou VOO' : 'ex.: PETR4'}" value="${/^[BU]:/.test(sym) && labTipoDe(sym) === tipo ? labTk(sym) : ''}"><button class="btn sm" data-lab-tk-ok>Ver</button></div>`;
+  const carteira = (db.invest?.ativos || []).map((a) => a.ticker).filter(Boolean).map((t) => 'B:' + String(t).toUpperCase()).filter((k) => labTipoDe(k) === tipo);
+  const sug = tipo === 'cripto' ? [] : [...new Map([...carteira.map((k) => [k, labTk(k) + ' ★']), ...LAB_SUG[tipo]]).entries()].slice(0, 9);
+  return `<div class="lab-topo">${escolha}<div class="lab-pills">${LAB_PER.map(([k, l]) => `<button class="${k === per ? 'on' : ''}" data-lab-per="${k}">${l}</button>`).join('')}</div>
+    <div class="lab-pills lab-tipos">${LAB_TIPOS.map(([k, l]) => `<button class="${k === tipo ? 'on' : ''}" data-lab-tipo2="${k}">${l}</button>`).join('')}</div></div>
+    ${sug.length ? `<div class="lab-sug">${sug.map(([k, l]) => `<button class="${k === sym ? 'on' : ''}" data-lab-ir="${k}">${l}</button>`).join('')}</div>` : ''}
+    ${tipo !== 'cripto' && labEhBR(sym) && !db.invest?.cot?.brapi ? '<p class="small muted" style="margin:-4px 0 10px">Sem o token da brapi, só PETR4, VALE3, ITUB4 e MGLU3 funcionam. <button class="btn sm" data-lab-chaves>Colocar o token</button></p>' : ''}`;
+}
+function labOpcoesSim(sel) {
+  const vistos = [...new Set([sel, ...(ui.labVistos || []), ...labCarteira().L.map((x) => x.s)])].filter((s) => /^[BU]:/.test(s));
+  return `<optgroup label="Cripto">${LAB_MOEDAS.map(([s, n]) => `<option value="${s}" ${s === sel ? 'selected' : ''}>${s} · ${n}</option>`).join('')}</optgroup>${vistos.length ? `<optgroup label="Ações, FIIs e ETFs que você abriu">${vistos.map((s) => `<option value="${s}" ${s === sel ? 'selected' : ''}>${labTk(s)}</option>`).join('')}</optgroup>` : ''}`;
+}
+function labAbrir(sym, tipo) { ui.labSym = sym; ui.labTipo = tipo || labTipoDe(sym); if (/^[BU]:/.test(sym)) ui.labVistos = [sym, ...(ui.labVistos || []).filter((x) => x !== sym)].slice(0, 12); renderAll(); }
+function labTkDigitado() {
+  const v = ($('[data-lab-tk]')?.value || '').trim().toUpperCase().replace(/[^A-Z0-9.]/g, ''); if (!v) return toast('Digite o código.');
+  const tipo = ui.labTipo || 'acao'; const us = tipo === 'etf' && /^[A-Z.]{1,6}$/.test(v); labAbrir((us ? 'U:' : 'B:') + v, tipo);
+}
+
+/* ---------- Binance: só leitura ---------- */
+const BIN = 'https://api.binance.com';
+const binChave = () => { try { return JSON.parse(lsGet('bin-key') || 'null'); } catch (e) { return null; } };
+const binSnap = () => { try { return JSON.parse(lsGet('bin-snap') || 'null'); } catch (e) { return null; } };
+async function binAssinado(path, k, extra = '') {
+  const q = `${extra ? extra + '&' : ''}timestamp=${Date.now()}&recvWindow=10000`; const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey('raw', enc.encode(k.s), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sig = [...new Uint8Array(await crypto.subtle.sign('HMAC', key, enc.encode(q)))].map((b) => b.toString(16).padStart(2, '0')).join('');
+  return pegarJSON(`${BIN}${path}?${q}&signature=${sig}`, { headers: { 'X-MBX-APIKEY': k.k } });
+}
+async function binConferir(k) {
+  const r = await binAssinado('/sapi/v1/account/apiRestrictions', k);
+  const perigo = ['enableSpotAndMarginTrading', 'enableWithdrawals', 'enableInternalTransfer', 'enableMargin', 'enableFutures', 'permitsUniversalTransfer', 'enableVanillaOptions', 'enablePortfolioMarginTrading'].filter((x) => r[x]);
+  return { ok: r.enableReading && !perigo.length, perigo };
+}
+async function binAtualizar(k) {
+  k = k || binChave(); if (!k) return; const acc = await binAssinado('/api/v3/account', k, 'omitZeroBalances=true');
+  const B = (acc.balances || []).map((b) => ({ a: b.asset, q: +b.free + +b.locked })).filter((b) => b.q > 0);
+  let precos = {}; try { (await pegarJSON(`${BIN}/api/v3/ticker/price`)).forEach((p) => { precos[p.symbol] = +p.price; }); } catch (e) {}
+  const est = ['USDT', 'USDC', 'FDUSD', 'BUSD', 'TUSD', 'USD'];
+  B.forEach((b) => { b.usd = est.includes(b.a) ? b.q : b.a === 'BRL' ? b.q / labUsd() : precos[b.a + 'USDT'] ? b.q * precos[b.a + 'USDT'] : null; });
+  const snap = { em: Date.now(), B: B.sort((x, y) => (y.usd || 0) - (x.usd || 0)), total: soma(B, (b) => b.usd || 0) }; try { lsSet('bin-snap', JSON.stringify(snap)); } catch (e) {} return snap;
+}
+function binCard() {
+  const k = binChave(); const S = binSnap();
+  if (!k) return `<div class="card lab-c bin-c"><h3>🔗 Minha Binance (só leitura)</h3><p class="small" style="margin:4px 0 6px">Liga a sua conta para o Prumo <b>só mostrar</b> o saldo. Ele não compra, não vende e não saca.</p>
+    <ol class="bin-passos"><li>No app ou site da Binance: <b>Perfil › Gerenciamento de API › Criar API</b> (tipo "gerada pelo sistema").</li><li>Deixe marcado <b>só "Ativar leitura"</b>. Não marque negociação, saque nem futuros.</li><li>Copie a <b>API Key</b> e a <b>Secret Key</b> e cole aqui.</li></ol>
+    <button class="btn primary" data-bin-ligar>Conectar (só leitura)</button><p class="small muted" style="margin:8px 0 0">A chave fica só neste aparelho. Ela não vai para o OneDrive.</p></div>`;
+  return `<div class="card lab-c bin-c"><div class="lab-h"><h3>🔗 Minha Binance</h3><span class="bin-ok">🛡 só leitura conferida</span></div>
+    ${S ? `<p style="margin:2px 0 6px"><b style="font-size:20px">US$ ${num2(r2(S.total))}</b> <span class="muted">≈ ${labBRL(S.total)}</span></p>
+      ${S.B.length ? S.B.slice(0, 8).map((b) => `<div class="bin-l"><span>${esc(b.a)} <small>${b.q.toLocaleString('pt-BR', { maximumFractionDigits: 8 })}</small></span><b>${b.usd != null ? 'US$ ' + num2(r2(b.usd)) : '—'}</b></div>`).join('') : '<p class="small muted" style="margin:0">Carteira vazia.</p>'}
+      <p class="small muted" style="margin:8px 0 0">Atualizado em ${new Date(S.em).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })} · só a carteira Spot</p>` : '<p class="small muted">Toque em Atualizar para ver o saldo.</p>'}
+    <div class="row" style="gap:6px;margin-top:8px"><button class="btn sm" data-bin-atualizar>↻ Atualizar</button><button class="btn sm" data-bin-desligar>Desligar</button></div></div>`;
+}
+function binForm() {
+  vgJanela(`<h3 style="margin:0 0 4px">🔗 Conectar a Binance (só leitura)</h3><p class="small muted" style="margin:0 0 8px">Antes de salvar, o Prumo confere na Binance se a chave é <b>só de leitura</b>. Se ela permitir comprar, vender ou sacar, o Prumo recusa.</p>
+    <label class="lei-lab">API Key<input id="binK" type="text" autocomplete="off" spellcheck="false"></label><label class="lei-lab">Secret Key<input id="binS" type="password" autocomplete="off"></label>
+    <div class="vg-bts"><button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-bin-salvar>Conferir e conectar</button></div>`);
+}
+async function binSalvar() {
+  const k = { k: ($('#binK')?.value || '').trim(), s: ($('#binS')?.value || '').trim() }; if (!k.k || !k.s) return toast('Cole as duas chaves.');
+  toast('Conferindo a chave na Binance…');
+  let c; try { c = await binConferir(k); } catch (e) { return toast(/Failed to fetch|NetworkError/i.test(String(e)) ? 'A Binance não respondeu ao navegador. Me avise que eu ajusto.' : 'A Binance recusou a chave. Confira se copiou as duas certinho.', 7000); }
+  if (!c.ok) return vgJanela(`<h3 style="margin:0 0 6px">⚠️ Essa chave não é só de leitura</h3><p class="small" style="margin:0 0 8px">Ela permite: <b>${c.perigo.join(', ') || 'menos que leitura'}</b>. Por segurança o Prumo não guardou nada.</p><p class="small" style="margin:0 0 8px">Na Binance, edite a API e deixe marcado <b>só "Ativar leitura"</b> (ou apague e crie outra). Depois tente de novo.</p><div class="vg-bts"><button class="btn primary" data-vg-cancelar>Entendi</button></div>`);
+  try { lsSet('bin-key', JSON.stringify(k)); } catch (e) { return toast('Não consegui guardar a chave neste aparelho.'); }
+  vgFecharJanela(); try { await binAtualizar(k); } catch (e) {} renderAll(); toast('🔗 Binance conectada (só leitura)');
+}
+document.addEventListener('click', async (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if ((b = g('data-lab-tipo2'))) { const t = b.dataset.labTipo2; ui.labTipo = t; if (t === 'cripto') ui.labSym = LAB_MOEDAS.some((m) => m[0] === ui.labSym) ? ui.labSym : 'BTC'; else if (labTipoDe(ui.labSym || 'BTC') !== t) ui.labSym = LAB_SUG[t][0][0]; return renderAll(); }
+  if ((b = g('data-lab-ir'))) return labAbrir(b.dataset.labIr);
+  if (g('data-lab-tk-ok')) return labTkDigitado();
+  if (g('data-lab-chaves')) return formChaves();
+  if (g('data-bin-ligar')) return binForm();
+  if (g('data-bin-salvar')) return binSalvar();
+  if (g('data-bin-atualizar')) { toast('Atualizando a Binance…'); try { await binAtualizar(); renderAll(); } catch (x) { toast('Não consegui falar com a Binance agora.'); } return; }
+  if (g('data-bin-desligar')) { if (confirm('Desligar a Binance deste aparelho? A chave será apagada daqui.')) { try { lsSet('bin-key', ''); lsSet('bin-snap', ''); } catch (x) {} renderAll(); } return; }
+}, true);
+document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.matches?.('[data-lab-tk]')) labTkDigitado(); });
+CEL_NOVIDADES['8.1'] = ['📈 Gráficos e Laboratório agora também para ações, fundos imobiliários e ETFs', '🔗 Binance conectada só para leitura (nada compra nem vende)', '🎮 A simulação aceita ações, FIIs e ETFs'];
 
 /* ---------- início ---------- */
 (async function boot() {
