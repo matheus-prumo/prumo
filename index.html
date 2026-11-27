@@ -1349,6 +1349,33 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 .robo100{margin:10px 0 0}
 .robo100-td{display:flex;flex-direction:column;gap:3px;background:color-mix(in srgb,#2f7d4f 7%,var(--panel));border:1px solid color-mix(in srgb,#2f7d4f 35%,transparent);border-radius:10px;padding:8px 10px;margin:8px 0;font-size:13.5px}
 
+/* v10.1 robô investidor */
+.rb-ver{display:flex;gap:12px;align-items:center;border-radius:12px;padding:10px 12px;margin-top:10px;border:1px solid}
+.rb-ver.g{background:color-mix(in srgb,#2f7d4f 10%,var(--panel));border-color:color-mix(in srgb,#2f7d4f 40%,transparent)}.rb-ver.y{background:color-mix(in srgb,#d9822b 10%,var(--panel));border-color:color-mix(in srgb,#d9822b 40%,transparent)}.rb-ver.r{background:color-mix(in srgb,#c0452f 10%,var(--panel));border-color:color-mix(in srgb,#c0452f 40%,transparent)}
+.rb-dot{width:20px;height:20px;border-radius:50%;flex:none;background:#2f7d4f;box-shadow:0 0 0 5px color-mix(in srgb,#2f7d4f 25%,transparent)}.rb-ver.y .rb-dot{background:#d9822b}.rb-ver.r .rb-dot{background:#c0452f}
+.rb-al{border-radius:12px;padding:9px 11px;margin-bottom:8px;border-left:4px solid;background:var(--panel-2,#f1efe9)}.rb-al b{display:block;font-size:14px}.rb-al>span{font-size:13px;color:var(--muted)}
+.rb-g{border-color:#3fa06a}.rb-y{border-color:#d9a24b}.rb-r{border-color:#e0705b}.rb-b{border-color:#5b8fd0}
+.rb-al-b{display:flex;gap:12px;margin-top:4px}.rb-lk{background:none;border:0;padding:0;color:var(--brand,#1f4e6b);font-weight:700;font-size:12px;cursor:pointer}
+.rb-pq{font-size:12.5px;margin-top:6px;padding:6px 8px;border-radius:8px;background:var(--panel);line-height:1.45}
+.rb-abas{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.rb-abas button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:10px;padding:7px 12px;font-size:13.5px;cursor:pointer}.rb-abas button.on{background:var(--brand,#1f4e6b);color:#fff;border-color:var(--brand,#1f4e6b);font-weight:700}
+.rb-tipos{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.rb-pk{border:1px solid var(--line);border-radius:12px;padding:9px 11px;margin-bottom:7px;cursor:pointer}.rb-pk:hover{border-color:var(--brand,#1f4e6b)}
+.rb-pk-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.rb-md{margin-right:4px}.rb-nota{font-size:16px;color:#2f7d4f}
+.rb-bar{height:7px;border-radius:5px;background:var(--line);overflow:hidden;margin:5px 0}.rb-bar i{display:block;height:100%;background:#3fa06a}
+.rb-pros{font-size:12.5px;line-height:1.5;color:var(--muted)}
+.rb-cx{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}.rb-vol{border-color:color-mix(in srgb,#d9822b 50%,transparent);background:color-mix(in srgb,#d9822b 5%,var(--panel))}
+.rb-v{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--line);font-size:13px}
+.rb-pl{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.rb-pl>div{background:var(--panel-2,#f1efe9);border-radius:10px;padding:8px;text-align:center;display:flex;flex-direction:column}.rb-pl b{font-size:19px}.rb-pl small{font-size:11px;color:var(--muted)}
+.rb-t{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}.rb-t td,.rb-t th{padding:5px 4px;border-bottom:1px solid var(--line);text-align:left}
+.rb-rg{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.rb-in{width:54px;text-align:right;font-weight:700;padding:2px 5px}
+.rb-sw{width:38px;height:21px;border-radius:12px;border:0;background:var(--line);position:relative;cursor:pointer;flex:none}.rb-sw::after{content:'';position:absolute;left:3px;top:3px;width:15px;height:15px;border-radius:50%;background:#fff;transition:left .15s}.rb-sw.on{background:#2f7d4f}.rb-sw.on::after{left:20px}
+.rb-f{display:grid;grid-template-columns:130px 1fr 52px;gap:8px;align-items:center;font-size:13px}.rb-f .rb-bar{margin:0}
+.rb-como{margin-top:10px}.rb-como summary{cursor:pointer;font-weight:700;font-size:13.5px}
+.rb-mini{margin-bottom:12px}
+@media(max-width:600px){.rb-pl{grid-template-columns:repeat(2,1fr)}.rb-f{grid-template-columns:100px 1fr 46px}}
+.rb-tipos button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:5px 11px;font-size:13px;cursor:pointer;font-family:inherit}.rb-tipos button.on{background:var(--brand,#1f4e6b);border-color:var(--brand,#1f4e6b);color:#fff;font-weight:700}
+
 </style>
 </head>
 <body>
@@ -4269,7 +4296,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '10.0';
+const APP_VERSAO = '10.1';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -6096,8 +6123,8 @@ function irExterior(ano) {
 /* ---------- TELA ---------- */
 function renderInvest() {
   garantirInvest(); const el = $('#tab-invest'); const sub = subAtual('invest', 'visao');
-  const corpo = { visao: invVisao, carteira: invCarteira, proventos: invProventos, imposto: invImposto, explorar: invExplorar, estudar: invEstudar, graficos: () => invGraficos(), lab: () => invLab(), diario: () => invDiario(), simular: invSimular, guia: invGuia }[sub]();
-  el.innerHTML = `<div class="row-between" style="align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">${subnav('invest', [['visao', 'Visão geral'], ['carteira', 'Carteira'], ['proventos', 'Proventos'], ['imposto', 'Imposto'], ['explorar', '🔎 Explorar'], ['estudar', '📚 Estudar'], ['graficos', '📊 Gráficos'], ['lab', '🧪 Laboratório'], ['diario', '📓 Diário'], ['simular', 'Simuladores'], ['guia', 'Guia e perfil']])}
+  const corpo = { visao: invVisao, robo: () => invRobo(), carteira: invCarteira, proventos: invProventos, imposto: invImposto, explorar: invExplorar, estudar: invEstudar, graficos: () => invGraficos(), lab: () => invLab(), diario: () => invDiario(), simular: invSimular, guia: invGuia }[sub]();
+  el.innerHTML = `<div class="row-between" style="align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">${subnav('invest', [['visao', 'Visão geral'], ['robo', '🤖 Robô'], ['carteira', 'Carteira'], ['proventos', 'Proventos'], ['imposto', 'Imposto'], ['explorar', '🔎 Explorar'], ['estudar', '📚 Estudar'], ['graficos', '📊 Gráficos'], ['lab', '🧪 Laboratório'], ['diario', '📓 Diário'], ['simular', 'Simuladores'], ['guia', 'Guia e perfil']])}
     <span class="row"><button class="btn" data-inv="importar">⬆ Importar (B3, Rico, Avenue)</button><button class="btn" data-inv="cotar" title="Busca preços, dólar, Selic, CDI e IPCA na internet">↻ Atualizar cotações</button><button class="btn" data-inv="pdf">📄 Relatório</button></span></div>
     ${db.invest.perfil?.protecao ? '<div class="lembrete info"><span>🛡 <b>Modo proteção ligado:</b> investir é diferente de apostar. Aqui o caminho é devagar e sempre: aportes todo mês, fundos de índice e nada de operar no mesmo dia, opções ou alavancagem.</span></div>' : ''}
     ${corpo}
@@ -13347,6 +13374,7 @@ CEL_NOVIDADES['9.4'] = ['🏛️ Dados da CVM agora chegam pelo seu GitHub, toda
 CEL_NOVIDADES['9.5'] = ['🏛️ Os 30 FIIs do Explorar agora usam DY, P/VP e patrimônio dos dados oficiais da CVM com o preço do dia'];
 CEL_NOVIDADES['9.6'] = ['🚰 FIIs adicionados por você ganham a liquidez diária (média de 3 meses)'];
 CEL_NOVIDADES['10.0'] = ['🤖 Robô do Prumo: ações (Fundamentus), Tesouro (taxas do dia), ETFs do exterior, liquidez e vacância dos FIIs e fundos pela CVM, tudo sozinho', '💼 Fundos: coloque o CNPJ e o Prumo pega o quanto rendeu'];
+CEL_NOVIDADES['10.1'] = ['🤖 Robô Investidor (Investimentos › 🤖 Robô): indicações de ações, FIIs, Tesouro, exterior, criptos e fundos, com a conta da nota', '🎯 Placar de acertos: o robô se testa contra o Ibovespa, o IFIX e o Bitcoin', '₿ Criptos em duas listas: com fundamento e alta volatilidade (só simulada)'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -14348,6 +14376,265 @@ async function roboDetalhes() {
     <div class="row" style="gap:6px;margin-top:8px"><button class="btn" data-sm-fechar>Fechar</button></div>`);
 }
 document.addEventListener('click', (ev) => { if (ev.target.closest('[data-robo-ver]')) roboDetalhes(); }, true);
+
+/* ---------- v10.1 · 🤖 Robô Investidor: indicações, criptos, placar, avisos ---------- */
+const RB_VERSAO = 1;
+function rbI() { const I = garantirInvest(); if (!I.roboRegras) I.roboRegras = {}; if (!I.roboPlacar) I.roboPlacar = { snaps: [] }; if (!Array.isArray(I.roboSim)) I.roboSim = []; if (!I.roboSil) I.roboSil = {}; if (!Array.isArray(I.roboLog)) I.roboLog = []; return I; }
+const rbPctRank = (arr) => { const s = arr.filter((x) => x != null && isFinite(x)).sort((a, b) => a - b); return (v) => { if (v == null || !isFinite(v) || !s.length) return 0.5; let lo = 0, hi = s.length; while (lo < hi) { const m = (lo + hi) >> 1; if (s[m] < v) lo = m + 1; else hi = m; } return s.length > 1 ? lo / (s.length - 1) : 0.5; }; };
+const rbP = (v, d = 1) => (v == null ? '—' : String((+v).toFixed(d)).replace('.', ',') + '%');
+const rbN = (v, d = 2) => (v == null ? '—' : String((+v).toFixed(d)).replace('.', ','));
+const rbUSD = (v) => (v == null ? '—' : v >= 1 ? 'US$ ' + v.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) : 'US$ ' + v.toPrecision(3).replace('.', ','));
+const rbBi = (v) => (v >= 1e9 ? 'US$ ' + (v / 1e9).toFixed(1).replace('.', ',') + ' bi' : 'US$ ' + (v / 1e6).toFixed(0) + ' mi');
+const rbNomeAcao = (t) => (EXP_ACOES.find((x) => x[0] === t)?.[1]) || (xaLista('acoes').find((e) => e.t === t)?.nome) || '';
+const rbSegAcao = (t) => EXP_ACOES.find((x) => x[0] === t && !x.xa)?.[2] || '';
+/* ---------- regras ---------- */
+const RB_REGRAS = [
+  ['teto', 'Ação acompanhada abaixo do preço-teto do Bazin', true], ['dycaiu', 'DY caiu mais de {v}% em 4 semanas', true, 20, '%'], ['ipca', 'Tesouro IPCA+ acima de {v}%', true, 6.5, '%'],
+  ['conc', 'Um ativo com mais de {v}% da carteira', true, 25, '%'], ['cripto', 'Cripto acima de {v}% do patrimônio investido', true, 1, '%'], ['vac', 'Vacância do FII acima de {v}%', true, 10, '%'],
+  ['fundo', 'Fundo rendendo menos que o Tesouro Selic', true], ['queda', 'Preço caiu mais de {v}% em 1 mês (oportunidade ou problema?)', false, 15, '%'], ['raiox', 'Raio-X com mais de 6 meses', true],
+  ['diario', 'Decisão do Diário esperando confirmação', true], ['reserva', 'Reserva de emergência incompleta', true], ['seq', 'Sequência de meses investindo', true],
+  ['peneira', 'Ação da carteira saiu da peneira do robô', true], ['cara', 'Ação da carteira ficou cara (segure, não compre mais)', true], ['dados', 'Dados do robô desatualizados', true],
+];
+const rbRegra = (id) => { const R = RB_REGRAS.find((r) => r[0] === id); const c = rbI().roboRegras[id] || {}; return { on: c.on ?? R[2], v: c.v ?? R[3] }; };
+/* ---------- ações ---------- */
+const RB_LIQ_MIN = 2;
+function rbAcoes() {
+  const R = roboCache(); const A = R?.acoes; if (!A) return null;
+  const porRaiz = {}; Object.entries(A).forEach(([t, d]) => { const k = t.slice(0, 4); if (!porRaiz[k] || (d.liq || 0) > (porRaiz[k][1].liq || 0)) porRaiz[k] = [t, d]; });
+  const todas = Object.values(porRaiz);
+  const U = todas.filter(([, d]) => (d.liq || 0) >= RB_LIQ_MIN && d.pl >= 3 && d.pl <= 25 && (d.roe || 0) >= 8 && (d.div == null || d.div <= 2) && (d.dy == null || d.dy <= 15) && (d.mliq == null || d.mliq > 0));
+  const pr = { roe: rbPctRank(U.map(([, d]) => d.roe)), mliq: rbPctRank(U.map(([, d]) => d.mliq)), cresc: rbPctRank(U.map(([, d]) => d.cresc)), div: rbPctRank(U.map(([, d]) => d.div)), ey: rbPctRank(U.map(([, d]) => 1 / d.pl)), pvp: rbPctRank(U.map(([, d]) => d.pvp)) };
+  const dyS = (y) => (y == null ? 0.3 : y < 2 ? 0.1 : y < 4 ? 0.35 : y < 6 ? 0.65 : y <= 12 ? 1 : 0.6);
+  const L = U.map(([t, d]) => {
+    const seg = rbSegAcao(t); const per = seg ? (PERENES.includes(seg) ? 1 : 0.3) : 0.5; const rx = typeof raioxNota === 'function' ? raioxNota(t) : null;
+    const f = { qual: 35 * (0.45 * pr.roe(d.roe) + 0.3 * pr.mliq(d.mliq) + 0.15 * pr.cresc(d.cresc) + 0.1 * (1 - pr.div(d.div))), preco: 25 * (0.55 * pr.ey(1 / d.pl) + 0.25 * (1 - pr.pvp(d.pvp)) + 0.2 * Math.min(1, (d.dy || 0) / 6)), renda: 25 * dyS(d.dy), extra: 15 * (0.5 * per + 0.5 * (rx == null ? 0.5 : rx / 7)) };
+    const pros = [], contras = [];
+    if (d.roe >= 15) pros.push(`ROE ${rbP(d.roe)}`); if (d.dy >= 6 && d.dy <= 12) pros.push(`DY ${rbP(d.dy)} (faixa ideal)`); if (d.dy >= 6) pros.push('abaixo do teto do Bazin'); if (d.pl <= 10) pros.push(`barata pelo lucro (P/L ${rbN(d.pl)})`); if (d.div != null && d.div <= 0.5) pros.push('pouca dívida'); if (d.cresc >= 10) pros.push(`vendas crescendo ${rbP(d.cresc)} ao ano`); if (per === 1) pros.push('setor perene (Barsi)'); if (rx >= 6) pros.push(`seu Raio-X ${rx}/7`);
+    if (d.div > 1.2) contras.push(`dívida ÷ patrimônio ${rbN(d.div)}`); if (d.cresc != null && d.cresc < 0) contras.push('vendas caindo em 5 anos'); if (d.dy != null && d.dy < 4) contras.push(`paga pouco (DY ${rbP(d.dy)})`); if (d.pl > 18) contras.push(`cara pelo lucro (P/L ${rbN(d.pl)})`); if (d.mliq != null && d.mliq < 8) contras.push(`margem baixa (${rbP(d.mliq)})`); if (d.dy > 12) contras.push('DY alto: confira se é dividendo extra'); if (rx != null && rx < 5) contras.push(`seu Raio-X ${rx}/7`);
+    return { tipo: 'acoes', t, nome: rbNomeAcao(t), seg, d, f, nota: Math.round(f.qual + f.preco + f.renda + f.extra), pros, contras };
+  }).sort((a, b) => b.nota - a.nota);
+  return { L, total: Object.keys(A).length, peneira: U.length };
+}
+/* ---------- FIIs ---------- */
+function rbFiis() {
+  const R = roboCache(); const F = R?.fiis; if (!F) return null; const C = cvmCache()?.F || {};
+  const U = Object.entries(F).filter(([, d]) => (d.liq || 0) >= 1 && d.pvp >= 0.7 && d.pvp <= 1.2 && d.dy >= 6 && d.dy <= 16 && (d.vm == null || d.vm >= 0.5) && (d.vac == null || d.vac <= 20));
+  const pr = { liq: rbPctRank(U.map(([, d]) => d.liq)), vm: rbPctRank(U.map(([, d]) => d.vm)), cot: rbPctRank(U.map(([t]) => C[t.slice(0, 4)]?.cot)) };
+  const dyS = (y) => (y >= 8 && y <= 13 ? 1 : y >= 6 && y < 8 ? 0.6 : 0.5);
+  const L = U.map(([t, d]) => { const cv = C[t.slice(0, 4)]; const papel = /papel|t[ií]tulo|receb|cri/i.test(d.seg || '');
+    const f = { renda: 30 * dyS(d.dy), preco: 20 * (1 - Math.min(1, Math.abs(d.pvp - 0.95) / 0.25)), liq: 15 * pr.liq(d.liq), tam: 15 * pr.vm(d.vm), vac: 10 * (d.vac == null || papel ? 0.6 : Math.max(0, 1 - d.vac / 15)), cot: 10 * (cv?.cot ? pr.cot(cv.cot) : 0.5) };
+    const pros = [], contras = [];
+    if (d.dy >= 8 && d.dy <= 13) pros.push(`DY ${rbP(d.dy)}`); if (d.pvp >= 0.85 && d.pvp <= 1.05) pros.push(`preço justo (P/VP ${rbN(d.pvp)})`); if (d.pvp < 0.85) pros.push(`com desconto (P/VP ${rbN(d.pvp)})`); if (!papel && d.vac != null && d.vac <= 5) pros.push(`vacância ${rbP(d.vac)}`); if (d.liq >= 5) pros.push(`muito negociado (R$ ${rbN(d.liq, 1)} mi/dia)`); if (cv?.cot >= 100000) pros.push(`${Math.round(cv.cot / 1000)} mil cotistas`); if (d.imov >= 10) pros.push(`${Math.round(d.imov)} imóveis`);
+    if (d.dy > 13) contras.push('DY alto: confira se é extra'); if (d.pvp > 1.08) contras.push(`caro (P/VP ${rbN(d.pvp)})`); if (!papel && d.vac > 10) contras.push(`vacância ${rbP(d.vac)}`); if (!papel && d.imov != null && d.imov < 3) contras.push('poucos imóveis'); if (papel) contras.push('papel: rende menos quando a Selic cair');
+    return { tipo: 'fiis', t, nome: cv?.nome || EXP_FIIS.find((x) => x[0] === t)?.[1] || '', seg: d.seg || '', d, cv, f, nota: Math.round(Object.values(f).reduce((a, b) => a + b, 0)), pros, contras };
+  }).sort((a, b) => b.nota - a.nota);
+  return { L, total: Object.keys(F).length, peneira: U.length };
+}
+/* ---------- criptos ---------- */
+function rbCriptoFund() {
+  const M = roboCache()?.cripto?.moedas; if (!M) return null;
+  const U = M.filter((m) => m.rank && m.rank <= 100 && m.mc >= 1e9 && m.vol / m.mc >= 0.01 && (m.idade == null || m.idade >= 2));
+  const pr = { mc: rbPctRank(U.map((m) => Math.log(m.mc))), liq: rbPctRank(U.map((m) => m.vol / m.mc)), vol: rbPctRank(U.map((m) => m.volat)) };
+  const L = U.map((m) => { const emis = m.max ? (m.circ / m.max >= 0.8 ? 1 : 0.7) : m.total && m.circ / m.total >= 0.9 ? 0.6 : 0.35;
+    const f = { tam: 25 * pr.mc(Math.log(m.mc)), liq: 15 * pr.liq(m.vol / m.mc), idade: 15 * (m.idade == null ? 0.4 : Math.min(1, m.idade / 3)), emis: 15 * emis, estab: 15 * (m.volat == null ? 0.5 : 1 - pr.vol(m.volat)), resil: 15 * (m.ath_chg > -50 ? 1 : m.ath_chg > -75 ? 0.5 : 0.2) };
+    const pros = [], contras = [];
+    if (m.rank <= 10) pros.push(`entre as 10 maiores (nº ${m.rank})`); if (m.max) pros.push('tem limite máximo de moedas'); if (m.idade >= 3) pros.push('mais de 3 anos de mercado'); if (m.ath_chg > -40) pros.push(`perto do topo (${rbP(m.ath_chg, 0)})`); if (m.vol / m.mc >= 0.05) pros.push('muito negociada');
+    if (!m.max && !(m.total && m.circ / m.total >= 0.9)) contras.push('emissão de moedas novas sem limite'); if (m.ath_chg <= -70) contras.push(`ainda ${rbP(m.ath_chg, 0)} abaixo do topo`); if (m.dd != null && m.dd <= -60) contras.push(`maior queda em 1 ano: ${rbP(m.dd, 0)}`); if (m.idade != null && m.idade < 3) contras.push(`nova (${rbN(m.idade, 1)} anos)`);
+    return { tipo: 'cripto', t: m.s, nome: m.nome, m, f, nota: Math.round(Object.values(f).reduce((a, b) => a + b, 0)), pros, contras };
+  }).sort((a, b) => b.nota - a.nota);
+  return { L, total: M.length, peneira: U.length };
+}
+function rbCriptoVol() {
+  const M = roboCache()?.cripto?.moedas; if (!M) return null;
+  const L = M.filter((m) => m.s !== 'BTC' && m.beta >= 1.3 && m.corr >= 0.6 && m.vol >= 10e6 && m.rank <= 200 && m.up != null).map((m) => ({ tipo: 'volatil', t: m.s, nome: m.nome, m, nota: Math.round(Math.min(100, m.up * 30 + m.corr * 30)) })).sort((a, b) => b.m.up - a.m.up);
+  return { L, total: M.length };
+}
+/* ---------- Tesouro, exterior, fundos ---------- */
+function rbTesouro() {
+  const T = roboCache()?.tesouro; if (!T) return null; const sel = invTaxas().selic; const lim = rbRegra('ipca').v; const L = T.titulos.filter((t) => t.taxa > 0);
+  const melhor = (re) => L.filter((t) => re.test(t.tipo) && !/juros semestrais/i.test(t.tipo)).sort((a, b) => b.venc.localeCompare(a.venc))[0];
+  const ipca = melhor(/^Tesouro IPCA\+$/i), pre = L.filter((t) => /^Tesouro Prefixado$/i.test(t.tipo)).sort((a, b) => b.taxa - a.taxa)[0], selic = melhor(/selic/i), renda = melhor(/renda\+/i);
+  const it = [];
+  if (selic) it.push({ nome: `Tesouro Selic ${selic.venc.slice(0, 4)}`, taxa: `Selic + ${rbN(selic.taxa, 4)}%`, uso: 'Reserva de emergência', ok: true, porque: 'O mais seguro do país, com liquidez diária. É onde fica a reserva.' });
+  if (ipca) it.push({ nome: `Tesouro IPCA+ ${ipca.venc.slice(0, 4)}`, taxa: `IPCA + ${rbN(ipca.taxa)}%`, uso: 'Aposentadoria (longo prazo)', ok: ipca.taxa >= lim, porque: ipca.taxa >= lim ? `Taxa acima de ${rbN(lim, 1)}%: historicamente muito boa para garantir ganho acima da inflação.` : `Taxa abaixo de ${rbN(lim, 1)}%: boa, mas não excepcional.` });
+  if (pre) it.push({ nome: `Tesouro Prefixado ${pre.venc.slice(0, 4)}`, taxa: `${rbN(pre.taxa)}% ao ano`, uso: 'Objetivo com data marcada', ok: pre.taxa >= sel - 0.5, porque: pre.taxa >= sel ? 'Paga mais que a Selic de hoje: trava uma taxa alta.' : 'Paga perto ou menos que a Selic: o Selic é mais simples.' });
+  if (renda) it.push({ nome: `Tesouro Renda+ ${renda.venc.slice(0, 4)}`, taxa: `IPCA + ${rbN(renda.taxa)}%`, uso: 'Aposentadoria com renda mensal', ok: renda.taxa >= lim - 0.3, porque: 'Paga 20 anos de renda mensal corrigida pela inflação a partir da data escolhida.' });
+  return { it, data: T.data };
+}
+function rbExterior() {
+  const E = roboCache()?.etfus || {}; const foco = { base: 1, dividendos: 0.75, complemento: 0.6, 'proteção': 0.5 };
+  return EXP_ETFUS.map((x) => { const d = E[x[0]]; const nota = Math.round(45 * (1 - Math.min(x[3], 0.5) / 0.5) + 35 * (foco[x[5]] ?? 0.5) + 20 * (d ? 1 : 0.5));
+    return { t: x[0], nome: x[1], dentro: x[2], tx: x[3], foco: x[5], d, nota, pros: [`taxa ${rbP(x[3], 2)} ao ano`, x[2]], contras: [d?.dy ? `dividendos ${rbP(d.dy, 2)} (30% de imposto nos EUA)` : 'imposto de 30% nos dividendos'] }; }).sort((a, b) => b.nota - a.nota);
+}
+function rbFundos() { return (db.invest.fundos || []).map((f) => ({ f, c: fiCalc(f, 12) })).sort((a, b) => b.c.liqAno - a.c.liqAno); }
+/* ---------- placar ---------- */
+const rbYm = () => ymOf(hoje());
+const rbMeses = (a, b) => (+b.slice(0, 4) - +a.slice(0, 4)) * 12 + (+b.slice(5, 7) - +a.slice(5, 7));
+function rbPrecoAgora(tipo, t) { const R = roboCache(); if (tipo === 'acoes') return R?.acoes?.[t]?.cot; if (tipo === 'fiis') return R?.fiis?.[t]?.cot; return R?.cripto?.moedas?.find((m) => m.s === t)?.preco; }
+function rbBench(tipo) { const R = roboCache(); if (tipo === 'acoes') return { nome: 'Ibovespa', p: R?.indices?.BOVA11 || R?.indices?.IBOV }; if (tipo === 'fiis') return { nome: 'IFIX', p: R?.indices?.XFIX11 }; return { nome: 'Bitcoin', p: R?.cripto?.moedas?.find((m) => m.s === 'BTC')?.preco }; }
+function rbGuardarMes(listas) {
+  const P = rbI().roboPlacar; const ym = rbYm(); let mudou = false;
+  Object.entries(listas).forEach(([tipo, L]) => { if (!L || !L.length || P.snaps.some((s) => s.ym === ym && s.tipo === tipo)) return; const b = rbBench(tipo); if (!b.p) return;
+    const itens = L.slice(0, tipo === 'volatil' ? 3 : 5).map((x) => ({ t: x.t, p: tipo === 'acoes' ? x.d.cot : tipo === 'fiis' ? x.d.cot : x.m.preco, nota: x.nota, f: x.f ? Object.fromEntries(Object.entries(x.f).map(([k, v]) => [k, Math.round(v * 10) / 10])) : null })).filter((i) => i.p > 0);
+    if (itens.length) { P.snaps.push({ ym, tipo, d: hoje(), itens, bench: b, v: RB_VERSAO }); mudou = true; } });
+  if (mudou) { P.snaps = P.snaps.slice(-240); setTimeout(() => changed(), 0); }
+}
+function rbAvaliar() {
+  const P = rbI().roboPlacar; const ym = rbYm(); const linhas = [];
+  P.snaps.forEach((s) => { const bA = rbBench(s.tipo).p; const idade = rbMeses(s.ym, ym); s.itens.forEach((i) => { const a = rbPrecoAgora(s.tipo, i.t); if (!(a > 0) || !(bA > 0)) return; const r = a / i.p - 1, rb = bA / s.bench.p - 1; linhas.push({ ...i, tipo: s.tipo, ym: s.ym, idade, r, rb, ganhou: r > rb, bench: s.bench.nome }); }); });
+  const fx = (min) => { const L = linhas.filter((l) => l.idade >= min && l.tipo !== 'volatil'); return { n: L.length, ok: L.filter((l) => l.ganhou).length }; };
+  // aprendizado: qual parte da nota mais acertou (precisa de pelo menos 8 indicações com 3 meses)
+  const mad = linhas.filter((l) => l.idade >= 3 && l.f && l.tipo === 'acoes'); let fatores = null;
+  if (mad.length >= 8) { fatores = Object.keys(mad[0].f).map((k) => { const v = mad.map((l) => l.f[k]).sort((a, b) => a - b); const med = v[v.length >> 1]; const alto = mad.filter((l) => l.f[k] > med), baixo = mad.filter((l) => l.f[k] <= med); const m = (L) => (L.length ? L.reduce((s, l) => s + (l.r - l.rb), 0) / L.length : 0); return { k, dif: m(alto) - m(baixo) }; }).sort((a, b) => b.dif - a.dif); }
+  return { linhas, m3: fx(3), m6: fx(6), m12: fx(12), geral: fx(1), fatores };
+}
+/* ---------- avisos ---------- */
+function rbAcompanhados() {
+  const I = garantirInvest(); const S = new Set();
+  (I.ativos || []).filter((a) => a.ticker && !a.encerrado).forEach((a) => S.add(a.ticker.toUpperCase()));
+  (I.observar || []).forEach((t) => S.add(t)); try { const C = inv83().cesta; [...C.acoes, ...C.fiis].forEach((t) => S.add(t)); } catch (e) {}
+  ['acoes', 'fiis'].forEach((k) => xaLista(k).forEach((e) => S.add(e.t)));
+  return [...S];
+}
+function rbHist() { try { return JSON.parse(lsGet('robo-hist') || '{}'); } catch (e) { return {}; } }
+function rbGuardarHist() { const R = roboCache(); if (!R) return; const H = rbHist(); const d = hoje(); let mud = false;
+  rbAcompanhados().forEach((t) => { const x = R.acoes?.[t] || R.fiis?.[t]; if (!x) return; const L = (H[t] = H[t] || []); if (L.length && L[L.length - 1][0] === d) return; L.push([d, x.dy ?? null, x.cot ?? null]); H[t] = L.slice(-60); mud = true; });
+  if (mud) try { lsSet('robo-hist', JSON.stringify(H)); } catch (e) {} }
+function rbAntigo(t, dias) { const L = rbHist()[t] || []; const alvo = addDias(hoje(), -dias); return [...L].reverse().find((x) => x[0] <= alvo) || null; }
+function rbAvisos() {
+  const R = roboCache(); const I = rbI(); const out = []; const A = (on, id, key, nivel, titulo, texto, porque) => { if (on) out.push({ id, key, nivel, titulo, texto, porque }); };
+  const ac = rbAcompanhados();
+  if (R?.acoes) ac.forEach((t) => { const d = R.acoes[t]; if (!d) return; A(rbRegra('teto').on && d.dy >= 6 && d.pl > 0, 'teto', 'teto-' + t, 'g', `${t} está abaixo do preço-teto`, `DY ${rbP(d.dy)} · P/L ${rbN(d.pl)}${typeof raioxNota === 'function' && raioxNota(t) != null ? ' · Raio-X ' + raioxNota(t) + '/7' : ''}`, `Pelo método Bazin, a ação paga 6% ou mais ao ano no preço de hoje (DY ${rbP(d.dy)}). Confira no Raio-X se o lucro é estável.`); });
+  ac.forEach((t) => { const x = R?.acoes?.[t] || R?.fiis?.[t]; if (!x) return; const o = rbAntigo(t, 25);
+    if (o && o[1] > 0 && x.dy != null) { const lim = rbRegra('dycaiu'); A(lim.on && x.dy < o[1] * (1 - lim.v / 100), 'dycaiu', 'dy-' + t, 'y', `${t}: dividend yield caiu`, `De ${rbP(o[1])} para ${rbP(x.dy)} em 4 semanas.`, 'O DY cai quando o preço sobe muito ou quando a empresa/fundo paga menos. Abra o Saiba mais para ver qual dos dois.'); }
+    if (o && o[2] > 0 && x.cot) { const lim = rbRegra('queda'); A(lim.on && x.cot < o[2] * (1 - lim.v / 100), 'queda', 'queda-' + t, 'y', `${t} caiu ${rbP((1 - x.cot / o[2]) * 100, 0)} em 1 mês`, 'Oportunidade ou problema? Veja as notícias da semana no Saiba mais antes de decidir.', 'Queda forte pode ser exagero do mercado (oportunidade, como dizia Barsi) ou um problema real (corte de dividendos, prejuízo, dívida).'); } });
+  const td = rbTesouro(); const ip = td?.it.find((x) => /IPCA\+ \d/.test(x.nome)); if (ip && ip.ok) A(rbRegra('ipca').on, 'ipca', 'ipca-' + td.data, 'g', `${ip.nome} pagando ${ip.taxa}`, `Acima de ${rbN(rbRegra('ipca').v, 1)}%: historicamente bom para a aposentadoria.`, 'Garantir ganho acima da inflação por muitos anos é o que o Graham chamaria de margem de segurança. Lembre: o preço oscila se vender antes do vencimento.');
+  const pos = (I.ativos || []).filter((a) => !a.encerrado).map((a) => { try { return { a, v: posicao(a).atual || 0 }; } catch (e) { return { a, v: 0 }; } }).filter((x) => x.v > 0); const tot = pos.reduce((s, x) => s + x.v, 0);
+  if (tot > 0) { const lc = rbRegra('conc'); pos.forEach(({ a, v }) => { if (/selic|poupan|cdb|lci|lca/i.test(a.classe || '')) return; A(lc.on && v / tot > lc.v / 100 && pos.length > 2, 'conc', 'conc-' + a.id, 'r', `Concentração: ${rbP((v / tot) * 100, 0)} da carteira em ${a.ticker || a.nome}`, `A regra do robô pede no máximo ${lc.v}% num ativo só. Nas próximas compras, prefira outros.`, 'Diversificar protege de um problema numa empresa só (Bogle). O Barsi concentra, mas ele estuda há 50 anos e aceita perdas.'); });
+    const vc = pos.filter(({ a }) => /cripto/i.test(a.classe || '')).reduce((s, x) => s + x.v, 0); const lcr = rbRegra('cripto'); A(lcr.on && vc / tot > lcr.v / 100, 'cripto', 'cripto-lim', 'r', `Cripto em ${rbP((vc / tot) * 100, 1)} do patrimônio`, `O seu plano diz no máximo ${lcr.v}%. Não compre mais até voltar ao limite.`, 'Regra combinada com a Helen no plano de longo prazo.'); }
+  if (R?.fiis) ac.forEach((t) => { const d = R.fiis[t]; if (!d || d.vac == null || /papel|t[ií]tulo/i.test(d.seg || '')) return; const lv = rbRegra('vac'); A(lv.on && d.vac > lv.v, 'vac', 'vac-' + t, 'y', `${t}: vacância de ${rbP(d.vac)}`, `Acima de ${lv.v}%: parte dos imóveis está sem pagar aluguel.`, 'Imóvel vazio não paga aluguel e ainda custa condomínio e IPTU. Veja no relatório do fundo se há novos inquilinos chegando.'); });
+  (db.invest.fundos || []).forEach((f) => { const c = fiCalc(f, 12); A(rbRegra('fundo').on && !c.ganha, 'fundo', 'fundo-' + f.id, 'y', `${f.nome} rende menos que o Tesouro Selic`, `Pelo que rendeu em 12 meses, já sem imposto.`, 'Se um fundo não bate o Tesouro Selic, que é o mais seguro, ele está cobrando caro pelo risco.'); });
+  try { const RX = inv83().raiox; Object.entries(RX).forEach(([t, r]) => { if (r.em && r.em < addDias(hoje(), -180)) A(rbRegra('raiox').on, 'raiox', 'rx-' + t + r.em, 'b', `Raio-X de ${t} tem mais de 6 meses`, 'Os números mudam. Refaça (leva 5 minutos).', 'O Graham revisava as empresas com frequência: o que era sólido pode ter mudado.'); }); } catch (e) {}
+  try { inv83().diario.filter((d) => d.st === 'espera' && d.libera < Date.now()).forEach((d) => A(rbRegra('diario').on, 'diario', 'di-' + d.id, 'b', 'Decisão no Diário esperando você', `"${esc(d.acao)}": passaram as 24 horas. Ainda faz sentido?`, 'Fechar cada decisão ajuda a ver, com o tempo, quais decisões foram boas.')); } catch (e) {}
+  try { const m = resMeta(); const p = m.alvo ? m.acumulado / m.alvo : 0; A(rbRegra('reserva').on && p < 1, 'reserva', 'res-' + rbYm(), 'b', `Reserva de emergência em ${rbP(p * 100, 0)}`, 'Antes de cripto e de valores maiores na bolsa, complete a reserva.', 'É a regra 2 do seu plano: primeiro a reserva. Ela evita vender investimento na hora errada.'); } catch (e) {}
+  try { let n = 0, ym = rbYm(); const I3 = inv83(); const fez = (m) => I3.cestaHist.some((h) => h.ym === m && !h.pulou) || I3.reservaHist.some((h) => h.ym === m) || (I3.movs || []).some((x) => x.tipo === 'compra' && ymOf(x.data) === m); if (!fez(ym)) ym = addM(ym, -1); while (fez(ym) && n < 60) { n++; ym = addM(ym, -1); } A(rbRegra('seq').on && n >= 2, 'seq', 'seq-' + rbYm(), 'g', `🔥 ${n} meses seguidos investindo`, 'Constância é o que o Barsi e o Ronald Read tinham em comum.', 'Cada mês conta, mesmo pequeno.'); } catch (e) {}
+  if (R?.acoes) { const ok = new Set((rbAcoes()?.L || []).map((x) => x.t)); (I.ativos || []).filter((a) => a.ticker && !a.encerrado && /a[cç][oõ]es/i.test(a.classe || '')).forEach((a) => { const t = a.ticker.toUpperCase(); const d = R.acoes[t]; if (!d) return;
+    A(rbRegra('peneira').on && !ok.has(t) && !ok.has(Object.keys(R.acoes).find((k) => k.slice(0, 4) === t.slice(0, 4) && ok.has(k))), 'peneira', 'pen-' + t + rbYm(), 'y', `${t} saiu da peneira do robô`, 'Algum número piorou (lucro, dívida ou negociação). Reveja o Raio-X.', `Hoje: P/L ${rbN(d.pl)} · ROE ${rbP(d.roe)} · dívida/patrimônio ${rbN(d.div)} · negociado R$ ${rbN(d.liq, 1)} mi/dia.`);
+    A(rbRegra('cara').on && d.dy != null && d.dy < 4 && d.pl > 20, 'cara', 'cara-' + t + rbYm(), 'b', `${t} ficou cara`, `DY ${rbP(d.dy)} e P/L ${rbN(d.pl)}. Segure o que tem, mas não compre mais agora.`, 'Pelo Bazin e pelo Graham, comprar caro diminui a margem de segurança.'); }); }
+  const idade = R ? (Date.now() - R.em) / 864e5 : null; A(rbRegra('dados').on && (R == null || idade > 4), 'dados', 'dados', 'y', 'Dados do robô desatualizados', R ? `Última atualização há ${Math.floor(idade)} dias.` : 'O robô de dados ainda não respondeu.', 'Confira no GitHub se o "Robô de dados do Prumo" está rodando (Actions).');
+  const agora = Date.now(); const vis = out.filter((a) => !(I.roboSil[a.key] > agora)); const ordem = { r: 0, y: 1, g: 2, b: 3 }; vis.sort((a, b) => ordem[a.nivel] - ordem[b.nivel]);
+  // histórico
+  const novos = vis.filter((a) => !I.roboLog.some((l) => l.key === a.key)); if (novos.length) { novos.forEach((a) => I.roboLog.push({ d: hoje(), key: a.key, nivel: a.nivel, titulo: a.titulo.replace(/<[^>]+>/g, '') })); I.roboLog = I.roboLog.slice(-300); setTimeout(() => changed(), 0); }
+  return vis;
+}
+/* ---------- veredito ---------- */
+function rbVeredito() {
+  let at = { casa: [], loja: [] }; try { at = semAtrasos(); } catch (e) {} const n = at.casa.length + at.loja.length; const I3 = inv83(); const ym = rbYm();
+  const feita = I3.cestaHist.some((h) => h.ym === ym && !h.pulou); const pend = I3.diario.some((d) => d.st === 'espera'); let res = 0; try { const m = resMeta(); res = m.alvo ? m.acumulado / m.alvo : 0; } catch (e) {}
+  if (n) return ['r', `Hoje: não é mês de investir.`, `${n} conta${n > 1 ? 's' : ''} atrasada${n > 1 ? 's' : ''}. Primeiro acertar, depois investir. Sem culpa.`];
+  if (feita) return ['g', 'Compra do mês já feita ✔', 'Agora é estudar com calma as indicações abaixo e esperar o próximo mês.'];
+  if (pend) return ['y', 'Antes de comprar: feche a decisão do Diário.', 'Tem uma decisão esperando as 24 horas ou a sua confirmação.'];
+  return ['g', `Hoje: dá para fazer a Compra do mês (${fmt0(Number(I3.cestaValor) || 80)}).`, `Contas em dia · reserva em ${Math.round(res * 100)}% · nenhuma decisão pendente.`];
+}
+/* ---------- telas ---------- */
+const rbCor = { g: 'rb-g', y: 'rb-y', r: 'rb-r', b: 'rb-b' }, rbIco = { g: '🟢', y: '🟡', r: '🔴', b: '🔵' };
+function rbAvisoHtml(a, i) { return `<div class="rb-al ${rbCor[a.nivel]}"><b>${rbIco[a.nivel]} ${a.titulo}</b><span>${a.texto}</span><div class="rb-al-b"><button class="rb-lk" data-rb-pq="${i}">Por que este aviso?</button><button class="rb-lk" data-rb-sil="${esc(a.key)}">Silenciar 30 dias</button></div><div class="rb-pq" data-rb-pqbox="${i}" hidden>${a.porque}</div></div>`; }
+function rbItemHtml(x, i, tipo) {
+  const md = ['🥇', '🥈', '🥉'][i] || `${i + 1}.`; const linha = tipo === 'acoes' ? `${esc(x.nome || '')}${x.seg ? ' · ' + esc(x.seg) : ''}` : tipo === 'fiis' ? `${esc((x.nome || '').slice(0, 34))}${x.seg ? ' · ' + esc(x.seg) : ''}` : esc(x.nome || '');
+  const preco = tipo === 'cripto' ? rbUSD(x.m.preco) : x.d?.cot ? fmt(x.d.cot) : '';
+  return `<div class="rb-pk" data-rb-det="${tipo}|${esc(x.t)}"><div class="rb-pk-h"><span><span class="rb-md">${md}</span><b>${esc(x.t)}</b> <small class="muted">${linha}</small></span><span><small class="muted">${preco}</small> <b class="rb-nota">${x.nota}</b></span></div><div class="rb-bar"><i style="width:${x.nota}%"></i></div>
+    ${i < 5 ? `<div class="rb-pros">${x.pros.slice(0, 4).map((p) => '✔ ' + p).join(' · ')}${x.contras.length ? ' · ' + x.contras.slice(0, 2).map((p) => '✘ ' + p).join(' · ') : ''}</div>` : ''}</div>`;
+}
+function rbIndicacoes(tipo) {
+  const mais = ui.rbMais === tipo; const n = mais ? 20 : 5;
+  if (tipo === 'acoes' || tipo === 'fiis') {
+    const r = tipo === 'acoes' ? rbAcoes() : rbFiis(); if (!r) return rbSemDados();
+    return `<p class="small muted" style="margin:0 0 8px">Analisou <b>${r.total}</b> ${tipo === 'acoes' ? 'ações' : 'FIIs'} da bolsa · <b>${r.peneira}</b> passaram na peneira · toque numa indicação para ver a conta da nota.</p>
+      ${r.L.slice(0, n).map((x, i) => rbItemHtml(x, i, tipo)).join('')}
+      <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px"><button class="btn sm" data-rb-mais="${tipo}">${mais ? 'Ver só as 5' : 'Ver as 20 melhores'}</button><button class="btn sm primary" data-rb-cesta="${tipo}">🧺 Usar a 1ª na Compra do mês</button></div>
+      ${rbComoDecide(tipo)}`;
+  }
+  if (tipo === 'cripto') {
+    const f = rbCriptoFund(), v = rbCriptoVol(); if (!f) return rbSemDados();
+    const sim = rbI().roboSim; const ini = sim.length ? sim.map((s) => s.em).sort()[0] : null; const meses = ini ? Math.floor((Date.now() - new Date(ini).getTime()) / (30.4 * 864e5)) : 0;
+    return `<div class="rb-cx"><b>🧱 Cripto com fundamento</b> <small class="muted">(pode ir para a carteira, até ${rbRegra('cripto').v}% do patrimônio)</small><p class="small muted" style="margin:4px 0 8px">Analisou ${f.total} moedas · ${f.peneira} passaram (entre as 100 maiores, mais de US$ 1 bi, negociadas todo dia, com 2 anos ou mais).</p>
+      ${f.L.slice(0, mais ? 15 : 5).map((x, i) => rbItemHtml(x, i, 'cripto')).join('')}<button class="btn sm" data-rb-mais="cripto">${mais ? 'Ver só as 5' : 'Ver mais'}</button></div>
+      <div class="rb-cx rb-vol"><b>🎢 Alta volatilidade</b> <small class="muted">(só no Laboratório, com dinheiro de mentira)</small>
+      <p class="small" style="margin:4px 0 8px">Moedas que acompanham o Bitcoin com movimentos maiores. <b>Elas sobem mais e caem mais.</b> O robô simula cada indicação com R$ 100 de mentira; o placar mostra se teria dado certo.</p>
+      ${v.L.slice(0, 6).map((x) => `<div class="rb-v"><div><b>${esc(x.t)}</b> <small class="muted">${esc(x.nome)} · nº ${x.m.rank}</small><br><span class="small">Quando o BTC sobe 10%, ela sobe uns <b class="good">${Math.round(x.m.up * 10)}%</b> · quando cai 10%, ela cai uns <b class="bad">${Math.round((x.m.down || x.m.up) * 10)}%</b> · maior queda em 1 ano <b class="bad">${rbP(x.m.dd, 0)}</b></span></div><button class="btn sm" data-rb-sim="${esc(x.t)}">🧪 Simular R$ 100</button></div>`).join('') || '<p class="small muted">Nenhuma moeda passou nos critérios hoje.</p>'}
+      <p class="small muted" style="margin:8px 0 0">Simulação desde ${ini ? dmy(ini) : '— (comece simulando uma)'} · ${meses} de 6 meses da regra do seu plano. Nunca com alavancagem.</p></div>`;
+  }
+  if (tipo === 'tesouro') { const r = rbTesouro(); if (!r) return rbSemDados(); return `<p class="small muted" style="margin:0 0 8px">Taxas de compra do Tesouro Direto em ${r.data.split('-').reverse().join('/')} (Tesouro Transparente).</p>${r.it.map((x) => `<div class="rb-pk"><div class="rb-pk-h"><span><b>${x.nome}</b> <small class="muted">${x.uso}</small></span><b class="${x.ok ? 'good' : 'warn'}">${x.taxa}</b></div><div class="rb-pros">${x.ok ? '✔' : '•'} ${x.porque}</div></div>`).join('')}`; }
+  if (tipo === 'exterior') { const L = rbExterior(); return `<p class="small muted" style="margin:0 0 8px">ETFs grandes, de taxa baixa. Pela Rico, o <b>IVVB11</b> dá o S&amp;P 500 em reais, sem conta lá fora.</p>${L.slice(0, n).map((x, i) => `<div class="rb-pk"><div class="rb-pk-h"><span><span class="rb-md">${['🥇', '🥈', '🥉'][i] || i + 1 + '.'}</span><b>${x.t}</b> <small class="muted">${esc(x.nome)}</small></span><span><small class="muted">${x.d?.p ? 'US$ ' + rbN(x.d.p) : ''}</small> <b class="rb-nota">${x.nota}</b></span></div><div class="rb-pros">✔ ${x.pros.map(esc).join(' · ✔ ')} · ✘ ${x.contras.map(esc).join(' · ')}</div></div>`).join('')}<button class="btn sm" data-rb-mais="exterior">${mais ? 'Ver só as 5' : 'Ver todos'}</button>`; }
+  if (tipo === 'fundos') { const L = rbFundos(); return L.length ? `<p class="small muted" style="margin:0 0 8px">Os fundos do seu comparador, do melhor para o pior, já sem imposto, contra o Tesouro Selic.</p>${L.map(({ f, c }, i) => `<div class="rb-pk"><div class="rb-pk-h"><span><b>${i + 1}. ${esc(f.nome)}</b>${f.cnpj ? ' <small class="muted">🏛️ CVM</small>' : ''}</span><b class="${c.ganha ? 'good' : 'bad'}">${pfr(c.liqAno)}</b></div><div class="rb-pros">${c.ganha ? '✔ rende mais que o Tesouro Selic' : '✘ rende menos que o Tesouro Selic'}</div></div>`).join('')}` : '<p class="small muted">Nenhum fundo no comparador. Cadastre em Explorar › Fundos de investimento (com o CNPJ, ele se atualiza sozinho).</p>'; }
+  return '';
+}
+function rbComoDecide(tipo) {
+  const t = tipo === 'acoes' ? `<b>Peneira:</b> negociada acima de R$ ${RB_LIQ_MIN} mi/dia · P/L entre 3 e 25 · ROE de 8% ou mais · dívida ÷ patrimônio até 2 · DY até 15% · margem positiva.<br><b>Nota:</b> qualidade 35 (ROE, margem, crescimento, dívida) + preço 25 (lucro ÷ preço, P/VP, teto do Bazin) + renda 25 (DY entre 6% e 12%) + setor perene e seu Raio-X 15.`
+    : `<b>Peneira:</b> negociado acima de R$ 1 mi/dia · P/VP entre 0,7 e 1,2 · DY entre 6% e 16% · valor de mercado acima de R$ 500 mi · vacância até 20%.<br><b>Nota:</b> renda 30 (DY entre 8% e 13%) + preço 20 (P/VP perto de 0,95) + liquidez 15 + tamanho 15 + vacância 10 + cotistas 10 (CVM).`;
+  return `<details class="rb-como"><summary>🧠 Como o robô decide</summary><p class="small">${t}<br>Inspirado em Graham, Bazin, Barsi e na "fórmula mágica" de Greenblatt. As mesmas regras para todos, sem emoção.</p></details>`;
+}
+const rbSemDados = () => `<p class="small muted">${roboEstado === 'erro' ? esc(roboErro) : 'Esperando os dados do robô de dados.'} Rode o "Robô de dados do Prumo" no GitHub (Actions) depois de instalar a versão nova.</p>`;
+function rbPlacarHtml() {
+  const A = rbAvaliar(); const S = rbI().roboPlacar.snaps; const pc = (x) => (x.n ? `<b class="${x.ok / x.n >= 0.5 ? 'good' : 'bad'}">${x.ok} de ${x.n}</b>` : '<b>—</b>');
+  const prox = S.length ? addM(S.map((s) => s.ym).sort()[0], 3) : addM(rbYm(), 3);
+  const sim = rbI().roboSim.map((s) => { const a = rbPrecoAgora('cripto', s.s); return { ...s, atual: a ? (s.valor * a) / s.preco : null }; });
+  return `<p class="small muted" style="margin:0 0 8px">Todo mês o robô guarda as 5 primeiras indicações de ações e FIIs, as 5 de cripto e as 3 voláteis, com o preço do dia. Depois compara com o índice: Ibovespa (ações), IFIX (FIIs) e Bitcoin (criptos). Conta só o preço, sem dividendos.</p>
+    <div class="rb-pl"><div><small>3 meses</small>${pc(A.m3)}<small>bateram o índice</small></div><div><small>6 meses</small>${pc(A.m6)}<small>bateram</small></div><div><small>12 meses</small>${pc(A.m12)}<small>bateram</small></div><div><small>acerto geral</small><b class="${A.geral.n && A.geral.ok / A.geral.n >= 0.5 ? 'good' : ''}">${A.geral.n ? Math.round((A.geral.ok / A.geral.n) * 100) + '%' : '—'}</b><small>${A.geral.n ? A.geral.n + ' indicações' : 'primeiras notas em ' + MESES[+prox.slice(5, 7) - 1].toLowerCase() + '/' + prox.slice(2, 4)}</small></div></div>
+    ${A.fatores ? `<p class="small" style="margin:10px 0 0">🧠 <b>O que mais acertou até agora:</b> ${A.fatores.slice(0, 2).map((f) => ({ qual: 'qualidade', preco: 'preço', renda: 'renda', extra: 'setor/Raio-X' }[f.k] || f.k)).join(' e ')}. Nas próximas versões, essas partes ganham mais peso.</p>` : '<p class="small muted" style="margin:10px 0 0">🧠 Com 8 indicações de 3 meses ou mais, o robô mostra quais partes da nota mais acertaram, para os pesos serem ajustados com prova.</p>'}
+    ${A.linhas.length ? `<table class="rb-t"><tr><th>Indicação</th><th>Mês</th><th>Desde então</th><th>Índice</th></tr>${A.linhas.slice(-15).reverse().map((l) => `<tr><td>${esc(l.t)}${l.tipo === 'volatil' ? ' 🎢' : ''}</td><td>${MC[+l.ym.slice(5, 7) - 1]}/${l.ym.slice(2, 4)}</td><td class="${l.r >= 0 ? 'good' : 'bad'}">${l.r >= 0 ? '+' : ''}${rbP(l.r * 100)}</td><td>${l.rb >= 0 ? '+' : ''}${rbP(l.rb * 100)} <small class="muted">${l.bench}</small></td></tr>`).join('')}</table>` : ''}
+    ${sim.length ? `<h4 style="margin:12px 0 4px">🧪 Simulação de criptos voláteis (dinheiro de mentira)</h4>${sim.map((s) => `<div class="rb-v"><span><b>${esc(s.s)}</b> <small class="muted">desde ${dmy(s.em)}</small></span><b class="${s.atual >= s.valor ? 'good' : 'bad'}">${s.atual != null ? fmt(s.atual) : '—'} <small class="muted">de ${fmt(s.valor)}</small></b></div>`).join('')}<p class="small muted">Total: ${fmt(sim.reduce((a, s) => a + (s.atual ?? s.valor), 0))} de ${fmt(sim.reduce((a, s) => a + s.valor, 0))} simulados.</p>` : ''}`;
+}
+function rbRegrasHtml() {
+  return `<p class="small muted" style="margin:0 0 8px">Ligue, desligue e ajuste os limites. O robô usa estas regras para os avisos.</p>${RB_REGRAS.map(([id, nome, , pad, un]) => { const r = rbRegra(id); return `<div class="rb-rg"><span>${nome.replace('{v}', pad != null ? `<input class="rb-in" data-rb-regv="${id}" type="text" inputmode="decimal" value="${String(r.v).replace('.', ',')}">` : '')}</span><button class="rb-sw ${r.on ? 'on' : ''}" data-rb-regra="${id}" aria-label="ligar ou desligar"></button></div>`; }).join('')}<p class="small muted" style="margin:8px 0 0">Robô Investidor versão ${RB_VERSAO} · ${RB_REGRAS.length} regras · cada versão nova traz mais.</p>`;
+}
+function rbHistHtml() { const L = [...rbI().roboLog].reverse().slice(0, 60); return L.length ? L.map((l) => `<div class="rb-v"><span>${rbIco[l.nivel] || '•'} ${esc(l.titulo)}</span><small class="muted">${dmy(l.d).slice(0, 5)}</small></div>`).join('') : '<p class="small muted">Ainda sem avisos.</p>'; }
+function invRobo() {
+  rbI(); const R = roboGarantir(); try { rbGuardarHist(); } catch (e) {}
+  if (R) { try { const a = rbAcoes(), f = rbFiis(), c = rbCriptoFund(), v = rbCriptoVol(); rbGuardarMes({ acoes: a?.L, fiis: f?.L, cripto: c?.L, volatil: v?.L }); } catch (e) { console.warn('placar', e); } }
+  const V = rbVeredito(); let av = []; try { av = rbAvisos(); } catch (e) { console.warn('avisos', e); }
+  const aba = ui.rbAba || 'ind'; const tipo = ui.rbTipo || 'acoes';
+  const tipos = [['acoes', '📈 Ações'], ['fiis', '🏢 FIIs'], ['tesouro', '📜 Tesouro'], ['exterior', '🌎 Exterior'], ['cripto', '₿ Cripto'], ['fundos', '💼 Fundos']];
+  return `<div class="card rb-top"><div class="row-between" style="gap:8px;flex-wrap:wrap"><div><h2 style="margin:0">🤖 Robô Investidor</h2><span class="small muted">${R ? `dados de ${roboDataTxt(R.em)}` : 'esperando o robô de dados'} · ${RB_REGRAS.filter(([id]) => rbRegra(id).on).length} regras ligadas · versão ${RB_VERSAO}</span></div><button class="btn sm" data-robo-ver>🤖 Fontes</button></div>
+    <div class="rb-ver ${V[0]}"><span class="rb-dot"></span><div><b>${V[1]}</b><br><span class="small muted">${V[2]}</span></div></div></div>
+    <div class="card"><h3 style="margin:0 0 8px">📣 Avisos de hoje <small class="muted">(${av.length})</small></h3>${av.length ? av.map(rbAvisoHtml).join('') : '<p class="small muted" style="margin:0">Nada importante hoje. ✔</p>'}</div>
+    <div class="card"><div class="rb-abas">${[['ind', '🎯 Indicações'], ['placar', '📊 Placar de acertos'], ['regras', '⚙️ Regras'], ['hist', '📜 Histórico']].map(([k, n]) => `<button class="${aba === k ? 'on' : ''}" data-rb-aba="${k}">${n}</button>`).join('')}</div>
+      ${aba === 'ind' ? `<div class="rb-tipos">${tipos.map(([k, n]) => `<button class="${tipo === k ? 'on' : ''}" data-rb-tipo="${k}">${n}</button>`).join('')}</div>${rbIndicacoes(tipo)}` : aba === 'placar' ? rbPlacarHtml() : aba === 'regras' ? rbRegrasHtml() : rbHistHtml()}</div>
+    <div class="card small muted">🤖 Duas análises antes de qualquer compra: a <b>do robô</b> (regras iguais para todos, sem emoção) e a <b>sua</b> (Saiba mais, Raio-X, Status Invest e o Diário de 24 h com a Helen). O robô usa dados públicos e não sabe o futuro: o placar mostra a taxa real de acerto dele. Grátis, sem enviar seus dados para ninguém.</div>`;
+}
+function rbDetalhe(tipo, t) {
+  const r = tipo === 'acoes' ? rbAcoes() : tipo === 'fiis' ? rbFiis() : rbCriptoFund(); const x = r?.L.find((y) => y.t === t); if (!x) return;
+  const nomes = { qual: ['Qualidade', 35], preco: ['Preço', 25], renda: ['Renda', tipo === 'fiis' ? 30 : 25], extra: ['Setor + Raio-X', 15], liq: ['Liquidez', 15], tam: ['Tamanho', tipo === 'cripto' ? 25 : 15], vac: ['Vacância', 10], cot: ['Cotistas', 10], idade: ['Tempo de mercado', 15], emis: ['Emissão de moedas', 15], estab: ['Estabilidade', 15], resil: ['Resiliência', 15] };
+  if (tipo === 'fiis') nomes.preco = ['Preço', 20];
+  const noLista = tipo === 'acoes' ? EXP_ACOES.some((y) => y[0] === t) : tipo === 'fiis' ? EXP_FIIS.some((y) => y[0] === t) : false;
+  const si = tipo === 'acoes' ? `https://statusinvest.com.br/acoes/${t.toLowerCase()}` : tipo === 'fiis' ? `https://statusinvest.com.br/fundos-imobiliarios/${t.toLowerCase()}` : `https://www.coingecko.com/pt/moedas/${x.m.id}`;
+  vgJanela(`<div class="sm87"><div class="row-between" style="align-items:flex-start"><div><b class="sm87-tk">${esc(t)}</b> <span class="muted">${esc(x.nome || '')}</span><br><span class="small muted">Nota do robô: <b>${x.nota}</b> de 100</span></div><button class="btn sm" data-sm-fechar>✕</button></div>
+    <div class="sm87-s"><h4>🧮 A conta da nota</h4>${Object.entries(x.f).map(([k, v]) => `<div class="rb-f"><span>${nomes[k]?.[0] || k}</span><div class="rb-bar"><i style="width:${(v / (nomes[k]?.[1] || 25)) * 100}%"></i></div><b>${Math.round(v)}/${nomes[k]?.[1] || 25}</b></div>`).join('')}</div>
+    <div class="sm87-s"><h4>✔ A favor</h4><p>${x.pros.map(esc).join('<br>') || '—'}</p><h4>✘ Contra</h4><p>${x.contras.map(esc).join('<br>') || 'Nada que chame atenção pelos números.'}</p></div>
+    <div class="sm87-s"><h4>📚 Agora a sua análise</h4><p class="small">Leia o Saiba mais, faça o Raio-X, veja as notícias da semana e anote no Diário. A decisão é sua e da Helen.</p>
+    <div class="row" style="gap:6px;flex-wrap:wrap">${tipo !== 'cripto' ? `<button class="btn primary" data-rb-lista="${tipo}|${esc(t)}">${noLista ? '🔎 Abrir no Explorar' : '➕ Pôr na lista do Explorar'}</button>` : `<button class="btn primary" data-rb-lab="${esc(t)}">🧪 Ver no Laboratório</button>`}<a class="btn" href="${si}" target="_blank" rel="noopener">${tipo === 'cripto' ? 'CoinGecko' : 'Status Invest'} ↗</a><button class="btn" data-rb-diario="${esc(t)}">📓 Diário</button></div></div></div>`);
+}
+/* ---------- ligações ---------- */
+{ const _v = invVisao; invVisao = function () { let topo = ''; try { if (db) { const V = rbVeredito(); const av = rbAvisos().slice(0, 3); topo = `<div class="card rb-mini"><div class="row-between" style="gap:8px"><b>🤖 Robô Investidor</b><button class="btn sm primary" data-rb-abrir>Abrir o robô</button></div><div class="rb-ver ${V[0]}" style="margin:8px 0"><span class="rb-dot"></span><div><b>${V[1]}</b><br><span class="small muted">${V[2]}</span></div></div>${av.map((a) => `<div class="small" style="padding:3px 0">${rbIco[a.nivel]} ${a.titulo}</div>`).join('')}</div>`; } } catch (e) { console.warn('robô', e); } return topo + _v.apply(this, arguments); }; }
+document.addEventListener('click', (ev) => {
+  const g = (k) => ev.target.closest(`[${k}]`); let b;
+  if (g('data-rb-abrir')) { ui.sub = ui.sub || {}; ui.sub.invest = 'robo'; renderAll(); window.scrollTo?.(0, 0); return; }
+  if ((b = g('data-rb-aba'))) { ui.rbAba = b.dataset.rbAba; return renderAll(); }
+  if ((b = g('data-rb-tipo'))) { ui.rbTipo = b.dataset.rbTipo; ui.rbMais = null; return renderAll(); }
+  if ((b = g('data-rb-mais'))) { ui.rbMais = ui.rbMais === b.dataset.rbMais ? null : b.dataset.rbMais; return renderAll(); }
+  if ((b = g('data-rb-pq'))) { const x = document.querySelector(`[data-rb-pqbox="${b.dataset.rbPq}"]`); if (x) x.hidden = !x.hidden; return; }
+  if ((b = g('data-rb-sil'))) { rbI().roboSil[b.dataset.rbSil] = Date.now() + 30 * 864e5; changed(); return toast('Aviso silenciado por 30 dias.'); }
+  if ((b = g('data-rb-regra'))) { const id = b.dataset.rbRegra; const I = rbI(); I.roboRegras[id] = { ...(I.roboRegras[id] || {}), on: !rbRegra(id).on }; return changed(); }
+  if ((b = g('data-rb-sim'))) { const t = b.dataset.rbSim; const p = rbPrecoAgora('cripto', t); if (!(p > 0)) return toast('Sem preço agora.'); rbI().roboSim.push({ s: t, preco: p, valor: 100, em: hoje() }); changed(); return toast(`🧪 ${t}: R$ 100 de mentira simulados a partir de hoje. Acompanhe no Placar.`, 6000); }
+  if ((b = g('data-rb-det'))) { const [tipo, t] = b.dataset.rbDet.split('|'); if (tipo === 'acoes' || tipo === 'fiis' || tipo === 'cripto') rbDetalhe(tipo, t); return; }
+  if ((b = g('data-rb-cesta'))) { const tipo = b.dataset.rbCesta; const r = tipo === 'acoes' ? rbAcoes() : rbFiis(); const x = r?.L[0]; if (!x) return; const C = inv83().cesta; const k = tipo === 'acoes' ? 'acoes' : 'fiis'; if (!C[k].includes(x.t)) C[k] = [x.t, ...C[k]].slice(0, 8); if (tipo === 'acoes') ui.cestaA = x.t; else ui.cestaF = x.t; changed(); try { cestaBuscar(true); } catch (e) {} ui.sub.invest = 'visao'; renderAll(); window.scrollTo?.(0, 0); return toast(`🧺 ${x.t} entrou na sua lista da Compra do mês. Antes de comprar: Saiba mais, Raio-X e Diário.`, 7000); }
+  if ((b = g('data-rb-lista'))) { const [tipo, t] = b.dataset.rbLista.split('|'); vgFecharJanela(); const ja = (tipo === 'acoes' ? EXP_ACOES : EXP_FIIS).some((y) => y[0] === t);
+    if (!ja) { const I = garantirInvest(); xaLista(tipo).push({ t, nome: tipo === 'acoes' ? rbNomeAcao(t) : (rbFiis()?.L.find((y) => y.t === t)?.nome || ''), setor: '', em: null, add: hoje() }); if (!I.observar.includes(t)) I.observar.push(t); changed(); setTimeout(() => xaBuscarNumeros(tipo, t, true), 300); }
+    ui.sub.invest = 'explorar'; ui.expTipo = tipo; ui.expFiltro = ja ? 'todos' : XA_SEG; renderAll(); window.scrollTo?.(0, 0); return toast(ja ? `${t} já está na lista do Explorar.` : `➕ ${t} entrou na lista do Explorar (com ⭐). Abra o ＋ Saiba mais.`, 6000); }
+  if ((b = g('data-rb-lab'))) { vgFecharJanela(); const t = b.dataset.rbLab; try { if (!LAB_MOEDAS.some((m) => m[0] === t)) { inv83().criptos.push({ s: t, nome: t }); criptoSync(); } } catch (e) {} ui.labSym = t; ui.sub.invest = 'lab'; renderAll(); window.scrollTo?.(0, 0); return; }
+  if ((b = g('data-rb-diario'))) { vgFecharJanela(); ui.diPre = { acao: `estudar ${b.dataset.rbDiario}`, motivo: 'indicação do robô' }; ui.sub.invest = 'diario'; renderAll(); window.scrollTo?.(0, 0); return; }
+}, true);
+document.addEventListener('change', (ev) => { const t = ev.target.closest?.('[data-rb-regv]'); if (!t) return; const v = num(t.value, NaN); if (!isFinite(v) || v <= 0) return; const I = rbI(); const id = t.dataset.rbRegv; I.roboRegras[id] = { ...(I.roboRegras[id] || {}), v }; changed(); });
 
 /* ---------- início ---------- */
 (async function boot() {
