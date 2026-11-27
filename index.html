@@ -4264,7 +4264,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '9.5';
+const APP_VERSAO = '9.6';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13340,6 +13340,7 @@ CEL_NOVIDADES['9.0'] = ['📊 Ao adicionar uma ação ou FII no Explorar, o Prum
 CEL_NOVIDADES['9.3'] = ['🏛️ FIIs com dados oficiais da CVM: DY, P/VP, patrimônio e cotistas sem digitar (Explorar › Fundos imobiliários)'];
 CEL_NOVIDADES['9.4'] = ['🏛️ Dados da CVM agora chegam pelo seu GitHub, toda semana, sem bloqueio'];
 CEL_NOVIDADES['9.5'] = ['🏛️ Os 30 FIIs do Explorar agora usam DY, P/VP e patrimônio dos dados oficiais da CVM com o preço do dia'];
+CEL_NOVIDADES['9.6'] = ['🚰 FIIs adicionados por você ganham a liquidez diária (média de 3 meses)'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -14173,6 +14174,27 @@ let cvmListaTentou = false;
 { const _h = smHtml; smHtml = function (tipo, t) { let h = _h.apply(this, arguments); if (tipo !== 'fiis') return h; const a = EXP_FIIS.find((r) => r[0] === t && !r.xa); if (a?.cvm) h = h.replace(/\(números da pesquisa de [^)]*\)/, `(DY, P/VP e patrimônio: CVM ${cvmRefTxt(a.cvm)} + preço do dia; liquidez: pesquisa de ${EXP_DATA})`); return h; }; }
 // depois de buscar os preços da lista de FIIs, recalcula
 precosDaLista = (function (orig) { return async function (tipo) { const r = await orig.apply(this, arguments); if (tipo === 'fiis') { try { await cvmAtualizar(false); } catch (e) {} renderAll(); } return r; }; })(precosDaLista);
+
+/* ---------- v9.6 · liquidez diária dos FIIs adicionados (média de 3 meses pela brapi) ---------- */
+async function xaLiquidez(t) {
+  const C = db.invest.cot || {}; const H = C.brapi ? { headers: { Authorization: 'Bearer ' + C.brapi } } : {};
+  const j = await pegarJSON(`https://brapi.dev/api/quote/${encodeURIComponent(t)}?range=3mo&interval=1d`, H);
+  const L = (j.results?.[0]?.historicalDataPrice || []).filter((d) => d.volume > 0 && d.close > 0);
+  if (L.length < 10) return null;
+  const media = L.reduce((s, d) => s + d.volume * d.close, 0) / L.length; // reais por dia
+  return media > 0 ? r2(media / 1e6) : null;
+}
+xaBuscarNumeros = (function (orig) { return async function (tipo, t, silencioso) {
+  const r = await orig.apply(this, arguments); if (tipo !== 'fiis') return r;
+  const e = xaLista(tipo).find((x) => x.t === t); if (!e) return r;
+  try { const liq = await xaLiquidez(t); if (liq != null) { e.liq = liq; if (!e.em) e.em = hoje(); changed(); if (r && typeof r === 'object') r.n = (r.n || 0) + 1; if (!silencioso) toast(`🚰 ${t}: liquidez de R$ ${num2(liq)} milhões por dia (média de 3 meses)`, 5000); } } catch (err) {}
+  return r;
+}; })(xaBuscarNumeros);
+// os FIIs que você já tinha adicionado sem liquidez: calcula uma vez ao abrir o Explorar
+const xaLiqTentou = new Set();
+{ const _e = invExplorar; invExplorar = function () { const h = _e.apply(this, arguments);
+  if ((ui.expTipo || 'acoes') === 'fiis') xaLista('fiis').filter((e) => e.liq == null && !xaLiqTentou.has(e.t)).forEach((e) => { xaLiqTentou.add(e.t); setTimeout(() => xaLiquidez(e.t).then((v) => { if (v != null) { e.liq = v; changed(); } }).catch(() => {}), 500); });
+  return h; }; }
 
 /* ---------- início ---------- */
 (async function boot() {
