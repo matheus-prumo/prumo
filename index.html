@@ -1299,6 +1299,15 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 @media(max-width:600px){.me-hl{flex-direction:column;align-items:flex-start}.me-2{grid-template-columns:1fr}}
 .qz{min-width:0;grid-template-columns:minmax(0,1fr)}.qz .row{flex-wrap:wrap}.qz .btn{white-space:normal;text-align:left;height:auto}
 
+/* v8.5 semáforo tocável */
+.sem85-tap{cursor:pointer;border-radius:10px;margin:0 -8px;padding-left:8px!important;padding-right:8px!important}.sem85-tap:hover{background:color-mix(in srgb,var(--fg) 5%,transparent)}.sem85-tap.on{background:color-mix(in srgb,#c0452f 10%,transparent)}
+.sem85-v{display:flex;align-items:center;gap:6px;flex:none}.sem85-ch{font-style:normal;color:var(--muted);font-size:12px}
+.sem85-ab{border:1px solid var(--line);background:var(--panel-2,#f1efe9);border-radius:12px;padding:4px 12px 10px;margin:2px 0 8px}
+.sem85-it{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}.sem85-it small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.sem85-d{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:none}
+.sem85-go{display:block;text-align:center;margin-top:8px;font-weight:700;font-size:13.5px;color:var(--brand,#1f4e6b);cursor:pointer}
+.sem85-pisca{outline:3px solid #d9a24b;outline-offset:2px;transition:outline .3s}
+
 </style>
 </head>
 <body>
@@ -4219,7 +4228,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '8.4';
+const APP_VERSAO = '8.5';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13286,6 +13295,7 @@ document.addEventListener('change', (e) => { const t = e.target.closest('[data-c
 document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.matches?.('[data-cr-cod]')) criptoAdd(); });
 CEL_NOVIDADES['8.3'] = ['🚦 Posso investir este mês? e 🧺 Compra do mês (1 ação + 1 FII, só se der)', '🐷 Cofrinho da reserva de emergência e 📅 constância', '📓 Diário com regra das 24 h · 🩺 Raio-X de solidez · 🎓 Trilha de 8 semanas', '🧪 Laboratório compara com "um pouco todo mês" e testa em todas as moedas · ₿ adicione suas criptos'];
 CEL_NOVIDADES['8.4'] = ['🏛️ Mestres da disciplina: Barsi, Read, Bazin, Buffett, Graham e Bogle (em Estudar)', '✅ Hábitos dos mestres e ❄️ bola de neve dos proventos', '🎯 Preço-teto do Bazin no Raio-X', '📜 Meu plano de longo prazo, assinado e lido pela Helen (no Diário)'];
+CEL_NOVIDADES['8.5'] = ['🚦 Toque na linha vermelha do “Posso investir este mês?” para ver quais contas estão atrasadas e marcar ✓ Já paguei'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -13455,6 +13465,46 @@ document.addEventListener('change', (e) => {
   if ((t = e.target.closest('[data-bz-div]'))) { const k = t.dataset.bzDiv; const v = num(t.value, NaN); const I = inv83(); I.raiox[k] = I.raiox[k] || { r: {} }; if (isFinite(v) && v >= 0) I.raiox[k].div = v; changed(); return; }
   if ((t = e.target.closest('[data-bz-tx]'))) { const k = t.dataset.bzTx; const I = inv83(); I.raiox[k] = I.raiox[k] || { r: {} }; I.raiox[k].bzTx = +t.value; changed(); return; }
 });
+
+/* ---------- v8.5 · semáforo que mostra onde estão as contas ---------- */
+function semAtrasos() {
+  const H = hoje(); const ym = ymOf(H);
+  const casa = db.contasPagar.filter((c) => c.status !== 'Pago' && c.vencimento < H && ymOf(c.vencimento) >= addM(ym, -2)).sort((a, b) => (a.vencimento < b.vencimento ? -1 : 1));
+  let loja = []; try { loja = cxAbertas('loja', ym).filter((o) => o.data < H && o.data >= `${ym}-01`); } catch (e) {}
+  return { casa, loja };
+}
+function semItemCasa(c) { return `<div class="sem85-it"><span>${esc(c.descricao || 'Conta')}<small><b class="bad">venceu</b> ${dmy(c.vencimento).slice(0, 5)} · Contas a pagar</small></span><span class="sem85-d"><b>${fmt(c.valor)}</b><button class="btn sm primary" data-sem-pagar-casa="${c.id}">✓ Já paguei</button></span></div>`; }
+function semItemLoja(o) { return `<div class="sem85-it"><span>${esc(o.f.nome)}<small><b class="bad">venceu</b> ${dmy(o.data).slice(0, 5)} · Caixa da loja</small></span><span class="sem85-d"><b>${fmt(o.valor)}</b><button class="btn sm primary" data-sem-pagar-loja="${o.f.id}|${o.ym}">✓ Já paguei</button></span></div>`; }
+semaforo = function () {
+  const A = semAtrasos(); const ab = ui.semAberto; const itens = [];
+  itens.push(A.casa.length ? ['bad', `Contas da casa atrasadas: ${A.casa.length}`, fmt0(soma(A.casa, 'valor')), 'casa'] : ['ok', 'Contas da casa em dia', 'ok']);
+  itens.push(A.loja.length ? ['bad', `Contas da loja atrasadas: ${A.loja.length}`, fmt0(soma(A.loja, (o) => o.valor || 0)), 'loja'] : ['ok', 'Contas da loja do mês em dia', 'ok']);
+  let div = []; try { div = divAbertas(); } catch (e) {}
+  itens.push(div.length ? ['warn', `Dívidas em aberto no Recomeço: ${div.length}`, 'ver', 'div'] : ['ok', 'Nenhuma dívida em aberto', 'ok']);
+  const m = resMeta(); const pr = m.alvo ? Math.min(1, m.acumulado / m.alvo) : 0;
+  itens.push([pr >= 1 ? 'ok' : 'warn', `Reserva de emergência<small>${fmt0(m.acumulado)} de ${fmt0(m.alvo)} (6 meses de gastos)</small>`, Math.round(pr * 100) + '%', pr >= 1 ? '' : 'res']);
+  const verm = itens.some((i) => i[0] === 'bad');
+  const vered = verm ? ['bad', 'Este mês, não', 'Toque na linha vermelha para ver o que falta acertar. Sem culpa: o dinheiro fica para quando der.'] : pr < 1 ? ['ok', 'Sim, um valor pequeno', 'Contas em dia. Invista o que der e, se sobrar, guarde um pouco na reserva também.'] : ['ok', 'Sim', 'Contas em dia e reserva completa.'];
+  const lista = (k) => {
+    if (k === 'casa') return `<div class="sem85-ab">${A.casa.map(semItemCasa).join('')}<a class="sem85-go" data-sem-ir="contas">Abrir em Contas a pagar ›</a></div>`;
+    if (k === 'loja') return `<div class="sem85-ab">${A.loja.map(semItemLoja).join('')}<a class="sem85-go" data-sem-ir="caixa">Abrir no Caixa da loja ›</a><p class="small muted" style="margin:6px 0 0">💡 Se você já pagou e não marcou, toque em <b>✓ Já paguei</b>: o Prumo registra a saída e a linha fica verde.</p></div>`;
+    return '';
+  };
+  return `<div class="card inv83-c"><h3>🚦 Posso investir este mês?</h3><div class="sem83 ${vered[0]}"><span class="sem83-dot"></span><div><b>${vered[1]}</b><br><span class="muted small">${vered[2]}</span></div></div>
+    ${itens.map(([k, t, v, alvo]) => { const aberto = alvo && ab === alvo; const exp = alvo === 'casa' || alvo === 'loja';
+      return `<div class="inv83-l ${alvo ? 'sem85-tap' : ''} ${aberto ? 'on' : ''}" ${alvo ? `data-sem-l="${alvo}" role="button" tabindex="0"` : ''}><span>${k === 'ok' ? '✅' : k === 'bad' ? '🔴' : '🟡'} ${t}</span><span class="sem85-v"><b class="${k === 'ok' ? 'good' : k === 'bad' ? 'bad' : 'warn'}">${v}</b>${alvo ? `<i class="sem85-ch">${exp ? (aberto ? '▲' : '▼') : '›'}</i>` : ''}</span></div>${aberto ? lista(alvo) : ''}`; }).join('')}</div>`;
+};
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if ((b = g('data-sem-pagar-casa'))) { e.stopPropagation(); const id = b.dataset.semPagarCasa; if (typeof celPagar === 'function') celPagar(id); else { const c = db.contasPagar.find((x) => x.id === id); if (c) { c.status = 'Pago'; c.pagoEm = hoje(); changed(); } } if (!semAtrasos().casa.length) ui.semAberto = null; return renderAll(); }
+  if ((b = g('data-sem-pagar-loja'))) { e.stopPropagation(); const [id, ym] = b.dataset.semPagarLoja.split('|'); const f = db.fixas.find((x) => x.id === id); const o = f && cxOcorr(f, ym).find((x) => x.ym === ym); if (o) cxFormPagar(o); return; }
+  if ((b = g('data-sem-ir'))) { ui.sub = ui.sub || {}; ui.semAberto = null; if (b.dataset.semIr === 'caixa') { ui.cxArea = 'loja'; ui.sub.caixa = 'hoje'; } if (CELULAR && typeof celFecharFolha === 'function') celFecharFolha(); setTab(b.dataset.semIr); window.scrollTo?.(0, 0); return; }
+  if ((b = g('data-sem-l'))) { const k = b.dataset.semL;
+    if (k === 'div') { ui.sub = ui.sub || {}; ui.sub.recomeco = 'dividas'; if (CELULAR && typeof celFecharFolha === 'function') celFecharFolha(); setTab('recomeco'); window.scrollTo?.(0, 0); return; }
+    if (k === 'res') { const c = document.querySelector('[data-reserva-guardar]')?.closest('.card'); c?.scrollIntoView({ behavior: 'smooth', block: 'center' }); c?.classList.add('sem85-pisca'); setTimeout(() => c?.classList.remove('sem85-pisca'), 1600); return; }
+    ui.semAberto = ui.semAberto === k ? null : k; return renderAll(); }
+}, true);
+document.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches?.('[data-sem-l]')) { e.preventDefault(); e.target.click(); } });
 
 /* ---------- início ---------- */
 (async function boot() {
