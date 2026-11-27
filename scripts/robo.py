@@ -24,14 +24,14 @@ def nome_local(url):
     return re.sub(r"[^A-Za-z0-9]+", "_", url)[-150:]
 
 
-def baixar(url, timeout=90):
+def baixar(url, timeout=90, tentativas=3):
     if LOCAL:
         p = os.path.join(LOCAL, nome_local(url))
         if not os.path.exists(p):
             raise urllib.error.HTTPError(url, 404, "nao achei (teste)", None, None)
         return open(p, "rb").read()
     ultimo = None
-    for tentativa in range(3):  # o site caiu? tenta de novo, esperando um pouco mais a cada vez
+    for tentativa in range(tentativas):  # o site caiu? tenta de novo, esperando um pouco mais a cada vez
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*", "Accept-Encoding": "gzip", "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8"})
             with urllib.request.urlopen(req, timeout=timeout) as r:
@@ -45,7 +45,8 @@ def baixar(url, timeout=90):
                 raise
         except Exception as e:  # conexão derrubada, tempo esgotado
             ultimo = e
-        time.sleep(4 * (tentativa + 1))
+        if tentativa + 1 < tentativas:
+            time.sleep(4 * (tentativa + 1))
     raise ultimo
 
 
@@ -185,7 +186,7 @@ def tesouro():
 def stooq(sym):
     """Último preço pela Stooq (CSV público). Devolve None se não achar."""
     try:
-        txt = baixar(f"https://stooq.com/q/l/?s={sym}&f=sd2t2ohlcv&h&e=csv").decode("utf-8", "replace")
+        txt = baixar(f"https://stooq.com/q/l/?s={sym}&f=sd2t2ohlcv&h&e=csv", timeout=20, tentativas=1).decode("utf-8", "replace")
         linhas = [l for l in txt.strip().splitlines() if l]
         if len(linhas) >= 2:
             cab = linhas[0].lower().split(","); val = linhas[1].split(",")
@@ -201,7 +202,7 @@ def google(sym, bolsas):
     """Último preço pela página do Google Finanças (ex.: VOO:NYSEARCA)."""
     for b in bolsas:
         try:
-            txt = baixar(f"https://www.google.com/finance/quote/{sym}:{b}?hl=en").decode("utf-8", "replace")
+            txt = baixar(f"https://www.google.com/finance/quote/{sym}:{b}?hl=en", timeout=20, tentativas=1).decode("utf-8", "replace")
             m = re.search(r'data-last-price="([0-9.]+)"', txt)
             if m:
                 v = float(m.group(1))
@@ -237,7 +238,7 @@ def yahoo(tickers):
             j = None
             for host in ("query1", "query2"):
                 try:
-                    j = json.loads(baixar(f"https://{host}.finance.yahoo.com/v8/finance/chart/{t}?range=1y&interval=1d&events=div"))
+                    j = json.loads(baixar(f"https://{host}.finance.yahoo.com/v8/finance/chart/{t}?range=1y&interval=1d&events=div", timeout=20, tentativas=1))
                     break
                 except Exception:
                     j = None
@@ -272,7 +273,7 @@ def indices():
             p = None
             for host in ("query1", "query2"):
                 try:
-                    j = json.loads(baixar(f"https://{host}.finance.yahoo.com/v8/finance/chart/{sym}?range=5d&interval=1d"))
+                    j = json.loads(baixar(f"https://{host}.finance.yahoo.com/v8/finance/chart/{sym}?range=5d&interval=1d", timeout=20, tentativas=1))
                     p = j["chart"]["result"][0]["meta"].get("regularMarketPrice")
                     break
                 except Exception:
@@ -296,7 +297,7 @@ def _retornos(precos):
 def _historico_binance(sym):
     for host in ("https://data-api.binance.vision", "https://api.binance.com"):
         try:
-            j = json.loads(baixar(f"{host}/api/v3/klines?symbol={sym}USDT&interval=1d&limit=1000"))
+            j = json.loads(baixar(f"{host}/api/v3/klines?symbol={sym}USDT&interval=1d&limit=1000", timeout=30, tentativas=1))
             if isinstance(j, list) and len(j) > 30:
                 return [(int(k[0]) // 1000, float(k[4])) for k in j]
         except Exception:
@@ -306,7 +307,7 @@ def _historico_binance(sym):
 
 def _historico_gecko(cid):
     try:
-        j = json.loads(baixar(f"https://api.coingecko.com/api/v3/coins/{cid}/market_chart?vs_currency=usd&days=365&interval=daily"))
+        j = json.loads(baixar(f"https://api.coingecko.com/api/v3/coins/{cid}/market_chart?vs_currency=usd&days=365&interval=daily", timeout=30, tentativas=1))
         return [(int(t) // 1000, float(p)) for t, p in j.get("prices", []) if p]
     except Exception:
         return None
