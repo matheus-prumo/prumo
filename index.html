@@ -4262,7 +4262,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '9.3';
+const APP_VERSAO = '9.4';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13336,6 +13336,7 @@ CEL_NOVIDADES['8.8'] = ['📖 No ＋ Saiba mais: toque no ⓘ para entender cada
 CEL_NOVIDADES['8.9'] = ['➕ No Explorar, adicione qualquer ação ou FII pelo código e copie os números da Status Invest em ✎ Números'];
 CEL_NOVIDADES['9.0'] = ['📊 Ao adicionar uma ação ou FII no Explorar, o Prumo busca os números sozinho (botão ↻ no cartão para buscar de novo)'];
 CEL_NOVIDADES['9.3'] = ['🏛️ FIIs com dados oficiais da CVM: DY, P/VP, patrimônio e cotistas sem digitar (Explorar › Fundos imobiliários)'];
+CEL_NOVIDADES['9.4'] = ['🏛️ Dados da CVM agora chegam pelo seu GitHub, toda semana, sem bloqueio'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -14080,12 +14081,12 @@ xaBuscarNumeros = (function (orig) { return async function (tipo, t, silencioso)
 xaAt = function (e) { return e.em ? `Números ${e.auto ? 'buscados automaticamente' + (e.fonte ? ' (' + e.fonte + ')' : '') : 'copiados por você'} em ${dmy(e.em)}. Confira na Status Invest de vez em quando.` : 'Toque em ↻ para buscar os números, ou em ✎ Números para copiar da Status Invest.'; };
 // botão de teste / atualização no Explorar de FIIs
 async function cvmTestar() {
-  vgJanela('<h3 style="margin:0">🏛️ Lendo os dados oficiais da CVM…</h3><p class="small muted">Baixando o informe mensal dos FIIs (uns 2 MB). Pode levar até 1 minuto.</p>');
+  vgJanela('<h3 style="margin:0">🏛️ Lendo os dados oficiais da CVM…</h3><p class="small muted">Buscando o arquivo com os dados da CVM no seu GitHub. Leva poucos segundos.</p>');
   try { const C = await cvmAtualizar(true); const n = Object.keys(C.F).length; const ex = ['MXRF', 'HGLG', 'KNCR'].map((r) => [r, C.F[r]]).filter(([, f]) => f);
     const tk = { MXRF: 'MXRF11', HGLG: 'HGLG11', KNCR: 'KNCR11' };
     vgJanela(`<h3 style="margin:0 0 6px">✅ Dados da CVM funcionando</h3><p class="small" style="margin:0 0 8px">Li o informe de <b>${n} fundos imobiliários</b>. Exemplos:</p>
       ${ex.map(([r, f]) => { const p = db.invest.precos?.[tk[r]]?.p; return `<div class="cvm93"><b>${tk[r]}</b> · referência ${f.ref.split('-').reverse().join('/')}<br><span class="small">Valor patrimonial da cota: ${f.vpa ? fmt(f.vpa) : '—'} · Rendimento em 12 meses: ${f.rend12 ? fmt(f.rend12) + ' por cota' : '—'}${p ? ` · P/VP: ${num2(p / f.vpa)} · DY: ${f.rend12 ? pct1(((f.rend12 / p) * 100).toFixed(2)) : '—'}` : ''} · Cotistas: ${f.cot ? Math.round(f.cot).toLocaleString('pt-BR') : '—'}</span></div>`; }).join('')}
-      <p class="small muted" style="margin:8px 0 0">O Prumo vai usar esses dados nos FIIs que você adicionar e no ＋ Saiba mais. Eles são atualizados pela CVM todo mês; o Prumo busca de novo a cada 7 dias.</p>
+      <p class="small muted" style="margin:8px 0 0">O Prumo vai usar esses dados nos FIIs que você adicionar e no ＋ Saiba mais. A CVM publica todo mês; o seu GitHub baixa toda segunda-feira e o Prumo busca de novo a cada 3 dias.</p>
       <div class="row" style="gap:6px;margin-top:8px"><button class="btn primary" data-cvm-usar>Preencher meus FIIs agora</button><button class="btn" data-sm-fechar>Fechar</button></div>`);
   } catch (e) {
     vgJanela(`<h3 style="margin:0 0 6px">❌ Não deu para ler a CVM</h3><p class="small">Motivo: <b>${esc(cvmUltimoErro || e.message || 'desconhecido')}</b></p><p class="small muted">Me mande um print desta tela. Enquanto isso, os FIIs continuam funcionando com o ✎ Números.</p><div class="row" style="margin-top:8px"><button class="btn" data-sm-fechar>Fechar</button></div>`);
@@ -14108,6 +14109,28 @@ document.addEventListener('click', async (ev) => {
   if (ev.target.closest('[data-cvm-testar]')) return cvmTestar();
   if (ev.target.closest('[data-cvm-usar]')) { vgFecharJanela(); const L = xaLista('fiis'); if (!L.length) return toast('Adicione um FII no quadro verde primeiro (ex.: MXRF11).'); for (const e of L) await xaBuscarNumeros('fiis', e.t, true); toast(`🏛️ ${L.length} FII${L.length > 1 ? 's' : ''} atualizado${L.length > 1 ? 's' : ''} com os dados da CVM`); renderAll(); }
 }, true);
+
+/* ---------- v9.4 · dados da CVM pelo GitHub do Prumo (sem bloqueio) ---------- */
+function cvmUrlsJson() {
+  const L = []; try { if (/^https?:/.test(location.protocol)) L.push(new URL('cvm-fii.json', location.href).href); } catch (e) {}
+  L.push('https://matheus-prumo.github.io/prumo/cvm-fii.json', 'https://matheus-prumo.github.io/cvm-fii.json');
+  return [...new Set(L)];
+}
+cvmAtualizar = async function (forcar) {
+  const C = cvmCache(); if (!forcar && C && Date.now() - C.em < 3 * 864e5) return C;
+  if (cvmEstado === 'baixando') return C; cvmEstado = 'baixando'; cvmUltimoErro = '';
+  let erroJson = ''; let viu404 = false;
+  for (const u of cvmUrlsJson()) {
+    try { const r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) { erroJson = 'HTTP ' + r.status; if (r.status === 404) viu404 = true; continue; }
+      const j = await r.json(); if (!j?.F || !Object.keys(j.F).length) { erroJson = 'arquivo vazio'; continue; }
+      const out = { em: Date.now(), gerado: j.em, F: j.F, via: 'github' }; try { lsSet('cvm-fii', JSON.stringify(out)); } catch (e) {}
+      cvmEstado = 'ok'; return out;
+    } catch (e) { erroJson = 'sem resposta'; }
+  }
+  cvmEstado = 'erro';
+  cvmUltimoErro = viu404 ? 'o arquivo com os dados da CVM ainda não foi criado no seu GitHub (falta ligar a tarefa automática)' : 'não consegui ler o arquivo da CVM no seu GitHub (' + erroJson + ')';
+  throw new Error(cvmUltimoErro);
+};
 
 /* ---------- início ---------- */
 (async function boot() {
