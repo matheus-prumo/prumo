@@ -1376,6 +1376,21 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 @media(max-width:600px){.rb-pl{grid-template-columns:repeat(2,1fr)}.rb-f{grid-template-columns:100px 1fr 46px}}
 .rb-tipos button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:5px 11px;font-size:13px;cursor:pointer;font-family:inherit}.rb-tipos button.on{background:var(--brand,#1f4e6b);border-color:var(--brand,#1f4e6b);color:#fff;font-weight:700}
 
+/* v10.3 análise do robô */
+.an-b{border-color:#5b8fd0;color:var(--brand,#1f4e6b);font-weight:700}
+.an-big{font-size:30px;font-weight:800;color:#2f7d4f;min-width:46px;text-align:center}.rb-ver.y .an-big{color:#b9770e}.rb-ver.r .an-big{color:#c0452f}
+.an-ms{height:14px;border-radius:7px;background:linear-gradient(90deg,#e0705b 0%,#e0a54d 35%,#3fa06a 55%,#3fa06a 100%);position:relative;margin:8px 0 4px}.an-ms i{position:absolute;top:-5px;width:4px;height:24px;background:var(--fg);border-radius:2px;transform:translateX(-2px)}
+.lg-an{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px}
+.an-k{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}.an-k>div{background:var(--panel-2,#f1efe9);border-radius:10px;padding:7px;text-align:center;display:flex;flex-direction:column}.an-k b{font-size:16px}.an-k small{font-size:11px;color:var(--muted)}
+.an-sc{display:grid;grid-template-columns:70px 1fr 1fr 1fr;gap:4px 6px;align-items:center;margin:8px 0;text-align:center}.an-sc b{font-size:15px}.an-sc small{color:var(--muted);font-size:11.5px}
+.an-leque,.an-linha{width:100%;height:84px;display:block;margin-top:4px}
+.an-ck{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:13px}
+.an-nota{background:#fff8e6;border:1px solid #f1d9a6;border-radius:10px;padding:8px 10px;font-size:12.5px;color:#5b4512;margin-top:8px}
+.an-td{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:6px;font-size:13.5px}
+@media(prefers-color-scheme:dark){.an-nota{background:#3a3020;border-color:#6b5a2e;color:#f1dfb5}}
+@media(max-width:600px){.an-ck{grid-template-columns:1fr}}
+.an103 a.btn{text-decoration:none}
+
 </style>
 </head>
 <body>
@@ -4296,7 +4311,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '10.2';
+const APP_VERSAO = '10.3';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13376,6 +13391,7 @@ CEL_NOVIDADES['9.6'] = ['🚰 FIIs adicionados por você ganham a liquidez diár
 CEL_NOVIDADES['10.0'] = ['🤖 Robô do Prumo: ações (Fundamentus), Tesouro (taxas do dia), ETFs do exterior, liquidez e vacância dos FIIs e fundos pela CVM, tudo sozinho', '💼 Fundos: coloque o CNPJ e o Prumo pega o quanto rendeu'];
 CEL_NOVIDADES['10.1'] = ['🤖 Robô Investidor (Investimentos › 🤖 Robô): indicações de ações, FIIs, Tesouro, exterior, criptos e fundos, com a conta da nota', '🎯 Placar de acertos: o robô se testa contra o Ibovespa, o IFIX e o Bitcoin', '₿ Criptos em duas listas: com fundamento e alta volatilidade (só simulada)'];
 CEL_NOVIDADES['10.2'] = ['🤖 Fontes do robô mostram criptos e índices; o placar compara com a média do mercado'];
+CEL_NOVIDADES['10.3'] = ['🤖 Botão Análise em cada cartão (ações, FIIs, ETFs, Tesouro e criptos): nota, margem de segurança, como se comportou e cenários para 6 e 12 meses'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -14677,6 +14693,145 @@ roboDetalhes = async function () {
     <div class="cvm93"><b>${FU ? '✅' : 'ℹ️'} 💼 Fundos de investimento (CVM)</b><br><span class="small">${FU ? 'Cotas de ' + (FU.ref || '').split('-').reverse().join('/') + ' · ' + Object.keys(FU.F).length + ' fundos · atualiza às segundas' : 'Carrega quando você abre o comparador de fundos (Explorar › Fundos de investimento).'}</span></div>
     <div class="row" style="gap:6px;margin-top:8px"><button class="btn" data-sm-fechar>Fechar</button></div>`);
 };
+
+/* ---------- v10.3 · 🤖 Análise do robô em cada cartão ---------- */
+// histórico de preços guardado no aparelho (completa os 6 meses que a brapi grátis não dá)
+const anHistLer = () => { try { return JSON.parse(lsGet('robo-precos') || '{}'); } catch (e) { return {}; } };
+function anHistGuardar() {
+  const R = roboCache(); if (!R?.em) return; const d = new Date(R.em).toISOString().slice(0, 10); const H = anHistLer(); if (H._d === d) return;
+  const quero = new Set([...EXP_ACOES.map((x) => x[0]), ...EXP_FIIS.map((x) => x[0]), ...rbAcompanhados(), ...((roboCache()?.acoes && rbAcoes()?.L.slice(0, 20).map((x) => x.t)) || []), ...((roboCache()?.fiis && rbFiis()?.L.slice(0, 20).map((x) => x.t)) || [])]);
+  quero.forEach((t) => { const c = R.acoes?.[t]?.cot || R.fiis?.[t]?.cot; if (!(c > 0)) return; const L = (H[t] = H[t] || []); if (!L.length || L[L.length - 1][0] !== d) L.push([d, c]); H[t] = L.slice(-260); });
+  H._d = d; try { lsSet('robo-precos', JSON.stringify(H)); } catch (e) {}
+}
+function anSerie(sym) { // junta o histórico da brapi/Binance com o guardado no aparelho
+  const lab = labCacheLer(sym)?.d || []; const t = labTk(sym); const loc = sym.startsWith('B:') ? anHistLer()[t] || [] : [];
+  const m = new Map(); lab.forEach(([d, p]) => m.set(String(d).slice(0, 10), p)); loc.forEach(([d, p]) => { if (!m.has(d)) m.set(d, p); });
+  return [...m.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1));
+}
+function anMetricas(S, cripto) {
+  if (!S || S.length < 15) return null; const dias = cripto ? 182 : 126; const W = S.slice(-dias); const P = W.map((x) => x[1]);
+  const ret = P[P.length - 1] / P[0] - 1; const r = []; for (let i = 1; i < P.length; i++) r.push(P[i] / P[i - 1] - 1);
+  const m = r.reduce((a, b) => a + b, 0) / r.length; const sd = Math.sqrt(r.reduce((a, b) => a + (b - m) ** 2, 0) / r.length); const vol = sd * Math.sqrt(cripto ? 365 : 252);
+  let pico = 0, dd = 0; P.forEach((p) => { pico = Math.max(pico, p); dd = Math.min(dd, p / pico - 1); });
+  const meses = Math.max(1, Math.round((new Date(W[W.length - 1][0]) - new Date(W[0][0])) / (30.4 * 864e5)));
+  return { W, P, ret, vol, dd, meses };
+}
+const anIR = (meses) => (meses <= 6 ? 0.225 : meses <= 12 ? 0.2 : meses <= 24 ? 0.175 : 0.15);
+function anCenarios(mu, sigma, meses) { const h = meses / 12; const med = 1000 * Math.pow(1 + mu, h); const f = Math.exp(sigma * Math.sqrt(h)); return { ruim: med / f, prov: med, bom: med * f }; }
+function anLeque(mu, sigma) {
+  const W = 300, H = 90; const pts = Array.from({ length: 13 }, (_, k) => { const c = anCenarios(mu, sigma, k); return [k, c.ruim, c.prov, c.bom]; });
+  const mn = Math.min(...pts.map((p) => p[1])), mx = Math.max(...pts.map((p) => p[3])); const X = (k) => (k / 12) * W, Y = (v) => 6 + (H - 12) * (1 - (v - mn) / (mx - mn || 1));
+  const banda = pts.map((p) => `${X(p[0])},${Y(p[3])}`).join(' ') + ' ' + [...pts].reverse().map((p) => `${X(p[0])},${Y(p[1])}`).join(' ');
+  return `<svg class="an-leque" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><polygon points="${banda}" fill="rgba(63,160,106,.18)"/><polyline points="${pts.map((p) => `${X(p[0])},${Y(p[2])}`).join(' ')}" fill="none" stroke="#3fa06a" stroke-width="2.5" vector-effect="non-scaling-stroke"/><line x1="0" x2="${W}" y1="${Y(1000)}" y2="${Y(1000)}" stroke="#9aa4b2" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/></svg><div class="lg-an"><span>hoje</span><span>6 meses</span><span>12 meses</span></div>`;
+}
+function anLinha(S, B) {
+  const W = 300, H = 80; const P = S.map((x) => x[1] / S[0][1]); let Q = null;
+  if (B && B.length > 5) { const bm = new Map(B.map(([d, p]) => [String(d).slice(0, 10), p])); const b0 = bm.get(S[0][0]) || B.find((x) => String(x[0]).slice(0, 10) >= S[0][0])?.[1]; if (b0) { let ult = b0; Q = S.map(([d]) => { const v = bm.get(d); if (v) ult = v; return ult / b0; }); } }
+  const all = [...P, ...(Q || [])]; const mn = Math.min(...all), mx = Math.max(...all); const X = (i) => (i / Math.max(1, P.length - 1)) * W, Y = (v) => 4 + (H - 8) * (1 - (v - mn) / (mx - mn || 1));
+  return `<svg class="an-linha" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${Q ? `<polyline points="${Q.map((v, i) => `${X(i)},${Y(v)}`).join(' ')}" fill="none" stroke="#8a94a6" stroke-width="1.5" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>` : ''}<polyline points="${P.map((v, i) => `${X(i)},${Y(v)}`).join(' ')}" fill="none" stroke="${P[P.length - 1] >= 1 ? '#3fa06a' : '#c0452f'}" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>`;
+}
+const anSym = (tipo, t) => (tipo === 'cripto' ? t : tipo === 'etfus' ? 'U:' + t : 'B:' + t);
+const anBenchSym = (tipo) => (tipo === 'acoes' ? 'B:BOVA11' : tipo === 'fiis' ? 'B:XFIX11' : tipo === 'cripto' ? 'BTC' : tipo === 'etfbr' ? 'B:BOVA11' : null);
+const anBenchNome = { acoes: 'Ibovespa (BOVA11)', fiis: 'IFIX (XFIX11)', cripto: 'Bitcoin', etfbr: 'Ibovespa (BOVA11)' };
+/* ---------- análise de cada tipo ---------- */
+function anDados(tipo, t) {
+  const R = roboCache(); const o = { tipo, t, nome: '', crit: [], prosT: '', fraco: '', margem: null, mu: null, sigma: null, extra: '', precoTxt: '' };
+  const ck = (ok, txt, na) => o.crit.push({ ok: na ? null : !!ok, txt });
+  if (tipo === 'acoes') {
+    const x = EXP_ACOES.find((r) => r[0] === t); const d = R?.acoes?.[t] || (x ? { dy: x[3], pl: x[4], pvp: x[5], roe: x[6] } : {}); const cot = d.cot || precoLista(t)?.p; const seg = rbSegAcao(t); const rx = typeof raioxNota === 'function' ? raioxNota(t) : null;
+    o.nome = rbNomeAcao(t); o.seg = seg; o.preco = cot; o.precoTxt = cot ? fmt(cot) : '—';
+    ck(d.pl > 0, d.pl > 0 ? `Lucro positivo (P/L ${rbN(d.pl)})` : 'Lucro positivo'); ck(d.pl >= 3 && d.pl <= 15, `P/L entre 3 e 15 (${rbN(d.pl)})`); ck(d.roe >= 12, `ROE de 12% ou mais (${rbP(d.roe)})`);
+    ck(d.div != null && d.div <= 1, `Dívida baixa (${d.div != null ? rbN(d.div) : '—'})`, d.div == null); ck(d.dy >= 5 && d.dy <= 12, `DY entre 5% e 12% (${rbP(d.dy)})`); ck(d.liq >= 2, `Muito negociada (R$ ${rbN(d.liq, 1)} mi/dia)`, d.liq == null);
+    ck(d.mliq >= 10, `Margem líquida de 10% ou mais (${rbP(d.mliq)})`, d.mliq == null); ck(d.cresc >= 0, `Vendas crescendo em 5 anos (${rbP(d.cresc)})`, d.cresc == null); ck(PERENES.includes(seg), 'Setor perene (Barsi)', !seg); ck(rx >= 6, `Seu Raio-X 6/7 ou mais (${rx ?? '—'}/7)`, rx == null);
+    if (cot > 0 && d.pl > 0 && d.pvp > 0) { const lpa = cot / d.pl, vpa = cot / d.pvp; const gr = Math.sqrt(22.5 * lpa * vpa); const bz = d.dy > 0 ? ((d.dy / 100) * cot) / 0.06 : null; const just = bz ? (gr + bz) / 2 : gr; o.margem = { linhas: [['Preço justo de Graham (lucro + patrimônio)', fmt(gr)], bz ? ['Preço-teto do Bazin (dividendos)', fmt(bz)] : null, ['Preço hoje', fmt(cot)]].filter(Boolean), m: (just - cot) / just }; }
+    const g = d.cresc != null ? Math.max(-0.05, Math.min(0.08, d.cresc / 200)) : 0.03; o.mu = (d.dy || 0) / 100 + g; o.sigma0 = 0.28; o.muTxt = `dividendos (${rbP(d.dy)}) + crescimento do lucro (${rbP(g * 100)} ao ano, metade do crescimento das vendas, com limite)`;
+    o.si = `https://statusinvest.com.br/acoes/${t.toLowerCase()}`; o.nota = rbAcoes()?.L.find((y) => y.t === t)?.nota;
+  } else if (tipo === 'fiis') {
+    const x = EXP_FIIS.find((r) => r[0] === t); const d = R?.fiis?.[t] || (x ? { pvp: x[3], dy: x[4], liq: x[5] } : {}); const cv = cvmDoFii(t); const cot = d.cot || precoLista(t)?.p; const papel = /papel|t[ií]tulo|receb|cri/i.test(d.seg || x?.[2] || '');
+    o.nome = cv?.nome || x?.[1] || ''; o.seg = d.seg || x?.[2] || ''; o.preco = cot; o.precoTxt = cot ? fmt(cot) : '—';
+    const pvp = cot && cv?.vpa ? cot / cv.vpa : d.pvp; const dy = cot && cv?.rend12 ? (cv.rend12 / cot) * 100 : d.dy;
+    ck(dy >= 8 && dy <= 13, `DY entre 8% e 13% (${rbP(dy)})`); ck(pvp >= 0.85 && pvp <= 1.05, `P/VP entre 0,85 e 1,05 (${rbN(pvp)})`); ck(d.liq >= 1, `Negocia mais de R$ 1 mi/dia (${rbN(d.liq, 1)} mi)`, d.liq == null);
+    ck((cv?.pl || 0) >= 1e9 || d.vm >= 1, 'Fundo grande (mais de R$ 1 bi)', cv?.pl == null && d.vm == null); ck(papel || (d.vac != null && d.vac <= 10), papel ? 'Vacância (não se aplica a papel)' : `Vacância até 10% (${rbP(d.vac)})`, !papel && d.vac == null);
+    ck(papel || d.imov >= 5, papel ? 'Imóveis (não se aplica a papel)' : `5 imóveis ou mais (${d.imov ?? '—'})`, !papel && d.imov == null); ck((cv?.cot || 0) >= 50000, `Mais de 50 mil cotistas (${cv?.cot ? Math.round(cv.cot / 1000) + ' mil' : '—'})`, !cv?.cot);
+    ck(cv?.meses >= 10, 'Rendimento informado todo mês na CVM', !cv); const rx = typeof raioxNota === 'function' ? raioxNota(t) : null; ck(rx >= 6, `Seu Raio-X 6/7 ou mais (${rx ?? '—'}/7)`, rx == null);
+    if (cot > 0 && (cv?.vpa || pvp)) { const vpa = cv?.vpa || cot / pvp; o.margem = { linhas: [['Valor patrimonial da cota' + (cv?.vpa ? ' (CVM)' : ''), fmt(vpa)], ['Preço hoje', fmt(cot)]], m: (vpa - cot) / vpa }; }
+    o.mu = (dy || 0) / 100 + (papel ? 0 : 0.02); o.sigma0 = 0.15; o.muTxt = `rendimentos (${rbP(dy)})${papel ? '' : ' + correção dos aluguéis (2% ao ano)'}`;
+    o.si = `https://statusinvest.com.br/fundos-imobiliarios/${t.toLowerCase()}`; o.nota = rbFiis()?.L.find((y) => y.t === t)?.nota;
+  } else if (tipo === 'cripto') {
+    const m = R?.cripto?.moedas?.find((y) => y.s === t) || {}; o.nome = m.nome || (LAB_MOEDAS.find((y) => y[0] === t)?.[1]) || ''; const S = labCacheLer(t)?.d; const p = m.preco || (S ? S[S.length - 1][1] : null); o.preco = p; o.precoTxt = p ? rbUSD(p) : '—';
+    ck(m.rank && m.rank <= 20, `Entre as 20 maiores (nº ${m.rank ?? '—'})`, !m.rank); ck(m.mc >= 10e9, `Valor de mercado acima de US$ 10 bi (${m.mc ? rbBi(m.mc) : '—'})`, !m.mc); ck(m.vol / m.mc >= 0.02, 'Muito negociada todo dia', !m.mc);
+    ck(m.idade >= 3, `3 anos ou mais de mercado`, m.idade == null); ck(m.max || (m.total && m.circ / m.total >= 0.9), 'Limite ou pouca emissão de moedas novas', !m.circ); ck(m.ath_chg > -50, `Menos de 50% abaixo do topo (${rbP(m.ath_chg, 0)})`, m.ath_chg == null);
+    ck(m.volat != null && m.volat < 80, `Oscilação abaixo de 80% ao ano (${rbP(m.volat, 0)})`, m.volat == null); ck(m.beta != null && m.beta <= 1.5, `Não exagera os movimentos do BTC (beta ${rbN(m.beta)})`, m.beta == null || t === 'BTC');
+    o.margem = { cripto: true, linhas: [['Abaixo do maior preço da história', rbP(m.ath_chg, 0)], ['Maior queda no último ano', rbP(m.dd, 0)], ['Quando o BTC sobe 10%', m.up ? `ela sobe uns ${Math.round(m.up * 10)}%` : '—'], ['Quando o BTC cai 10%', m.down ? `ela cai uns ${Math.round(m.down * 10)}%` : '—']] };
+    o.mu = 0; o.sigma0 = (m.volat || 80) / 100; o.muTxt = 'o robô não supõe que cripto sobe sozinha: o centro é "fica igual", e a faixa vem de quanto ela costuma oscilar'; o.si = m.id ? `https://www.coingecko.com/pt/moedas/${m.id}` : 'https://www.coingecko.com/pt'; o.nota = rbCriptoFund()?.L.find((y) => y.t === t)?.nota; o.m = m;
+  } else if (tipo === 'etfus' || tipo === 'etfbr') {
+    const x = (tipo === 'etfus' ? EXP_ETFUS : EXP_ETFBR).find((r) => r[0] === t) || []; const d = tipo === 'etfus' ? R?.etfus?.[t] : null; const p = d?.p || precoLista(t)?.p; o.nome = x[1] || ''; o.preco = p; o.precoTxt = p ? (tipo === 'etfus' ? 'US$ ' + rbN(p) : fmt(p)) : '—';
+    const tx = tipo === 'etfus' ? x[3] : x[3]; const rf = /IMAB|B5P2|BND|TIP|SGOV|XFIX/.test(t) || /prote/.test(x[5] || x[4] || ''); const lim = tipo === 'etfus' ? 0.1 : 0.3;
+    ck(tx != null && tx <= lim, `Taxa até ${rbP(lim, 2)} ao ano (${tx != null ? rbP(tx, 2) : 'veja na Rico'})`, tx == null); ck(/Vanguard|iShares|Schwab|Invesco|SPDR|It[aá]u|BTG|XP/i.test(x[1] || ''), 'Gestora grande e conhecida'); ck(/base/.test(x[5] || x[4] || ''), 'Serve de base da carteira (bem diversificado)'); ck(!(tipo === 'etfus'), 'Sem imposto de 30% nos dividendos dos EUA', false);
+    o.margem = { etf: true }; o.mu = rf ? 0.045 + (tipo === 'etfbr' && /IMAB|B5P2/.test(t) ? (invTaxas().ipca || 4.5) / 100 + 0.02 : 0) : 0.08; o.sigma0 = rf ? 0.06 : tipo === 'etfus' ? 0.16 : 0.22; o.muTxt = rf ? 'juros e inflação dos títulos que o ETF tem' : 'média de longo prazo das bolsas (cerca de 8% ao ano), sem garantia';
+    o.si = tipo === 'etfus' ? `https://finance.yahoo.com/quote/${t}` : `https://statusinvest.com.br/etfs/${t.toLowerCase()}`;
+  }
+  const val = o.crit.filter((c) => c.ok != null); o.passou = val.filter((c) => c.ok).length; o.total = val.length; o.fraco = o.crit.find((c) => c.ok === false)?.txt || '';
+  if (o.total) { const pc = Math.round((o.passou / o.total) * 100); o.notaRobo = o.nota; o.nota = o.nota == null ? pc : Math.round((o.nota + pc) / 2); }
+  const r = o.total ? o.passou / o.total : 0; o.ver = r >= 0.8 && o.nota >= 60 ? ['g', tipo === 'cripto' ? '🟢 Fundamento sólido (no máximo 1% do patrimônio)' : '🟢 Sólida para estudar'] : r >= 0.6 ? ['y', '🟡 Atenção: estude os pontos com ✘'] : ['r', '🔴 Evitar por agora'];
+  return o;
+}
+function anTesouro(nome) {
+  const r = roboTesouroDe(nome); const T = invTaxas(); const ip = (T.ipca || 4.5) / 100, se = (T.selic || 13) / 100; if (!r) return `<p class="small muted">Sem taxa do dia ainda. Rode o robô de dados.</p>`;
+  return r.L.slice(0, 3).map((t) => { const anos = Math.max(0.5, (new Date(t.venc) - new Date()) / (365.25 * 864e5)); const tx = t.taxa / 100; const ano = /selic/i.test(nome) ? se + tx : /ipca|renda\+|educa/i.test(nome) ? (1 + ip) * (1 + tx) - 1 : tx;
+    const bruto = 1000 * Math.pow(1 + ano, anos); const liq = 1000 + (bruto - 1000) * (1 - anIR(anos * 12)); const osc = /selic/i.test(nome) ? 0 : Math.round(Math.min(anos, 30) * 1);
+    return `<div class="an-td"><b>${t.venc.split('-').reverse().join('/')} · ${tdTaxaTxt(nome, t).replace(/ \(\d{4}\)$/, '')}</b><br><span class="small">Levando até o vencimento (${rbN(anos, 1)} anos): <b>R$ 1.000 viram ~${fmt0(liq)}</b> já sem imposto${/ipca|renda|educa/i.test(nome) ? ` (supondo inflação de ${rbP(ip * 100)} ao ano)` : /selic/i.test(nome) ? ` (supondo Selic de ${rbP(se * 100)})` : ''}.${osc ? ` Se vender antes, o preço pode variar uns <b>±${osc}%</b> a cada 1 ponto de mudança nos juros.` : ' Não oscila: pode tirar quando quiser.'}</span></div>`; }).join('');
+}
+function anHtml(tipo, t) {
+  if (tipo === 'tesouro') return `<div class="sm87 an103"><div class="row-between"><div><b class="sm87-tk">🤖 ${esc(t)}</b> <span class="muted">Análise completa</span><br><span class="small muted">taxas do dia (Tesouro Transparente)</span></div><button class="btn sm" data-sm-fechar>✕</button></div>
+    <div class="sm87-s"><h4>🔭 Quanto rende</h4>${anTesouro(t)}</div><div class="an-nota">⚠️ Tesouro é o investimento mais seguro do país (garantido pelo governo). O risco é vender antes do vencimento num momento em que os juros subiram.</div></div>`;
+  const o = anDados(tipo, t); const sym = anSym(tipo, t); const S = anSerie(sym); const M = anMetricas(S, tipo === 'cripto'); const bs = anBenchSym(tipo); const B = bs ? anSerie(bs) : null; const MB = M && B ? (() => { const d0 = M.W[0][0]; const L = B.filter((x) => String(x[0]).slice(0, 10) >= d0); return L.length > 5 ? L[L.length - 1][1] / L[0][1] - 1 : null; })() : null;
+  const sigma = M && M.W.length >= 40 ? M.vol : o.sigma0; const c6 = anCenarios(o.mu, sigma, 6), c12 = anCenarios(o.mu + (tipo === 'cripto' ? 0 : 0), sigma, 12);
+  const carregando = ui.anCarregando === sym;
+  const volTxt = (v) => (v < 0.2 ? 'baixo' : v < 0.35 ? 'médio' : v < 0.7 ? 'alto' : 'muito alto');
+  const mg = o.margem; let mgHtml = '';
+  if (mg?.etf) mgHtml = '<p class="small">ETF segue um índice, então não existe "preço justo" como numa empresa. O que importa é a <b>taxa</b> (quanto menor, melhor) e o que ele tem dentro.</p>';
+  else if (mg?.cripto) mgHtml = `${mg.linhas.map(([a, b]) => `<div class="sm87-ck"><span>${a}</span><b>${b}</b></div>`).join('')}<p class="small muted" style="margin:4px 0 0">Cripto não tem lucro nem patrimônio, então não existe "preço justo". A margem de segurança aqui é: <b>pouco dinheiro (até 1%)</b> e muito tempo.</p>`;
+  else if (mg) { const pos = Math.max(2, Math.min(98, 50 + mg.m * 100)); mgHtml = `<div class="an-ms"><i style="left:${pos}%"></i></div><div class="lg-an"><span>cara</span><span>justo</span><span>com folga</span></div>${mg.linhas.map(([a, b]) => `<div class="sm87-ck"><span>${a}</span><b>${b}</b></div>`).join('')}<div class="sm87-ck"><span><b>Margem de segurança</b></span><b class="${mg.m >= 0.15 ? 'good' : mg.m >= 0 ? 'warn' : 'bad'}">${mg.m >= 0 ? rbP(mg.m * 100, 0) + ' abaixo do justo' : rbP(-mg.m * 100, 0) + ' acima do justo'}</b></div>`; }
+  else mgHtml = '<p class="small muted">Sem números suficientes. Rode o robô de dados ou use ✎ Números.</p>';
+  const passado = M ? `${anLinha(M.W, B)}<div class="small muted">— ${esc(t)}${B && B.length > 5 ? ` · - - ${anBenchNome[tipo]}` : ''}</div>
+    <div class="an-k"><div><small>rendeu (preço)</small><b class="${M.ret >= 0 ? 'good' : 'bad'}">${M.ret >= 0 ? '+' : ''}${rbP(M.ret * 100)}</b><small>${MB != null ? `mercado ${MB >= 0 ? '+' : ''}${rbP(MB * 100)}` : ''}</small></div><div><small>sobe e desce</small><b>${volTxt(M.vol)}</b><small>${rbP(M.vol * 100, 0)} ao ano</small></div><div><small>maior queda</small><b class="${M.dd < -0.15 ? 'bad' : 'warn'}">${rbP(M.dd * 100)}</b><small>no período</small></div></div>`
+    : `<p class="small muted">${carregando ? 'Buscando o histórico…' : tipo === 'etfus' && !(db.invest.cot || {}).alpha ? 'O histórico dos EUA precisa da chave grátis da Alpha Vantage (Chaves).' : 'Sem histórico de preços ainda.'}</p>`;
+  const perTxt = M ? `${M.meses} ${M.meses === 1 ? 'mês' : 'meses'}${!/^[BU]:/.test(sym) || M.meses >= 6 ? '' : ' · o aparelho guarda o preço todo dia até completar 6'}` : '';
+  return `<div class="sm87 an103"><div class="row-between" style="align-items:flex-start;gap:8px"><div><b class="sm87-tk">🤖 ${esc(t)}</b> <span class="muted">${esc((o.nome || '').slice(0, 40))}</span><br><span class="small muted">Análise completa · ${o.precoTxt}${roboCache()?.em ? ' · dados de ' + roboDataTxt(roboCache().em) : ''}</span></div><button class="btn sm" data-sm-fechar>✕</button></div>
+    <div class="rb-ver ${o.ver[0]}"><b class="an-big">${o.nota ?? '—'}</b><div><b>${o.ver[1]}</b><br><span class="small muted">Passou em ${o.passou} de ${o.total} critérios${o.notaRobo != null ? ` · nota na bolsa toda: ${o.notaRobo}` : ''}.${o.fraco ? ' Ponto fraco: ' + esc(o.fraco) + '.' : ''}</span></div></div>
+    <div class="sm87-s"><h4>🛡️ Margem de segurança</h4>${mgHtml}</div>
+    <div class="sm87-s"><h4>📉 Como se comportou <small class="muted">${perTxt}</small></h4>${passado}</div>
+    <div class="sm87-s"><h4>🔭 E daqui pra frente? <small class="muted">(cenários, não previsão)</small></h4>
+      <span class="small">Com <b>R$ 1.000</b> hoje${tipo === 'acoes' || tipo === 'fiis' ? ', contando os proventos' : ''}:</span>
+      <div class="an-sc"><div></div><div><small>ruim</small></div><div><small>provável</small></div><div><small>bom</small></div>
+        <div><small>6 meses</small></div><b class="bad">${fmt0(c6.ruim)}</b><b class="good">${fmt0(c6.prov)}</b><b class="good">${fmt0(c6.bom)}</b>
+        <div><small>12 meses</small></div><b class="bad">${fmt0(c12.ruim)}</b><b class="good">${fmt0(c12.prov)}</b><b class="good">${fmt0(c12.bom)}</b></div>
+      ${anLeque(o.mu, sigma)}
+      <p class="small muted" style="margin:4px 0 0">"Provável" = ${o.muTxt}. A faixa vem de quanto ${tipo === 'cripto' ? 'ela' : 'o preço'} costuma oscilar (${rbP(sigma * 100, 0)} ao ano${M && M.W.length >= 40 ? ', medido' : ', típico do tipo'}): em 2 de cada 3 situações parecidas, o resultado ficou entre "ruim" e "bom".</p>
+      ${tipo === 'cripto' && o.m?.beta ? `<p class="small" style="margin:6px 0 0">₿ Se o Bitcoin subir 20%, ${esc(t)} tende a ${o.m.up ? `subir uns <b>${Math.round(o.m.up * 20)}%</b>` : 'acompanhar'}; se cair 20%, tende a cair uns <b>${Math.round((o.m.down || o.m.beta) * 20)}%</b>.</p>` : ''}</div>
+    <div class="sm87-s"><h4>✅ Checagem completa <small class="muted">(${o.passou} de ${o.total})</small></h4><div class="an-ck">${o.crit.map((c) => `<span class="${c.ok == null ? 'muted' : ''}">${c.ok == null ? '•' : c.ok ? '✔' : '✘'} ${esc(c.txt)}</span>`).join('')}</div></div>
+    <div class="an-nota">⚠️ O robô olha números e o passado. Ele não sabe de notícias, mudanças na empresa ou no país. Use a análise dele junto com a sua (Saiba mais, Raio-X, notícias) e o Diário de 24 h.${tipo === 'cripto' ? ' Cripto: no máximo 1% do patrimônio, só depois dos 6 meses de simulação, nunca com alavancagem.' : ''}</div>
+    <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:10px"><button class="btn primary" data-an-diario="${esc(t)}">📓 Anotar no Diário</button>${tipo === 'acoes' || tipo === 'fiis' ? `<button class="btn" data-sm-rx="${esc(t)}">🩺 Raio-X</button>` : tipo === 'cripto' ? `<button class="btn" data-rb-lab="${esc(t)}">🧪 Laboratório</button>` : ''}<a class="btn" href="${o.si}" target="_blank" rel="noopener">${tipo === 'cripto' ? 'CoinGecko' : tipo === 'etfus' ? 'Yahoo' : 'Status Invest'} ↗</a></div></div>`;
+}
+const anAberta = () => (CELULAR ? !!document.querySelector('#celFolha:not([hidden]) .an103') : $('#dlg').open && !!$('#dlg .an103'));
+function anAbrir(tipo, t) {
+  ui.anAberto = tipo + '|' + t; try { anHistGuardar(); } catch (e) {}
+  const pend = [anSym(tipo, t), anBenchSym(tipo)].filter((s) => s && tipo !== 'tesouro').filter((s) => { const c = labCacheLer(s); return !c || Date.now() - c.em > 6 * 3600e3; }).filter((s) => !s.startsWith('U:') || (db.invest.cot || {}).alpha);
+  if (pend.length) { ui.anCarregando = anSym(tipo, t); Promise.all(pend.map((s) => labBuscar(s).catch(() => null))).finally(() => { ui.anCarregando = null; if (ui.anAberto === tipo + '|' + t && anAberta()) vgJanela(anHtml(tipo, t)); }); }
+  vgJanela(anHtml(tipo, t));
+}
+/* ---------- botões nos cartões ---------- */
+{ const _c = cardExp; cardExp = function (tipo, x) { const h = _c.apply(this, arguments); if (!['acoes', 'fiis', 'etfus', 'etfbr', 'tesouro'].includes(tipo)) return h; return h.replace('<span style="flex:1"></span>', `<span style="flex:1"></span><button class="btn sm an-b" data-an="${tipo}|${esc(x.t)}">🤖 Análise</button>`); }; }
+{ const _ec = exploraCripto; exploraCripto = function () { return _ec.apply(this, arguments).replace(/<span style="flex:1"><\/span><button class="btn sm" data-lab-ver="([A-Z0-9]+)">/g, '<span style="flex:1"></span><button class="btn sm an-b" data-an="cripto|$1">🤖 Análise</button><button class="btn sm" data-lab-ver="$1">'); }; }
+{ const _rd = rbDetalhe; rbDetalhe = function (tipo, t) { _rd.apply(this, arguments); setTimeout(() => { const box = (CELULAR ? document.querySelector('#celFolha .sm87') : $('#dlg .sm87')); box?.querySelector('.row-between')?.insertAdjacentHTML('afterend', `<button class="btn sm an-b" style="margin-top:8px" data-an="${tipo}|${esc(t)}">🤖 Ver a análise completa</button>`); }, 0); }; }
+// as criptos voláteis do robô também
+{ const _ri = rbIndicacoes; rbIndicacoes = function (tipo) { let h = _ri.apply(this, arguments); if (tipo === 'cripto') h = h.replace(/<button class="btn sm" data-rb-sim="([A-Z0-9]+)">/g, '<button class="btn sm an-b" data-an="cripto|$1">🤖</button><button class="btn sm" data-rb-sim="$1">'); return h; }; }
+{ const _ir = invRobo; invRobo = function () { try { anHistGuardar(); } catch (e) {} return _ir.apply(this, arguments); }; }
+document.addEventListener('click', (ev) => {
+  const b = ev.target.closest('[data-an]'); if (b) { ev.stopPropagation(); const [tipo, ...r] = b.dataset.an.split('|'); return anAbrir(tipo, r.join('|')); }
+  const d = ev.target.closest('[data-an-diario]'); if (d) { vgFecharJanela(); ui.anAberto = null; ui.diPre = { acao: `estudar ${d.dataset.anDiario}`, motivo: 'análise do robô + minha análise' }; ui.sub = ui.sub || {}; ui.sub.invest = 'diario'; renderAll(); window.scrollTo?.(0, 0); }
+}, true);
 
 /* ---------- início ---------- */
 (async function boot() {
