@@ -1344,6 +1344,11 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 
 .cvm95{margin:0 0 10px}
 
+/* v10.0 robô */
+.robo100-l{display:flex;flex-wrap:wrap;gap:6px;align-items:center;color:var(--muted);margin:8px 0 0}
+.robo100{margin:10px 0 0}
+.robo100-td{display:flex;flex-direction:column;gap:3px;background:color-mix(in srgb,#2f7d4f 7%,var(--panel));border:1px solid color-mix(in srgb,#2f7d4f 35%,transparent);border-radius:10px;padding:8px 10px;margin:8px 0;font-size:13.5px}
+
 </style>
 </head>
 <body>
@@ -4264,7 +4269,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '9.6';
+const APP_VERSAO = '10.0';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -9042,7 +9047,7 @@ const CEL_NOVIDADES = {
 };
 function celVersaoNova() {
   const v = lsGet('cel-ver'); lsSet('cel-ver', APP_VERSAO); if (!v || v === APP_VERSAO || lsGet('cel-tem-dados') !== '1') return;
-  const itens = Object.keys(CEL_NOVIDADES).filter((k) => k > v && k <= APP_VERSAO).flatMap((k) => CEL_NOVIDADES[k]);
+  const verCmp = (a, b) => { const A = String(a).split('.').map(Number), B = String(b).split('.').map(Number); for (let i = 0; i < Math.max(A.length, B.length); i++) { const d = (A[i] || 0) - (B[i] || 0); if (d) return d; } return 0; }; const itens = Object.keys(CEL_NOVIDADES).filter((k) => verCmp(k, v) > 0 && verCmp(k, APP_VERSAO) <= 0).flatMap((k) => CEL_NOVIDADES[k]);
   celFolha(`<div class="cel-resumo"><div class="cel-resumo-t">✨</div><h2>Prumo atualizado para a ${APP_VERSAO}</h2>${itens.length ? `<ul class="cel-novo">${itens.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}<button class="btn primary cel-ok" data-cel-fechar>Legal!</button></div>`);
 }
 /* ---------- 4. saúde do app ---------- */
@@ -13341,6 +13346,7 @@ CEL_NOVIDADES['9.3'] = ['🏛️ FIIs com dados oficiais da CVM: DY, P/VP, patri
 CEL_NOVIDADES['9.4'] = ['🏛️ Dados da CVM agora chegam pelo seu GitHub, toda semana, sem bloqueio'];
 CEL_NOVIDADES['9.5'] = ['🏛️ Os 30 FIIs do Explorar agora usam DY, P/VP e patrimônio dos dados oficiais da CVM com o preço do dia'];
 CEL_NOVIDADES['9.6'] = ['🚰 FIIs adicionados por você ganham a liquidez diária (média de 3 meses)'];
+CEL_NOVIDADES['10.0'] = ['🤖 Robô do Prumo: ações (Fundamentus), Tesouro (taxas do dia), ETFs do exterior, liquidez e vacância dos FIIs e fundos pela CVM, tudo sozinho', '💼 Fundos: coloque o CNPJ e o Prumo pega o quanto rendeu'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -14195,6 +14201,153 @@ const xaLiqTentou = new Set();
 { const _e = invExplorar; invExplorar = function () { const h = _e.apply(this, arguments);
   if ((ui.expTipo || 'acoes') === 'fiis') xaLista('fiis').filter((e) => e.liq == null && !xaLiqTentou.has(e.t)).forEach((e) => { xaLiqTentou.add(e.t); setTimeout(() => xaLiquidez(e.t).then((v) => { if (v != null) { e.liq = v; changed(); } }).catch(() => {}), 500); });
   return h; }; }
+
+/* ---------- v10.0 · 🤖 Robô de dados do Prumo (ações, FIIs, Tesouro, ETFs e fundos) ---------- */
+let roboEstado = null, roboErro = '', fundosEstado = null;
+const roboCache = () => { try { return JSON.parse(lsGet('robo-dados') || 'null'); } catch (e) { return null; } };
+const fundosCache = () => { try { return JSON.parse(lsGet('robo-fundos') || 'null'); } catch (e) { return null; } };
+function roboUrls(arq) { const L = []; try { if (/^https?:/.test(location.protocol)) L.push(new URL(arq, location.href).href); } catch (e) {} L.push('https://matheus-prumo.github.io/prumo/' + arq, 'https://matheus-prumo.github.io/' + arq); return [...new Set(L)]; }
+async function roboBaixar(arq) {
+  let viu404 = false, err = '';
+  for (const u of roboUrls(arq)) { try { const r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) { if (r.status === 404) viu404 = true; err = 'HTTP ' + r.status; continue; } return await r.json(); } catch (e) { err = 'sem resposta'; } }
+  throw new Error(viu404 ? 'o robô ainda não criou esse arquivo no seu GitHub' : 'não consegui ler o arquivo do robô (' + err + ')');
+}
+async function roboAtualizar(forcar) {
+  const C = roboCache(); if (!forcar && C && Date.now() - C.lido < 6 * 3600e3) return C;
+  if (roboEstado === 'baixando') return C; roboEstado = 'baixando';
+  try { const j = await roboBaixar('dados.json'); j.lido = Date.now(); try { lsSet('robo-dados', JSON.stringify(j)); } catch (e) {} roboEstado = 'ok'; roboErro = ''; return j; }
+  catch (e) { roboEstado = 'erro'; roboErro = e.message; throw e; }
+}
+async function fundosAtualizar(forcar) {
+  const C = fundosCache(); if (!forcar && C && Date.now() - C.lido < 24 * 3600e3) return C;
+  if (fundosEstado === 'baixando') return C; fundosEstado = 'baixando';
+  try { const j = await roboBaixar('fundos.json'); j.lido = Date.now(); try { lsSet('robo-fundos', JSON.stringify(j)); } catch (e) { /* arquivo grande: guarda só na memória */ ROBO_FUNDOS_MEM = j; } fundosEstado = 'ok'; return j; }
+  catch (e) { fundosEstado = 'erro'; throw e; }
+}
+let ROBO_FUNDOS_MEM = null; const fundosDados = () => ROBO_FUNDOS_MEM || fundosCache();
+const roboDataTxt = (ms) => (ms ? new Date(ms).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '');
+const roboDia = (ms) => (ms ? new Date(ms).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '');
+let roboTentou = false;
+function roboGarantir() { const C = roboCache(); if ((!C || Date.now() - C.lido > 6 * 3600e3) && !roboTentou) { roboTentou = true; roboAtualizar(false).then(() => { if (ui.tab === 'invest') renderAll(); }).catch(() => {}); } return C; }
+// preço do robô entra se for mais novo que o que já existe
+function roboPreco(t, p, emMs) { if (!(p > 0)) return; const P = (db.invest.precos = db.invest.precos || {}); const at = P[t]; const em = new Date(emMs).toISOString(); if (!at || (at.em || '') < em) P[t] = { p, em }; }
+
+/* ---- ações ---- */
+function roboAplicarAcoes() {
+  const R = roboCache(); const A = R?.acoes; let n = 0; const em = R?.fontes?.acoes?.em || R?.em;
+  EXP_ACOES.forEach((x) => {
+    if (!x.orig) x.orig = [x[3], x[4], x[5], x[6]];
+    const d = A?.[x[0]];
+    if (x.xa) return;
+    if (d && d.dy != null && d.pl != null) { x[3] = d.dy; x[4] = d.pl; x[5] = d.pvp ?? x.orig[2]; x[6] = d.roe ?? x.orig[3]; x.robo = em; x.roboD = d; n++; roboPreco(x[0], d.cot, em); }
+    else { [x[3], x[4], x[5], x[6]] = x.orig; x.robo = null; x.roboD = null; }
+  });
+  // as que você adicionou: números automáticos vêm do robô (os que você digitou à mão ficam)
+  if (A) xaLista('acoes').forEach((e) => { const d = A[e.t]; if (!d || e.auto === false) return; ['dy', 'pl', 'pvp', 'roe'].forEach((k) => { if (d[k] != null) e[k] = d[k]; }); e.auto = true; e.fonte = 'Fundamentus'; e.em = new Date(em).toISOString().slice(0, 10); roboPreco(e.t, d.cot, em); });
+  return n;
+}
+/* ---- FIIs: liquidez, vacância, imóveis (e DY/P/VP quando a CVM não tiver) ---- */
+function roboAplicarFiis() {
+  const R = roboCache(); const F = R?.fiis; let n = 0; const em = R?.fontes?.fiis?.em || R?.em; if (!F) return 0;
+  EXP_FIIS.forEach((x) => { const d = F[x[0]]; if (!d || x.xa) return; if (!x.orig) x.orig = [x[3], x[4], x[6]]; if (!x.origPesq) x.origPesq = x.orig.slice(); x.orig = [d.pvp ?? x.origPesq[0], d.dy ?? x.origPesq[1], d.vm ?? x.origPesq[2]]; if (d.liq != null) x[5] = d.liq; x.robo = em; x.roboD = d; n++; roboPreco(x[0], d.cot, em); });
+  xaLista('fiis').forEach((e) => { const d = F[e.t]; if (!d || e.auto === false) return; if (d.liq != null) e.liq = d.liq; if (!(e.dy > 0) && d.dy != null) e.dy = d.dy; if (!(e.pvp > 0) && d.pvp != null) e.pvp = d.pvp; e.vac = d.vac; e.imov = d.imov; roboPreco(e.t, d.cot, em); });
+  return n;
+}
+/* ---- Tesouro: taxa de hoje de cada título ---- */
+const tdNorm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\(.*?\)/g, '').replace(/aposentadoria extra/, '').replace(/[^a-z0-9+]/g, '');
+function tdTaxaTxt(tipo, t) {
+  const v = String(t.taxa ?? '').replace('.', ','); const ano = t.venc.slice(0, 4);
+  if (/selic/i.test(tipo)) return `Selic + ${v}% (${ano})`;
+  if (/ipca|renda\+|educa/i.test(tipo)) return `IPCA + ${v}% (${ano})`;
+  return `${v}% ao ano (${ano})`;
+}
+function roboTesouroDe(nome) { const T = roboCache()?.tesouro; if (!T) return null; const k = tdNorm(nome); const L = T.titulos.filter((t) => tdNorm(t.tipo) === k && t.taxa > 0); return L.length ? { data: T.data, L } : null; }
+{ const _ie = itensExp; itensExp = function (tipo) {
+  const L = _ie.apply(this, arguments);
+  if (tipo === 'tesouro') { const T = roboCache()?.tesouro; if (T) L.forEach((x) => { const r = roboTesouroDe(x.t); if (!r) return; const dt = T.data.split('-').reverse().slice(0, 2).join('/'); x.ind = x.ind.map(([l, v]) => (/^Taxa t[ií]pica/.test(l) ? [`Taxa de hoje (${dt})`, r.L.slice(0, 3).map((t) => tdTaxaTxt(x.t, t)).join(' · ')] : [l, v])); x.roboTd = r; }); }
+  if (tipo === 'etfus') { const E = roboCache()?.etfus; if (E) L.forEach((x) => { const d = E[x.t]; if (d && d.dy != null) { x.ind = [...x.ind, ['Div. yield (12m)', pct1(d.dy.toFixed(2))]]; x.dy = d.dy; } }); }
+  return L;
+}; }
+/* ---- ETFs do exterior: preço pelo robô, sem precisar da Finnhub ---- */
+function roboAplicarEtfus() { const R = roboCache(); const E = R?.etfus; if (!E) return 0; const em = R?.fontes?.etfus?.em || R?.em; let n = 0; Object.entries(E).forEach(([t, d]) => { if (d.p > 0) { roboPreco(t, d.p, em); n++; } }); return n; }
+precosDaLista = (function (orig) { return async function (tipo) {
+  if (tipo === 'etfus' && !(db.invest.cot || {}).finnhub) { try { await roboAtualizar(true); } catch (e) {} const n = roboAplicarEtfus(); if (n) { changed(); const R = roboCache(); return toast(`🤖 ${n} preços dos EUA pelo robô do Prumo (${roboDataTxt(R?.fontes?.etfus?.em || R?.em)})`); } }
+  if (tipo === 'acoes' || tipo === 'fiis' || tipo === 'etfbr') { try { await roboAtualizar(true); } catch (e) {} }
+  return orig.apply(this, arguments);
+}; })(precosDaLista);
+// "Atualizar cotações" da carteira: ativos dos EUA (e os que a brapi não achar) pelo robô
+atualizarCotacoes = (function (orig) { return async function () {
+  const r = await orig.apply(this, arguments); let n = 0;
+  try { const R = await roboAtualizar(false); const em = R?.em;
+    (db.invest.ativos || []).filter((a) => ehBolsa(a) && a.ticker && !a.encerrado).forEach((a) => { const t = a.ticker.toUpperCase(); const velho = !a.cotacaoEm || Date.now() - new Date(a.cotacaoEm).getTime() > 20 * 3600e3;
+      const p = ehUS(a) ? R?.etfus?.[t]?.p : (R?.acoes?.[t]?.cot || R?.fiis?.[t]?.cot); if (velho && p > 0) { a.cotacao = p; a.cotacaoEm = new Date(em).toISOString(); n++; } });
+    if (n) { changed(); const dlg = $('#dlg'); if (dlg.open) dlg.querySelector('.vg-dlg, form, div')?.insertAdjacentHTML('beforeend', `<p class="small" style="margin:8px 0 0">🤖 Mais ${n} cotação${n > 1 ? 'ões' : ''} pelo robô do Prumo (${roboDataTxt(em)}).</p>`); else toast(`🤖 ${n} cotações pelo robô do Prumo`); }
+  } catch (e) {}
+  return r;
+}; })(atualizarCotacoes);
+/* ---- Explorar: aplicar, mostrar data e status ---- */
+{ const _e = invExplorar; invExplorar = function () {
+  const tipo = ui.expTipo || 'acoes'; const R = roboGarantir(); let n = 0;
+  try { if (tipo === 'acoes') n = roboAplicarAcoes(); if (tipo === 'fiis') n = roboAplicarFiis(); if (tipo === 'etfus' && !(db.invest.cot || {}).finnhub) roboAplicarEtfus(); } catch (e) { console.warn('10.0', e); }
+  let h = _e.apply(this, arguments);
+  if (['acoes', 'fiis', 'tesouro', 'etfus'].includes(tipo)) {
+    const f = R?.fontes?.[tipo];
+    const st = !R ? `<div class="lembrete info robo100"><span>🤖 <b>Robô do Prumo:</b> ${roboEstado === 'erro' ? esc(roboErro) + '. Veja o passo a passo que o Claude mandou para ligar o robô.' : 'buscando os dados…'}</span></div>`
+      : `<div class="robo100-l small">🤖 Robô do Prumo · ${f ? (f.ok ? `${esc(f.fonte)}, ${roboDataTxt(f.em)}` : `⚠ ${esc(f.fonte)} falhou na última vez${f.em ? ` (dados de ${roboDataTxt(f.em)})` : ''}`) : 'sem dados desta parte'}${tipo === 'acoes' && n ? ` · ${n} ações atualizadas` : ''}${tipo === 'fiis' && n ? ` · liquidez e vacância de ${n} fundos` : ''} <button class="btn sm" data-robo-ver>Ver detalhes</button></div>`;
+    h = h.replace('<div class="lembrete info" style="margin:10px 0"><span>🧭', st + '<div class="lembrete info" style="margin:10px 0"><span>🧭');
+  }
+  return h;
+}; }
+{ const _c = cardExp; cardExp = function (tipo, x) { let h = _c.apply(this, arguments);
+  if (tipo === 'acoes') { const a = EXP_ACOES.find((r) => r[0] === x.t); if (a?.robo) h = h.replace(`<span class="tag">${esc(x.seg)}</span>`, `<span class="tag">${esc(x.seg)}</span> <span class="tag ok" title="Números do Fundamentus pelo robô do Prumo">📊 ${roboDia(a.robo)}</span>`).replace(`(pesquisa de ${EXP_DATA})`, `(Fundamentus, ${roboDia(a.robo)})`); }
+  if (tipo === 'tesouro' && x.roboTd) h = h.replace('<div class="exp-txt"><b>Por que', `<div class="robo100-td">${x.roboTd.L.map((t) => `<span><b>${t.venc.split('-').reverse().join('/')}</b> · ${tdTaxaTxt(x.t, t).replace(/ \(\d{4}\)$/, '')}${t.pu ? ` · mínimo ~${fmt(Math.max(t.pu * 0.01, 30))}` : ''}</span>`).join('')}<small class="muted">Taxas de compra do Tesouro Direto em ${x.roboTd.data.split('-').reverse().join('/')} (Tesouro Transparente). Mudam todo dia.</small></div><div class="exp-txt"><b>Por que`);
+  return h; }; }
+/* ---- Saiba mais: dados extras ---- */
+{ const _h = smHtml; smHtml = function (tipo, t) { let h = _h.apply(this, arguments);
+  if (tipo === 'acoes') { const a = EXP_ACOES.find((r) => r[0] === t); const d = a?.roboD || roboCache()?.acoes?.[t];
+    if (d) { h = h.replace(/\(números da pesquisa de [^)]*\)/, `(Fundamentus, ${roboDia(roboCache()?.fontes?.acoes?.em)})`);
+      const extra = `<div class="sm87-s"><h4>📊 Mais números <small class="muted">(Fundamentus)</small></h4>${d.mliq != null ? `<div class="sm87-ck"><span>Margem líquida (quanto sobra de lucro de cada R$ 100 vendidos)</span><b>${pct1(d.mliq)}</b></div>` : ''}${d.div != null ? `<div class="sm87-ck"><span>Dívida bruta ÷ patrimônio (até 1 é tranquilo)</span><b class="${d.div <= 1 ? 'good' : 'warn'}">${num2(d.div)}</b></div>` : ''}${d.cresc != null ? `<div class="sm87-ck"><span>Crescimento das vendas em 5 anos</span><b class="${d.cresc >= 0 ? 'good' : 'warn'}">${pct1(d.cresc)}</b></div>` : ''}${d.liq != null ? `<div class="sm87-ck"><span>Negociado por dia (média de 2 meses)</span><b>R$ ${num2(d.liq)} mi</b></div>` : ''}</div>`;
+      h = h.replace('<div class="sm87-s"><h4>📈 Preço', extra + '<div class="sm87-s"><h4>📈 Preço'); } }
+  if (tipo === 'fiis') { const d = roboCache()?.fiis?.[t];
+    if (d) { const extra = `<div class="sm87-s"><h4>🏢 Imóveis e vacância <small class="muted">(Fundamentus)</small></h4>${d.vac != null ? `<div class="sm87-ck"><span>Vacância média (imóveis vazios) <button class="gl-i" data-gl="ck-vac">i</button></span><b class="${d.vac <= 5 ? 'good' : d.vac <= 15 ? 'warn' : 'bad'}">${pct1(d.vac)}</b></div><div class="gl-ex" data-gl-box="ck-vac" hidden>${typeof glHtml === 'function' ? glHtml('vac', { t }) : ''}</div>` : ''}${d.imov != null ? `<div class="sm87-ck"><span>Quantidade de imóveis</span><b>${Math.round(d.imov)}</b></div>` : ''}${d.cap != null ? `<div class="sm87-ck"><span>Cap rate (aluguel ÷ valor dos imóveis)</span><b>${pct1(d.cap)}</b></div>` : ''}${d.ffo != null ? `<div class="sm87-ck"><span>FFO yield (geração de caixa ÷ preço)</span><b>${pct1(d.ffo)}</b></div>` : ''}${d.liq != null ? `<div class="sm87-ck"><span>Negociado por dia</span><b>R$ ${num2(d.liq)} mi</b></div>` : ''}</div>`;
+      h = h.replace('<div class="sm87-s"><h4>📈 Preço', extra + '<div class="sm87-s"><h4>📈 Preço'); } }
+  if (tipo === 'etfus') { const d = roboCache()?.etfus?.[t]; if (d) h = h.replace('<div class="sm87-s"><h4>📈 Preço', `<div class="sm87-s"><h4>💵 Dividendos <small class="muted">(Yahoo, pelo robô)</small></h4><div class="sm87-ck"><span>Pagou em 12 meses, por cota</span><b>US$ ${num2(d.div12)}</b></div><div class="sm87-ck"><span>Dividend yield</span><b>${pct1(d.dy.toFixed(2))}</b></div><p class="small muted" style="margin:4px 0 0">Lembre: os EUA retêm 30% dos dividendos na fonte.</p></div><div class="sm87-s"><h4>📈 Preço`); }
+  return h; }; }
+{ const _sm = smAbrir; smAbrir = function (tipo) { try { if (tipo === 'acoes') roboAplicarAcoes(); if (tipo === 'fiis') roboAplicarFiis(); } catch (e) {} return _sm.apply(this, arguments); }; }
+/* ---- Fundos de investimento: CNPJ preenche a rentabilidade pela CVM ---- */
+const cnpjDig = (s) => String(s || '').replace(/\D/g, '');
+const cnpjFmt = (d) => (d.length === 14 ? `${d.slice(0, 2)}.${d.slice(2, 5)}.${d.slice(5, 8)}/${d.slice(8, 12)}-${d.slice(12)}` : d);
+function fundoCVM(cnpj) { const F = fundosDados()?.F; const d = F?.[cnpjDig(cnpj)]; return d ? { cota: d[0], data: d[1], r12: d[2], pl: d[3], cot: d[4] } : null; }
+let fundosTentou = false;
+{ const _cf = comparadorFundos; comparadorFundos = function () {
+  if (!fundosDados() && !fundosTentou) { fundosTentou = true; fundosAtualizar(false).then(() => { if (ui.tab === 'invest' && ui.expTipo === 'fundos') renderAll(); }).catch(() => {}); }
+  let mudou = false; (db.invest.fundos || []).forEach((f) => { if (!f.cnpj || f.rentAuto === false) return; const c = fundoCVM(f.cnpj); if (c && c.r12 != null && f.rent !== c.r12) { f.rent = c.r12; f.cvmData = c.data; mudou = true; } });
+  let h = _cf.apply(this, arguments);
+  h = h.replace('<label>Aplicação mínima (R$)<input id="fiMin" type="text" inputmode="decimal" placeholder="ex.: 100"></label></div>', `<label>Aplicação mínima (R$)<input id="fiMin" type="text" inputmode="decimal" placeholder="ex.: 100"></label><label>CNPJ do fundo <small class="muted">(opcional: o Prumo busca o quanto rendeu)</small><input id="fiCnpj" type="text" inputmode="numeric" placeholder="ex.: 12.345.678/0001-90"></label></div>`);
+  h = h.replace('Use a <b>rentabilidade dos últimos 12 meses</b>, que já vem descontada da taxa de administração.', 'Use a <b>rentabilidade dos últimos 12 meses</b>, que já vem descontada da taxa de administração. <b>Ou coloque só o CNPJ</b> (está na lâmina): o Prumo pega o quanto rendeu direto da CVM e atualiza toda semana.');
+  (db.invest.fundos || []).forEach((f) => { if (!f.cnpj) return; const c = fundoCVM(f.cnpj); const tag = c ? `<span class="tag ok" title="CNPJ ${cnpjFmt(cnpjDig(f.cnpj))}">🏛️ CVM: cota de ${c.data.split('-').reverse().join('/')}${c.r12 != null ? ` · 12 meses ${pct1(c.r12.toFixed(2))}` : ''}</span>` : `<span class="tag" title="CNPJ ${cnpjFmt(cnpjDig(f.cnpj))}">🏛️ CNPJ sem dados na CVM ainda</span>`; h = h.replace(`${esc(f.nome)}</b><br>`, `${esc(f.nome)}</b><br>${tag} `); });
+  if (mudou) setTimeout(() => changed(), 0);
+  return h;
+}; }
+window.addEventListener('click', (ev) => { if (!ev.target.closest?.('[data-fi-add]')) return; const c = cnpjDig($('#fiCnpj')?.value); ui.fiCnpjPend = null; if (!c) return;
+  if (c.length !== 14) { ev.stopImmediatePropagation(); ev.preventDefault(); return toast('O CNPJ tem 14 números. Confira na lâmina do fundo.'); }
+  const d = fundoCVM(c); const r = $('#fiRent');
+  if (r && !String(r.value).trim()) { if (d?.r12 != null) r.value = String(d.r12).replace('.', ','); else { ev.stopImmediatePropagation(); ev.preventDefault(); return toast(fundosDados() ? 'Não achei esse CNPJ nos dados da CVM. Digite quanto rendeu em 12 meses.' : 'Carregando os dados da CVM… toque de novo em alguns segundos.', 6000); } }
+  ui.fiCnpjPend = c; }, true);
+document.addEventListener('click', (ev) => { if (!ev.target.closest('[data-fi-add]') || !ui.fiCnpjPend) return; const L = db.invest.fundos || []; const f = L[L.length - 1]; if (f && f.em === hoje() && !f.cnpj) { f.cnpj = ui.fiCnpjPend; const d = fundoCVM(f.cnpj); f.rentAuto = d?.r12 != null; if (d) f.cvmData = d.data; changed(); } ui.fiCnpjPend = null; });
+/* ---- detalhes do robô ---- */
+async function roboDetalhes() {
+  vgJanela('<h3 style="margin:0">🤖 Robô do Prumo</h3><p class="small muted">Buscando…</p>');
+  let R = null; try { R = await roboAtualizar(true); } catch (e) {}
+  const nomes = { acoes: '📈 Ações (Fundamentus)', fiis: '🏢 FIIs: liquidez e vacância (Fundamentus)', tesouro: '📜 Tesouro Direto (Tesouro Transparente)', etfus: '🌎 ETFs do exterior (Yahoo)' };
+  const C = cvmCache(); const FU = fundosDados();
+  vgJanela(`<h3 style="margin:0 0 6px">🤖 Robô do Prumo</h3><p class="small muted" style="margin:0 0 8px">Roda sozinho no seu GitHub nos dias úteis, às 19h40, e guarda os dados junto com o Prumo.</p>
+    ${R ? Object.entries(nomes).map(([k, n]) => { const f = R.fontes?.[k]; return `<div class="cvm93"><b>${f?.ok ? '✅' : '⚠️'} ${n}</b><br><span class="small">${f ? (f.ok ? 'Atualizado em ' + roboDataTxt(f.em) : 'Falhou na última vez: ' + esc(f.erro || '') + (f.em ? ' · usando os dados de ' + roboDataTxt(f.em) : '')) : 'sem dados'}${k === 'acoes' && R.acoes ? ` · ${Object.keys(R.acoes).length} ações` : ''}${k === 'fiis' && R.fiis ? ` · ${Object.keys(R.fiis).length} fundos` : ''}${k === 'tesouro' && R.tesouro ? ` · ${R.tesouro.titulos.length} títulos` : ''}</span></div>`; }).join('') : `<p class="small bad">${esc(roboErro || 'Robô ainda não ligado.')}</p>`}
+    <div class="cvm93"><b>${C ? '✅' : '⚠️'} 🏛️ FIIs: dados oficiais (CVM)</b><br><span class="small">${C ? 'Lidos em ' + roboDataTxt(C.em) + ' · ' + Object.keys(C.F).length + ' fundos' : 'ainda não lidos'}</span></div>
+    <div class="cvm93"><b>${FU ? '✅' : '⚠️'} 💼 Fundos de investimento (CVM)</b><br><span class="small">${FU ? 'Cotas de ' + (FU.ref || '').split('-').reverse().join('/') + ' · ' + Object.keys(FU.F).length + ' fundos · atualiza às segundas' : 'carrega quando você abre o comparador de fundos'}</span></div>
+    <div class="row" style="gap:6px;margin-top:8px"><button class="btn" data-sm-fechar>Fechar</button></div>`);
+}
+document.addEventListener('click', (ev) => { if (ev.target.closest('[data-robo-ver]')) roboDetalhes(); }, true);
 
 /* ---------- início ---------- */
 (async function boot() {
