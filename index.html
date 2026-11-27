@@ -4260,7 +4260,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '8.9';
+const APP_VERSAO = '9.0';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13332,6 +13332,7 @@ CEL_NOVIDADES['8.6'] = ['💰 No Explorar, cada ação e FII mostra quanto paga 
 CEL_NOVIDADES['8.7'] = ['＋ Saiba mais em cada ação, FII e ETF do Explorar: o que é, checagem rápida, gráfico, proventos e novidades da semana', '🌎 Preços dos ETFs do exterior: passo a passo da chave Finnhub ou busca pela Alpha Vantage'];
 CEL_NOVIDADES['8.8'] = ['📖 No ＋ Saiba mais: toque no ⓘ para entender cada número (DY, P/L, P/VP, ROE…) e veja o Dicionário dos números de ações, FIIs e ETFs'];
 CEL_NOVIDADES['8.9'] = ['➕ No Explorar, adicione qualquer ação ou FII pelo código e copie os números da Status Invest em ✎ Números'];
+CEL_NOVIDADES['9.0'] = ['📊 Ao adicionar uma ação ou FII no Explorar, o Prumo busca os números sozinho (botão ↻ no cartão para buscar de novo)'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -13909,7 +13910,7 @@ async function xaAdd(tipo) {
   if (!(p > 0)) return toast(`Não encontrei ${t} na bolsa. Confira o código${C.brapi ? '' : ' (ou coloque o token grátis da brapi em ↻ Atualizar cotações → Chaves)'}.`, 6000);
   xaLista(tipo).push({ t, nome: String(nome).replace(/\s+/g, ' ').trim().slice(0, 60), setor: '', em: null, add: hoje() });
   db.invest.precos[t] = { p, em: new Date().toISOString() }; ui.expFiltro = XA_SEG; changed();
-  toast(`➕ ${t} entrou na lista. Agora toque em ✎ Números.`, 6000); setTimeout(() => xaNumeros(tipo, t), 400);
+  toast(`➕ ${t} entrou na lista.`, 4000); return t;
 }
 function xaNumeros(tipo, t) {
   const e = xaLista(tipo).find((x) => x.t === t); if (!e) return;
@@ -13920,7 +13921,7 @@ function xaNumeros(tipo, t) {
   openForm({ title: `✎ Números de ${t}`, submit: 'Salvar', values: vals,
     note: `Abra ${t} na Status Invest e copie os números. Pode deixar em branco o que não achar. Use vírgula: 9,5.`,
     fields: [{ k: 'nome', label: 'Nome' }, { k: 'setor', label: tipo === 'acoes' ? 'Setor' : 'Tipo de fundo', type: 'select', options: () => [{ value: '', label: '—' }, ...setores.map((s) => ({ value: s, label: s }))] }, ...campos],
-    onSave: (v) => { e.nome = String(v.nome || '').trim() || e.nome; e.setor = v.setor || ''; campos.forEach((c) => { const n = num(String(v[c.k] ?? '').replace('%', ''), NaN); e[c.k] = isFinite(n) ? n : null; }); e.em = hoje(); } });
+    onSave: (v) => { e.nome = String(v.nome || '').trim() || e.nome; e.setor = v.setor || ''; campos.forEach((c) => { const n = num(String(v[c.k] ?? '').replace('%', ''), NaN); e[c.k] = isFinite(n) ? n : null; }); e.em = hoje(); e.auto = false; } });
 }
 document.addEventListener('click', (ev) => {
   const g = (k) => ev.target.closest(`[${k}]`); let b;
@@ -13931,6 +13932,60 @@ document.addEventListener('click', (ev) => {
 document.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' && ev.target.matches?.('[data-xa-cod]')) xaAdd(ev.target.dataset.xaCod); });
 { const _sm = smAbrir; smAbrir = function () { try { xaSync(); } catch (e) {} return _sm.apply(this, arguments); }; }
 { const _h = smHtml; smHtml = function (tipo, t) { let h = _h.apply(this, arguments); const x = (tipo === 'acoes' ? EXP_ACOES : tipo === 'fiis' ? EXP_FIIS : []).find((a) => a[0] === t && a.xa); if (x && x.setor) h = h.replace(`· ${esc(XA_SEG)}</span>`, `· ${esc(x.setor)}</span>`); return h; }; }
+
+/* ---------- v9.0 · números automáticos ao adicionar ação ou FII ---------- */
+const XA_SETOR_MAP = [
+  [/insur|segur/i, 'Seguros'], [/exchange|bolsa|capital markets|financial data/i, 'Bolsa'], [/bank|banc|financ|finance/i, 'Bancos'],
+  [/water|sanea|gas util|gás/i, 'Saneamento e gás'], [/transmis/i, 'Energia: transmissão'], [/electric|utilit|energia el/i, 'Energia: geração e distribuição'],
+  [/telecom|communication/i, 'Telecom'], [/oil|petr|energy minerals|energy/i, 'Petróleo e combustíveis'], [/paper|pulp|celul|forest/i, 'Papel e celulose'],
+  [/software|tech|electronic tech/i, 'Tecnologia'], [/health|consumer|retail|beverage|food|varej|consumo/i, 'Consumo e saúde'],
+  [/real estate|construct|homebuild|imob/i, 'Construção'], [/transport|toll|rodov|mall|shopping/i, 'Shoppings e rodovias'], [/industr|machin|producer|process|non-energy/i, 'Indústria'],
+];
+const xaSetorDe = (txt) => { if (!txt) return ''; const m = XA_SETOR_MAP.find(([re]) => re.test(txt)); return m ? m[1] : ''; };
+const xaPct = (v) => { v = Number(v); if (!isFinite(v) || v === 0) return null; return Math.abs(v) < 1.5 ? r2(v * 100) : r2(v); };
+async function xaBuscarNumeros(tipo, t, silencioso) {
+  const e = xaLista(tipo).find((x) => x.t === t); if (!e) return 0;
+  const C = db.invest.cot || {}; const H = C.brapi ? { headers: { Authorization: 'Bearer ' + C.brapi } } : {}; const base = `https://brapi.dev/api/quote/${encodeURIComponent(t)}`;
+  const got = {}; let preco = 0, eps = null, bv = null;
+  try { const r = (await pegarJSON(base, H)).results?.[0] || {}; preco = r.regularMarketPrice || 0; if (r.longName || r.shortName) got.nome = String(r.longName || r.shortName).replace(/\s+/g, ' ').trim().slice(0, 60); if (r.priceEarnings > 0) got.pl = r2(r.priceEarnings); if (r.earningsPerShare) eps = Number(r.earningsPerShare); } catch (err) {}
+  try { const r = (await pegarJSON(`${base}?modules=summaryProfile,defaultKeyStatistics,financialData`, H)).results?.[0] || {};
+    const sp = r.summaryProfile || {}, ks = r.defaultKeyStatistics || {}, fd = r.financialData || {};
+    if (tipo === 'acoes') { const s = xaSetorDe(`${sp.industry || ''} ${sp.sector || ''}`); if (s) got.setor = s; }
+    if (ks.priceToBook > 0) got.pvp = r2(ks.priceToBook); if (ks.bookValue > 0) bv = Number(ks.bookValue);
+    const dy = xaPct(ks.dividendYield ?? ks.yield); if (dy && dy > 0 && dy < 60) got.dy = dy;
+    const roe = xaPct(fd.returnOnEquity); if (roe != null && roe > -100 && roe < 200) got.roe = roe;
+    if (!got.pl && ks.trailingEps > 0 && preco) got.pl = r2(preco / ks.trailingEps); if (!eps && ks.trailingEps) eps = Number(ks.trailingEps);
+  } catch (err) {}
+  if (!got.dy && preco) { try { const r = (await pegarJSON(`${base}?dividends=true`, H)).results?.[0] || {}; const L = r.dividendsData?.cashDividends || []; const lim = addDias(hoje(), -365);
+    const s = soma(L.filter((d) => { const dt = String(d.paymentDate || d.lastDatePrior || '').slice(0, 10); return dt && dt >= lim && dt <= addDias(hoje(), 60); }), (d) => Number(d.rate) || 0); if (s > 0) got.dy = r2((s / preco) * 100); } catch (err) {} }
+  if (!got.pvp && bv && preco) got.pvp = r2(preco / bv);
+  if (got.roe == null && eps && bv) got.roe = r2((eps / bv) * 100);
+  if (preco > 0) db.invest.precos[t] = { p: preco, em: new Date().toISOString() };
+  const campos = tipo === 'acoes' ? ['dy', 'pl', 'pvp', 'roe'] : ['dy', 'pvp'];
+  let n = 0; campos.forEach((k) => { if (got[k] != null) { e[k] = got[k]; n++; } });
+  if (got.nome && (!e.nome || e.nome === t)) e.nome = got.nome; if (got.setor && !e.setor) e.setor = got.setor;
+  if (n) { e.em = hoje(); e.auto = true; }
+  const faltam = campos.filter((k) => e[k] == null).length + (tipo === 'fiis' ? 2 : 0) * (e.liq == null && e.pat == null ? 1 : 0);
+  changed(); if (!silencioso) toast(n ? `📊 ${t}: ${n} números preenchidos sozinhos${faltam ? '. Os que faltam, copie em ✎ Números.' : ' ✔'}` : `Não consegui os números de ${t} automaticamente (o plano grátis da brapi não libera todos). Copie da Status Invest em ✎ Números.`, 7000);
+  return { n, faltam };
+}
+// ao adicionar: busca os números e só abre o formulário se faltar tudo
+xaAdd = (function (orig) { return async function (tipo) {
+  const t = await orig.apply(this, arguments); if (!t) return;
+  toast(`Buscando os números de ${t}…`); const r = await xaBuscarNumeros(tipo, t, true);
+  if (!r.n) { toast(`${t} entrou na lista, mas não consegui os números sozinho. Copie da Status Invest:`, 7000); xaNumeros(tipo, t); }
+  else if (r.faltam) toast(`📊 ${t}: ${r.n} números preenchidos sozinhos. Faltou ${r.faltam === 1 ? 'um' : 'alguns'}: complete em ✎ Números se quiser.`, 8000);
+  else toast(`📊 ${t} entrou na lista com os números ✔`, 6000);
+}; })(xaAdd);
+// botão de atualizar os números no cartão + "automático" no texto
+{ const _c = cardExp; cardExp = function (tipo, x) { let h = _c.apply(this, arguments); if (!(tipo === 'acoes' || tipo === 'fiis') || !xaTem(tipo, x.t)) return h; return h.replace(`<button class="btn sm" data-xa-num="${tipo}|${esc(x.t)}">`, `<button class="btn sm" data-xa-auto="${tipo}|${esc(x.t)}" title="Buscar os números de novo">↻</button><button class="btn sm" data-xa-num="${tipo}|${esc(x.t)}">`); }; }
+xaAt = function (e) { return e.em ? `Números ${e.auto ? 'buscados automaticamente' : 'copiados por você'} em ${dmy(e.em)}. Confira na Status Invest de vez em quando.` : 'Toque em ↻ para buscar os números, ou em ✎ Números para copiar da Status Invest.'; };
+document.addEventListener('click', async (ev) => { const b = ev.target.closest('[data-xa-auto]'); if (!b) return; const [tipo, t] = b.dataset.xaAuto.split('|'); toast(`Buscando os números de ${t}…`); await xaBuscarNumeros(tipo, t); }, true);
+// os que já estavam na lista sem números: busca sozinho uma vez ao abrir o Explorar
+const xaTentou = new Set();
+{ const _e = invExplorar; invExplorar = function () { const h = _e.apply(this, arguments); const tipo = ui.expTipo || 'acoes';
+  if ((tipo === 'acoes' || tipo === 'fiis') && db?.invest?.cot?.brapi) xaLista(tipo).filter((e) => !e.em && !xaTentou.has(e.t)).forEach((e) => { xaTentou.add(e.t); setTimeout(() => xaBuscarNumeros(tipo, e.t, true).then((r) => { if (r?.n) toast(`📊 ${e.t}: números preenchidos sozinhos`); }), 300); });
+  return h; }; }
 
 /* ---------- início ---------- */
 (async function boot() {
