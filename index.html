@@ -4296,7 +4296,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '10.1';
+const APP_VERSAO = '10.2';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13375,6 +13375,7 @@ CEL_NOVIDADES['9.5'] = ['🏛️ Os 30 FIIs do Explorar agora usam DY, P/VP e pa
 CEL_NOVIDADES['9.6'] = ['🚰 FIIs adicionados por você ganham a liquidez diária (média de 3 meses)'];
 CEL_NOVIDADES['10.0'] = ['🤖 Robô do Prumo: ações (Fundamentus), Tesouro (taxas do dia), ETFs do exterior, liquidez e vacância dos FIIs e fundos pela CVM, tudo sozinho', '💼 Fundos: coloque o CNPJ e o Prumo pega o quanto rendeu'];
 CEL_NOVIDADES['10.1'] = ['🤖 Robô Investidor (Investimentos › 🤖 Robô): indicações de ações, FIIs, Tesouro, exterior, criptos e fundos, com a conta da nota', '🎯 Placar de acertos: o robô se testa contra o Ibovespa, o IFIX e o Bitcoin', '₿ Criptos em duas listas: com fundamento e alta volatilidade (só simulada)'];
+CEL_NOVIDADES['10.2'] = ['🤖 Fontes do robô mostram criptos e índices; o placar compara com a média do mercado'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -14339,7 +14340,7 @@ atualizarCotacoes = (function (orig) { return async function () {
   if (tipo === 'fiis') { const d = roboCache()?.fiis?.[t];
     if (d) { const extra = `<div class="sm87-s"><h4>🏢 Imóveis e vacância <small class="muted">(Fundamentus)</small></h4>${d.vac != null ? `<div class="sm87-ck"><span>Vacância média (imóveis vazios) <button class="gl-i" data-gl="ck-vac">i</button></span><b class="${d.vac <= 5 ? 'good' : d.vac <= 15 ? 'warn' : 'bad'}">${pct1(d.vac)}</b></div><div class="gl-ex" data-gl-box="ck-vac" hidden>${typeof glHtml === 'function' ? glHtml('vac', { t }) : ''}</div>` : ''}${d.imov != null ? `<div class="sm87-ck"><span>Quantidade de imóveis</span><b>${Math.round(d.imov)}</b></div>` : ''}${d.cap != null ? `<div class="sm87-ck"><span>Cap rate (aluguel ÷ valor dos imóveis)</span><b>${pct1(d.cap)}</b></div>` : ''}${d.ffo != null ? `<div class="sm87-ck"><span>FFO yield (geração de caixa ÷ preço)</span><b>${pct1(d.ffo)}</b></div>` : ''}${d.liq != null ? `<div class="sm87-ck"><span>Negociado por dia</span><b>R$ ${num2(d.liq)} mi</b></div>` : ''}</div>`;
       h = h.replace('<div class="sm87-s"><h4>📈 Preço', extra + '<div class="sm87-s"><h4>📈 Preço'); } }
-  if (tipo === 'etfus') { const d = roboCache()?.etfus?.[t]; if (d) h = h.replace('<div class="sm87-s"><h4>📈 Preço', `<div class="sm87-s"><h4>💵 Dividendos <small class="muted">(Yahoo, pelo robô)</small></h4><div class="sm87-ck"><span>Pagou em 12 meses, por cota</span><b>US$ ${num2(d.div12)}</b></div><div class="sm87-ck"><span>Dividend yield</span><b>${pct1(d.dy.toFixed(2))}</b></div><p class="small muted" style="margin:4px 0 0">Lembre: os EUA retêm 30% dos dividendos na fonte.</p></div><div class="sm87-s"><h4>📈 Preço`); }
+  if (tipo === 'etfus') { const d = roboCache()?.etfus?.[t]; if (d && d.dy != null && d.div12 != null) h = h.replace('<div class="sm87-s"><h4>📈 Preço', `<div class="sm87-s"><h4>💵 Dividendos <small class="muted">(Yahoo, pelo robô)</small></h4><div class="sm87-ck"><span>Pagou em 12 meses, por cota</span><b>US$ ${num2(d.div12)}</b></div><div class="sm87-ck"><span>Dividend yield</span><b>${pct1(d.dy.toFixed(2))}</b></div><p class="small muted" style="margin:4px 0 0">Lembre: os EUA retêm 30% dos dividendos na fonte.</p></div><div class="sm87-s"><h4>📈 Preço`); }
   return h; }; }
 { const _sm = smAbrir; smAbrir = function (tipo) { try { if (tipo === 'acoes') roboAplicarAcoes(); if (tipo === 'fiis') roboAplicarFiis(); } catch (e) {} return _sm.apply(this, arguments); }; }
 /* ---- Fundos de investimento: CNPJ preenche a rentabilidade pela CVM ---- */
@@ -14635,6 +14636,47 @@ document.addEventListener('click', (ev) => {
   if ((b = g('data-rb-diario'))) { vgFecharJanela(); ui.diPre = { acao: `estudar ${b.dataset.rbDiario}`, motivo: 'indicação do robô' }; ui.sub.invest = 'diario'; renderAll(); window.scrollTo?.(0, 0); return; }
 }, true);
 document.addEventListener('change', (ev) => { const t = ev.target.closest?.('[data-rb-regv]'); if (!t) return; const v = num(t.value, NaN); if (!isFinite(v) || v <= 0) return; const I = rbI(); const id = t.dataset.rbRegv; I.roboRegras[id] = { ...(I.roboRegras[id] || {}), v }; changed(); });
+
+/* ---------- v10.2 · placar com cesta de referência própria + fontes completas ---------- */
+// Referência do placar sem depender do Yahoo: média das 50 ações (ou 30 FIIs) mais negociadas no mesmo dia.
+function rbCestaRef(tipo) {
+  const R = roboCache(); if (tipo === 'acoes' || tipo === 'fiis') { const X = tipo === 'acoes' ? R?.acoes : R?.fiis; if (!X) return null; const raiz = {};
+    Object.entries(X).forEach(([t, d]) => { if (!(d.cot > 0) || !(d.liq > 0)) return; const k = t.slice(0, 4); if (!raiz[k] || d.liq > raiz[k][1].liq) raiz[k] = [t, d]; });
+    const L = Object.values(raiz).sort((a, b) => b[1].liq - a[1].liq).slice(0, tipo === 'acoes' ? 50 : 30); return L.length >= 5 ? Object.fromEntries(L.map(([t, d]) => [t, d.cot])) : null; }
+  const b = R?.cripto?.moedas?.find((m) => m.s === 'BTC')?.preco; return b ? { BTC: b } : null;
+}
+const rbRefNome = { acoes: 'média das 50 ações mais negociadas', fiis: 'média dos 30 FIIs mais negociados', cripto: 'Bitcoin', volatil: 'Bitcoin' };
+function rbRefRet(tipo, cesta) { let s = 0, n = 0; Object.entries(cesta || {}).forEach(([t, p0]) => { const a = tipo === 'acoes' || tipo === 'fiis' ? rbPrecoAgora(tipo, t) : rbPrecoAgora('cripto', t); if (a > 0 && p0 > 0) { s += a / p0 - 1; n++; } }); return n ? s / n : null; }
+rbGuardarMes = function (listas) {
+  const P = rbI().roboPlacar; const ym = rbYm(); let mudou = false;
+  Object.entries(listas).forEach(([tipo, L]) => { if (!L || !L.length || P.snaps.some((s) => s.ym === ym && s.tipo === tipo)) return; const cesta = rbCestaRef(tipo); if (!cesta) return;
+    const itens = L.slice(0, tipo === 'volatil' ? 3 : 5).map((x) => ({ t: x.t, p: tipo === 'acoes' || tipo === 'fiis' ? x.d.cot : x.m.preco, nota: x.nota, f: x.f ? Object.fromEntries(Object.entries(x.f).map(([k, v]) => [k, Math.round(v * 10) / 10])) : null })).filter((i) => i.p > 0);
+    if (itens.length) { P.snaps.push({ ym, tipo, d: hoje(), itens, bench: { nome: rbRefNome[tipo], cesta }, v: RB_VERSAO }); mudou = true; } });
+  if (mudou) { P.snaps = P.snaps.slice(-240); setTimeout(() => changed(), 0); }
+};
+{ const _av = rbAvaliar; rbAvaliar = function () {
+  const P = rbI().roboPlacar; const ym = rbYm(); const linhas = [];
+  P.snaps.forEach((s) => { const idade = rbMeses(s.ym, ym); const rb = s.bench?.cesta ? rbRefRet(s.tipo, s.bench.cesta) : (() => { const bA = rbBench(s.tipo).p; return bA > 0 && s.bench?.p > 0 ? bA / s.bench.p - 1 : null; })(); if (rb == null) return;
+    s.itens.forEach((i) => { const a = rbPrecoAgora(s.tipo === 'volatil' ? 'cripto' : s.tipo, i.t); if (!(a > 0)) return; const r = a / i.p - 1; linhas.push({ ...i, tipo: s.tipo, ym: s.ym, idade, r, rb, ganhou: r > rb, bench: s.bench.nome === 'Bitcoin' ? 'BTC' : s.tipo === 'acoes' ? 'bolsa' : s.tipo === 'fiis' ? 'FIIs' : s.bench.nome }); }); });
+  const fx = (min) => { const L = linhas.filter((l) => l.idade >= min && l.tipo !== 'volatil'); return { n: L.length, ok: L.filter((l) => l.ganhou).length }; };
+  const mad = linhas.filter((l) => l.idade >= 3 && l.f && l.tipo === 'acoes'); let fatores = null;
+  if (mad.length >= 8) { fatores = Object.keys(mad[0].f).map((k) => { const v = mad.map((l) => l.f[k]).sort((a, b) => a - b); const med = v[v.length >> 1]; const alto = mad.filter((l) => l.f[k] > med), baixo = mad.filter((l) => l.f[k] <= med); const m = (L) => (L.length ? L.reduce((s, l) => s + (l.r - l.rb), 0) / L.length : 0); return { k, dif: m(alto) - m(baixo) }; }).sort((a, b) => b.dif - a.dif); }
+  return { linhas, m3: fx(3), m6: fx(6), m12: fx(12), geral: fx(1), fatores };
+}; }
+{ const _p = rbPlacarHtml; rbPlacarHtml = function () { return _p.apply(this, arguments).replace('Depois compara com o índice: Ibovespa (ações), IFIX (FIIs) e Bitcoin (criptos).', 'Depois compara com a média do mercado no mesmo período: as 50 ações mais negociadas (parecido com o Ibovespa), os 30 FIIs mais negociados (parecido com o IFIX) e o Bitcoin.'); }; }
+// fontes: mostra também criptos e índices
+roboDetalhes = async function () {
+  vgJanela('<h3 style="margin:0">🤖 Robô do Prumo</h3><p class="small muted">Buscando…</p>');
+  let R = null; try { R = await roboAtualizar(true); } catch (e) {}
+  const nomes = { acoes: '📈 Ações (Fundamentus)', fiis: '🏢 FIIs: liquidez e vacância (Fundamentus)', tesouro: '📜 Tesouro Direto (Tesouro Transparente)', etfus: '🌎 ETFs do exterior (Yahoo / Stooq)', cripto: '₿ Criptos (CoinGecko + Binance)', indices: '📊 Índices: Ibovespa e IFIX (Yahoo)' };
+  const extra = (k) => { if (!R) return ''; if (k === 'acoes' && R.acoes) return ` · ${Object.keys(R.acoes).length} ações`; if (k === 'fiis' && R.fiis) return ` · ${Object.keys(R.fiis).length} fundos`; if (k === 'tesouro' && R.tesouro) return ` · ${R.tesouro.titulos.length} títulos`; if (k === 'etfus' && R.etfus) return ` · ${Object.keys(R.etfus).length} ETFs`; if (k === 'cripto' && R.cripto) { const M = R.cripto.moedas || []; return ` · ${M.length} moedas · ${M.filter((m) => m.beta != null).length} com análise do Bitcoin`; } if (k === 'indices' && R.indices) return ` · ${Object.keys(R.indices).join(', ')}`; return ''; };
+  const C = cvmCache(); const FU = fundosDados();
+  vgJanela(`<h3 style="margin:0 0 6px">🤖 Robô do Prumo</h3><p class="small muted" style="margin:0 0 8px">Roda sozinho no seu GitHub nos dias úteis, às 19h40, e guarda os dados junto com o Prumo.</p>
+    ${R ? Object.entries(nomes).map(([k, n]) => { const f = R.fontes?.[k]; const ok = f?.ok; const op = k === 'indices'; return `<div class="cvm93"><b>${ok ? '✅' : op ? 'ℹ️' : '⚠️'} ${n}</b><br><span class="small">${f ? (ok ? 'Atualizado em ' + roboDataTxt(f.em) : (op ? 'Opcional: o placar usa a média do mercado no lugar. ' : 'Falhou na última vez: ') + esc(f.erro || '') + (f.em ? ' · usando os dados de ' + roboDataTxt(f.em) : '')) : 'ainda sem dados: rode o robô de novo'}${extra(k)}</span></div>`; }).join('') : `<p class="small bad">${esc(roboErro || 'Robô ainda não ligado.')}</p>`}
+    <div class="cvm93"><b>${C ? '✅' : '⚠️'} 🏛️ FIIs: dados oficiais (CVM)</b><br><span class="small">${C ? 'Lidos em ' + roboDataTxt(C.em) + ' · ' + Object.keys(C.F).length + ' fundos' : 'ainda não lidos'}</span></div>
+    <div class="cvm93"><b>${FU ? '✅' : 'ℹ️'} 💼 Fundos de investimento (CVM)</b><br><span class="small">${FU ? 'Cotas de ' + (FU.ref || '').split('-').reverse().join('/') + ' · ' + Object.keys(FU.F).length + ' fundos · atualiza às segundas' : 'Carrega quando você abre o comparador de fundos (Explorar › Fundos de investimento).'}</span></div>
+    <div class="row" style="gap:6px;margin-top:8px"><button class="btn" data-sm-fechar>Fechar</button></div>`);
+};
 
 /* ---------- início ---------- */
 (async function boot() {
