@@ -1340,7 +1340,7 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 .xa89-f{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.xa89-f input{flex:1;min-width:140px;max-width:220px;text-transform:uppercase}
 .exp-c.xa89-c{border-style:dashed;border-color:color-mix(in srgb,#2f7d4f 55%,transparent)}
 
-.hg92{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:6px}.hg92 pre{white-space:pre-wrap;word-break:break-all;font-size:10.5px;max-height:120px;overflow:auto;background:var(--panel-2,#f1efe9);border-radius:6px;padding:6px;margin:6px 0 0}
+.cvm93{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:6px}
 
 </style>
 </head>
@@ -4262,7 +4262,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '9.2';
+const APP_VERSAO = '9.3';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13335,8 +13335,7 @@ CEL_NOVIDADES['8.7'] = ['＋ Saiba mais em cada ação, FII e ETF do Explorar: o
 CEL_NOVIDADES['8.8'] = ['📖 No ＋ Saiba mais: toque no ⓘ para entender cada número (DY, P/L, P/VP, ROE…) e veja o Dicionário dos números de ações, FIIs e ETFs'];
 CEL_NOVIDADES['8.9'] = ['➕ No Explorar, adicione qualquer ação ou FII pelo código e copie os números da Status Invest em ✎ Números'];
 CEL_NOVIDADES['9.0'] = ['📊 Ao adicionar uma ação ou FII no Explorar, o Prumo busca os números sozinho (botão ↻ no cartão para buscar de novo)'];
-CEL_NOVIDADES['9.1'] = ['📊 Segunda fonte de números: HG Brasil (grátis). O Prumo junta brapi + HG para preencher ações e FIIs sozinho'];
-CEL_NOVIDADES['9.2'] = ['🔍 Botão para testar a HG Brasil no Explorar e um segundo caminho para buscar as cotações'];
+CEL_NOVIDADES['9.3'] = ['🏛️ FIIs com dados oficiais da CVM: DY, P/VP, patrimônio e cotistas sem digitar (Explorar › Fundos imobiliários)'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -13991,139 +13990,124 @@ const xaTentou = new Set();
   if ((tipo === 'acoes' || tipo === 'fiis') && db?.invest?.cot?.brapi) xaLista(tipo).filter((e) => !e.em && !xaTentou.has(e.t)).forEach((e) => { xaTentou.add(e.t); setTimeout(() => xaBuscarNumeros(tipo, e.t, true).then((r) => { if (r?.n) toast(`📊 ${e.t}: números preenchidos sozinhos`); }), 300); });
   return h; }; }
 
-/* ---------- v9.1 · segunda fonte de dados: HG Brasil Finance ---------- */
-formChaves = function () {
-  const C = garantirInvest().cot || {};
-  openForm({ title: 'Chaves das cotações', values: { brapi: C.brapi || '', hg: C.hg || '', finnhub: C.finnhub || '', alpha: C.alpha || '' },
-    note: 'Opcional. Cadastro grátis: brapi.dev e hgbrasil.com (ações e FIIs do Brasil: o Prumo usa as duas e junta os números), finnhub.io (ações dos EUA) e alphavantage.co (gráfico dos ETFs e ações dos EUA). Copie a chave e cole aqui.',
-    fields: [{ k: 'brapi', label: 'Token da brapi.dev' }, { k: 'hg', label: 'Chave da HG Brasil (números de ações e FIIs)' }, { k: 'finnhub', label: 'Chave da Finnhub' }, { k: 'alpha', label: 'Chave da Alpha Vantage (gráficos dos EUA)' }],
-    onSave: (v) => { db.invest.cot = { ...(db.invest.cot || {}), brapi: v.brapi.trim(), hg: v.hg.trim(), finnhub: v.finnhub.trim(), alpha: v.alpha.trim() }; Object.keys(LAB_CACHE).forEach((k) => { if (/^[BU]:/.test(k)) delete LAB_CACHE[k]; }); labCarregando = {}; } });
-};
-// procura um campo em qualquer lugar da resposta (a HG pode mudar o formato)
-function hgAchar(o, chaves, prof = 0) {
-  if (!o || typeof o !== 'object' || prof > 6) return null;
-  for (const k of chaves) { const p = k.split('.'); let v = o; for (const s of p) v = v && typeof v === 'object' ? v[s] : undefined; if (v != null && v !== '' && (typeof v !== 'object')) return v; }
-  for (const v of Array.isArray(o) ? o : Object.values(o)) { const r = hgAchar(v, chaves, prof + 1); if (r != null) return r; }
-  return null;
+/* ---------- v9.3 · FIIs com dados oficiais da CVM (Informe Mensal) ---------- */
+const CVM_URL = (ano) => `https://dados.cvm.gov.br/dados/FII/DOC/INF_MENSAL/DADOS/inf_mensal_fii_${ano}.zip`;
+const CVM_SEG = [[/log[ií]st|galp/i, 'Galpões e logística'], [/shopping/i, 'Shoppings'], [/laje|escrit|corporat/i, 'Escritórios'], [/t[ií]tulo|val\.? ?mob|receb|cri\b|papel/i, 'Papel (dívidas imobiliárias)'], [/fundo de fundo|fof|multi/i, 'Fundos de fundos e multiestratégia'], [/h[ií]brid|renda urbana|varej|hospital|educa|ag[eê]nc|resid/i, 'Renda urbana e híbridos']];
+let cvmEstado = null; // null | 'baixando' | 'ok' | 'erro'
+let cvmUltimoErro = '';
+// leitor de .zip simples (deflate) usando o descompressor do próprio navegador
+async function cvmUnzip(buf) {
+  const dv = new DataView(buf); let eocd = -1;
+  for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 70000); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  if (eocd < 0) throw new Error('arquivo zip inválido');
+  const n = dv.getUint16(eocd + 10, true); let p = dv.getUint32(eocd + 16, true); const out = {};
+  for (let k = 0; k < n; k++) {
+    if (dv.getUint32(p, true) !== 0x02014b50) break;
+    const metodo = dv.getUint16(p + 10, true), tam = dv.getUint32(p + 20, true), ln = dv.getUint16(p + 28, true), le = dv.getUint16(p + 30, true), lc = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+    const nome = new TextDecoder().decode(new Uint8Array(buf, p + 46, ln)); p += 46 + ln + le + lc;
+    const lnL = dv.getUint16(off + 26, true), leL = dv.getUint16(off + 28, true); const dados = new Uint8Array(buf, off + 30 + lnL + leL, tam);
+    let bytes;
+    if (metodo === 0) bytes = dados;
+    else if (metodo === 8) { if (typeof DecompressionStream === 'undefined') throw new Error('este navegador não sabe abrir zip'); const ds = new Blob([dados]).stream().pipeThrough(new DecompressionStream('deflate-raw')); bytes = new Uint8Array(await new Response(ds).arrayBuffer()); }
+    else continue;
+    out[nome] = new TextDecoder('windows-1252').decode(bytes);
+  }
+  return out;
 }
-const hgNum = (v) => { const n = typeof v === 'string' ? Number(v.replace(',', '.')) : Number(v); return isFinite(n) ? n : null; };
-let hgFalhou = 0;
-async function hgGet(rota, t, extra = '') {
-  const C = db.invest.cot || {}; if (!C.hg) throw new Error('sem chave');
-  const j = await pegarJSON(`https://api.hgbrasil.com/v2/finance/${rota}?tickers=B3:${encodeURIComponent(t)}${extra}&key=${encodeURIComponent(C.hg)}&format=json-cors`);
-  if (j && (j.error || j.valid_key === false)) throw new Error(j.message || 'erro');
-  return j;
+function cvmCSV(txt) {
+  const linhas = txt.split(/\r?\n/).filter(Boolean); if (!linhas.length) return { cab: [], L: [] };
+  const sep = linhas[0].includes(';') ? ';' : ','; const cab = linhas[0].split(sep).map((x) => x.replace(/"/g, '').trim());
+  return { cab, L: linhas.slice(1).map((l) => l.split(sep).map((x) => x.replace(/"/g, '').trim())) };
 }
-const XA_FII_MAP = [[/log[ií]st|galp/i, 'Galpões e logística'], [/shopping/i, 'Shoppings'], [/escrit|laje|corporat/i, 'Escritórios'], [/papel|receb|cri\b|t[ií]tulo|cr[eé]dito/i, 'Papel (dívidas imobiliárias)'], [/fundo de fundos|fof|multi/i, 'Fundos de fundos e multiestratégia'], [/renda urbana|varej|h[ií]brid|educa|hospital|ag[eê]nc/i, 'Renda urbana e híbridos']];
-const XA_PT_MAP = [[/segur/i, 'Seguros'], [/bolsa|mercado de capitais/i, 'Bolsa'], [/banc|financ|intermedi/i, 'Bancos'], [/sanea|[aá]gua|g[aá]s/i, 'Saneamento e gás'], [/transmiss/i, 'Energia: transmissão'], [/energia|el[eé]tric/i, 'Energia: geração e distribuição'], [/telecom|telefon/i, 'Telecom'], [/petr[oó]leo|combust/i, 'Petróleo e combustíveis'], [/papel|celulose|madeira/i, 'Papel e celulose'], [/software|tecnolog|programas/i, 'Tecnologia'], [/sa[uú]de|consumo|aliment|bebida|varej|farm/i, 'Consumo e saúde'], [/constru|incorpora|imobili/i, 'Construção'], [/rodov|shopping|explora[cç][aã]o de im/i, 'Shoppings e rodovias'], [/m[aá]quina|industr|motor|equip/i, 'Indústria']];
-async function hgNumeros(tipo, t) {
-  const got = {}; let preco = 0;
-  try { const q = await hgGet('quotes', t);
-    preco = hgNum(hgAchar(q, ['quote.value', 'price', 'current_price'])) || 0;
-    const dy = hgNum(hgAchar(q, ['dividends.yield_12m_percent', 'yield_12m_percent'])); if (dy > 0 && dy < 60) got.dy = r2(dy);
-    const nome = hgAchar(q, ['full_name', 'name', 'company_name']); if (nome) got.nome = String(nome).trim().slice(0, 60);
-    const seg = [hgAchar(q, ['segment']), hgAchar(q, ['subsector']), hgAchar(q, ['sector'])].filter(Boolean).join(' ');
-    const s = tipo === 'fiis' ? (XA_FII_MAP.find(([re]) => re.test(seg)) || [])[1] : (XA_PT_MAP.find(([re]) => re.test(seg)) || XA_SETOR_MAP.find(([re]) => re.test(seg)) || [])[1]; if (s) got.setor = s;
-    if (!got.dy) { const cash = hgNum(hgAchar(q, ['dividends.yield_12m_cash', 'yield_12m_cash'])); if (cash > 0 && preco > 0) got.dy = r2((cash / preco) * 100); }
-  } catch (e) { hgFalhou++; }
-  try { const f = await hgGet('fundamentals', t, '&days_ago=0');
-    const pl = hgNum(hgAchar(f, ['valuation.price_to_earnings_ratio', 'price_to_earnings_ratio'])); if (pl > 0 && pl < 500) got.pl = r2(pl);
-    const pvp = hgNum(hgAchar(f, ['valuation.price_to_book_ratio', 'price_to_book_ratio'])); if (pvp > 0 && pvp < 50) got.pvp = r2(pvp);
-    const roe = xaPct(hgAchar(f, ['profitability.return_on_equity', 'return_on_equity'])); if (roe != null && roe > -100 && roe < 200) got.roe = roe;
-    if (!got.dy) { const dy = hgNum(hgAchar(f, ['dividends.yield_percent', 'yield_percent'])); if (dy > 0 && dy < 60) got.dy = r2(dy); }
-  } catch (e) { /* fundamentos podem não estar no plano grátis */ }
-  return { got, preco };
+const cvmCol = (cab, re) => cab.findIndex((c) => re.test(c));
+const cvmNum = (v) => { if (v == null || v === '') return null; const s = String(v).trim(); const n = Number(/,\d+$/.test(s) && !/\.\d+,/.test(s) ? s.replace(/\./g, '').replace(',', '.') : s.replace(',', '.')); return isFinite(n) ? n : null; };
+async function cvmAno(ano) {
+  let buf;
+  try { const r = await fetch(CVM_URL(ano), { cache: 'no-store' }); if (r.status === 404) return null; if (!r.ok) throw new Error('HTTP ' + r.status); buf = await r.arrayBuffer(); }
+  catch (e) { throw new Error(/HTTP/.test(e.message) ? 'a CVM respondeu ' + e.message : 'o navegador não conseguiu ler o site da CVM (bloqueio ou sem internet)'); }
+  const arqs = await cvmUnzip(buf); const nomes = Object.keys(arqs);
+  const geral = cvmCSV(arqs[nomes.find((x) => /geral/i.test(x))] || ''); const comp = cvmCSV(arqs[nomes.find((x) => /complemento/i.test(x))] || '');
+  if (!geral.L.length || !comp.L.length) throw new Error('arquivos da CVM em formato diferente');
+  const g = { cnpj: cvmCol(geral.cab, /^cnpj/i), data: cvmCol(geral.cab, /data_refer/i), isin: cvmCol(geral.cab, /isin/i), nome: cvmCol(geral.cab, /^nome_fundo/i), seg: cvmCol(geral.cab, /segmento/i) };
+  const c = { cnpj: cvmCol(comp.cab, /^cnpj/i), data: cvmCol(comp.cab, /data_refer/i), vpa: cvmCol(comp.cab, /valor_patrimonial_cota/i), pl: cvmCol(comp.cab, /^patrimonio_liquido/i), dy: cvmCol(comp.cab, /dividend_yield/i), cot: cvmCol(comp.cab, /total_numero_cotistas/i), tx: cvmCol(comp.cab, /taxa_administracao/i) };
+  if (g.cnpj < 0 || g.isin < 0 || c.cnpj < 0 || c.vpa < 0) throw new Error('colunas da CVM mudaram');
+  const info = {}; geral.L.forEach((l) => { const isin = (l[g.isin] || '').toUpperCase(); if (!/^BR[A-Z]{4}/.test(isin)) return; const k = l[g.cnpj]; const d = l[g.data] || ''; if (!info[k] || d >= info[k].d) info[k] = { d, raiz: isin.slice(2, 6), nome: l[g.nome] || '', seg: l[g.seg] || '' }; });
+  const meses = []; comp.L.forEach((l) => { const i = info[l[c.cnpj]]; if (!i) return; meses.push({ raiz: i.raiz, nome: i.nome, seg: i.seg, d: (l[c.data] || '').slice(0, 7), vpa: cvmNum(l[c.vpa]), pl: cvmNum(l[c.pl]), dy: c.dy >= 0 ? cvmNum(l[c.dy]) : null, cot: c.cot >= 0 ? cvmNum(l[c.cot]) : null, tx: c.tx >= 0 ? cvmNum(l[c.tx]) : null }); });
+  return meses;
 }
-// junta as duas fontes: brapi primeiro, a HG completa o que faltar
+const cvmCache = () => { try { return JSON.parse(lsGet('cvm-fii') || 'null'); } catch (e) { return null; } };
+async function cvmAtualizar(forcar) {
+  const C = cvmCache(); if (!forcar && C && Date.now() - C.em < 7 * 864e5) return C;
+  if (cvmEstado === 'baixando') return C; cvmEstado = 'baixando'; cvmUltimoErro = '';
+  try {
+    const ano = +hoje().slice(0, 4); let M = [];
+    for (const a of [ano, ano - 1]) { const r = await cvmAno(a); if (r) M = M.concat(r); }
+    if (!M.length) throw new Error('a CVM ainda não publicou dados');
+    const por = {}; M.forEach((m) => { if (!m.d) return; (por[m.raiz] = por[m.raiz] || {})[m.d] = m; });
+    const F = {};
+    Object.entries(por).forEach(([raiz, ms]) => {
+      const ord = Object.keys(ms).sort(); const ult = ms[ord[ord.length - 1]]; const doze = ord.slice(-12).map((d) => ms[d]);
+      // rendimento por cota no mês = DY do mês (sobre o valor patrimonial) × valor patrimonial da cota
+      const rend = doze.map((m) => (m.dy != null && m.vpa ? (Math.abs(m.dy) < 0.5 ? m.dy : m.dy / 100) * m.vpa : null)).filter((x) => x != null && x >= 0);
+      F[raiz] = { ref: ult.d, nome: ult.nome, seg: ult.seg, vpa: ult.vpa, pl: ult.pl, cot: ult.cot, tx: ult.tx, rend12: rend.length >= 6 ? r2((rend.reduce((a, b) => a + b, 0) * 12) / rend.length) : null, meses: rend.length };
+    });
+    const out = { em: Date.now(), F }; try { lsSet('cvm-fii', JSON.stringify(out)); } catch (e) {}
+    cvmEstado = 'ok'; return out;
+  } catch (e) { cvmEstado = 'erro'; cvmUltimoErro = e.message || String(e); throw e; }
+}
+function cvmDoFii(t) { const C = cvmCache(); return C?.F?.[String(t).slice(0, 4).toUpperCase()] || null; }
+function cvmNumeros(t, preco) {
+  const f = cvmDoFii(t); if (!f) return null; const got = {};
+  if (preco > 0 && f.vpa > 0) got.pvp = r2(preco / f.vpa);
+  if (preco > 0 && f.rend12 > 0) { const dy = (f.rend12 / preco) * 100; if (dy > 0 && dy < 40) got.dy = r2(dy); }
+  if (f.pl > 0) got.pat = r2(f.pl / 1e9);
+  const s = (CVM_SEG.find(([re]) => re.test(f.seg || '')) || [])[1]; if (s) got.setor = s;
+  if (f.nome) got.nome = f.nome.slice(0, 60);
+  return got;
+}
+// junta na busca automática dos FIIs adicionados
 xaBuscarNumeros = (function (orig) { return async function (tipo, t, silencioso) {
-  const C = db.invest.cot || {}; const e = xaLista(tipo).find((x) => x.t === t); if (!e) return 0;
-  const r1 = await orig.call(this, tipo, t, true);
-  const campos = tipo === 'acoes' ? ['dy', 'pl', 'pvp', 'roe'] : ['dy', 'pvp'];
-  let nHg = 0;
-  if (C.hg && campos.some((k) => e[k] == null || !e.auto)) {
-    const antes = hgFalhou; const { got, preco } = await hgNumeros(tipo, t);
-    campos.forEach((k) => { if (got[k] != null && (e[k] == null || (e.auto && !r1?.n))) { e[k] = got[k]; nHg++; } });
-    if (got.nome && (!e.nome || e.nome === t)) e.nome = got.nome; if (got.setor && !e.setor) e.setor = got.setor;
-    if (preco > 0 && !db.invest.precos[t]) db.invest.precos[t] = { p: preco, em: new Date().toISOString() };
-    if (nHg) { e.em = hoje(); e.auto = true; e.fonte = r1?.n ? 'brapi + HG Brasil' : 'HG Brasil'; }
-    if (hgFalhou > antes && !silencioso) setTimeout(() => toast('A HG Brasil não respondeu. Confira a chave e o endereço cadastrado nela (toque em "Ligar a HG Brasil" no Explorar).', 8000), 600);
-  } else if (r1?.n) e.fonte = 'brapi';
-  const n = (r1?.n || 0) + nHg; const faltam = campos.filter((k) => e[k] == null).length;
-  changed();
-  if (!silencioso) toast(n ? `📊 ${t}: ${n} números preenchidos sozinhos${e.fonte ? ' (' + e.fonte + ')' : ''}${faltam ? '. Os que faltam, copie em ✎ Números.' : ' ✔'}` : `Não consegui os números de ${t} automaticamente.${C.hg ? '' : ' Ligue a HG Brasil (grátis) para buscar mais números.'} Ou copie da Status Invest em ✎ Números.`, 8000);
-  return { n, faltam };
+  if (tipo !== 'fiis') return orig.apply(this, arguments);
+  const r1 = await orig.call(this, tipo, t, true); const e = xaLista(tipo).find((x) => x.t === t); if (!e) return r1;
+  let n = 0;
+  try { await cvmAtualizar(false); const preco = db.invest.precos?.[t]?.p || 0; const got = cvmNumeros(t, preco);
+    if (got) { ['dy', 'pvp', 'pat'].forEach((k) => { if (got[k] != null && (e[k] == null || e[k] === 0 || e.auto)) { e[k] = got[k]; n++; } }); if (got.setor && !e.setor) e.setor = got.setor; if (n) { e.em = hoje(); e.auto = true; e.fonte = 'CVM'; } }
+  } catch (err) { if (!silencioso) setTimeout(() => toast('Não consegui ler os dados da CVM: ' + cvmUltimoErro + '. Toque em "🏛️ Dados da CVM" no Explorar para testar.', 9000), 600); }
+  const total = (r1?.n || 0) + n; const faltam = ['dy', 'pvp'].filter((k) => !(e[k] > 0)).length; changed();
+  if (!silencioso) toast(total ? `📊 ${t}: ${total} números preenchidos sozinhos${n ? ' (dados oficiais da CVM)' : ''}${faltam ? '. Os que faltam, copie em ✎ Números.' : ' ✔'}` : `Não consegui os números de ${t} automaticamente. Copie da Status Invest em ✎ Números.`, 8000);
+  return { n: total, faltam };
 }; })(xaBuscarNumeros);
 xaAt = function (e) { return e.em ? `Números ${e.auto ? 'buscados automaticamente' + (e.fonte ? ' (' + e.fonte + ')' : '') : 'copiados por você'} em ${dmy(e.em)}. Confira na Status Invest de vez em quando.` : 'Toque em ↻ para buscar os números, ou em ✎ Números para copiar da Status Invest.'; };
-// preços da lista: se a brapi falhar num código, tenta a HG
-precosDaLista = (function (orig) { return async function (tipo) {
-  const r = await orig.apply(this, arguments); const C = db.invest.cot || {};
-  if (!C.hg || !(tipo === 'acoes' || tipo === 'fiis' || tipo === 'etfbr')) return r;
-  const velho = itensExp(tipo).map((x) => x.t).filter((t) => { const p = db.invest.precos[t]; return !p || Date.now() - new Date(p.em).getTime() > 30 * 60e3; });
-  if (!velho.length) return r; let ok = 0;
-  for (const t of velho) { try { const q = await hgGet('quotes', t); const p = hgNum(hgAchar(q, ['quote.value', 'price', 'current_price'])); if (p > 0) { db.invest.precos[t] = { p, em: new Date().toISOString() }; ok++; } } catch (e) {} }
-  if (ok) { changed(); toast(`+ ${ok} preços pela HG Brasil ✔`); }
-  return r;
-}; })(precosDaLista);
-// ajuda para criar a chave
-function hgAjuda() {
-  const arquivo = location.protocol === 'file:'; const host = location.host;
-  vgJanela(`<h3 style="margin:0 0 6px">📊 Ligar a HG Brasil (grátis)</h3><p class="small" style="margin:0 0 8px">A HG Brasil completa os números que a brapi grátis não dá, principalmente dos <b>FIIs</b> (dividend yield) e, se o plano liberar, P/L, P/VP e ROE. O plano grátis dá 400 consultas por dia.</p>
-    <ol class="small sm87-ol"><li>Abra <a href="https://hgbrasil.com/" target="_blank" rel="noopener"><b>hgbrasil.com</b> ↗</a> e crie a conta grátis.</li>
-      <li>No painel, crie uma <b>chave</b> e escolha o tipo <b>"chave para uso exposto"</b> (é a que funciona dentro de aplicativos como o Prumo).</li>
-      <li>Em <b>domínios permitidos</b>, adicione: ${arquivo ? '<b>localhost</b> (aqui o Prumo abre como arquivo do computador; se não funcionar no PC, use pelo celular)' : `<b>${esc(host)}</b>`}.</li>
-      <li>Copie a chave. Volte aqui e toque em <b>Colocar a chave</b>. Cole no campo <b>Chave da HG Brasil</b> e salve.</li>
-      <li>No Explorar, toque no <b>↻</b> do cartão (ex.: MXRF11) para buscar de novo.</li></ol>
-    <p class="small muted" style="margin:8px 0 0">${arquivo ? 'Faça este passo a passo pelo celular: lá o endereço do Prumo é fixo e dá para cadastrar.' : 'Use a mesma chave no PC e no notebook: ela fica salva junto com os outros dados.'}</p>
-    <div class="row" style="gap:6px;margin-top:10px"><button class="btn primary" data-sm-chaves>Colocar a chave</button></div>`);
+// botão de teste / atualização no Explorar de FIIs
+async function cvmTestar() {
+  vgJanela('<h3 style="margin:0">🏛️ Lendo os dados oficiais da CVM…</h3><p class="small muted">Baixando o informe mensal dos FIIs (uns 2 MB). Pode levar até 1 minuto.</p>');
+  try { const C = await cvmAtualizar(true); const n = Object.keys(C.F).length; const ex = ['MXRF', 'HGLG', 'KNCR'].map((r) => [r, C.F[r]]).filter(([, f]) => f);
+    const tk = { MXRF: 'MXRF11', HGLG: 'HGLG11', KNCR: 'KNCR11' };
+    vgJanela(`<h3 style="margin:0 0 6px">✅ Dados da CVM funcionando</h3><p class="small" style="margin:0 0 8px">Li o informe de <b>${n} fundos imobiliários</b>. Exemplos:</p>
+      ${ex.map(([r, f]) => { const p = db.invest.precos?.[tk[r]]?.p; return `<div class="cvm93"><b>${tk[r]}</b> · referência ${f.ref.split('-').reverse().join('/')}<br><span class="small">Valor patrimonial da cota: ${f.vpa ? fmt(f.vpa) : '—'} · Rendimento em 12 meses: ${f.rend12 ? fmt(f.rend12) + ' por cota' : '—'}${p ? ` · P/VP: ${num2(p / f.vpa)} · DY: ${f.rend12 ? pct1(((f.rend12 / p) * 100).toFixed(2)) : '—'}` : ''} · Cotistas: ${f.cot ? Math.round(f.cot).toLocaleString('pt-BR') : '—'}</span></div>`; }).join('')}
+      <p class="small muted" style="margin:8px 0 0">O Prumo vai usar esses dados nos FIIs que você adicionar e no ＋ Saiba mais. Eles são atualizados pela CVM todo mês; o Prumo busca de novo a cada 7 dias.</p>
+      <div class="row" style="gap:6px;margin-top:8px"><button class="btn primary" data-cvm-usar>Preencher meus FIIs agora</button><button class="btn" data-sm-fechar>Fechar</button></div>`);
+  } catch (e) {
+    vgJanela(`<h3 style="margin:0 0 6px">❌ Não deu para ler a CVM</h3><p class="small">Motivo: <b>${esc(cvmUltimoErro || e.message || 'desconhecido')}</b></p><p class="small muted">Me mande um print desta tela. Enquanto isso, os FIIs continuam funcionando com o ✎ Números.</p><div class="row" style="margin-top:8px"><button class="btn" data-sm-fechar>Fechar</button></div>`);
+  }
 }
 { const _e = invExplorar; invExplorar = function () { let h = _e.apply(this, arguments); const tipo = ui.expTipo || 'acoes';
-  if ((tipo === 'acoes' || tipo === 'fiis') && !(db.invest.cot || {}).hg) h = h.replace('Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p>', 'Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p><p class="small" style="margin:6px 0 0">💡 Para o Prumo buscar mais números sozinho (principalmente dos FIIs): <button class="btn sm" data-hg-ajuda>Ligar a HG Brasil (grátis)</button></p>');
+  if (tipo === 'fiis') { const C = cvmCache(); h = h.replace('Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p>', `Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p><p class="small" style="margin:6px 0 0">🏛️ ${C ? `Dados oficiais da CVM lidos em ${new Date(C.em).toLocaleDateString('pt-BR')}.` : 'O Prumo pode ler os dados oficiais da CVM (grátis).'} <button class="btn sm" data-cvm-testar>${C ? '↻ Dados da CVM' : '🏛️ Testar dados da CVM'}</button></p>`); }
   return h; }; }
-document.addEventListener('click', (ev) => { if (ev.target.closest('[data-hg-ajuda]')) hgAjuda(); }, true);
-
-/* ---------- v9.2 · HG Brasil: diagnóstico + caminho alternativo ---------- */
-const hgLog = [];
-async function hgFetch(url, rotulo) {
-  const ct = new AbortController(); const tm = setTimeout(() => ct.abort(), 12000); const L = { rotulo, quando: new Date().toLocaleTimeString('pt-BR') };
-  try { const r = await fetch(url, { signal: ct.signal, cache: 'no-store' }); L.status = r.status; const txt = await r.text(); L.trecho = txt.slice(0, 500);
-    let j = null; try { j = JSON.parse(txt); } catch (e) { L.erro = 'resposta não é JSON'; throw new Error(L.erro); }
-    if (!r.ok) { L.erro = `HTTP ${r.status}`; throw new Error(L.erro); }
-    const ks = j?.metadata?.key_status; if (ks && !/^(valid|ok|active|ativa)/i.test(String(ks))) L.aviso = 'key_status: ' + ks;
-    if (j?.error || j?.valid_key === false) { L.erro = j.message || 'erro da HG'; throw new Error(L.erro); }
-    L.ok = true; return j;
-  } catch (e) { if (!L.erro) L.erro = e.name === 'AbortError' ? 'demorou demais' : (e.message || 'bloqueado (CORS/rede)'); if (L.status == null) L.erro += ' · o navegador bloqueou (domínio não autorizado ou sem internet)'; throw e; }
-  finally { clearTimeout(tm); hgLog.unshift(L); hgLog.length = Math.min(hgLog.length, 12); }
-}
-hgGet = async function (rota, t, extra = '') {
-  const C = db.invest.cot || {}; if (!C.hg) throw new Error('sem chave');
-  const j = await hgFetch(`https://api.hgbrasil.com/v2/finance/${rota}?tickers=B3:${encodeURIComponent(t)}${extra}&key=${encodeURIComponent(C.hg)}&format=json-cors`, `${rota} ${t}`);
-  if (Array.isArray(j?.results) && !j.results.length) { hgLog[0].erro = 'veio vazio'; throw new Error('vazio'); }
-  return j;
-};
-async function hgLegado(t) { // endpoint antigo da HG (stock_price), costuma valer no plano grátis
-  const C = db.invest.cot || {}; return hgFetch(`https://api.hgbrasil.com/finance/stock_price?key=${encodeURIComponent(C.hg)}&symbol=${encodeURIComponent(t.toLowerCase())}&format=json-cors`, `stock_price ${t}`);
-}
-hgNumeros = (function (orig) { return async function (tipo, t) {
-  const r = await orig.apply(this, arguments);
-  if (!r.preco) { try { const j = await hgLegado(t); const p = hgNum(hgAchar(j, ['price'])); if (p > 0) r.preco = p; const nome = hgAchar(j, ['company_name', 'name']); if (nome && !r.got.nome) r.got.nome = String(nome).slice(0, 60); } catch (e) {} }
-  return r;
-}; })(hgNumeros);
-async function hgTestar() {
-  const C = db.invest.cot || {}; if (!C.hg) return hgAjuda();
-  vgJanela('<h3 style="margin:0">🔍 Testando a HG Brasil…</h3><p class="small muted">Leva uns segundos.</p>');
-  const t = 'MXRF11'; for (const f of [() => hgGet('quotes', t), () => hgGet('fundamentals', t, '&days_ago=0'), () => hgLegado(t)]) { try { await f(); } catch (e) {} }
-  const L = hgLog.slice(0, 3).reverse(); const mask = (s) => String(s || '').split(C.hg).join('••••');
-  const nome = { quotes: 'Cotação + dividend yield', fundamentals: 'Fundamentos (P/L, P/VP, ROE)', stock_price: 'Cotação (caminho antigo)' };
-  const algumOk = L.some((x) => x.ok);
-  vgJanela(`<h3 style="margin:0 0 6px">🔍 Teste da HG Brasil · ${t}</h3><p class="small muted" style="margin:0 0 8px">Endereço deste Prumo: <b>${esc(location.host || 'arquivo do computador')}</b> · chave: ${esc(C.hg.slice(0, 2))}••••</p>
-    ${L.map((x) => `<div class="hg92"><b>${x.ok ? '✅' : '❌'} ${nome[x.rotulo.split(' ')[0]] || esc(x.rotulo)}</b><br><span class="small">${x.ok ? 'Respondeu' + (x.aviso ? ' · ' + esc(x.aviso) : '') : esc(x.erro || 'falhou')}${x.status != null ? ' · código ' + x.status : ''}</span>${x.trecho ? `<pre>${esc(mask(x.trecho))}</pre>` : ''}</div>`).join('')}
-    <p class="small" style="margin:8px 0 0">${algumOk ? 'A ligação funciona. Me mande um print desta tela para eu ajustar a leitura dos números.' : 'Nenhuma resposta. Confira se o domínio cadastrado na chave é exatamente <b>' + esc(location.host || '') + '</b> e se a chave foi colada certa. Depois me mande um print desta tela.'}</p>
-    <div class="row" style="gap:6px;margin-top:8px"><button class="btn" data-sm-chaves>Ver a chave</button><button class="btn" data-sm-fechar>Fechar</button></div>`);
-}
-{ const _e = invExplorar; invExplorar = function () { let h = _e.apply(this, arguments); const tipo = ui.expTipo || 'acoes';
-  if ((tipo === 'acoes' || tipo === 'fiis') && (db.invest.cot || {}).hg) h = h.replace('Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p>', 'Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p><p class="small" style="margin:6px 0 0">📊 HG Brasil ligada. <button class="btn sm" data-hg-testar>🔍 Testar a HG Brasil</button></p>');
-  return h; }; }
-document.addEventListener('click', (ev) => { if (ev.target.closest('[data-hg-testar]')) hgTestar(); }, true);
+// no ＋ Saiba mais dos FIIs: quadro com os dados oficiais
+{ const _h = smHtml; smHtml = function (tipo, t) { let h = _h.apply(this, arguments); if (tipo !== 'fiis') return h; const f = cvmDoFii(t); if (!f) return h; const p = precoLista(t)?.p;
+  const bloco = `<div class="sm87-s"><h4>🏛️ Dados oficiais da CVM <small class="muted">(informe de ${f.ref.split('-').reverse().join('/')})</small></h4>
+    <div class="sm87-ck"><span>Valor patrimonial da cota</span><b>${f.vpa ? fmt(f.vpa) : '—'}</b></div>${p && f.vpa ? `<div class="sm87-ck"><span>P/VP hoje (preço ÷ valor patrimonial)</span><b class="${p / f.vpa >= 0.85 && p / f.vpa <= 1.05 ? 'good' : 'warn'}">${num2(p / f.vpa)}</b></div>` : ''}
+    ${f.rend12 ? `<div class="sm87-ck"><span>Rendimentos nos últimos 12 meses</span><b>${fmt(f.rend12)} por cota</b></div>${p ? `<div class="sm87-ck"><span>Dividend yield pelo preço de hoje</span><b>${pct1(((f.rend12 / p) * 100).toFixed(2))}</b></div>` : ''}` : ''}
+    ${f.pl ? `<div class="sm87-ck"><span>Patrimônio</span><b>R$ ${num2(f.pl / 1e9)} bi</b></div>` : ''}${f.cot ? `<div class="sm87-ck"><span>Número de cotistas</span><b>${Math.round(f.cot).toLocaleString('pt-BR')}</b></div>` : ''}
+    <p class="small muted" style="margin:4px 0 0">Fonte: CVM, Informe Mensal dos FIIs (dados abertos). O rendimento é calculado pelo DY mensal que o fundo informa sobre o valor patrimonial.</p></div>`;
+  return h.replace('<div class="sm87-s"><h4>🩺 Checagem rápida', bloco + '<div class="sm87-s"><h4>🩺 Checagem rápida'); }; }
+// carrega a CVM em segundo plano quando abre o Saiba mais de um FII
+{ const _sm = smAbrir; smAbrir = function (tipo, t) { const r = _sm.apply(this, arguments); const C = cvmCache(); if (tipo === 'fiis' && (!C || Date.now() - C.em > 7 * 864e5) && cvmEstado !== 'baixando' && cvmEstado !== 'erro') cvmAtualizar(false).then(() => { if (ui.smAberto === tipo + '|' + t && smJanelaAberta()) vgJanela(smHtml(tipo, t)); }).catch(() => {}); return r; }; }
+document.addEventListener('click', async (ev) => {
+  if (ev.target.closest('[data-cvm-testar]')) return cvmTestar();
+  if (ev.target.closest('[data-cvm-usar]')) { vgFecharJanela(); const L = xaLista('fiis'); if (!L.length) return toast('Adicione um FII no quadro verde primeiro (ex.: MXRF11).'); for (const e of L) await xaBuscarNumeros('fiis', e.t, true); toast(`🏛️ ${L.length} FII${L.length > 1 ? 's' : ''} atualizado${L.length > 1 ? 's' : ''} com os dados da CVM`); renderAll(); }
+}, true);
 
 /* ---------- início ---------- */
 (async function boot() {
