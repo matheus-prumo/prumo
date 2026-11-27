@@ -1,0 +1,31 @@
+name: Robô de dados do Prumo
+on:
+  schedule:
+    - cron: "40 22 * * 1-5"   # dias úteis, 19h40 de Brasília (depois que a bolsa fecha)
+  workflow_dispatch: {}        # botão "Run workflow" para rodar na hora
+permissions:
+  contents: write
+concurrency:
+  group: robo-dados
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dados da CVM (FIIs)
+        continue-on-error: true
+        run: python scripts/cvm_fii.py cvm-fii.json
+      - name: Ações, FIIs, Tesouro, ETFs e fundos
+        continue-on-error: true
+        run: python scripts/robo.py .
+      - name: Salvar
+        run: |
+          git config user.name "prumo-bot"
+          git config user.email "prumo-bot@users.noreply.github.com"
+          git add cvm-fii.json dados.json fundos.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Robô: dados atualizados" && git pull --rebase -q && git push)
