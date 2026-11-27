@@ -166,11 +166,37 @@ def tesouro():
     return {"data": ultima, "titulos": titulos}
 
 
+def stooq(sym):
+    """Último preço pela Stooq (CSV público). Devolve None se não achar."""
+    try:
+        txt = baixar(f"https://stooq.com/q/l/?s={sym}&f=sd2t2ohlcv&h&e=csv").decode("utf-8", "replace")
+        linhas = [l for l in txt.strip().splitlines() if l]
+        if len(linhas) >= 2:
+            cab = linhas[0].lower().split(","); val = linhas[1].split(",")
+            i = cab.index("close") if "close" in cab else 6
+            v = float(val[i])
+            return v if v > 0 else None
+    except Exception:
+        return None
+    return None
+
+
 def yahoo(tickers):
     out = {}
     for t in tickers:
         try:
-            j = json.loads(baixar(f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=1y&interval=1d&events=div"))
+            j = None
+            for host in ("query1", "query2"):
+                try:
+                    j = json.loads(baixar(f"https://{host}.finance.yahoo.com/v8/finance/chart/{t}?range=1y&interval=1d&events=div"))
+                    break
+                except Exception:
+                    j = None
+            if j is None:
+                p = stooq(t.lower() + ".us")
+                if p:
+                    out[t] = {"p": round(p, 2), "div12": None, "dy": None, "fonte": "stooq"}
+                continue
             r = j["chart"]["result"][0]
             p = r["meta"].get("regularMarketPrice")
             divs = (r.get("events") or {}).get("dividends") or {}
@@ -194,8 +220,14 @@ def indices():
     out = {}
     for nome, sym in [("IBOV", "%5EBVSP"), ("BOVA11", "BOVA11.SA"), ("XFIX11", "XFIX11.SA"), ("IVVB11", "IVVB11.SA")]:
         try:
-            j = json.loads(baixar(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=5d&interval=1d"))
-            p = j["chart"]["result"][0]["meta"].get("regularMarketPrice")
+            p = None
+            for host in ("query1", "query2"):
+                try:
+                    j = json.loads(baixar(f"https://{host}.finance.yahoo.com/v8/finance/chart/{sym}?range=5d&interval=1d"))
+                    p = j["chart"]["result"][0]["meta"].get("regularMarketPrice")
+                    break
+                except Exception:
+                    continue
             if p:
                 out[nome] = round(p, 2)
         except Exception as e:
