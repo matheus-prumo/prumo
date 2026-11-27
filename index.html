@@ -1199,6 +1199,21 @@ body.tema-cons .nav-areas button.on{background:var(--accent);border-color:var(--
 .lei-rv input[type=checkbox]{width:18px;height:18px;margin:0}
 .lei-lab{display:block;font-size:12.5px;color:var(--muted);margin-top:8px}.lei-lab input,.lei-lab select,.lei-lab textarea{display:block;width:100%;margin-top:3px}
 .lei-acs{display:flex;flex-direction:column;gap:6px}.lei-acs .btn{text-align:left}
+/* v8.0 gráficos e laboratório */
+.lab-prot{margin:0 0 10px}
+.lab-topo{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}.lab-topo select{min-width:170px}
+.lab-pills{display:flex;gap:5px;flex-wrap:wrap}.lab-pills button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:20px;padding:6px 12px;font-size:12.5px;font-weight:600;cursor:pointer}.lab-pills button.on{background:var(--brand,#1f4e6b);border-color:var(--brand,#1f4e6b);color:#fff}
+.lab-tipos{margin-left:auto}.lab-tipos button:not(.on){opacity:.55}
+.lab-c{margin-bottom:12px}.lab-c h3{margin:0;font-size:16px}.lab-h{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
+.lab-svg{width:100%;display:block}
+.lab-eixo{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:2px}
+.lab-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-top:6px}.lab-leg i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:4px;border-radius:2px}
+.lab-leitura{background:color-mix(in srgb,var(--brand,#1f4e6b) 6%,var(--panel));border-left:4px solid var(--brand,#1f4e6b);border-radius:8px;padding:9px 12px;font-size:13.5px;margin-top:10px;line-height:1.45}
+.lab-regra{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13.5px}.lab-regra input{width:58px;text-align:center}
+.lab-k{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 8px}.lab-k>div{border:1px solid var(--line);border-radius:10px;padding:8px 10px}.lab-k small{display:block;font-size:10.5px;color:var(--muted);font-weight:700;letter-spacing:.04em}.lab-k b{font-size:19px}.lab-k span{display:block;font-size:11px;color:var(--muted)}
+.lab-cols{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;align-items:start}
+.lab-t td{padding:6px 4px}
+@media(max-width:900px){.lab-cols{grid-template-columns:1fr}.lab-k{grid-template-columns:1fr 1fr}.lab-tipos{margin-left:0}}
 
 /* =================== v7.5: cores =================== */
 :root { --brand: #1f4e6b; }
@@ -4140,7 +4155,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '7.9';
+const APP_VERSAO = '8.0';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -5967,8 +5982,8 @@ function irExterior(ano) {
 /* ---------- TELA ---------- */
 function renderInvest() {
   garantirInvest(); const el = $('#tab-invest'); const sub = subAtual('invest', 'visao');
-  const corpo = { visao: invVisao, carteira: invCarteira, proventos: invProventos, imposto: invImposto, explorar: invExplorar, estudar: invEstudar, simular: invSimular, guia: invGuia }[sub]();
-  el.innerHTML = `<div class="row-between" style="align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">${subnav('invest', [['visao', 'Visão geral'], ['carteira', 'Carteira'], ['proventos', 'Proventos'], ['imposto', 'Imposto'], ['explorar', '🔎 Explorar'], ['estudar', '📚 Estudar'], ['simular', 'Simuladores'], ['guia', 'Guia e perfil']])}
+  const corpo = { visao: invVisao, carteira: invCarteira, proventos: invProventos, imposto: invImposto, explorar: invExplorar, estudar: invEstudar, graficos: () => invGraficos(), lab: () => invLab(), simular: invSimular, guia: invGuia }[sub]();
+  el.innerHTML = `<div class="row-between" style="align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">${subnav('invest', [['visao', 'Visão geral'], ['carteira', 'Carteira'], ['proventos', 'Proventos'], ['imposto', 'Imposto'], ['explorar', '🔎 Explorar'], ['estudar', '📚 Estudar'], ['graficos', '📊 Gráficos'], ['lab', '🧪 Laboratório'], ['simular', 'Simuladores'], ['guia', 'Guia e perfil']])}
     <span class="row"><button class="btn" data-inv="importar">⬆ Importar (B3, Rico, Avenue)</button><button class="btn" data-inv="cotar" title="Busca preços, dólar, Selic, CDI e IPCA na internet">↻ Atualizar cotações</button><button class="btn" data-inv="pdf">📄 Relatório</button></span></div>
     ${db.invest.perfil?.protecao ? '<div class="lembrete info"><span>🛡 <b>Modo proteção ligado:</b> investir é diferente de apostar. Aqui o caminho é devagar e sempre: aportes todo mês, fundos de índice e nada de operar no mesmo dia, opções ou alavancagem.</span></div>' : ''}
     ${corpo}
@@ -12595,6 +12610,203 @@ try { const s = JSON.parse(lsGet('ff-painel') || 'null'); if (s && Array.isArray
 { const _rp79 = renderPainel; renderPainel = function () { const r = _rp79.apply(this, arguments); if (CELULAR && !ui.celPainel) return r; try { leiSemente(); const g = $('#tab-painel .painel-g'); const c = leiCard(); if (g && c && !$('[data-wid="leituras"]', g)) { g.insertAdjacentHTML('afterbegin', `<div class="wide" data-wid="leituras">${c}</div>`); aplicarLayoutPainel($('#tab-painel')); } } catch (e) { console.warn('leituras', e); } return r; }; }
 { const _ra79 = renderAll; renderAll = function () { try { if (db && leiSemente()) { changed(); return; } } catch (e) {} return _ra79.apply(this, arguments); }; }
 CEL_NOVIDADES['7.9'] = ['📖 Leituras e Devoção: livros em 3 trilhas, Bíblia (Marcos → João → Romanos) e Provérbios do dia', '🌙 Devocional da noite com a Helen: "Fizemos juntos" e lembrete às 20h50', '🌧 Versão mínima para dia difícil · ☀️ revisão semanal no domingo'];
+
+/* =================== v8.0: Investimentos › 📊 Gráficos, 🧪 Laboratório e ₿ Cripto (só estudo e simulação) =================== */
+const LAB_MOEDAS = [
+  ['BTC', 'Bitcoin', 'A primeira e maior. Usada como "reserva de valor digital": quantidade limitada (21 milhões).', 'Alto: já caiu mais de 70% em alguns anos.'],
+  ['ETH', 'Ethereum', 'Rede onde rodam contratos e aplicativos. A segunda maior.', 'Alto: oscila mais que o Bitcoin.'],
+  ['SOL', 'Solana', 'Rede rápida e barata, concorrente do Ethereum.', 'Muito alto: já teve quedas de mais de 90%.'],
+  ['BNB', 'BNB', 'Moeda da corretora Binance.', 'Alto e ligado ao futuro de uma única empresa.'],
+  ['XRP', 'XRP', 'Feita para transferências entre bancos e países.', 'Alto: já teve processos na Justiça americana.'],
+  ['ADA', 'Cardano', 'Rede de contratos com foco em pesquisa acadêmica.', 'Muito alto: ainda pouco usada na prática.'],
+  ['DOGE', 'Dogecoin', 'Nasceu como piada, sobe e desce com redes sociais.', 'Altíssimo: é quase pura especulação.'],
+  ['LINK', 'Chainlink', 'Leva dados do mundo real para os contratos digitais.', 'Muito alto.'],
+  ['LTC', 'Litecoin', 'Uma das mais antigas, parecida com o Bitcoin, porém mais rápida.', 'Alto: perdeu espaço com os anos.'],
+  ['DOT', 'Polkadot', 'Liga redes diferentes entre si.', 'Muito alto: caiu mais de 90% do topo.'],
+];
+(function () { const _e = ensureModules; ensureModules = function (d) { d = _e(d); if (!Array.isArray(d.labOps)) d.labOps = []; return d; }; })();
+COLECOES.push(['labOps']); if (db) ensureModules(db);
+
+/* ---------- dados (Binance, grátis, sem cadastro; preços em dólar) ---------- */
+const LAB_CACHE = {}; let labCarregando = {};
+const labCacheLer = (s) => { if (LAB_CACHE[s]) return LAB_CACHE[s]; try { const j = JSON.parse(lsGet('lab-' + s) || 'null'); if (j) LAB_CACHE[s] = j; return j; } catch (e) { return null; } };
+async function labBuscar(sym) {
+  const urls = ['https://data-api.binance.vision/api/v3/klines', 'https://api.binance.com/api/v3/klines'];
+  let todos = []; let fim = Date.now();
+  for (let volta = 0; volta < 2; volta++) {
+    let j = null, err = null;
+    for (const u of urls) { try { j = await pegarJSON(`${u}?symbol=${sym}USDT&interval=1d&limit=1000&endTime=${fim}`); break; } catch (e) { err = e; } }
+    if (!j) { if (!todos.length) throw err || new Error('sem dados'); break; }
+    if (!j.length) break; todos = j.concat(todos); fim = j[0][0] - 1; if (j.length < 1000) break;
+  }
+  const L = todos.map((k) => [new Date(k[0]).toISOString().slice(0, 10), +k[4]]).filter((x, i, a) => i === 0 || x[0] !== a[i - 1][0]);
+  const o = { em: Date.now(), d: L }; LAB_CACHE[sym] = o; try { lsSet('lab-' + sym, JSON.stringify(o)); } catch (e) {} return o;
+}
+function labDados(sym) {
+  const c = labCacheLer(sym); const velho = !c || Date.now() - c.em > 6 * 3600e3;
+  if (velho && !labCarregando[sym]) { labCarregando[sym] = true; labBuscar(sym).then(() => { labCarregando[sym] = false; if (ui.tab === 'invest') renderAll(); }).catch(() => { labCarregando[sym] = 'erro'; if (ui.tab === 'invest') renderAll(); }); }
+  return c ? c.d : null;
+}
+const labUsd = () => db.invest?.usd || 5.4;
+const labBRL = (usd) => fmt(usd * labUsd());
+
+/* ---------- contas ---------- */
+const labSMA = (a, n) => a.map((_, i) => (i < n - 1 ? null : a.slice(i - n + 1, i + 1).reduce((s, x) => s + x, 0) / n));
+function labRSI(a, n = 14) { const out = Array(a.length).fill(null); let g = 0, l = 0;
+  for (let i = 1; i < a.length; i++) { const d = a[i] - a[i - 1], gi = Math.max(d, 0), li = Math.max(-d, 0); if (i <= n) { g += gi / n; l += li / n; } else { g = (g * (n - 1) + gi) / n; l = (l * (n - 1) + li) / n; } if (i >= n) out[i] = l ? 100 - 100 / (1 + g / l) : 100; } return out; }
+function labSinais(P, R) { // devolve array de 'c' (compra), 'v' (venda) ou null
+  const s = Array(P.length).fill(null);
+  if (R.tipo === 'rsi') { const r = labRSI(P, 14); let dentro = false; for (let i = 1; i < P.length; i++) { if (r[i] == null) continue; if (!dentro && r[i] < R.rsiC) { s[i] = 'c'; dentro = true; } else if (dentro && r[i] > R.rsiV) { s[i] = 'v'; dentro = false; } } return s; }
+  const a = labSMA(P, R.rap), b = labSMA(P, R.len); let dentro = false;
+  for (let i = 1; i < P.length; i++) { if (a[i - 1] == null || b[i - 1] == null) continue; if (!dentro && a[i - 1] <= b[i - 1] && a[i] > b[i]) { s[i] = 'c'; dentro = true; } else if (dentro && a[i - 1] >= b[i - 1] && a[i] < b[i]) { s[i] = 'v'; dentro = false; } }
+  return s;
+}
+function labTestar(D, R) {
+  const P = D.map((x) => x[1]); const S = labSinais(P, R); const tx = R.taxa / 100;
+  let caixa = 1, qtd = 0, entrada = 0; const ops = []; const curva = []; let pico = 1, pior = 0;
+  for (let i = 0; i < P.length; i++) {
+    if (S[i] === 'c' && qtd === 0) { qtd = (caixa * (1 - tx)) / P[i]; entrada = caixa; caixa = 0; ops.push({ i, t: 'c' }); }
+    else if (S[i] === 'v' && qtd > 0) { caixa = qtd * P[i] * (1 - tx); ops.push({ i, t: 'v', ok: caixa > entrada }); qtd = 0; }
+    const v = caixa + qtd * P[i]; curva.push(v); pico = Math.max(pico, v); pior = Math.min(pior, v / pico - 1);
+  }
+  const fechadas = ops.filter((o) => o.t === 'v'); const bh = P[P.length - 1] / P[0];
+  let pbh = 1, ppior = 0; P.forEach((p) => { pbh = Math.max(pbh, p / P[0]); ppior = Math.min(ppior, p / P[0] / pbh - 1); });
+  return { ret: curva[curva.length - 1] - 1, bh: bh - 1, ops: fechadas.length, acertos: fechadas.filter((o) => o.ok).length, pior, piorBh: ppior, curva, P, S, aberta: qtd > 0 };
+}
+const labPct = (x) => `${x >= 0 ? '+' : '−'}${Math.abs(x * 100).toLocaleString('pt-BR', { maximumFractionDigits: Math.abs(x) < 0.1 ? 1 : 0 })}%`;
+
+/* ---------- desenho ---------- */
+function labLinha(series, H, opt = {}) {
+  const W = 700; const all = series.flatMap((s) => s.v.filter((x) => x != null)); const mn = opt.mn ?? Math.min(...all), mx = opt.mx ?? Math.max(...all); const n = series[0].v.length;
+  const X = (i) => (i / Math.max(1, n - 1)) * W, Y = (v) => 4 + (H - 8) * (1 - (v - mn) / (mx - mn || 1));
+  const linhas = series.map((s) => { let d = '', pen = false; s.v.forEach((v, i) => { if (v == null) { pen = false; return; } d += `${pen ? 'L' : 'M'}${X(i).toFixed(1)},${Y(v).toFixed(1)}`; pen = true; }); return `<path d="${d}" fill="none" stroke="${s.c}" stroke-width="${s.w || 2}" vector-effect="non-scaling-stroke"/>`; }).join('');
+  const extra = (opt.faixas || []).map(([a, b, c]) => `<rect x="0" y="${Y(b)}" width="${W}" height="${Y(a) - Y(b)}" fill="${c}"/>`).join('') + (opt.linhas || []).map(([v, c]) => `<line x1="0" x2="${W}" y1="${Y(v)}" y2="${Y(v)}" stroke="${c}" stroke-dasharray="5 5" vector-effect="non-scaling-stroke"/>`).join('');
+  const pts = (opt.pontos || []).map(([i, v, c]) => `<circle cx="${X(i)}" cy="${Y(v)}" r="5" fill="${c}" stroke="#fff" stroke-width="1.5" vector-effect="non-scaling-stroke"/>`).join('');
+  return `<svg class="lab-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="height:${H}px">${extra}${linhas}${pts}</svg>`;
+}
+function labEixo(D) { const n = D.length; const ix = [0, Math.floor(n / 3), Math.floor((2 * n) / 3), n - 1]; return `<div class="lab-eixo">${ix.map((i) => `<span>${dmy(D[i][0]).slice(3)}</span>`).join('')}</div>`; }
+const LAB_PER = [['3m', '3 meses', 92], ['1a', '1 ano', 365], ['2a', '2 anos', 730], ['4a', '4 anos', 1460]];
+const labPerAtual = () => (ui.sub?.invest === 'lab' ? ui.labPerT || '4a' : ui.labPer || '1a');
+const labRegra = () => (ui.labR = Object.assign({ tipo: 'mm', rap: 20, len: 50, rsiC: 30, rsiV: 70, taxa: 0.5 }, ui.labR || {}));
+function labTopo(sym) {
+  const per = labPerAtual();
+  return `<div class="lab-topo"><select data-lab-sym>${LAB_MOEDAS.map(([s, n]) => `<option value="${s}" ${s === sym ? 'selected' : ''}>${s} · ${n}</option>`).join('')}</select>
+    <div class="lab-pills">${LAB_PER.map(([k, l]) => `<button class="${k === per ? 'on' : ''}" data-lab-per="${k}">${l}</button>`).join('')}</div>
+    <div class="lab-pills lab-tipos"><button class="on">₿ Cripto</button><button data-lab-breve>📈 Ação</button><button data-lab-breve>🏢 FII</button><button data-lab-breve>🌎 ETF</button></div></div>`;
+}
+function labSemDados(sym) {
+  return `<div class="card lab-c"><p style="margin:0">${labCarregando[sym] === 'erro' ? `⚠️ Não consegui buscar os preços do ${sym}. Confira a internet e toque em <button class="btn sm" data-lab-recarregar="${sym}">Tentar de novo</button>` : `⏳ Buscando o histórico do ${sym}…`}</p></div>`;
+}
+const labProtecao = () => '<div class="lembrete info lab-prot"><span>🛡 <b>Modo estudo:</b> aqui nada compra ou vende de verdade. Os gráficos mostram o passado, não o futuro. O Laboratório usa dinheiro de mentira.</span></div>';
+
+/* ---------- aba 📊 Gráficos ---------- */
+function invGraficos() {
+  const sym = ui.labSym || 'BTC'; const D0 = labDados(sym); if (!D0) return labProtecao() + labTopo(sym) + labSemDados(sym);
+  const R = labRegra(); const dias = LAB_PER.find((p) => p[0] === labPerAtual())[2];
+  const ini = Math.max(0, D0.length - dias); const Pall = D0.map((x) => x[1]); const a = labSMA(Pall, R.rap).slice(ini), b = labSMA(Pall, R.len).slice(ini), r = labRSI(Pall).slice(ini), S = labSinais(Pall, R).slice(ini); const D = D0.slice(ini); const P = Pall.slice(ini);
+  const nome = LAB_MOEDAS.find((m) => m[0] === sym)[1]; const ult = P[P.length - 1]; const var30 = P.length > 30 ? ult / P[P.length - 31] - 1 : null; const rv = Math.round(r[r.length - 1]);
+  const acima = [a[a.length - 1], b[b.length - 1]].filter((x) => x != null && ult > x).length; const topo = Math.max(...Pall); const doTopo = ult / topo - 1;
+  const leitura = `O preço está <b>${acima === 2 ? 'acima das duas médias' : acima === 1 ? 'entre as médias' : 'abaixo das duas médias'}</b>, ${acima === 2 ? 'sinal de tendência de alta nos últimos meses' : acima === 0 ? 'sinal de tendência de queda nos últimos meses' : 'sem tendência clara'}. O RSI está em <b>${rv}</b>: ${rv >= 70 ? 'subiu rápido demais, costuma ter respiro' : rv <= 30 ? 'caiu rápido demais, costuma ter repique' : 'sem exagero para nenhum lado'}. Está ${doTopo > -0.02 ? '<b>perto do maior preço</b> dos últimos 4 anos' : `<b>${labPct(doTopo)}</b> abaixo do maior preço dos últimos 4 anos`}.`;
+  const pontos = S.map((s, i) => (s ? [i, P[i], s === 'c' ? '#2f7d4f' : '#c0452f'] : null)).filter(Boolean);
+  return `${labProtecao()}${labTopo(sym)}<div class="card lab-c"><div class="lab-h"><div><h3>${nome} (${sym}) · US$ ${num2(r2(ult))} <span class="muted">≈ ${labBRL(ult)}</span></h3><span class="muted small">${var30 != null ? `${labPct(var30)} em 30 dias · ` : ''}preço de fechamento diário · Binance</span></div></div>
+    ${labLinha([{ v: P, c: 'var(--brand,#1f4e6b)', w: 2 }, { v: R.tipo === 'mm' ? a : labSMA(Pall, 20).slice(ini), c: '#d9822b', w: 1.6 }, { v: R.tipo === 'mm' ? b : labSMA(Pall, 50).slice(ini), c: '#7a4fa0', w: 1.6 }], 230, { pontos })}${labEixo(D)}
+    <div class="lab-leg"><span><i style="background:var(--brand,#1f4e6b)"></i>Preço</span><span><i style="background:#d9822b"></i>Média ${R.tipo === 'mm' ? R.rap : 20} dias</span><span><i style="background:#7a4fa0"></i>Média ${R.tipo === 'mm' ? R.len : 50} dias</span><span>🟢 compra / 🔴 venda pela regra do Laboratório</span></div>
+    <p class="small muted" style="margin:10px 0 2px"><b>RSI ${rv}</b> · acima de 70 = subiu rápido demais · abaixo de 30 = caiu rápido demais</p>
+    ${labLinha([{ v: r, c: 'var(--brand,#1f4e6b)', w: 1.5 }], 80, { mn: 0, mx: 100, faixas: [[30, 70, 'color-mix(in srgb,var(--line) 60%,transparent)']], linhas: [[70, '#c0452f'], [30, '#2f7d4f']] })}
+    <div class="lab-leitura"><b>Leitura em português:</b> ${leitura} <span class="muted">Isso descreve o passado; não diz o que vai acontecer amanhã.</span></div></div>`;
+}
+
+/* ---------- aba 🧪 Laboratório ---------- */
+function invLab() {
+  const sym = ui.labSym || 'BTC'; const D0 = labDados(sym); const R = labRegra();
+  const regra = `<div class="card lab-c"><h3>🧪 Teste no passado</h3><p class="muted small" style="margin:2px 0 8px">Monte uma regra e veja como ela teria ido, já descontando as taxas. Sempre comparando com o simples "comprar e segurar".</p>
+    <div class="lab-pills" style="margin-bottom:8px"><button class="${R.tipo === 'mm' ? 'on' : ''}" data-lab-tipo="mm">Cruzamento de médias</button><button class="${R.tipo === 'rsi' ? 'on' : ''}" data-lab-tipo="rsi">RSI (esticou demais)</button></div>
+    <div class="lab-regra">${R.tipo === 'mm' ? `<span>Comprar quando a média de</span><input data-lab-r="rap" value="${R.rap}" inputmode="numeric"><span>dias cruzar para cima da média de</span><input data-lab-r="len" value="${R.len}" inputmode="numeric"><span>dias. Vender quando cruzar para baixo.</span>`
+      : `<span>Comprar quando o RSI ficar abaixo de</span><input data-lab-r="rsiC" value="${R.rsiC}" inputmode="numeric"><span>e vender quando passar de</span><input data-lab-r="rsiV" value="${R.rsiV}" inputmode="numeric">`}<span>· Taxa por operação</span><input data-lab-r="taxa" value="${String(R.taxa).replace('.', ',')}" inputmode="decimal"><span>%</span></div>`;
+  let res = '';
+  if (!D0) res = `<p class="small" style="margin:10px 0 0">${labCarregando[sym] === 'erro' ? `⚠️ Sem internet para buscar o histórico. <button class="btn sm" data-lab-recarregar="${sym}">Tentar de novo</button>` : '⏳ Buscando o histórico…'}</p>`;
+  else { const dias = LAB_PER.find((p) => p[0] === labPerAtual())?.[2] || 1460; const D = D0.slice(-Math.min(dias, D0.length)); const T = labTestar(D, R); const ganhou = T.ret > T.bh;
+    const pts = T.S.map((s, i) => (s ? [i, T.curva[i], s === 'c' ? '#2f7d4f' : '#c0452f'] : null)).filter(Boolean);
+    res = `<div class="lab-k"><div><small>SUA REGRA</small><b class="${T.ret >= 0 ? 'good' : 'bad'}">${labPct(T.ret)}</b></div><div><small>SÓ COMPRAR E SEGURAR</small><b class="${T.bh >= 0 ? 'good' : 'bad'}">${labPct(T.bh)}</b></div><div><small>ACERTOS</small><b>${T.ops ? Math.round((T.acertos / T.ops) * 100) + '%' : '—'}</b><span>${T.acertos} de ${T.ops} operações</span></div><div><small>PIOR QUEDA</small><b class="bad">${labPct(T.pior)}</b><span>segurando: ${labPct(T.piorBh)}</span></div></div>
+      ${labLinha([{ v: T.P.map((p) => p / T.P[0]), c: '#9aa7b1', w: 1.8 }, { v: T.curva, c: 'var(--brand,#1f4e6b)', w: 2.2 }], 170, { pontos: pts })}${labEixo(D)}
+      <div class="lab-leg"><span><i style="background:var(--brand,#1f4e6b)"></i>Sua regra</span><span><i style="background:#9aa7b1"></i>Comprar e segurar</span><span>${sym} · ${D.length} dias · ${T.aberta ? 'a regra está comprada hoje' : 'a regra está fora hoje'}</span></div>
+      <div class="lab-leitura">${!T.ops ? 'A regra não fez nenhuma operação nesse período. Tente outros números.' : ganhou ? `Neste período a regra <b>ganhou</b> do "comprar e segurar"${T.pior > T.piorBh ? ' e ainda caiu menos nos piores momentos' : ''}. Antes de confiar, teste em <b>outras moedas e outros períodos</b>: regra boa funciona em vários, não só em um.` : `Neste período a regra <b>perdeu</b> para o simples "comprar e segurar"${T.pior > T.piorBh ? ', mas protegeu nas quedas' : ''}. É para isso que serve o teste: descobrir antes de arriscar.`}</div>`; }
+  return `${labProtecao()}${labTopo(sym)}<div class="lab-cols"><div>${regra}${res}</div></div><div>${labSimulacao()}</div></div>`;
+}
+
+/* ---------- simulação com dinheiro de mentira ---------- */
+const LAB_INI = 10000;
+function labCarteira() {
+  const ops = [...db.labOps].sort((a, b) => (a.ts || 0) - (b.ts || 0)); const pos = {}; let caixa = LAB_INI; const inicio = ops.find((o) => o.tipo === 'inicio');
+  ops.forEach((o) => { if (o.tipo === 'compra') { caixa -= o.valor; pos[o.sym] = (pos[o.sym] || 0) + o.qtd; } else if (o.tipo === 'venda') { caixa += o.valor; pos[o.sym] = (pos[o.sym] || 0) - o.qtd; } });
+  const L = Object.entries(pos).filter(([, q]) => q > 1e-12).map(([s, q]) => { const d = labCacheLer(s)?.d; const p = d ? d[d.length - 1][1] * labUsd() : null; const custo = soma(ops.filter((o) => o.sym === s && o.tipo === 'compra'), 'valor') - soma(ops.filter((o) => o.sym === s && o.tipo === 'venda'), 'valor'); return { s, q, valor: p != null ? q * p : null, custo }; });
+  L.forEach((x) => { if (x.valor == null) labDados(x.s); });
+  const total = caixa + soma(L, (x) => x.valor ?? x.custo); return { inicio, caixa, L, total };
+}
+function labSimulacao() {
+  const C = labCarteira();
+  if (!C.inicio) return `<div class="card lab-c"><h3>🎮 Simulação com dinheiro de mentira</h3><p class="small" style="margin:4px 0 10px">Você recebe <b>R$ 10.000 fictícios</b> para comprar e vender cripto como se fosse de verdade. O Prumo guarda tudo e, com o tempo, mostra se você está ganhando do "comprar e segurar".</p><button class="btn primary" data-lab-iniciar>Começar a simulação</button></div>`;
+  const dias = Math.max(0, Math.round((new Date(hoje() + 'T12:00') - new Date(C.inicio.data + 'T12:00')) / 864e5)); const ret = C.total / LAB_INI - 1;
+  const btc = labCacheLer('BTC')?.d; let bh = null; if (btc) { const i0 = btc.findIndex((x) => x[0] >= C.inicio.data); if (i0 >= 0) bh = btc[btc.length - 1][1] / btc[i0][1] - 1; }
+  const falta = Math.max(0, 180 - dias); const ganhando = bh != null && ret > bh;
+  return `<div class="card lab-c"><div class="lab-h"><h3>🎮 Simulação com dinheiro de mentira</h3><button class="btn sm" data-lab-zerar>Recomeçar</button></div><p class="muted small" style="margin:2px 0 8px">Começou com R$ 10.000 fictícios · há ${dias} ${dias === 1 ? 'dia' : 'dias'}</p>
+    <table class="compact lab-t"><tbody>${C.L.map((x) => `<tr><td>${x.s}</td><td class="num">${x.valor != null ? fmt0(x.valor) : '…'}</td><td class="num ${x.valor >= x.custo ? 'good' : 'bad'}">${x.valor != null && x.custo > 0 ? labPct(x.valor / x.custo - 1) : ''}</td><td class="num"><button class="btn sm" data-lab-vender="${x.s}">Vender</button></td></tr>`).join('')}
+      <tr><td>💵 Caixa</td><td class="num">${fmt0(C.caixa)}</td><td></td><td></td></tr><tr><td><b>Total</b></td><td class="num"><b>${fmt0(C.total)}</b></td><td class="num ${ret >= 0 ? 'good' : 'bad'}"><b>${labPct(ret)}</b></td><td></td></tr></tbody></table>
+    <div class="row" style="margin-top:8px;gap:6px"><button class="btn primary" data-lab-comprar>+ Comprar (simulado)</button></div>
+    ${bh != null ? `<p class="small" style="margin:8px 0 0">No mesmo período, quem só comprou Bitcoin e segurou está em <b class="${bh >= 0 ? 'good' : 'bad'}">${labPct(bh)}</b>. Você está ${ganhando ? '<b class="good">ganhando</b>' : '<b class="bad">perdendo</b>'} dele.</p>` : ''}
+    <div class="lab-leitura">📏 <b>Regra do Prumo:</b> só pense em dinheiro de verdade depois de <b>6 meses</b> de simulação ganhando do "comprar e segurar". ${falta ? `Faltam <b>${falta} dias</b>.` : ganhando ? 'Os 6 meses passaram e você está ganhando. Mesmo assim: comece pequeno e converse com a Helen.' : 'Os 6 meses passaram, mas o "comprar e segurar" está ganhando. Vale mais a pena aportar todo mês e segurar.'}</div></div>`;
+}
+function labOrdem(tipo, sym) {
+  const C = labCarteira(); const pos = C.L.find((x) => x.s === sym);
+  vgJanela(`<h3 style="margin:0 0 4px">${tipo === 'compra' ? '+ Comprar' : 'Vender'} (simulado)</h3><p class="small muted" style="margin:0 0 8px">Dinheiro de mentira · caixa: ${fmt0(C.caixa)}</p>
+    ${tipo === 'compra' ? `<label class="lei-lab">Moeda<select id="labOs">${LAB_MOEDAS.map(([s, n]) => `<option value="${s}" ${s === (sym || ui.labSym || 'BTC') ? 'selected' : ''}>${s} · ${n}</option>`).join('')}</select></label>` : `<p style="margin:0 0 6px"><b>${sym}</b> · você tem ${pos ? fmt0(pos.valor ?? pos.custo) : 'R$ 0'}</p>`}
+    <label class="lei-lab">Valor em R$<input class="vg-valor" id="labOv" type="text" inputmode="decimal" placeholder="${tipo === 'compra' ? '1.000,00' : 'tudo'}"></label>
+    <div class="vg-bts"><button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-lab-ok="${tipo}|${sym || ''}">${tipo === 'compra' ? 'Comprar' : 'Vender'}</button></div>`);
+}
+async function labExecutar(tipo, sym) {
+  sym = tipo === 'compra' ? $('#labOs')?.value : sym; let d = labCacheLer(sym)?.d; if (!d) { toast('Buscando o preço…'); try { d = (await labBuscar(sym)).d; } catch (e) { return toast('Sem internet para buscar o preço agora.'); } }
+  const preco = d[d.length - 1][1] * labUsd(); const C = labCarteira(); let v = num($('#labOv')?.value, NaN);
+  if (tipo === 'venda') { const pos = C.L.find((x) => x.s === sym); if (!pos) return; if (!isFinite(v) || v <= 0 || v >= (pos.valor || 0)) v = pos.valor; const q = Math.min(pos.q, v / preco); db.labOps.push({ id: uid(), ts: Date.now(), data: hoje(), tipo: 'venda', sym, qtd: q, valor: r2(q * preco), preco }); }
+  else { if (!isFinite(v) || v <= 0) return toast('Digite o valor.'); if (v > C.caixa + 0.01) return toast(`O caixa fictício tem ${fmt0(C.caixa)}.`); db.labOps.push({ id: uid(), ts: Date.now(), data: hoje(), tipo: 'compra', sym, qtd: v / preco, valor: r2(v), preco }); }
+  vgFecharJanela(); changed(); toast(tipo === 'compra' ? `🎮 Compra simulada de ${sym}` : `🎮 Venda simulada de ${sym}`);
+}
+
+/* ---------- Explorar › ₿ Cripto ---------- */
+function exploraCripto() {
+  return `<div class="card"><div class="row-between" style="flex-wrap:wrap;gap:8px"><b style="font-size:17px">₿ Cripto · as 10 maiores para estudar</b><button class="btn sm" data-ex-est="cripto-lab">📊 Ver gráficos</button></div>
+    <div class="lembrete info" style="margin:10px 0"><span>🛡 <b>Cripto é o investimento mais arriscado da lista.</b> Os grandes investidores que usam colocam no máximo uma fatia pequena (1% a 5%) e por muitos anos. Nunca dinheiro da reserva, das contas da loja ou emprestado.</span></div>
+    <div class="exp-g">${LAB_MOEDAS.map(([s, n, por, at]) => { const d = labCacheLer(s)?.d; const p = d ? d[d.length - 1][1] : null; const v1 = d && d.length > 365 ? p / d[d.length - 366][1] - 1 : null; const top = d ? Math.max(...d.map((x) => x[1])) : null;
+      return `<div class="exp-c"><div class="row-between" style="align-items:flex-start"><div><b class="exp-tk">${s}</b> <span class="tag">${n}</span></div><div style="text-align:right"><b>${p ? 'US$ ' + num2(r2(p)) : '—'}</b><br><small class="muted">${p ? '≈ ' + labBRL(p) : 'abra Gráficos'}</small></div></div>
+        <div class="exp-ind"><div><i>1 ano</i>${v1 != null ? labPct(v1) : '—'}</div><div><i>Do topo</i>${top ? labPct(p / top - 1) : '—'}</div></div>
+        <div class="exp-txt"><b>O que é:</b> ${esc(por)}</div><div class="exp-txt at"><b>Risco:</b> ${esc(at)}</div>
+        <div class="row" style="margin-top:auto"><span style="flex:1"></span><button class="btn sm" data-lab-ver="${s}">📊 Gráfico</button><button class="btn sm" data-lab-sim="${s}">🎮 Simular</button></div></div>`; }).join('')}</div>
+    <p class="small muted" style="margin:12px 0 0">Preços em dólar da Binance, convertidos pelo dólar do ↻ Atualizar cotações. "Do topo" = quanto está abaixo do maior preço dos últimos 4 anos.</p></div>`;
+}
+
+/* ---------- ligações ---------- */
+EXP_TIPOS.splice(EXP_TIPOS.findIndex((x) => x[0] === 'tesouro'), 0, ['cripto', '₿', 'Cripto', 10]);
+{ const _ie = invExplorar; invExplorar = function () { if ((ui.expTipo || 'acoes') === 'cripto') { const topo = `<div class="exp-tipos">${EXP_TIPOS.map(([k, ic, n, q]) => `<button class="${k === 'cripto' ? 'on' : ''}" data-ex-t="${k}"><span>${ic}</span>${n}${q ? `<small>${q}</small>` : '<small>comparador</small>'}</button>`).join('')}</div>`; LAB_MOEDAS.forEach(([s]) => labDados(s)); return topo + exploraCripto(); } return _ie(); }; }
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if ((b = g('data-lab-per'))) { if (ui.sub?.invest === 'lab') ui.labPerT = b.dataset.labPer; else ui.labPer = b.dataset.labPer; return renderAll(); }
+  if ((b = g('data-lab-tipo'))) { labRegra().tipo = b.dataset.labTipo; return renderAll(); }
+  if (g('data-lab-breve')) return toast('Ações, FIIs e ETFs entram na próxima etapa.');
+  if ((b = g('data-lab-recarregar'))) { labCarregando[b.dataset.labRecarregar] = false; delete LAB_CACHE[b.dataset.labRecarregar]; try { lsSet('lab-' + b.dataset.labRecarregar, ''); } catch (x) {} return renderAll(); }
+  if (g('data-lab-iniciar')) { db.labOps.push({ id: uid(), ts: Date.now(), data: hoje(), tipo: 'inicio' }); changed(); return toast('🎮 Simulação começou com R$ 10.000 fictícios'); }
+  if (g('data-lab-zerar')) { if (confirm('Apagar a simulação e recomeçar do zero?')) { db.labOps = []; changed(); } return; }
+  if (g('data-lab-comprar')) return labOrdem('compra');
+  if ((b = g('data-lab-vender'))) return labOrdem('venda', b.dataset.labVender);
+  if ((b = g('data-lab-ok'))) { const [t, s] = b.dataset.labOk.split('|'); return labExecutar(t, s); }
+  if ((b = g('data-lab-ver'))) { ui.labSym = b.dataset.labVer; ui.sub = ui.sub || {}; ui.sub.invest = 'graficos'; return renderAll(); }
+  if ((b = g('data-lab-sim'))) { ui.labSym = b.dataset.labSim; ui.sub = ui.sub || {}; ui.sub.invest = 'lab'; renderAll(); return setTimeout(() => { if (labCarteira().inicio) labOrdem('compra', b.dataset.labSim); }, 60); }
+  if (e.target.closest('[data-ex-est="cripto-lab"]')) { e.stopPropagation(); ui.sub = ui.sub || {}; ui.sub.invest = 'graficos'; return renderAll(); }
+}, true);
+document.addEventListener('change', (e) => {
+  let t;
+  if ((t = e.target.closest('[data-lab-sym]'))) { ui.labSym = t.value; return renderAll(); }
+  if ((t = e.target.closest('[data-lab-r]'))) { const v = num(t.value, NaN); if (isFinite(v) && v >= 0) { labRegra()[t.dataset.labR] = t.dataset.labR === 'taxa' ? v : Math.max(1, Math.round(v)); } return renderAll(); }
+});
+CEL_NOVIDADES['8.0'] = ['📊 Investimentos › Gráficos: preço, médias e RSI com leitura em português', '🧪 Laboratório: teste regras no passado e simule com dinheiro de mentira', '₿ Explorar › Cripto: as 10 maiores, o que são e o risco de cada uma'];
 
 /* =================== v7.5: cores · azul petróleo (geral), preto e amarelo (Loja e Caixa da loja); Consultório e Ritmo ficam como estão =================== */
 const _renderAll75 = renderAll;
