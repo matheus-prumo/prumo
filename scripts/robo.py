@@ -186,6 +186,102 @@ def yahoo(tickers):
     return out
 
 
+ESTAVEIS = {"USDT", "USDC", "DAI", "FDUSD", "TUSD", "USDE", "USDS", "PYUSD", "USDD", "BUSD", "GUSD", "USDP", "FRAX", "LUSD", "USD0", "USDX", "EURC", "EURT", "XAUT", "PAXG", "USDB", "RLUSD", "USDF", "USD1", "BFUSD", "SUSDE", "SUSDS"}
+EMBRULHADAS = re.compile(r"wrapped|staked|bridged|restaked|liquid staking|lido|binance-peg|coinbase wrapped|\bw(btc|eth)\b", re.I)
+
+
+def indices():
+    out = {}
+    for nome, sym in [("IBOV", "%5EBVSP"), ("BOVA11", "BOVA11.SA"), ("XFIX11", "XFIX11.SA"), ("IVVB11", "IVVB11.SA")]:
+        try:
+            j = json.loads(baixar(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=5d&interval=1d"))
+            p = j["chart"]["result"][0]["meta"].get("regularMarketPrice")
+            if p:
+                out[nome] = round(p, 2)
+        except Exception as e:
+            print(f"  indice {nome}: {e}", file=sys.stderr)
+        time.sleep(0.4)
+    if not out:
+        raise RuntimeError("nenhum índice")
+    return out
+
+
+def _retornos(precos):
+    return [precos[i] / precos[i - 1] - 1 for i in range(1, len(precos)) if precos[i - 1] > 0]
+
+
+def _historico_binance(sym):
+    for host in ("https://data-api.binance.vision", "https://api.binance.com"):
+        try:
+            j = json.loads(baixar(f"{host}/api/v3/klines?symbol={sym}USDT&interval=1d&limit=1000"))
+            if isinstance(j, list) and len(j) > 30:
+                return [(int(k[0]) // 1000, float(k[4])) for k in j]
+        except Exception:
+            continue
+    return None
+
+
+def _historico_gecko(cid):
+    try:
+        j = json.loads(baixar(f"https://api.coingecko.com/api/v3/coins/{cid}/market_chart?vs_currency=usd&days=365&interval=daily"))
+        return [(int(t) // 1000, float(p)) for t, p in j.get("prices", []) if p]
+    except Exception:
+        return None
+
+
+def cripto():
+    L = []
+    for pagina in (1, 2):
+        j = json.loads(baixar(f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page={pagina}&price_change_percentage=30d,1y"))
+        L += j
+        time.sleep(3)
+    moedas = []
+    for c in L:
+        s = (c.get("symbol") or "").upper()
+        if not s or s in ESTAVEIS or EMBRULHADAS.search((c.get("name") or "") + " " + (c.get("id") or "")):
+            continue
+        if (c.get("market_cap") or 0) < 50e6 or (c.get("total_volume") or 0) < 2e6:
+            continue
+        if c.get("current_price") and 0.97 < c["current_price"] < 1.03 and abs(c.get("price_change_percentage_30d_in_currency") or 0) < 2:
+            continue  # cara de moeda estável
+        moedas.append({"id": c["id"], "s": s, "nome": c.get("name"), "rank": c.get("market_cap_rank"), "mc": c.get("market_cap"), "vol": c.get("total_volume"),
+                       "preco": c.get("current_price"), "circ": c.get("circulating_supply"), "total": c.get("total_supply"), "max": c.get("max_supply"),
+                       "ath_chg": c.get("ath_change_percentage"), "ch30": c.get("price_change_percentage_30d_in_currency"), "ch1y": c.get("price_change_percentage_1y_in_currency")})
+        if len(moedas) >= 150:
+            break
+    # comportamento em relação ao Bitcoin (1 ano), só para as 80 maiores
+    btc = _historico_binance("BTC") or _historico_gecko("bitcoin")
+    if not btc:
+        raise RuntimeError("sem histórico do Bitcoin")
+    bmap = dict((t // 86400, p) for t, p in btc)
+    for m in moedas[:80]:
+        h = _historico_binance(m["s"]) if m["s"] != "BTC" else btc
+        fonte = "binance"
+        if not h:
+            h = _historico_gecko(m["id"]); fonte = "coingecko"; time.sleep(2.5)
+        if not h:
+            continue
+        m["idade"] = (3.0 if len(h) >= 999 else round((time.time() - h[0][0]) / 86400 / 365, 1)) if fonte == "binance" else None
+        dias = [(t // 86400, p) for t, p in h if t // 86400 in bmap][-365:]
+        if len(dias) < 120:
+            continue
+        a = [p for _, p in dias]; b = [bmap[d] for d, _ in dias]
+        ra, rb = _retornos(a), _retornos(b)
+        n = min(len(ra), len(rb)); ra, rb = ra[-n:], rb[-n:]
+        mb = sum(rb) / n; ma = sum(ra) / n
+        cov = sum((x - ma) * (y - mb) for x, y in zip(ra, rb)) / n; varb = sum((y - mb) ** 2 for y in rb) / n; vara = sum((x - ma) ** 2 for x in ra) / n
+        beta = cov / varb if varb else None; corr = cov / (vara ** 0.5 * varb ** 0.5) if vara and varb else None
+        sobe = [x / y for x, y in zip(ra, rb) if y > 0.02]; cai = [x / y for x, y in zip(ra, rb) if y < -0.02]
+        pico, dd = 0, 0
+        for p in a:
+            pico = max(pico, p); dd = min(dd, p / pico - 1)
+        m.update({"beta": round(beta, 2) if beta is not None else None, "corr": round(corr, 2) if corr is not None else None, "volat": round((vara ** 0.5) * (365 ** 0.5) * 100, 1),
+                  "up": round(sorted(sobe)[len(sobe) // 2], 2) if len(sobe) > 10 else None, "down": round(sorted(cai)[len(cai) // 2], 2) if len(cai) > 10 else None, "dd": round(dd * 100, 1)})
+        if fonte == "binance":
+            time.sleep(0.2)
+    return {"em": int(time.time() * 1000), "moedas": moedas}
+
+
 def fnum(v):
     try:
         return float((v or "").strip().replace(",", "."))
@@ -253,7 +349,7 @@ def main():
     except Exception:
         velho = {}
     dados = {"em": int(time.time() * 1000), "fontes": {}}
-    for chave, func, fonte in [("acoes", fundamentus_acoes, "Fundamentus"), ("fiis", fundamentus_fiis, "Fundamentus"), ("tesouro", tesouro, "Tesouro Transparente"), ("etfus", lambda: yahoo(ETFS_US), "Yahoo Finanças")]:
+    for chave, func, fonte in [("acoes", fundamentus_acoes, "Fundamentus"), ("fiis", fundamentus_fiis, "Fundamentus"), ("tesouro", tesouro, "Tesouro Transparente"), ("etfus", lambda: yahoo(ETFS_US), "Yahoo Finanças"), ("indices", indices, "Yahoo Finanças"), ("cripto", cripto, "CoinGecko + Binance")]:
         try:
             dados[chave] = func()
             dados["fontes"][chave] = {"fonte": fonte, "ok": True, "em": dados["em"]}
