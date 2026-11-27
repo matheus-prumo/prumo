@@ -1242,6 +1242,14 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 .bin-ok{display:inline-block;font-size:11.5px;font-weight:700;color:#2f7d4f;background:color-mix(in srgb,#2f7d4f 12%,transparent);border-radius:12px;padding:2px 8px}
 .bin-passos{margin:6px 0 10px 18px;padding:0;font-size:13px;line-height:1.55}
 
+/* v8.2 comparador de fundos */
+.fi-f{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+.fi-prazo{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13.5px;margin:12px 0 8px}.fi-prazo input{width:90px;text-align:center}
+.fi-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.fi-c{border:1px solid var(--line);border-radius:12px;padding:11px 13px;border-left:4px solid #2f7d4f}.fi-c.ruim{border-left-color:#d9822b}
+.fi-n{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.fi-n small{display:block;font-size:10.5px;color:var(--muted);font-weight:700}.fi-n b{font-size:16px}
+.fi-al{margin:6px 0 0 18px;padding:0;font-size:12.5px;color:var(--muted)}
+
 </style>
 </head>
 <body>
@@ -4162,7 +4170,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '8.1';
+const APP_VERSAO = '8.2';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -12746,7 +12754,7 @@ function invLab() {
       ${labLinha([{ v: T.P.map((p) => p / T.P[0]), c: '#9aa7b1', w: 1.8 }, { v: T.curva, c: 'var(--brand,#1f4e6b)', w: 2.2 }], 170, { pontos: pts })}${labEixo(D)}
       <div class="lab-leg"><span><i style="background:var(--brand,#1f4e6b)"></i>Sua regra</span><span><i style="background:#9aa7b1"></i>Comprar e segurar</span><span>${labTk(sym)} · ${D.length} dias · ${T.aberta ? 'a regra está comprada hoje' : 'a regra está fora hoje'}</span></div>
       <div class="lab-leitura">${!T.ops ? (T.aberta ? 'A regra comprou e ainda não vendeu nesse período: o resultado só fecha quando ela vender. Tente um período maior.' : 'A regra não fez nenhuma operação nesse período. Tente outros números.') : ganhou ? `Neste período a regra <b>ganhou</b> do "comprar e segurar"${T.pior > T.piorBh ? ' e ainda caiu menos nos piores momentos' : ''}. Antes de confiar, teste em <b>outras moedas e outros períodos</b>: regra boa funciona em vários, não só em um.` : `Neste período a regra <b>perdeu</b> para o simples "comprar e segurar"${T.pior > T.piorBh ? ', mas protegeu nas quedas' : ''}. É para isso que serve o teste: descobrir antes de arriscar.`}</div>`; }
-  return `${labProtecao()}${labTopo(sym)}<div class="lab-cols"><div>${regra}${res}</div></div><div>${labSimulacao()}${binCard()}</div></div>`;
+  return `${labProtecao()}${labTopo(sym)}<div class="lab-cols"><div>${regra}${res}</div></div><div>${labSimulacao()}</div></div>`;
 }
 
 /* ---------- simulação com dinheiro de mentira ---------- */
@@ -12947,7 +12955,59 @@ document.addEventListener('click', async (e) => {
   if (g('data-bin-desligar')) { if (confirm('Desligar a Binance deste aparelho? A chave será apagada daqui.')) { try { lsSet('bin-key', ''); lsSet('bin-snap', ''); } catch (x) {} renderAll(); } return; }
 }, true);
 document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.matches?.('[data-lab-tk]')) labTkDigitado(); });
-CEL_NOVIDADES['8.1'] = ['📈 Gráficos e Laboratório agora também para ações, fundos imobiliários e ETFs', '🔗 Binance conectada só para leitura (nada compra nem vende)', '🎮 A simulação aceita ações, FIIs e ETFs'];
+CEL_NOVIDADES['8.1'] = ['📈 Gráficos e Laboratório agora também para ações, fundos imobiliários e ETFs', '🎮 A simulação aceita ações, FIIs e ETFs'];
+
+/* =================== v8.2: Explorar › 💼 Fundos de investimento (comparador) · Binance retirada =================== */
+const FI_TIPOS = [['rf', 'Renda fixa / DI'], ['multi', 'Multimercado'], ['acoes', 'Ações'], ['prev', 'Previdência (PGBL/VGBL)']];
+function fiCalc(f, meses) {
+  const T = invTaxas(); const cdi = T.cdi / 100; const r = (Number(f.rent) || 0) / 100; const anos = meses / 12;
+  const bruto = Math.pow(1 + r, anos) - 1;
+  const ir = f.tipo === 'acoes' ? 0.15 : f.tipo === 'prev' ? 0.10 : irRF(meses * 30);
+  const liq = bruto > 0 ? bruto * (1 - ir) : bruto; const liqAno = Math.pow(1 + liq, 1 / anos) - 1;
+  const ref = calcRF({ tipo: 'Tesouro Selic', idx: 'cdi', taxa: 100, meses });
+  const alertas = [];
+  if ((f.tipo === 'rf') && Number(f.adm) > 1) alertas.push(`taxa de administração de ${num2(f.adm)}% é cara para renda fixa (bom: até 0,5%)`);
+  if ((f.tipo === 'multi' || f.tipo === 'acoes') && Number(f.adm) > 2) alertas.push(`taxa de administração de ${num2(f.adm)}% é alta`);
+  if (f.tipo === 'prev' && Number(f.adm) > 1) alertas.push(`taxa de administração de ${num2(f.adm)}% é cara para previdência (bom: até 1%)`);
+  if (Number(f.perf) > 0) alertas.push(`cobra ${num2(f.perf)}% de taxa de performance sobre o que passar do índice`);
+  if (Number(f.resg) > 30) alertas.push(`o dinheiro só cai ${f.resg} dias depois do pedido de resgate`);
+  if (f.tipo === 'rf' || f.tipo === 'multi') alertas.push('tem come-cotas (IR adiantado em maio e novembro), o que reduz um pouco os juros compostos');
+  return { pctCdi: cdi ? (r / cdi) * 100 : 0, liq, liqAno, ref: ref.refAno, refLiq: ref.refLiq, ganha: liqAno >= ref.refAno - 0.0001, ir, alertas };
+}
+function comparadorFundos() {
+  garantirInvest(); const F = db.invest.fundos || []; const v = Object.assign({ meses: 24, valor: 10000 }, ui.fiCmp || {}); ui.fiCmp = v; const T = invTaxas();
+  const L = F.map((f) => ({ f, c: fiCalc(f, v.meses) })).sort((a, b) => b.c.liqAno - a.c.liqAno);
+  const val = Number(v.valor) || 0;
+  return `<div class="card"><div class="row-between" style="flex-wrap:wrap;gap:8px"><div><b style="font-size:17px">💼 Comparador de fundos de investimento</b><br><span class="muted small">Viu um fundo no app da XP ou de outro banco? Cadastre aqui e compare com o Tesouro Selic, já sem o imposto.</span></div></div>
+    <div class="lembrete info" style="margin:10px 0"><span>📄 <b>Onde achar os números:</b> na <b>lâmina</b> do fundo (no app da corretora, em "Documentos") ou em sites como Mais Retorno. Use a <b>rentabilidade dos últimos 12 meses</b>, que já vem descontada da taxa de administração.</span></div>
+    <div class="cmp-f fi-f"><label>Nome do fundo<input id="fiNome" type="text" placeholder="ex.: XP Referenciado DI"></label>
+      <label>Tipo<select id="fiTipo">${FI_TIPOS.map(([k, n]) => `<option value="${k}">${n}</option>`).join('')}</select></label>
+      <label>Rendeu em 12 meses (%)<input id="fiRent" type="text" inputmode="decimal" placeholder="ex.: 13,2"></label>
+      <label>Taxa de administração (% ao ano)<input id="fiAdm" type="text" inputmode="decimal" placeholder="ex.: 0,5"></label>
+      <label>Taxa de performance (%)<input id="fiPerf" type="text" inputmode="decimal" placeholder="0 se não tiver"></label>
+      <label>Resgate em quantos dias (D+)<input id="fiResg" type="text" inputmode="numeric" placeholder="ex.: 1"></label>
+      <label>Aplicação mínima (R$)<input id="fiMin" type="text" inputmode="decimal" placeholder="ex.: 100"></label></div>
+    <button class="btn primary" data-fi-add style="margin:6px 0 2px">+ Adicionar ao comparador</button>
+    ${L.length ? `<div class="fi-prazo"><span>Comparar investindo</span><input data-fi-cfg="valor" type="text" inputmode="decimal" value="${val}"><span>por</span><input data-fi-cfg="meses" type="text" inputmode="numeric" value="${v.meses}"><span>meses</span></div>
+      <div class="fi-lista">${L.map(({ f, c }, i) => `<div class="fi-c ${c.ganha ? 'bom' : 'ruim'}"><div class="row-between" style="align-items:flex-start"><div><b>${i === 0 && L.length > 1 ? '🏆 ' : ''}${esc(f.nome)}</b><br><span class="tag">${FI_TIPOS.find((t) => t[0] === f.tipo)?.[1] || ''}</span> <span class="muted small">${num2(Math.round(c.pctCdi))}% do CDI${f.min ? ` · mínimo ${fmt0(Number(f.min))}` : ''}${f.resg !== '' && f.resg != null ? ` · resgate D+${f.resg}` : ''}</span></div><button class="btn sm" data-fi-del="${f.id}" title="Tirar do comparador">✕</button></div>
+        <div class="fi-n"><div><small>Rende por ano, sem IR</small><b>${pfr(c.liqAno)}</b></div><div><small>${fmt0(val)} viram</small><b>${fmt0(val * (1 + c.liq))}</b></div><div><small>Tesouro Selic</small><b>${fmt0(val * (1 + c.refLiq))}</b></div></div>
+        <p class="small" style="margin:6px 0 0">${c.ganha ? '✅ <b>Rende mais que o Tesouro Selic</b>' : '⚠ <b>Rende menos que o Tesouro Selic</b>'} no mesmo prazo, pelo que rendeu nos últimos 12 meses.</p>
+        ${c.alertas.length ? `<ul class="fi-al">${c.alertas.map((a) => `<li>${a}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>`
+      : '<p class="small muted" style="margin:10px 0 0">Nenhum fundo cadastrado ainda. Adicione dois ou mais para comparar lado a lado.</p>'}
+    <p class="small muted" style="margin:10px 0 0">Usando CDI ${pct1(T.cdi)} e Selic ${pct1(T.selic)} (${T.em ? 'de ' + dmy(T.em) : 'padrão'}). Rentabilidade passada não garante a futura. IR: renda fixa e multimercado pela tabela regressiva (22,5% a 15%); ações 15%; previdência estimada em 10% (tabela regressiva longa). Fundo não tem garantia do FGC.</p></div>`;
+}
+EXP_TIPOS.splice(EXP_TIPOS.findIndex((x) => x[0] === 'rf') + 1, 0, ['fundos', '💼', 'Fundos de investimento', 0]);
+{ const _ie82 = invExplorar; invExplorar = function () { if ((ui.expTipo || 'acoes') === 'fundos') { const topo = `<div class="exp-tipos">${EXP_TIPOS.map(([k, ic, n, q]) => `<button class="${k === 'fundos' ? 'on' : ''}" data-ex-t="${k}"><span>${ic}</span>${n}${q ? `<small>${q}</small>` : '<small>comparador</small>'}</button>`).join('')}</div>`; return topo + comparadorFundos(); } return _ie82(); }; }
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if (g('data-fi-add')) { garantirInvest(); const nome = ($('#fiNome')?.value || '').trim(); const rent = num($('#fiRent')?.value, NaN); if (!nome) return toast('Digite o nome do fundo.'); if (!isFinite(rent)) return toast('Digite quanto o fundo rendeu em 12 meses.');
+    const f = { id: uid(), nome, tipo: $('#fiTipo')?.value || 'rf', rent, adm: num($('#fiAdm')?.value, 0), perf: num($('#fiPerf')?.value, 0), resg: ($('#fiResg')?.value || '').trim() === '' ? '' : Math.round(num($('#fiResg').value, 0)), min: num($('#fiMin')?.value, 0), em: hoje() };
+    db.invest.fundos = [...(db.invest.fundos || []), f]; changed(); return toast(`💼 ${nome} adicionado`); }
+  if ((b = g('data-fi-del'))) { db.invest.fundos = (db.invest.fundos || []).filter((f) => f.id !== b.dataset.fiDel); return changed(); }
+}, true);
+document.addEventListener('change', (e) => { const t = e.target.closest('[data-fi-cfg]'); if (!t) return; const v = num(t.value, NaN); if (isFinite(v) && v > 0) { ui.fiCmp = Object.assign(ui.fiCmp || {}, { [t.dataset.fiCfg]: t.dataset.fiCfg === 'meses' ? Math.max(1, Math.round(v)) : v }); } renderAll(); });
+try { if (lsGet('bin-key')) lsSet('bin-key', ''); if (lsGet('bin-snap')) lsSet('bin-snap', ''); } catch (e) {}
+CEL_NOVIDADES['8.2'] = ['💼 Explorar › Fundos de investimento: compare fundos com o Tesouro Selic, já sem o imposto', 'A ligação com a Binance saiu (os gráficos de cripto continuam)'];
 
 /* ---------- início ---------- */
 (async function boot() {
