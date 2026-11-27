@@ -1326,6 +1326,15 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 .sm87 .prov86{margin:0}
 @media(prefers-color-scheme:dark){.sm87-nb{background:#3a3020;border-color:#6b5a2e;color:#f1dfb5}}
 
+/* v8.8 explicações */
+.gl-i{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--brand,#1f4e6b);color:var(--brand,#1f4e6b);background:transparent;font-size:12px;font-weight:800;font-style:italic;font-family:Georgia,serif;cursor:pointer;padding:0;margin-left:4px;vertical-align:middle}
+.gl-i.on{background:var(--brand,#1f4e6b);color:#fff}
+.gl-ex{background:color-mix(in srgb,var(--brand,#1f4e6b) 8%,var(--panel));border-radius:12px;padding:10px 12px;margin:4px 0 8px;font-size:13.5px;line-height:1.5}
+.gl-ex p{margin:2px 0 4px!important;font-size:13.5px!important}.gl-t{display:block;font-size:14.5px;margin-bottom:4px}.gl-q{font-weight:700;margin-top:8px!important;color:var(--brand,#1f4e6b)}
+.gl-esc{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:8px 0 2px}.gl-lg{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.gl-mk{position:relative;height:16px;margin:0 30px 0 0}.gl-mk i{position:absolute;top:0;font-style:normal;font-size:12px;white-space:nowrap;transform:translateX(-6px)}
+.gl-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}.gl-chips .chip.on{background:var(--brand,#1f4e6b);color:#fff;border-color:var(--brand,#1f4e6b)}
+
 </style>
 </head>
 <body>
@@ -4246,7 +4255,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '8.7';
+const APP_VERSAO = '8.8';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13316,6 +13325,7 @@ CEL_NOVIDADES['8.4'] = ['🏛️ Mestres da disciplina: Barsi, Read, Bazin, Buff
 CEL_NOVIDADES['8.5'] = ['🚦 Toque na linha vermelha do “Posso investir este mês?” para ver quais contas estão atrasadas e marcar ✓ Já paguei'];
 CEL_NOVIDADES['8.6'] = ['💰 No Explorar, cada ação e FII mostra quanto paga em reais por ação ou cota, com simulador e atalho para as datas na Status Invest'];
 CEL_NOVIDADES['8.7'] = ['＋ Saiba mais em cada ação, FII e ETF do Explorar: o que é, checagem rápida, gráfico, proventos e novidades da semana', '🌎 Preços dos ETFs do exterior: passo a passo da chave Finnhub ou busca pela Alpha Vantage'];
+CEL_NOVIDADES['8.8'] = ['📖 No ＋ Saiba mais: toque no ⓘ para entender cada número (DY, P/L, P/VP, ROE…) e veja o Dicionário dos números de ações, FIIs e ETFs'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -13679,6 +13689,174 @@ document.addEventListener('click', (e) => {
   if ((b = g('data-sm-graf'))) { const s = b.dataset.smGraf; ui.smAberto = null; vgFecharJanela(); ui.labSym = s; ui.labTipo = labTipoDe(s); ui.sub = ui.sub || {}; ui.sub.invest = 'graficos'; renderAll(); window.scrollTo?.(0, 0); return; }
 }, true);
 document.addEventListener('change', (e) => { const t = e.target.closest?.('.sm87 [data-prov-q]'); if (!t || !ui.smAberto) return; const [tipo, tk] = ui.smAberto.split('|'); setTimeout(() => { if (smJanelaAberta()) vgJanela(smHtml(tipo, tk)); }, 0); });
+
+/* ---------- v8.8 · 📖 explicações dos números no Saiba mais ---------- */
+// cada termo: [emoji, nome, o que é, na prática(ctx), régua, bom, alto, baixo, cuidado]
+// régua: { mn, mx, f: [[ate, cor]], v: (ctx) => valor, suf }
+const GL_COR = { g: '#bfe0c8', y: '#f3dca6', r: '#e9b9ad' };
+const GLOSS = {
+  dy: ['💰', 'Dividend yield (DY)',
+    'Quanto a ação pagou em dividendos nos últimos 12 meses, dividido pelo preço dela. É como o "aluguel" que a ação paga para você.',
+    (c) => (c.dy ? `Com R$ 100 em ${c.t}, vieram uns <b>R$ ${num2(c.dy)}</b> no último ano.` : ''),
+    { mn: 0, mx: 16, suf: '%', f: [[3, 'y'], [6, 'y'], [12, 'g'], [15, 'y'], [99, 'r']], v: (c) => c.dy },
+    'Para quem quer renda: de <b>6% a 12%</b> ao ano em ações. É a régua do Décio Bazin.',
+    'Pode ser um dividendo extra, que não vai se repetir (venda de uma empresa, lucro de uma vez só). Ou o preço despencou porque a empresa está com problema: o DY sobe porque o preço caiu. Acima de 15%, desconfie.',
+    'A empresa prefere reinvestir o lucro para crescer, em vez de distribuir (é o caso de WEGE3). Ou a ação subiu muito e ficou cara: o dividendo é o mesmo, mas o preço maior faz o percentual cair.',
+    'O DY olha para trás: mostra o que já foi pago, não o que vai ser pago. Confirme no Raio-X se o lucro é estável.'],
+  pl: ['🏷️', 'P/L (preço sobre lucro)',
+    'O preço da ação dividido pelo lucro que cada ação dá por ano. Diz quantos anos de lucro você está pagando.',
+    (c) => (c.pl ? `Em ${c.t}, o preço equivale a <b>${num2(c.pl)} anos</b> de lucro. Se o lucro ficasse igual, o investimento "se pagaria" em uns ${Math.round(c.pl)} anos.` : ''),
+    { mn: 0, mx: 30, suf: '', f: [[3, 'y'], [15, 'g'], [25, 'y'], [99, 'r']], v: (c) => c.pl },
+    'Entre <b>3 e 15</b> para empresas maduras (bancos, energia, saneamento). Empresas que crescem rápido costumam ter P/L maior.',
+    'O mercado espera que o lucro cresça muito nos próximos anos e já paga caro por isso. Se o crescimento não vier, o preço cai.',
+    'Pode ser uma pechincha, ou o mercado acha que o lucro vai cair (lucro de uma vez só, setor em crise, risco do governo). P/L abaixo de 3 merece desconfiança.',
+    'P/L negativo quer dizer prejuízo. E compare só com empresas do mesmo setor.'],
+  pvp: ['🏦', 'P/VP (preço sobre valor patrimonial)',
+    'O preço da ação dividido pelo patrimônio da empresa (tudo o que ela tem, menos o que deve), por ação.',
+    (c) => (c.pvp ? `Em ${c.t}, você paga <b>${num2(c.pvp)} vezes</b> o patrimônio. ${c.pvp < 1 ? 'Ou seja, está comprando por menos do que a empresa vale no papel.' : 'Ou seja, paga mais do que a empresa vale no papel, porque ela gera lucro bom.'}` : ''),
+    { mn: 0, mx: 4, suf: '', f: [[0.5, 'y'], [2, 'g'], [3, 'y'], [99, 'r']], v: (c) => c.pvp },
+    'Em bancos e empresas de energia, <b>até 2</b> é razoável. Abaixo de 1, está "com desconto".',
+    'A empresa dá muito lucro sobre o que tem (ROE alto) ou é muito desejada. Empresas de tecnologia e marcas fortes têm P/VP alto naturalmente.',
+    'Pode ser oportunidade, ou o mercado acha que o patrimônio vale menos do que diz o balanço (dívidas escondidas, setor em crise).',
+    'Use sempre junto com o ROE: P/VP baixo com ROE baixo costuma ser armadilha.'],
+  roe: ['⚙️', 'ROE (retorno sobre o patrimônio)',
+    'Quanto a empresa lucra por ano para cada R$ 100 do dinheiro dos sócios. Mostra se ela é eficiente.',
+    (c) => (c.roe ? `${c.t} lucra uns <b>R$ ${num2(c.roe)}</b> por ano para cada R$ 100 de patrimônio.` : ''),
+    { mn: 0, mx: 30, suf: '%', f: [[8, 'r'], [12, 'y'], [99, 'g']], v: (c) => c.roe },
+    '<b>Acima de 12%</b>, e por vários anos seguidos. Acima de 15% é ótimo.',
+    'A empresa é muito eficiente, ou está muito endividada (dívida aumenta o ROE). Confira a dívida.',
+    'A empresa lucra pouco com o que tem: renderia menos que a renda fixa. Pode ser um ano ruim, olhe o histórico.',
+    'Um ano só não diz nada. O bom é ROE alto por 5 anos ou mais (veja na Status Invest).'],
+  teto: ['🎯', 'Preço-teto (método Bazin)',
+    'O preço máximo para a ação ainda pagar pelo menos 6% ao ano em dividendos. Conta: dividendo dos últimos 12 meses ÷ 0,06.',
+    (c) => (c.teto ? `Para ${c.t}, o teto é <b>${fmt(c.teto)}</b>. Hoje está em ${fmt(c.preco)}: ${c.preco <= c.teto ? 'abaixo do teto, pelo critério do Bazin o preço está razoável.' : 'acima do teto, pelo critério do Bazin está caro.'}` : ''),
+    null,
+    'Comprar <b>abaixo do teto</b>.',
+    'Se o preço passa do teto, a ação ficou cara para quem quer renda: o dividendo rende menos de 6% sobre o que você paga.',
+    'Se o preço está bem abaixo do teto, confira se não é porque o dividendo vai cair.',
+    'Vale para empresas que pagam dividendos com regularidade. Não serve para empresas de crescimento.'],
+  payout: ['🍰', 'Payout',
+    'Quanto do lucro a empresa distribui como dividendo. Payout de 60% = de cada R$ 100 de lucro, R$ 60 vão para os sócios.',
+    () => 'Veja o payout na Status Invest (campo "Payout").', null,
+    'Entre <b>40% e 80%</b>: paga bem e ainda guarda um pouco para crescer. Por lei, o mínimo costuma ser 25%.',
+    'Acima de 100% a empresa está pagando mais do que lucrou: não se sustenta por muito tempo.',
+    'A empresa guarda o lucro para investir e crescer.',
+    'Payout alto num ano pode ser lucro extraordinário. Olhe vários anos.'],
+  divida: ['⚖️', 'Dívida líquida / EBITDA',
+    'Quantos anos de geração de caixa a empresa precisaria para pagar toda a dívida.',
+    () => 'Veja na Status Invest (campo "Dív. líquida/EBITDA").', null,
+    '<b>Até 3</b>. Abaixo de 1 é ótimo. Não se usa para bancos.',
+    'Dívida pesada: se os juros sobem ou o lucro cai, a empresa corta dividendos para pagar os bancos.',
+    'Pouca dívida: mais segurança, e sobra caixa para dividendos.',
+    'Negativo quer dizer que a empresa tem mais dinheiro em caixa do que dívida.'],
+  jcp: ['🧾', 'JCP × dividendo',
+    'São duas formas de a empresa pagar os sócios. O dividendo cai inteiro na conta. O JCP (juros sobre capital próprio) já chega com Imposto de Renda descontado na fonte.',
+    () => 'Na Status Invest, a lista de proventos diz se cada pagamento foi "Dividendo" ou "JCP".', null,
+    'Para você, os dois são renda. Só lembre que o valor anunciado do JCP é antes do imposto.',
+    '', '', 'Muitos bancos pagam boa parte em JCP. Na declaração do IR, JCP e dividendo vão em fichas diferentes (o Prumo ajuda na aba Imposto).'],
+  datacom: ['📅', 'Data com e data ex',
+    '"Data com" é o último dia em que você precisa ter a ação para receber o próximo provento. Quem compra no dia seguinte ("data ex") não recebe.',
+    () => 'A data com de cada pagamento aparece na Status Invest, na lista de proventos.', null,
+    'Não precisa correr atrás da data com: quem compra todo mês recebe naturalmente.',
+    '', '', 'No dia da "data ex", o preço costuma cair mais ou menos o valor do provento. Comprar só para pegar o dividendo não dá lucro.'],
+  dyf: ['💰', 'Dividend yield do FII',
+    'Quanto o fundo pagou de rendimentos nos últimos 12 meses, dividido pelo preço da cota. Os FIIs pagam todo mês.',
+    (c) => (c.dy ? `Com R$ 100 em ${c.t}, vieram uns <b>R$ ${num2(c.dy)}</b> no último ano, mais ou menos <b>R$ ${num2(c.dy / 12)}</b> por mês.` : ''),
+    { mn: 0, mx: 18, suf: '%', f: [[6, 'r'], [8, 'y'], [13, 'g'], [16, 'y'], [99, 'r']], v: (c) => c.dy },
+    'De <b>8% a 13%</b> ao ano. Fundos de papel costumam pagar mais que fundos de tijolo quando os juros estão altos.',
+    'Pode ser rendimento extra (venda de imóvel), juros altos que vão cair, ou a cota despencou por problema (inquilino saiu, calote num CRI). Acima de 15%, desconfie.',
+    'O fundo pode estar caro (a cota subiu muito), ou tem imóveis vagos e rende menos.',
+    'Olhe se o rendimento é estável mês a mês, não só o número do ano.'],
+  pvpf: ['🏢', 'P/VP do FII',
+    'O preço da cota dividido pelo valor dos imóveis (ou dos títulos) que o fundo tem, por cota.',
+    (c) => (c.pvp ? `Em ${c.t}, você paga <b>${num2(c.pvp)}</b> por cada R$ 1 de patrimônio. ${c.pvp < 1 ? 'Está com desconto em relação ao valor dos imóveis.' : 'Está pagando um pouco mais do que o valor dos imóveis.'}` : ''),
+    { mn: 0.5, mx: 1.5, suf: '', f: [[0.8, 'y'], [0.85, 'y'], [1.05, 'g'], [1.2, 'y'], [99, 'r']], v: (c) => c.pvp },
+    'Entre <b>0,85 e 1,05</b>: preço justo pelo que o fundo tem.',
+    'O mercado gosta muito do fundo e paga caro. Se o entusiasmo passar, a cota cai.',
+    'Pode ser oportunidade, ou o mercado vê problema (imóveis vazios, inquilino ruim, calote nos CRIs). Abaixo de 0,8, investigue antes.',
+    'O valor dos imóveis é uma avaliação: pode estar otimista. Use junto com a vacância.'],
+  liq: ['🚰', 'Liquidez diária',
+    'Quanto dinheiro se negocia daquele FII por dia na bolsa. Mostra se é fácil comprar e vender.',
+    (c) => (c.liq ? `${c.t} negocia uns <b>R$ ${num2(c.liq)} milhões</b> por dia.` : ''),
+    { mn: 0, mx: 10, suf: ' mi', f: [[0.5, 'r'], [1, 'y'], [99, 'g']], v: (c) => c.liq },
+    '<b>Acima de R$ 1 milhão</b> por dia.',
+    'Muito negociado: você vende quando quiser, pelo preço do momento.',
+    'Pouco negociado: na hora de vender, pode demorar ou ter que aceitar um preço pior.',
+    'Para quem compra pouco todo mês, liquidez acima de R$ 1 milhão já é tranquila.'],
+  pat: ['🏗️', 'Patrimônio do fundo',
+    'O valor de tudo o que o fundo tem (imóveis, títulos e caixa).',
+    (c) => (c.pat ? `${c.t} tem uns <b>R$ ${num2(c.pat)} bilhões</b>.` : ''),
+    { mn: 0, mx: 5, suf: ' bi', f: [[0.5, 'y'], [1, 'y'], [99, 'g']], v: (c) => c.pat },
+    '<b>Acima de R$ 1 bilhão</b>: fundo grande, com muitos imóveis ou títulos.',
+    'Fundo grande dilui o risco: se um inquilino sai, pesa pouco.',
+    'Fundo pequeno depende de poucos imóveis: um inquilino a menos pode cortar o rendimento.',
+    'Tamanho não é tudo: olhe também a gestora e a vacância.'],
+  vac: ['🚪', 'Vacância',
+    'A parte dos imóveis do fundo que está vazia, sem pagar aluguel. Só vale para fundos de tijolo.',
+    () => 'Veja no relatório mensal do fundo ou na Status Invest (campo "Vacância").', null,
+    '<b>Abaixo de 5%</b> é ótimo. Até 10% é aceitável.',
+    'Muitos imóveis vazios: o rendimento cai e o fundo ainda paga condomínio e IPTU deles.',
+    'Quase tudo alugado: renda mais garantida.',
+    'Escritórios costumam ter vacância maior que galpões.'],
+  tijolo: ['🧱', 'Tijolo × papel',
+    'FII de <b>tijolo</b> é dono de imóveis e vive do aluguel (galpões, shoppings, escritórios). FII de <b>papel</b> não tem imóveis: empresta para o setor imobiliário (CRIs) e vive dos juros.',
+    () => '', null,
+    'Ter <b>os dois tipos</b> equilibra a carteira.',
+    'Papel paga mais quando os juros (Selic e inflação) estão altos.',
+    'Tijolo costuma valorizar quando os juros caem.',
+    'Fundos de papel podem ter calote nos CRIs. Prefira gestoras grandes.'],
+  taxa: ['🧮', 'Taxa de administração',
+    'O quanto o fundo ou ETF cobra por ano para cuidar do seu dinheiro. É descontada aos pouquinhos, você nem vê.',
+    (c) => (c.tx != null ? `Esse cobra <b>${pct1(c.tx)}</b> ao ano: em R$ 10.000, são uns ${fmt(c.tx * 100)} por ano.` : ''), null,
+    'ETFs do exterior: <b>até 0,10%</b>. ETFs da B3: até 0,30%.',
+    'Taxa alta come o ganho: 1% ao ano por 20 anos leva quase 20% do que você juntaria.',
+    'Taxa baixa é o grande segredo do John Bogle.',
+    'Compare sempre ETFs parecidos entre si.'],
+  irus: ['🇺🇸', 'Imposto dos EUA sobre dividendos',
+    'Quando um ETF dos EUA paga dividendos, o governo de lá fica com 30% na fonte, antes de cair na sua conta.',
+    () => '', null,
+    'Para quem quer crescer, ETFs que pagam pouco dividendo (como o VOO) sofrem pouco com isso.',
+    '', '', 'Por isso há quem prefira o IVVB11 (S&P 500 pela B3, em reais), que não tem esse desconto direto.'],
+};
+const GL_DIC = { acoes: ['dy', 'pl', 'pvp', 'roe', 'teto', 'payout', 'divida', 'jcp', 'datacom'], fiis: ['dyf', 'pvpf', 'liq', 'pat', 'vac', 'tijolo', 'datacom'], etfus: ['taxa', 'irus', 'dy'], etfbr: ['taxa', 'dy'] };
+function glRegua(R, c) {
+  const v = R.v(c); if (v == null || !isFinite(v)) return '';
+  let a = R.mn; const faixas = R.f.map(([ate, cor]) => { const b = Math.min(ate, R.mx); const w = Math.max(0, b - a); const h = `<span style="flex:${w};background:${GL_COR[cor]}"></span>`; a = b; return h; }).join('');
+  const pos = Math.max(0, Math.min(100, ((v - R.mn) / (R.mx - R.mn)) * 100));
+  const marcas = [0, 0.25, 0.5, 0.75, 1].map((k) => { const x = R.mn + (R.mx - R.mn) * k; return `<span>${String(Math.round(x * 100) / 100).replace('.', ',')}${R.suf}${k === 1 ? '+' : ''}</span>`; }).join('');
+  return `<div class="gl-esc">${faixas}</div><div class="gl-lg">${marcas}</div><div class="gl-mk"><i style="left:${pos}%">▲ ${esc(c.t)}</i></div>`;
+}
+function glHtml(k, c) {
+  const G = GLOSS[k]; if (!G) return ''; const [ic, nome, que, prat, R, bom, alto, baixo, cui] = G; let p = ''; try { p = prat(c) || ''; } catch (e) {}
+  return `<b class="gl-t">${ic} ${nome}</b><p><b>O que é:</b> ${que}</p>${p ? `<p><b>Na prática:</b> ${p}</p>` : ''}${R ? glRegua(R, c) : ''}
+    ${bom ? `<p class="gl-q">Qual é um bom valor?</p><p>${bom}</p>` : ''}${alto ? `<p class="gl-q">${R || k === 'teto' ? 'Por que às vezes está alto?' : 'Quando é alto'}</p><p>${alto}</p>` : ''}${baixo ? `<p class="gl-q">${R || k === 'teto' ? 'Por que às vezes está baixo?' : 'Quando é baixo'}</p><p>${baixo}</p>` : ''}${cui ? `<p class="gl-q">Cuidado</p><p>${cui}</p>` : ''}`;
+}
+function glCtx(tipo, t) {
+  const x = smArr(tipo, t) || []; const pr = precoLista(t); const c = { t, preco: pr?.p };
+  if (tipo === 'acoes') Object.assign(c, { dy: x[3], pl: x[4], pvp: x[5], roe: x[6] });
+  if (tipo === 'fiis') Object.assign(c, { pvp: x[3], dy: x[4], liq: x[5], pat: x[6] });
+  if (tipo === 'etfus') Object.assign(c, { tx: x[3] }); if (tipo === 'etfbr') Object.assign(c, { tx: x[3] });
+  if (c.preco && c.dy) c.teto = ((c.dy / 100) * c.preco) / 0.06;
+  if (!c.preco) { const d = labCacheLer(smSym(tipo, t))?.d; if (d?.length) { c.preco = d[d.length - 1][1]; if (c.dy) c.teto = ((c.dy / 100) * c.preco) / 0.06; } }
+  return c;
+}
+// liga cada linha da checagem ao termo
+const GL_LINHA = [[/^Paga dividendos de 6%/, 'dy'], [/^Preço pelo lucro/, 'pl'], [/^Lucra bem/, 'roe'], [/^Preço pelo patrimônio/, 'pvp'], [/^Preço-teto/, 'teto'], [/^Preço perto do valor/, 'pvpf'], [/^Paga entre 8%/, 'dyf'], [/^Negocia mais/, 'liq'], [/^Fundo grande/, 'pat'], [/^Taxa baixa/, 'taxa'], [/^Imposto/, 'irus']];
+{ const _h = smHtml; smHtml = function (tipo, t) {
+  let h = _h.apply(this, arguments); let c; try { c = glCtx(tipo, t); } catch (e) { return h; }
+  h = h.replace(/<div class="sm87-ck"><span>([^<]*)<\/span><b class="([^"]*)">([^<]*)<\/b><\/div>/g, (m, q, k, v) => { const ach = GL_LINHA.find(([re]) => re.test(q)); if (!ach) return m; const key = ach[1];
+    return `<div class="sm87-ck"><span>${q} <button class="gl-i" data-gl="ck-${key}" aria-label="O que é isso?">i</button></span><b class="${k}">${v}</b></div><div class="gl-ex" data-gl-box="ck-${key}" hidden>${glHtml(key, c)}</div>`; });
+  h = h.replace('<h4>🩺 Checagem rápida <small class="muted">', '<h4>🩺 Checagem rápida <small class="muted">toque no ⓘ para entender · ');
+  const dic = GL_DIC[tipo] || [];
+  if (dic.length) h = h.replace('<div class="sm87-s"><h4>📰 Novidades', `<div class="sm87-s"><h4>📖 Dicionário dos números</h4><p class="small muted" style="margin:0 0 6px">Toque num termo para ver a explicação completa, com o exemplo de ${esc(t)}.</p><div class="gl-chips">${dic.map((k) => `<button class="chip" data-gl="dic-${k}">${GLOSS[k][1].replace(/ \(.*\)$/, '')}</button>`).join('')}</div>${dic.map((k) => `<div class="gl-ex" data-gl-box="dic-${k}" hidden>${glHtml(k, c)}</div>`).join('')}</div><div class="sm87-s"><h4>📰 Novidades`);
+  return h;
+}; }
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-gl]'); if (!b) return; e.preventDefault(); const k = b.dataset.gl; const root = b.closest('.sm87') || document;
+  const box = root.querySelector(`[data-gl-box="${k}"]`); if (!box) return; const abrir = box.hidden;
+  if (k.startsWith('dic-')) root.querySelectorAll('[data-gl-box^="dic-"]').forEach((x) => { x.hidden = true; }), root.querySelectorAll('[data-gl^="dic-"]').forEach((x) => x.classList.remove('on'));
+  box.hidden = !abrir; b.classList.toggle('on', abrir); if (abrir && k.startsWith('dic-')) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}, true);
 
 /* ---------- início ---------- */
 (async function boot() {
