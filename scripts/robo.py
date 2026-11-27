@@ -146,23 +146,30 @@ def fundamentus_fiis():
 
 def tesouro():
     dados = None
+    motivos = []
     for u in TESOURO_URLS:
         try:
-            dados = baixar(u, timeout=180)
+            dados = baixar(u, timeout=240, tentativas=5)
             break
-        except Exception:
+        except Exception as e:
+            motivos.append("arquivo: " + _motivo(e))
             dados = None
     if dados is None:  # procura o endereço do arquivo no catálogo do Tesouro Transparente
         try:
             j = json.loads(baixar(TESOURO_CKAN))
             for r in j.get("result", {}).get("resources", []):
                 if re.search(r"PrecoTaxaTesouroDireto\.csv$", r.get("url", ""), re.I):
-                    dados = baixar(r["url"], timeout=180)
+                    dados = baixar(r["url"], timeout=240, tentativas=3)
                     break
-        except Exception:
+        except Exception as e:
+            motivos.append("catálogo: " + _motivo(e))
             dados = None
     if dados is None:  # plano B: lista de títulos à venda no site do Tesouro Direto
-        return tesouro_direto()
+        try:
+            return tesouro_direto()
+        except Exception as e:
+            motivos.append("Tesouro Direto: " + _motivo(e))
+            raise RuntimeError(" · ".join(motivos))
     if dados is None:
         raise RuntimeError("não achei o arquivo de preços e taxas do Tesouro")
     txt = dados.decode("latin-1")
@@ -231,22 +238,59 @@ def tesouro_direto():
     return {"data": datetime.date.today().isoformat(), "titulos": titulos, "fonte": "tesourodireto.com.br"}
 
 
-def yahoo(tickers):
+def _num(x):
+    try:
+        return float(str(x).replace("$", "").replace(",", "").replace("%", "").strip())
+    except Exception:
+        return None
+
+
+def _motivo(e):
+    if isinstance(e, urllib.error.HTTPError):
+        return f"HTTP {e.code}"
+    return (str(e) or e.__class__.__name__)[:40]
+
+
+def cnbc(simbolos):
+    """Preços de vários papéis de uma vez pela CNBC. Devolve {símbolo: {p, dy}}."""
+    u = ("https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols="
+         + "%7C".join(simbolos) + "&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json")
+    j = json.loads(baixar(u, timeout=30, tentativas=2))
+    lista = ((j.get("FormattedQuoteResult") or {}).get("FormattedQuote")) or []
+    if isinstance(lista, dict):
+        lista = [lista]
     out = {}
+    for q in lista:
+        p = _num(q.get("last"))
+        if q.get("symbol") and p and p > 0:
+            dy = _num(q.get("dividendyield") or q.get("yield"))
+            out[q["symbol"]] = {"p": p, "dy": dy}
+    return out
+
+
+def nasdaq(t):
+    j = json.loads(baixar(f"https://api.nasdaq.com/api/quote/{t}/info?assetclass=etf", timeout=20, tentativas=1))
+    p = _num((((j.get("data") or {}).get("primaryData")) or {}).get("lastSalePrice"))
+    return p if p and p > 0 else None
+
+
+def yahoo(tickers):
+    """ETFs do exterior. Ordem: Yahoo (traz dividendos) > CNBC > Nasdaq > Stooq > Google."""
+    out, motivos, yahoo_ok = {}, {}, True
     for t in tickers:
+        if not yahoo_ok:
+            break
+        j = None
+        for host in ("query1", "query2"):
+            try:
+                j = json.loads(baixar(f"https://{host}.finance.yahoo.com/v8/finance/chart/{t}?range=1y&interval=1d&events=div", timeout=20, tentativas=1))
+                break
+            except Exception as e:
+                motivos["Yahoo"] = _motivo(e)
+        if j is None:
+            yahoo_ok = False  # bloqueado: não insiste nos outros
+            break
         try:
-            j = None
-            for host in ("query1", "query2"):
-                try:
-                    j = json.loads(baixar(f"https://{host}.finance.yahoo.com/v8/finance/chart/{t}?range=1y&interval=1d&events=div", timeout=20, tentativas=1))
-                    break
-                except Exception:
-                    j = None
-            if j is None:
-                p = stooq(t.lower() + ".us") or google(t, ("NYSEARCA", "NASDAQ", "BATS", "NYSE"))
-                if p:
-                    out[t] = {"p": round(p, 2), "div12": None, "dy": None, "fonte": "stooq/google"}
-                continue
             r = j["chart"]["result"][0]
             p = r["meta"].get("regularMarketPrice")
             divs = (r.get("events") or {}).get("dividends") or {}
@@ -255,10 +299,39 @@ def yahoo(tickers):
             if p:
                 out[t] = {"p": round(p, 2), "div12": round(soma, 4), "dy": round(soma / p * 100, 2) if soma else 0}
         except Exception as e:
-            print(f"  yahoo {t}: {e}", file=sys.stderr)
+            motivos["Yahoo"] = _motivo(e)
         time.sleep(0.5)
+    faltam = [t for t in tickers if t not in out]
+    if faltam:
+        try:
+            c = cnbc(faltam)
+            for t in faltam:
+                if t in c:
+                    p, dy = c[t]["p"], c[t]["dy"]
+                    out[t] = {"p": round(p, 2), "div12": round(p * dy / 100, 4) if dy else None, "dy": dy, "fonte": "CNBC"}
+            if not c:
+                motivos["CNBC"] = "sem preços"
+        except Exception as e:
+            motivos["CNBC"] = _motivo(e)
+    for t in [t for t in tickers if t not in out]:
+        p, fonte = None, None
+        for nome, f in (("Nasdaq", lambda: nasdaq(t)), ("Stooq", lambda: stooq(t.lower() + ".us")), ("Google", lambda: google(t, ("NYSEARCA", "NASDAQ", "BATS", "NYSE")))):
+            if motivos.get(nome, "ok") not in ("ok", "sem preço", "HTTP 404"):
+                continue  # já falhou com outro ETF: pula
+            try:
+                p = f()
+            except Exception as e:
+                motivos[nome] = _motivo(e)
+                continue
+            if p:
+                fonte = nome
+                motivos[nome] = "ok"
+                break
+            motivos[nome] = "sem preço"
+        if p:
+            out[t] = {"p": round(p, 2), "div12": None, "dy": None, "fonte": fonte}
     if not out:
-        raise RuntimeError("Yahoo não devolveu nenhum ETF")
+        raise RuntimeError("nenhuma fonte respondeu (" + " · ".join(f"{k}: {v}" for k, v in motivos.items()) + ")")
     return out
 
 
@@ -268,7 +341,15 @@ EMBRULHADAS = re.compile(r"wrapped|staked|bridged|restaked|liquid staking|lido|b
 
 def indices():
     out = {}
+    try:
+        c = cnbc([".BVSP", "BOVA11-BR", "XFIX11-BR", "IVVB11-BR"])
+    except Exception:
+        c = {}
     for nome, sym in [("IBOV", "%5EBVSP"), ("BOVA11", "BOVA11.SA"), ("XFIX11", "XFIX11.SA"), ("IVVB11", "IVVB11.SA")]:
+        cs = {"IBOV": ".BVSP"}.get(nome, nome + "-BR")
+        if cs in c:
+            out[nome] = round(c[cs]["p"], 2)
+            continue
         try:
             p = None
             for host in ("query1", "query2"):
@@ -433,7 +514,7 @@ def main():
     except Exception:
         velho = {}
     dados = {"em": int(time.time() * 1000), "fontes": {}}
-    for chave, func, fonte in [("acoes", fundamentus_acoes, "Fundamentus"), ("fiis", fundamentus_fiis, "Fundamentus"), ("tesouro", tesouro, "Tesouro Transparente"), ("etfus", lambda: yahoo(ETFS_US), "Yahoo Finanças"), ("indices", indices, "Yahoo Finanças"), ("cripto", cripto, "CoinGecko + Binance")]:
+    for chave, func, fonte in [("acoes", fundamentus_acoes, "Fundamentus"), ("fiis", fundamentus_fiis, "Fundamentus"), ("tesouro", tesouro, "Tesouro Transparente"), ("etfus", lambda: yahoo(ETFS_US), "Yahoo / CNBC / Nasdaq"), ("indices", indices, "CNBC / Yahoo"), ("cripto", cripto, "CoinGecko + Binance")]:
         try:
             dados[chave] = func()
             dados["fontes"][chave] = {"fonte": fonte, "ok": True, "em": dados["em"]}
