@@ -1308,6 +1308,24 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 .sem85-go{display:block;text-align:center;margin-top:8px;font-weight:700;font-size:13.5px;color:var(--brand,#1f4e6b);cursor:pointer}
 .sem85-pisca{outline:3px solid #d9a24b;outline-offset:2px;transition:outline .3s}
 
+/* v8.6 proventos no Explorar */
+.prov86{border:1px solid color-mix(in srgb,#2f7d4f 40%,transparent);background:color-mix(in srgb,#2f7d4f 7%,var(--panel));border-radius:12px;padding:10px 12px;margin:8px 0}
+.prov86-b{font-size:18px;font-weight:800}.prov86-r{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.prov86-sim{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 10px;margin-top:8px;font-size:13.5px}.prov86-sim input{width:64px;text-align:right;font-weight:700;padding:3px 6px}
+.prov86 a.btn{text-decoration:none}
+
+/* v8.7 saiba mais */
+.sm87{max-width:620px}.sm87-tk{font-size:22px;font-weight:800}
+.sm87-s{border-top:1px solid var(--line);padding:10px 0}.sm87-s h4{margin:0 0 6px;font-size:15px}.sm87-s p{margin:0 0 6px;font-size:14px;line-height:1.5}
+.sm87-at{color:var(--muted)}
+.sm87-ck{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:4px 0}.sm87-ck b{flex:none;text-align:right}
+.sm87-lk{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px}.sm87-lk a{text-decoration:none;text-align:center}
+.sm87-nb{background:#fff8e6;border:1px solid #f1d9a6;border-radius:10px;padding:8px 10px;font-size:12.5px;margin-top:8px;color:#5b4512}
+.sm87-b{border-color:#2f7d4f;color:#2f7d4f;font-weight:700}
+.sm87-ol{padding-left:20px;line-height:1.6;margin:0}
+.sm87 .prov86{margin:0}
+@media(prefers-color-scheme:dark){.sm87-nb{background:#3a3020;border-color:#6b5a2e;color:#f1dfb5}}
+
 </style>
 </head>
 <body>
@@ -4228,7 +4246,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '8.5';
+const APP_VERSAO = '8.7';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13296,6 +13314,8 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.
 CEL_NOVIDADES['8.3'] = ['🚦 Posso investir este mês? e 🧺 Compra do mês (1 ação + 1 FII, só se der)', '🐷 Cofrinho da reserva de emergência e 📅 constância', '📓 Diário com regra das 24 h · 🩺 Raio-X de solidez · 🎓 Trilha de 8 semanas', '🧪 Laboratório compara com "um pouco todo mês" e testa em todas as moedas · ₿ adicione suas criptos'];
 CEL_NOVIDADES['8.4'] = ['🏛️ Mestres da disciplina: Barsi, Read, Bazin, Buffett, Graham e Bogle (em Estudar)', '✅ Hábitos dos mestres e ❄️ bola de neve dos proventos', '🎯 Preço-teto do Bazin no Raio-X', '📜 Meu plano de longo prazo, assinado e lido pela Helen (no Diário)'];
 CEL_NOVIDADES['8.5'] = ['🚦 Toque na linha vermelha do “Posso investir este mês?” para ver quais contas estão atrasadas e marcar ✓ Já paguei'];
+CEL_NOVIDADES['8.6'] = ['💰 No Explorar, cada ação e FII mostra quanto paga em reais por ação ou cota, com simulador e atalho para as datas na Status Invest'];
+CEL_NOVIDADES['8.7'] = ['＋ Saiba mais em cada ação, FII e ETF do Explorar: o que é, checagem rápida, gráfico, proventos e novidades da semana', '🌎 Preços dos ETFs do exterior: passo a passo da chave Finnhub ou busca pela Alpha Vantage'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -13505,6 +13525,160 @@ document.addEventListener('click', (e) => {
     ui.semAberto = ui.semAberto === k ? null : k; return renderAll(); }
 }, true);
 document.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches?.('[data-sem-l]')) { e.preventDefault(); e.target.click(); } });
+
+/* ---------- v8.6 · quanto cada ação e FII paga ---------- */
+function provBloco(tipo, x) {
+  if (!(tipo === 'acoes' || tipo === 'fiis') || !(x.dy > 0)) return '';
+  const fii = tipo === 'fiis'; const pr = precoLista(x.t); const un = fii ? 'cota' : 'ação';
+  ui.provQ = ui.provQ || {}; const q = Number(ui.provQ[x.t]) || (fii ? 100 : 10);
+  const si = `https://statusinvest.com.br/${fii ? 'fundos-imobiliarios' : 'acoes'}/${x.t.toLowerCase()}`;
+  if (!pr || !(pr.p > 0)) return `<div class="prov86"><b>💰 Quanto paga por ${un}</b><p class="small muted" style="margin:4px 0 0">Toque em <b>↻ Preços desta lista</b> para ver em reais.</p></div>`;
+  const ano = (x.dy / 100) * pr.p; const mes = ano / 12;
+  const topo = fii
+    ? `<div class="prov86-r"><div><span class="prov86-b">≈ ${fmt(mes)}</span> <span class="muted small">por cota, por mês</span><br><span class="small muted">≈ ${fmt(ano)} em 12 meses · conta: ${pct1(x.dy)} × ${fmt(pr.p)}</span></div></div><p class="small" style="margin:6px 0 0">📅 Paga <b>todo mês</b></p>`
+    : `<div><span class="prov86-b">≈ ${fmt(ano)}</span> <span class="muted small">por ação em 12 meses</span><br><span class="small muted">≈ ${fmt(mes)} por mês, em média · conta: ${pct1(x.dy)} × ${fmt(pr.p)}</span></div>`;
+  return `<div class="prov86"><b>💰 Quanto paga por ${un}</b>${topo}
+    <div class="prov86-r" style="margin-top:6px"><span class="small">📅 Datas e valor de cada pagamento</span><a class="btn sm" href="${si}" target="_blank" rel="noopener">Ver na Status Invest ↗</a></div>
+    <div class="prov86-sim">Com <input data-prov-q="${esc(x.t)}" type="text" inputmode="numeric" value="${q}"> ${fii ? 'cotas' : 'ações'} você receberia ≈ <b>${fii ? fmt(mes * q) + ' por mês' : fmt(ano * q) + ' por ano'}</b>${fii ? ` (${fmt(ano * q)} por ano)` : ` (≈ ${fmt(mes * q)}/mês)`}. Custa hoje ${fmt(pr.p * q)}.</div>
+    <p class="small muted" style="margin:6px 0 0">É o que pagou nos últimos 12 meses (pesquisa de ${EXP_DATA}): não é garantia de que vai pagar igual.${fii ? '' : ' Ações costumam pagar algumas vezes por ano, em datas diferentes para cada empresa.'}</p></div>`;
+}
+{ const _c = cardExp; cardExp = function (tipo, x) { const h = _c.apply(this, arguments); let b = ''; try { b = provBloco(tipo, x); } catch (e) { console.warn('8.6', e); } return b ? h.replace('<div class="exp-txt"><b>Por que', b + '<div class="exp-txt"><b>Por que') : h; }; }
+document.addEventListener('change', (e) => { const t = e.target.closest?.('[data-prov-q]'); if (!t) return; const v = Math.round(num(t.value, NaN)); ui.provQ = ui.provQ || {}; if (isFinite(v) && v > 0) ui.provQ[t.dataset.provQ] = Math.min(v, 100000); renderAll(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.matches?.('[data-prov-q]')) e.target.blur(); });
+
+/* ---------- v8.7 · ＋ Saiba mais no Explorar + preços dos EUA sem Finnhub ---------- */
+const SEG_EXPL = {
+  'Bancos': 'Ganha com os juros dos empréstimos e com tarifas. Vai bem quando as pessoas pagam em dia; sofre quando a inadimplência sobe.',
+  'Seguros': 'Recebe os pagamentos dos seguros todo mês e aplica esse dinheiro até precisar pagar um sinistro. Com juros altos, ganha mais.',
+  'Bolsa': 'É a própria bolsa: ganha uma taxinha em cada compra e venda de ações. Quanto mais gente negocia, melhor.',
+  'Energia: transmissão': 'Leva a energia pelas linhas de alta tensão e recebe um valor fixo do governo, corrigido pela inflação, por 30 anos. Receita muito previsível.',
+  'Energia: geração e distribuição': 'Produz a energia (usinas) ou entrega nas casas. Serviço essencial: todo mundo paga a conta de luz.',
+  'Saneamento e gás': 'Água, esgoto ou gás encanado: serviço essencial, com tarifa reajustada pela inflação.',
+  'Telecom': 'Celular e internet: as pessoas cortam quase tudo antes de cortar o celular.',
+  'Petróleo e combustíveis': 'Ganha com petróleo e combustíveis. Lucra muito quando o petróleo está caro, mas depende do preço lá fora e de decisões do governo.',
+  'Indústria': 'Fabrica e vende produtos. O lucro depende da economia e da capacidade de crescer e inovar.',
+  'Tecnologia': 'Vende software e serviços de tecnologia. Costuma crescer mais e pagar menos dividendos.',
+  'Consumo e saúde': 'Vende coisas do dia a dia (bebida, remédio). Clientes fiéis, mas a concorrência é grande.',
+  'Construção': 'Constrói e vende imóveis. Vai bem com juros baixos e crédito fácil; sofre com juros altos.',
+  'Shoppings e rodovias': 'Recebe aluguel de lojas ou pedágio: receita que se repete, mas depende do movimento.',
+  'Papel e celulose': 'Produz celulose e papel e vende muito para fora: ganha com o dólar alto.',
+  'Galpões e logística': 'Aluga galpões para empresas guardarem e distribuírem mercadorias (Mercado Livre, Amazon, transportadoras). Contratos longos.',
+  'Shoppings': 'É dono de partes de shoppings e recebe parte dos aluguéis das lojas. Vai bem quando as vendas vão bem.',
+  'Escritórios': 'Aluga salas comerciais. Sofre quando muitas salas ficam vazias.',
+  'Renda urbana e híbridos': 'Aluga imóveis para lojas, bancos, escolas e outros, quase sempre com contratos longos.',
+  'Papel (dívidas imobiliárias)': 'Não tem imóveis: empresta dinheiro para o setor imobiliário (CRIs) e repassa os juros. Paga bem com juros altos, e o rendimento cai quando a Selic cai.',
+  'Fundos de fundos e multiestratégia': 'Compra cotas de outros FIIs: diversifica num só papel, mas cobra taxa em cima de taxa.',
+};
+const smArr = (tipo, t) => ({ acoes: EXP_ACOES, fiis: EXP_FIIS, etfus: EXP_ETFUS, etfbr: EXP_ETFBR }[tipo] || []).find((x) => x[0] === t);
+const smSym = (tipo, t) => (tipo === 'etfus' ? 'U:' : 'B:') + t;
+function smLinks(tipo, t) {
+  const tl = t.toLowerCase(); const q = encodeURIComponent(`${t}${tipo === 'etfus' ? ' ETF' : ''} when:7d`);
+  const L = [[`📰 Notícias da semana`, `https://news.google.com/search?q=${q}&hl=pt-BR&gl=BR&ceid=BR:pt-419`]];
+  if (tipo === 'acoes') L.push(['📊 Status Invest', `https://statusinvest.com.br/acoes/${tl}`], ['📄 Comunicados', `https://investidor10.com.br/acoes/${tl}/`]);
+  if (tipo === 'fiis') L.push(['📊 Status Invest', `https://statusinvest.com.br/fundos-imobiliarios/${tl}`], ['📄 Comunicados', `https://investidor10.com.br/fiis/${tl}/`]);
+  if (tipo === 'etfbr') L.push(['📊 Status Invest', `https://statusinvest.com.br/etfs/${tl}`]);
+  if (tipo === 'etfus') L.push(['📊 Página do ETF', `https://finance.yahoo.com/quote/${t}`]);
+  return L;
+}
+function smCheck(tipo, x, pr) {
+  const L = []; const ok = (b) => (b ? 'good' : 'warn'); const p = pr?.p;
+  if (tipo === 'acoes') {
+    const [, , , dy, pl, pvp, roe] = x;
+    L.push(['Paga dividendos de 6% ao ano ou mais?', ok(dy >= 6), (dy >= 6 ? '✔ ' : '⚠ ') + pct1(dy)]);
+    L.push(['Preço pelo lucro (P/L) entre 3 e 15?', ok(pl > 3 && pl <= 15), (pl > 3 && pl <= 15 ? '✔ ' : '⚠ ') + num2(pl)]);
+    L.push(['Lucra bem sobre o patrimônio (ROE acima de 12%)?', ok(roe >= 12), (roe >= 12 ? '✔ ' : '⚠ ') + pct1(roe)]);
+    L.push(['Preço pelo patrimônio (P/VP) até 2?', ok(pvp <= 2), (pvp <= 2 ? '✔ ' : '⚠ ') + num2(pvp)]);
+    if (p) { const teto = ((dy / 100) * p) / 0.06; L.push(['Preço-teto do Bazin (6%)', ok(p <= teto), `${fmt(teto)} · ${p <= teto ? 'abaixo' : 'acima'}`]); }
+  } else if (tipo === 'fiis') {
+    const [, , , pvp, dy, liq, pat] = x;
+    L.push(['Preço perto do valor dos imóveis (P/VP de 0,85 a 1,05)?', ok(pvp >= 0.85 && pvp <= 1.05), (pvp >= 0.85 && pvp <= 1.05 ? '✔ ' : '⚠ ') + num2(pvp)]);
+    L.push(['Paga entre 8% e 14% ao ano?', ok(dy >= 8 && dy <= 14), (dy >= 8 && dy <= 14 ? '✔ ' : '⚠ ') + pct1(dy)]);
+    if (liq) L.push(['Negocia mais de R$ 1 milhão por dia?', ok(liq >= 1), (liq >= 1 ? '✔ R$ ' : '⚠ R$ ') + num2(liq) + ' mi']);
+    if (pat) L.push(['Fundo grande (mais de R$ 1 bilhão)?', ok(pat >= 1), (pat >= 1 ? '✔ R$ ' : '⚠ R$ ') + num2(pat) + ' bi']);
+  } else if (tipo === 'etfus') {
+    const [, , dentro, tx, paga] = x;
+    L.push(['Taxa baixa (até 0,10% ao ano)?', ok(tx <= 0.1), (tx <= 0.1 ? '✔ ' : '⚠ ') + pct1(tx)]);
+    L.push(['O que tem dentro', '', esc(dentro)]); L.push(['Paga proventos', '', esc(paga)]);
+    L.push(['Imposto', 'warn', '30% retido nos EUA']);
+  } else if (tipo === 'etfbr') {
+    const [, , dentro, tx] = x;
+    L.push(['Taxa baixa (até 0,30% ao ano)?', tx == null ? 'warn' : ok(tx <= 0.3), tx == null ? 'veja na Rico' : (tx <= 0.3 ? '✔ ' : '⚠ ') + pct1(tx)]);
+    L.push(['O que tem dentro', '', esc(dentro)]);
+  }
+  if (tipo === 'acoes' || tipo === 'fiis') { const n = typeof raioxNota === 'function' ? raioxNota(x[0]) : null; L.push(['Seu Raio-X completo', n == null ? 'warn' : n >= 6 ? 'good' : 'warn', n == null ? 'não feito' : `${n}/7`]); }
+  return L;
+}
+function smHtml(tipo, t) {
+  const x = smArr(tipo, t); if (!x) return '<p>Não encontrei esse ativo.</p>';
+  const it = itensExp(tipo).find((i) => i.t === t) || {}; const pr = precoLista(t); const sym = smSym(tipo, t); const c = labCacheLer(sym); const D = c?.d || [];
+  const P = D.slice(-66).map((d) => d[1]); const ult = P[P.length - 1]; const varS = P.length > 6 ? ult / P[P.length - 6] - 1 : null; const var3 = P.length > 20 ? ult / P[0] - 1 : null;
+  const preco = pr ? (it.usd ? 'US$ ' + num2(pr.p) : fmt(pr.p)) : ult ? (it.usd ? 'US$ ' + num2(ult) : fmt(ult)) : null;
+  const vtx = (v) => `<b class="${v >= 0 ? 'good' : 'bad'}">${v >= 0 ? '+' : ''}${(v * 100).toFixed(1).replace('.', ',')}%</b>`;
+  const graf = P.length > 10 ? `${labLinha([{ v: P, c: P[P.length - 1] >= P[0] ? '#2f7d4f' : '#c0452f', w: 2 }], 110)}<div class="row-between small muted"><span>${dmy(D[D.length - P.length][0])}</span><span>${dmy(D[D.length - 1][0])}</span></div>`
+    : ui.smCarregando === sym ? '<p class="small muted">Buscando o histórico…</p>'
+    : tipo === 'etfus' && !(db.invest.cot || {}).alpha ? '<p class="small muted">O gráfico dos EUA precisa da chave grátis da Alpha Vantage. <button class="btn sm" data-sm-chaves>Colocar chave</button></p>'
+    : '<p class="small muted">Sem histórico agora. Tente de novo mais tarde.</p>';
+  const seg = SEG_EXPL[x[2]] || '';
+  const ck = smCheck(tipo, x, pr ? pr : ult ? { p: ult } : null);
+  let prov = ''; try { if (tipo === 'acoes' || tipo === 'fiis') prov = provBloco(tipo, it); } catch (e) {}
+  const lk = smLinks(tipo, t);
+  return `<div class="sm87"><div class="row-between" style="align-items:flex-start;gap:8px"><div><b class="sm87-tk">${esc(t)}</b> <span class="muted">${esc(it.nome || x[1])} · ${esc(it.seg || x[2])}</span><br>
+      <span class="small muted">${preco ? preco : 'sem preço · toque em ↻ Preços desta lista'}${varS != null ? ` · ${vtx(varS)} na semana` : ''}${var3 != null ? ` · ${vtx(var3)} em 3 meses` : ''}</span></div><button class="btn sm" data-sm-fechar aria-label="Fechar">✕</button></div>
+    <div class="sm87-s"><h4>🏢 O que é</h4>${seg ? `<p><b>${tipo === 'fiis' ? 'O tipo de fundo' : 'O setor'} (${esc(x[2])}):</b> ${seg}</p>` : ''}<p><b>${tipo === 'acoes' ? 'A empresa' : tipo === 'fiis' ? 'O fundo' : 'O ETF'}:</b> ${esc(it.por || '')}</p><p class="sm87-at">⚠️ <b>Atenção:</b> ${esc(it.at || '')}</p></div>
+    <div class="sm87-s"><h4>🩺 Checagem rápida <small class="muted">(números da pesquisa de ${EXP_DATA})</small></h4>${ck.map(([q, k, v]) => `<div class="sm87-ck"><span>${q}</span><b class="${k}">${v}</b></div>`).join('')}</div>
+    ${prov ? `<div class="sm87-s">${prov}</div>` : ''}
+    <div class="sm87-s"><h4>📈 Preço nos últimos 3 meses</h4>${graf}</div>
+    <div class="sm87-s"><h4>📰 Novidades desta semana</h4><div class="sm87-lk">${lk.map(([n, u]) => `<a class="btn sm" href="${u}" target="_blank" rel="noopener">${n} ↗</a>`).join('')}</div>
+      <div class="sm87-nb">Antes de decidir: notícia de uma semana raramente muda uma empresa sólida. Só preocupe se for <b>corte de dividendos, prejuízo, troca de comando ou dívida</b>. Anote no Diário e espere 24 h.</div></div>
+    <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px"><button class="btn primary" data-sm-diario="${esc(t)}">📓 Anotar no Diário</button>${tipo === 'acoes' || tipo === 'fiis' ? `<button class="btn" data-sm-rx="${esc(t)}">🩺 Fazer o Raio-X</button>` : `<button class="btn" data-sm-graf="${esc(sym)}">📊 Gráfico completo</button>`}</div></div>`;
+}
+function smAbrir(tipo, t) {
+  ui.smAberto = tipo + '|' + t; const sym = smSym(tipo, t); const c = labCacheLer(sym);
+  const podeBuscar = sym.startsWith('B:') || (db.invest.cot || {}).alpha;
+  if ((!c || Date.now() - c.em > 6 * 3600e3) && podeBuscar && ui.smCarregando !== sym) {
+    ui.smCarregando = sym; labBuscar(sym).catch(() => {}).finally(() => { if (ui.smCarregando === sym) ui.smCarregando = null; if (ui.smAberto === tipo + '|' + t && smJanelaAberta()) vgJanela(smHtml(tipo, t)); });
+  }
+  vgJanela(smHtml(tipo, t));
+}
+const smJanelaAberta = () => (CELULAR ? !!document.querySelector('#celFolha:not([hidden]) .sm87') : $('#dlg').open && !!$('#dlg .sm87'));
+{ const _c = cardExp; cardExp = function (tipo, x) { const h = _c.apply(this, arguments); if (x.tes || !['acoes', 'fiis', 'etfus', 'etfbr'].includes(tipo)) return h; return h.replace('<span style="flex:1"></span>', `<span style="flex:1"></span><button class="btn sm sm87-b" data-sm-abrir="${tipo}|${esc(x.t)}">＋ Saiba mais</button>`); }; }
+/* preços dos EUA: sem Finnhub, explica o passo a passo ou usa a Alpha Vantage */
+function finnhubAjuda() {
+  const temAlpha = !!(db.invest.cot || {}).alpha;
+  vgJanela(`<h3 style="margin:0 0 6px">🌎 Preços dos ETFs do exterior</h3><p class="small" style="margin:0 0 8px">Para buscar os preços dos EUA o Prumo usa a <b>Finnhub</b>, um site gratuito. Precisa de uma chave, igual fizemos com a brapi. Leva uns 3 minutos:</p>
+    <ol class="small sm87-ol"><li>Abra <a href="https://finnhub.io/register" target="_blank" rel="noopener"><b>finnhub.io/register</b> ↗</a> e crie a conta grátis (nome, e-mail e senha).</li><li>Confirme o e-mail que eles mandam.</li><li>Entre no site: a chave aparece no painel, em <b>API Key</b>. Copie.</li><li>Volte aqui e toque em <b>Colocar a chave</b>. Cole no campo <b>Chave da Finnhub</b> e salve.</li><li>Toque de novo em <b>↻ Preços desta lista</b>.</li></ol>
+    <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:8px"><button class="btn primary" data-sm-chaves>Colocar a chave</button>${temAlpha ? '<button class="btn" data-sm-alpha>Usar a Alpha Vantage agora (mais devagar)</button>' : ''}</div>
+    ${temAlpha ? '<p class="small muted" style="margin:8px 0 0">A Alpha Vantage que você já tem também serve, mas só deixa 5 consultas por minuto: os 15 ETFs levam uns 3 minutos e ela aceita 25 por dia.</p>' : ''}`);
+}
+async function precosEUAAlpha() {
+  const C = db.invest.cot || {}; const L = itensExp('etfus').map((x) => x.t); let ok = 0; vgFecharJanela();
+  toast(`Buscando ${L.length} preços pela Alpha Vantage (uns 3 minutos)…`, 6000);
+  for (let i = 0; i < L.length; i++) {
+    const t = L[i];
+    try { const j = await pegarJSON(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(t)}&apikey=${encodeURIComponent(C.alpha)}`); const p = +(j['Global Quote'] || {})['05. price']; if (p > 0) { db.invest.precos[t] = { p, em: new Date().toISOString() }; ok++; } else if (j.Note || j.Information) { if (/day|dia|25/i.test(j.Information || '')) break; } } catch (e) {}
+    if ((i + 1) % 5 === 0 && i < L.length - 1) { changed(); toast(`${ok} de ${L.length} prontos… aguardando 1 minuto (limite da Alpha Vantage)`, 6000); await new Promise((r) => setTimeout(r, 61000)); }
+  }
+  changed(); toast(ok ? `${ok} preços dos EUA atualizados ✔` : 'A Alpha Vantage não respondeu. Tente mais tarde ou use a Finnhub.');
+}
+{ const _p = precosDaLista; precosDaLista = async function (tipo) {
+  if (tipo === 'etfus' && !(db.invest.cot || {}).finnhub) {
+    // usa o que já tiver no histórico dos gráficos, sem gastar consulta
+    let n = 0; itensExp('etfus').forEach((x) => { const c = labCacheLer('U:' + x.t); const d = c?.d; if (d?.length && Date.now() - c.em < 24 * 3600e3) { db.invest.precos[x.t] = { p: d[d.length - 1][1], em: new Date(c.em).toISOString() }; n++; } }); if (n) changed();
+    return finnhubAjuda();
+  }
+  return _p.apply(this, arguments);
+}; }
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if ((b = g('data-sm-abrir'))) { const [tipo, t] = b.dataset.smAbrir.split('|'); return smAbrir(tipo, t); }
+  if (g('data-sm-fechar')) { ui.smAberto = null; return vgFecharJanela(); }
+  if (g('data-sm-chaves')) { ui.smAberto = null; vgFecharJanela(); return formChaves(); }
+  if (g('data-sm-alpha')) return precosEUAAlpha();
+  if ((b = g('data-sm-diario'))) { const t = b.dataset.smDiario; ui.smAberto = null; vgFecharJanela(); ui.diPre = { acao: `comprar ${t}`, motivo: '' }; ui.sub = ui.sub || {}; ui.sub.invest = 'diario'; renderAll(); window.scrollTo?.(0, 0); return; }
+  if ((b = g('data-sm-rx'))) { const t = b.dataset.smRx; ui.smAberto = null; vgFecharJanela(); ui.labSym = 'B:' + t; ui.labTipo = labTipoDe('B:' + t); ui.sub = ui.sub || {}; ui.sub.invest = 'graficos'; renderAll(); setTimeout(() => document.querySelector('.rx')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300); return; }
+  if ((b = g('data-sm-graf'))) { const s = b.dataset.smGraf; ui.smAberto = null; vgFecharJanela(); ui.labSym = s; ui.labTipo = labTipoDe(s); ui.sub = ui.sub || {}; ui.sub.invest = 'graficos'; renderAll(); window.scrollTo?.(0, 0); return; }
+}, true);
+document.addEventListener('change', (e) => { const t = e.target.closest?.('.sm87 [data-prov-q]'); if (!t || !ui.smAberto) return; const [tipo, tk] = ui.smAberto.split('|'); setTimeout(() => { if (smJanelaAberta()) vgJanela(smHtml(tipo, tk)); }, 0); });
 
 /* ---------- início ---------- */
 (async function boot() {
