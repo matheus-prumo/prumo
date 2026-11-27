@@ -1250,6 +1250,55 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 .fi-n{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.fi-n small{display:block;font-size:10.5px;color:var(--muted);font-weight:700}.fi-n b{font-size:16px}
 .fi-al{margin:6px 0 0 18px;padding:0;font-size:12.5px;color:var(--muted)}
 
+/* v8.3 hábito de investir */
+.inv83-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:14px;align-items:start}.inv83-g .card{margin:0}
+.inv83-c h3{margin:0 0 6px;font-size:16px}
+.inv83-l{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;padding:7px 0;border-top:1px solid var(--line)}.inv83-l small{display:block;color:var(--muted);font-size:11.5px}
+.sem83{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;margin:6px 0 8px;background:color-mix(in srgb,#2f7d4f 10%,var(--panel));border:1px solid color-mix(in srgb,#2f7d4f 35%,transparent)}
+.sem83.bad{background:color-mix(in srgb,#c0452f 10%,var(--panel));border-color:color-mix(in srgb,#c0452f 35%,transparent)}.sem83.warn{background:color-mix(in srgb,#d9822b 10%,var(--panel));border-color:color-mix(in srgb,#d9822b 35%,transparent)}
+.sem83-dot{width:26px;height:26px;border-radius:50%;flex:none;background:#2f7d4f;box-shadow:0 0 0 5px color-mix(in srgb,#2f7d4f 22%,transparent)}.sem83.bad .sem83-dot{background:#c0452f;box-shadow:0 0 0 5px color-mix(in srgb,#c0452f 22%,transparent)}.sem83.warn .sem83-dot{background:#d9822b;box-shadow:0 0 0 5px color-mix(in srgb,#d9822b 22%,transparent)}
+.cesta-b{display:flex;align-items:center;gap:8px;font-size:14px}.cesta-b input{width:100px;text-align:right;font-weight:700}
+.cesta-e{margin:8px 0}.cesta-e>div{display:flex;flex-wrap:wrap;gap:5px;margin:3px 0 6px}.cesta-e button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:16px;padding:4px 10px;font-size:12.5px;cursor:pointer}.cesta-e button.on{border-color:var(--brand,#1f4e6b);background:color-mix(in srgb,var(--brand,#1f4e6b) 12%,var(--panel));font-weight:700}.cesta-e button small{color:var(--muted)}.cesta-e button i{font-style:normal;font-size:11px}
+.cesta-r{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cesta-r>div{border:1px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column}.cesta-r b{font-size:16px}
+.cesta-tot{display:flex;justify-content:space-between;background:color-mix(in srgb,var(--brand,#1f4e6b) 7%,var(--panel));border-radius:10px;padding:8px 12px;margin-top:8px;font-size:14px}
+.cesta-f{display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:end;margin-bottom:6px}.cesta-f label{font-size:12px;color:var(--muted)}.cesta-f input{width:100%}
+.const83-g{display:grid;grid-template-columns:repeat(12,1fr);gap:4px}.const83-g span{text-align:center;font-size:10.5px;padding:5px 0;border-radius:6px;background:var(--line);color:var(--muted)}.const83-g span.on{background:#2f7d4f;color:#fff;font-weight:700}
+.di-c{border:1px solid var(--line);border-radius:12px;padding:9px 11px;margin-top:8px}.di-c.espera{border-left:4px solid #d9822b}.di-c.fiz{border-left:4px solid #2f7d4f}.di-c.desisti{border-left:4px solid var(--muted)}
+.di-al{margin-top:6px;font-size:12.5px;color:#c0452f;background:color-mix(in srgb,#c0452f 8%,transparent);border-radius:8px;padding:6px 8px}
+.rx-q{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);align-items:center}.rx-q small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}.rx-q b{font-size:13.5px}
+.rx-b{display:flex;gap:4px;flex:none}.rx-b button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:8px;padding:5px 8px;font-size:12px;cursor:pointer}.rx-b button.on.s{background:#2f7d4f;color:#fff;border-color:#2f7d4f}.rx-b button.on.n{background:#c0452f;color:#fff;border-color:#c0452f}.rx-b button.on.\?{background:#9aa7b1;color:#fff}
+@media(max-width:600px){.rx-q{flex-direction:column;align-items:flex-start}}
+.tri-bar{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:6px 0 8px}.tri-bar i{height:7px;border-radius:4px;background:var(--line)}.tri-bar i.on{background:var(--brand,#1f4e6b)}
+.tri-l{font-size:13.5px;padding:6px 0;border-top:1px solid var(--line)}.tri-l.ok{color:var(--muted)}
+.tri-cur{border:2px solid var(--brand,#1f4e6b);border-radius:12px;padding:10px 12px;margin:6px 0}.tri-cur p{font-size:13.5px;line-height:1.5;margin:6px 0}
+.tri-op{display:flex;flex-direction:column;gap:5px}.tri-op button{text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:9px;padding:8px 10px;font-size:13.5px;cursor:pointer}
+.cr83{margin-bottom:12px}
+
+/* v8.4 mestres da disciplina */
+.me-tt{margin:0 0 10px;font-size:20px}
+.me-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-bottom:12px;align-items:start}.me-2>.card{margin:0}
+.me-q{font-size:19px;font-style:italic;line-height:1.4;margin:6px 0 4px;font-family:Georgia,serif}
+.me-hl{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:13.5px}
+.me-sn{display:flex;gap:4px;align-items:center;flex:none}.me-sn i{margin-right:4px;font-style:normal}
+.me-sn button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:8px;padding:4px 9px;font-size:12px;cursor:pointer}.me-sn button.on.s{background:#2f7d4f;color:#fff;border-color:#2f7d4f}.me-sn button.on.n{background:#c0452f;color:#fff;border-color:#c0452f}
+.me-6{display:flex;gap:8px;align-items:flex-end;margin-top:10px;height:50px}.me-6 span{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:var(--muted);flex:1}.me-6 i{display:block;width:100%;max-width:26px;border-radius:4px 4px 0 0;background:var(--line)}.me-6 i.y{background:#d9a24b}.me-6 i.g{background:#2f7d4f}
+.me-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.me-m{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}.me-m.sel{border:2px solid var(--brand,#1f4e6b)}
+.me-nm{font-weight:800;font-size:15px}.me-h{background:color-mix(in srgb,var(--brand,#1f4e6b) 7%,var(--panel));border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.45;flex:1}
+.me-ir{font-size:12px;font-weight:700;color:var(--brand,#1f4e6b);cursor:pointer;text-align:right}
+.me-hist{border:2px solid var(--brand,#1f4e6b);border-radius:12px;padding:14px 16px;margin-top:12px}.me-hist p{font-size:14px;line-height:1.55;margin:0 0 8px}.me-hist ol{margin:6px 0 10px;padding-left:20px;font-size:14px;line-height:1.5}
+.me-cui{background:#fff8e6;border:1px solid #f1d9a6;border-radius:10px;padding:8px 10px;font-size:13px;color:#5b4512}
+.me-bf{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13.5px;color:var(--muted)}.me-bf input{width:76px;text-align:right;font-weight:700}.me-bf select{width:auto}
+.me-bar{display:flex;align-items:flex-end;gap:3px;height:120px;margin:12px 0 2px}.me-bar span{flex:1;height:100%;display:flex;align-items:flex-end}.me-bar i{display:block;width:100%;background:color-mix(in srgb,var(--brand,#1f4e6b) 25%,var(--panel));border-radius:3px 3px 0 0}.me-bar i.g{background:#2f7d4f}
+.me-bx{display:flex;justify-content:space-between}
+.me-ol{margin:0;padding-left:22px;font-size:13.5px;line-height:1.5}.me-ol li{margin-bottom:4px}
+.me-ass{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);margin-top:8px}
+.me-pld summary{cursor:pointer;list-style:none}.me-pld summary::-webkit-details-marker{display:none}.me-pld[open] summary{margin-bottom:8px}.me-pld{margin-bottom:12px}
+.bz-r{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.bz-r>div{border:1px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column}.bz-r b{font-size:18px}
+.bz-v{grid-column:1/-1;border:none!important;padding:8px 10px!important;border-radius:10px;font-size:13.5px;background:var(--panel-2,#f1efe9)}.bz-v.good{background:color-mix(in srgb,#2f7d4f 10%,var(--panel));color:#256b42}.bz-v.bad{background:color-mix(in srgb,#c0452f 10%,var(--panel));color:#a0392a}
+@media(max-width:600px){.me-hl{flex-direction:column;align-items:flex-start}.me-2{grid-template-columns:1fr}}
+.qz{min-width:0;grid-template-columns:minmax(0,1fr)}.qz .row{flex-wrap:wrap}.qz .btn{white-space:normal;text-align:left;height:auto}
+
 </style>
 </head>
 <body>
@@ -4170,7 +4219,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '8.2';
+const APP_VERSAO = '8.4';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -5997,8 +6046,8 @@ function irExterior(ano) {
 /* ---------- TELA ---------- */
 function renderInvest() {
   garantirInvest(); const el = $('#tab-invest'); const sub = subAtual('invest', 'visao');
-  const corpo = { visao: invVisao, carteira: invCarteira, proventos: invProventos, imposto: invImposto, explorar: invExplorar, estudar: invEstudar, graficos: () => invGraficos(), lab: () => invLab(), simular: invSimular, guia: invGuia }[sub]();
-  el.innerHTML = `<div class="row-between" style="align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">${subnav('invest', [['visao', 'Visão geral'], ['carteira', 'Carteira'], ['proventos', 'Proventos'], ['imposto', 'Imposto'], ['explorar', '🔎 Explorar'], ['estudar', '📚 Estudar'], ['graficos', '📊 Gráficos'], ['lab', '🧪 Laboratório'], ['simular', 'Simuladores'], ['guia', 'Guia e perfil']])}
+  const corpo = { visao: invVisao, carteira: invCarteira, proventos: invProventos, imposto: invImposto, explorar: invExplorar, estudar: invEstudar, graficos: () => invGraficos(), lab: () => invLab(), diario: () => invDiario(), simular: invSimular, guia: invGuia }[sub]();
+  el.innerHTML = `<div class="row-between" style="align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">${subnav('invest', [['visao', 'Visão geral'], ['carteira', 'Carteira'], ['proventos', 'Proventos'], ['imposto', 'Imposto'], ['explorar', '🔎 Explorar'], ['estudar', '📚 Estudar'], ['graficos', '📊 Gráficos'], ['lab', '🧪 Laboratório'], ['diario', '📓 Diário'], ['simular', 'Simuladores'], ['guia', 'Guia e perfil']])}
     <span class="row"><button class="btn" data-inv="importar">⬆ Importar (B3, Rico, Avenue)</button><button class="btn" data-inv="cotar" title="Busca preços, dólar, Selic, CDI e IPCA na internet">↻ Atualizar cotações</button><button class="btn" data-inv="pdf">📄 Relatório</button></span></div>
     ${db.invest.perfil?.protecao ? '<div class="lembrete info"><span>🛡 <b>Modo proteção ligado:</b> investir é diferente de apostar. Aqui o caminho é devagar e sempre: aportes todo mês, fundos de índice e nada de operar no mesmo dia, opções ou alavancagem.</span></div>' : ''}
     ${corpo}
@@ -13008,6 +13057,404 @@ document.addEventListener('click', (e) => {
 document.addEventListener('change', (e) => { const t = e.target.closest('[data-fi-cfg]'); if (!t) return; const v = num(t.value, NaN); if (isFinite(v) && v > 0) { ui.fiCmp = Object.assign(ui.fiCmp || {}, { [t.dataset.fiCfg]: t.dataset.fiCfg === 'meses' ? Math.max(1, Math.round(v)) : v }); } renderAll(); });
 try { if (lsGet('bin-key')) lsSet('bin-key', ''); if (lsGet('bin-snap')) lsSet('bin-snap', ''); } catch (e) {}
 CEL_NOVIDADES['8.2'] = ['💼 Explorar › Fundos de investimento: compare fundos com o Tesouro Selic, já sem o imposto', 'A ligação com a Binance saiu (os gráficos de cripto continuam)'];
+
+/* =================== v8.3: hábito de investir — semáforo, compra do mês, reserva, diário 24 h, raio-X, trilha, laboratório honesto, suas criptos =================== */
+const CESTA_PADRAO = { acoes: ['BBAS3', 'ITSA4', 'TAEE11'], fiis: ['MXRF11', 'KNCR11', 'HGLG11'] };
+function inv83() { const I = garantirInvest(); if (!I.cesta) I.cesta = JSON.parse(JSON.stringify(CESTA_PADRAO)); ['cestaHist', 'reservaHist', 'diario', 'criptos'].forEach((k) => { if (!Array.isArray(I[k])) I[k] = []; }); if (!I.raiox) I.raiox = {}; if (!I.trilha) I.trilha = { feitas: {} }; return I; }
+const RES_ID = 'meta-reserva';
+function resGastoMes() { const H = hoje(); const ms = [1, 2, 3].map((i) => addM(ymOf(H), -i)); const v = ms.map((m) => soma(db.lancamentos.filter((l) => l.tipo === 'Despesa' && ymOf(l.data) === m), 'valor')).filter((x) => x > 0); return v.length ? soma(v, (x) => x) / v.length : 3000; }
+function resMeta() { let m = db.metas.find((x) => x.id === RES_ID) || db.metas.find((x) => /reserva de emerg/i.test(x.nome || '')); if (!m) { m = { id: RES_ID, nome: 'Reserva de emergência', alvo: Math.round((resGastoMes() * 6) / 100) * 100, acumulado: 0, prazo: addM(ymOf(hoje()), 24), criada: hoje() }; db.metas.push(m); } return m; }
+
+/* ---------- 🚦 Posso investir este mês? ---------- */
+function semaforo() {
+  const H = hoje(); const ym = ymOf(H); const itens = [];
+  const atrasCasa = db.contasPagar.filter((c) => c.status !== 'Pago' && c.vencimento < H && ymOf(c.vencimento) >= addM(ym, -2));
+  itens.push(atrasCasa.length ? ['bad', `Contas da casa atrasadas: ${atrasCasa.length}`, fmt0(soma(atrasCasa, 'valor'))] : ['ok', 'Contas da casa em dia', 'ok']);
+  let atrasLoja = []; try { atrasLoja = cxAbertas('loja', ym).filter((o) => o.data < H && o.data >= `${ym}-01`); } catch (e) {}
+  itens.push(atrasLoja.length ? ['bad', `Contas da loja atrasadas este mês: ${atrasLoja.length}`, fmt0(soma(atrasLoja, (o) => o.valor || 0))] : ['ok', 'Contas da loja do mês em dia', 'ok']);
+  let div = []; try { div = divAbertas(); } catch (e) {}
+  itens.push(div.length ? ['warn', `Dívidas em aberto no Recomeço: ${div.length}`, 'acompanhe'] : ['ok', 'Nenhuma dívida em aberto', 'ok']);
+  const m = resMeta(); const pr = m.alvo ? Math.min(1, m.acumulado / m.alvo) : 0;
+  itens.push([pr >= 1 ? 'ok' : 'warn', `Reserva de emergência<small>${fmt0(m.acumulado)} de ${fmt0(m.alvo)} (6 meses de gastos)</small>`, Math.round(pr * 100) + '%']);
+  const verm = itens.some((i) => i[0] === 'bad');
+  const vered = verm ? ['bad', 'Este mês, não', 'Primeiro acertar o que está atrasado. Sem culpa: o dinheiro fica para quando der.'] : pr < 1 ? ['ok', 'Sim, um valor pequeno', 'Contas em dia. Invista o que der e, se sobrar, guarde um pouco na reserva também.'] : ['ok', 'Sim', 'Contas em dia e reserva completa.'];
+  return `<div class="card inv83-c"><h3>🚦 Posso investir este mês?</h3><div class="sem83 ${vered[0]}"><span class="sem83-dot"></span><div><b>${vered[1]}</b><br><span class="muted small">${vered[2]}</span></div></div>
+    ${itens.map(([k, t, v]) => `<div class="inv83-l"><span>${k === 'ok' ? '✅' : k === 'bad' ? '🔴' : '🟡'} ${t}</span><b class="${k === 'ok' ? 'good' : k === 'bad' ? 'bad' : 'warn'}">${v}</b></div>`).join('')}</div>`;
+}
+
+/* ---------- 🧺 Compra do mês ---------- */
+const cestaPrecos = () => { try { return JSON.parse(lsGet('cesta-precos') || 'null') || { em: 0, p: {} }; } catch (e) { return { em: 0, p: {} }; } };
+let cestaBuscando = false;
+async function cestaBuscar(forcar) {
+  const I = inv83(); const C = cestaPrecos(); if (cestaBuscando || (!forcar && Date.now() - C.em < 3 * 3600e3)) return; cestaBuscando = true;
+  const tks = [...I.cesta.acoes, ...I.cesta.fiis]; const tok = db.invest?.cot?.brapi; const P = { ...C.p };
+  for (const t of tks) { try { const j = await pegarJSON(`https://brapi.dev/api/quote/${encodeURIComponent(t)}`, tok ? { headers: { Authorization: 'Bearer ' + tok } } : {}); const v = j.results?.[0]?.regularMarketPrice; if (v > 0) P[t] = v; } catch (e) {} }
+  try { lsSet('cesta-precos', JSON.stringify({ em: Date.now(), p: P })); } catch (e) {} cestaBuscando = false; if (ui.tab === 'invest') renderAll();
+}
+const cestaQtdCarteira = (t) => { const a = (db.invest.ativos || []).find((x) => (x.ticker || '').toUpperCase() === t); if (!a) return 0; return soma((db.invest.movs || []).filter((m) => m.ativo === a.id && (m.tipo === 'compra' || m.tipo === 'venda')), (m) => (m.tipo === 'compra' ? 1 : -1) * (Number(m.qtd) || 0)); };
+function cestaMontar(B) {
+  const I = inv83(); const P = cestaPrecos().p; const ord = (L) => L.filter((t) => P[t] > 0).sort((a, b) => cestaQtdCarteira(a) - cestaQtdCarteira(b) || P[a] - P[b]);
+  const A = ui.cestaA && P[ui.cestaA] ? ui.cestaA : ord(I.cesta.acoes).find((t) => P[t] <= B); const F = ui.cestaF && P[ui.cestaF] ? ui.cestaF : ord(I.cesta.fiis).find((t) => P[t] <= B);
+  const itens = []; let resto = B;
+  if (A && P[A] <= resto) { itens.push({ t: A, q: 1, p: P[A], cls: 'Ações' }); resto -= P[A]; }
+  if (F && P[F] <= resto) { const q = Math.floor(resto / P[F]); itens.push({ t: F, q, p: P[F], cls: 'Fundos imobiliários (FII)' }); resto -= q * P[F]; }
+  return { itens, total: soma(itens, (i) => i.q * i.p), A, F };
+}
+function raioxNota(t) { const R = inv83().raiox[t]; if (!R) return null; const s = Object.values(R.r || {}).filter((x) => x === 's').length; return s; }
+function cestaCard() {
+  const I = inv83(); cestaBuscar(); const P = cestaPrecos().p; const B = Number(ui.cestaB ?? I.cestaValor ?? 80) || 0; const M = cestaMontar(B); const ym = ymOf(hoje());
+  const feito = I.cestaHist.find((h) => h.ym === ym); const chip = (t, tipo, on) => { const n = raioxNota(t); return `<button class="${on ? 'on' : ''}" data-cesta-esc="${tipo}:${t}">${t}${P[t] ? ` <small>${fmt(P[t])}</small>` : ''}${n != null ? ` <i class="${n >= 6 ? 'good' : n >= 4 ? 'warn' : 'bad'}">🩺${n}/7</i>` : ''}</button>`; };
+  const semPreco = [...I.cesta.acoes, ...I.cesta.fiis].filter((t) => !P[t]);
+  return `<div class="card inv83-c"><div class="lab-h"><h3>🧺 Compra do mês</h3><button class="btn sm" data-cesta-lista>✎ Minha lista</button></div><p class="muted small" style="margin:0 0 8px">1 ação sólida + 1 fundo imobiliário · <b>só se der</b>. Mês sem compra não é falha.</p>
+    ${feito ? `<div class="sem83 ${feito.pulou ? 'warn' : 'ok'}"><span class="sem83-dot"></span><div><b>${feito.pulou ? 'Este mês não deu, e está tudo bem' : `Compra de ${MESES[+ym.slice(5, 7) - 1]} feita: ${fmt(feito.total)}`}</b><br><span class="muted small">${feito.pulou ? 'Mês que vem a gente vê de novo.' : feito.itens.map((i) => `${i.q} ${i.t}`).join(' + ')}</span></div></div><button class="btn sm" data-cesta-desfazer>Desfazer</button>`
+      : `<div class="cesta-b"><span>Quanto dá este mês?</span><input data-cesta-b type="text" inputmode="decimal" value="${valorTxt(B)}"></div>
+      <div class="cesta-e"><small class="muted">📈 Ação</small><div>${I.cesta.acoes.map((t) => chip(t, 'A', t === M.A)).join('')}</div><small class="muted">🏢 Fundo imobiliário</small><div>${I.cesta.fiis.map((t) => chip(t, 'F', t === M.F)).join('')}</div></div>
+      ${M.itens.length ? `<div class="cesta-r">${M.itens.map((i) => `<div><small class="muted">${i.cls === 'Ações' ? '📈 Ação' : '🏢 FII'}</small><b>${i.t}</b><span class="muted small">${i.q} × ${fmt(i.p)}</span></div>`).join('')}</div><div class="cesta-tot"><span>Total da compra</span><b>${fmt(M.total)}</b></div>`
+        : `<p class="small" style="margin:6px 0">${semPreco.length === I.cesta.acoes.length + I.cesta.fiis.length ? (cestaBuscando ? '⏳ Buscando os preços…' : 'Sem preços ainda. Confira a internet e o token da brapi.') : 'Com esse valor não fecha nenhuma compra. Tente um valor maior ou escolha um fundo mais barato.'}</p>`}
+      ${semPreco.length && !cestaBuscando ? `<p class="small muted" style="margin:4px 0 0">Sem preço: ${semPreco.join(', ')}. ${db.invest?.cot?.brapi ? '' : 'Coloque o token da brapi em ↻ Atualizar cotações › Chaves.'}</p>` : ''}
+      <div class="row" style="gap:6px;margin-top:8px;flex-wrap:wrap"><button class="btn primary" data-cesta-comprei ${M.itens.length ? '' : 'disabled'}>✓ Comprei</button><button class="btn" data-cesta-diario ${M.itens.length ? '' : 'disabled'}>📓 Anotar no diário</button><button class="btn" data-cesta-pulei>Este mês não deu</button></div>`}
+    ${constancia()}</div>`;
+}
+function cestaComprar() {
+  const B = Number(ui.cestaB ?? inv83().cestaValor ?? 80) || 0; const M = cestaMontar(B);
+  vgJanela(`<h3 style="margin:0 0 4px">✓ Comprei</h3><p class="small muted" style="margin:0 0 8px">Confira quantas cotas e o preço pago de verdade. O Prumo lança na Carteira.</p>
+    ${M.itens.map((i, k) => `<div class="cesta-f"><b>${i.t}</b><label>Cotas<input id="cq${k}" type="text" inputmode="numeric" value="${i.q}"></label><label>Preço (R$)<input id="cp${k}" type="text" inputmode="decimal" value="${valorTxt(r2(i.p))}"></label></div>`).join('')}
+    <label class="lei-lab">Corretora<input id="cInst" type="text" value="${esc(inv83().cestaInst || 'XP')}"></label>
+    <div class="vg-bts"><button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-cesta-ok>Lançar na Carteira</button></div>`);
+}
+function cestaConfirmar() {
+  const I = inv83(); const B = Number(ui.cestaB ?? I.cestaValor ?? 80) || 0; const M = cestaMontar(B); const inst = ($('#cInst')?.value || 'XP').trim(); I.cestaInst = inst; const itens = [];
+  M.itens.forEach((i, k) => { const q = Math.round(num($(`#cq${k}`)?.value, 0)); const p = num($(`#cp${k}`)?.value, 0); if (!(q > 0 && p > 0)) return;
+    let a = I.ativos.find((x) => (x.ticker || '').toUpperCase() === i.t && x.mercado !== 'US'); if (!a) { a = { id: uid(), ticker: i.t, nome: i.t, classe: i.cls, instituicao: inst, indexador: 'Variável', liquidez: 'Diária', mercado: 'BR', criado: hoje() }; I.ativos.push(a); }
+    I.movs.push({ id: uid(), ativo: a.id, tipo: 'compra', data: hoje(), qtd: q, preco: r2(p), valor: r2(q * p), conta: '', ordem: Date.now() + k }); itens.push({ t: i.t, q, p }); });
+  if (!itens.length) return toast('Confira as cotas e os preços.');
+  I.cestaHist.push({ id: uid(), ym: ymOf(hoje()), data: hoje(), total: r2(soma(itens, (i) => i.q * i.p)), itens }); I.cestaValor = B; vgFecharJanela(); changed(); toast('🧺 Compra do mês lançada na Carteira');
+}
+function constancia() {
+  const I = inv83(); const H = hoje(); const ms = Array.from({ length: 12 }, (_, i) => addM(ymOf(H), i - 11));
+  const fez = (m) => I.cestaHist.some((h) => h.ym === m && !h.pulou) || I.reservaHist.some((h) => h.ym === m) || (I.movs || []).some((x) => x.tipo === 'compra' && ymOf(x.data) === m);
+  const n = ms.filter(fez).length; const aportes = soma(I.cestaHist.filter((h) => !h.pulou), 'total') + soma(I.reservaHist, 'valor');
+  const media = Number(I.cestaValor) || 80; const taxa = 0.005; let v = 0; for (let k = 0; k < 120; k++) v = v * (1 + taxa) + (k % 3 === 2 ? 0 : media);
+  return `<div class="const83"><div class="lab-h" style="margin:12px 0 4px"><b style="font-size:14px">📅 Constância</b><span class="muted small">${n} de 12 meses com algum investimento</span></div>
+    <div class="const83-g">${ms.map((m) => `<span class="${fez(m) ? 'on' : ''}" title="${MESES[+m.slice(5, 7) - 1]}">${MC[+m.slice(5, 7) - 1][0]}</span>`).join('')}</div>
+    <p class="small muted" style="margin:6px 0 0">${aportes ? `Já foram ${fmt0(aportes)} guardados e investidos. ` : ''}Se investir uns ${fmt0(media)} em 2 de cada 3 meses, em 10 anos isso vira cerca de <b>${fmt0(v)}</b> (estimativa: 6% ao ano acima da inflação).</p></div>`;
+}
+function cestaLista() {
+  const I = inv83();
+  vgJanela(`<h3 style="margin:0 0 4px">✎ Minha lista da Compra do mês</h3><p class="small muted" style="margin:0 0 8px">Códigos separados por vírgula. O Prumo escolhe, a cada mês, o que você tem menos.</p>
+    <label class="lei-lab">📈 Ações<input id="clA" type="text" value="${I.cesta.acoes.join(', ')}"></label><label class="lei-lab">🏢 Fundos imobiliários<input id="clF" type="text" value="${I.cesta.fiis.join(', ')}"></label>
+    <div class="vg-bts"><button class="btn" data-vg-cancelar>Cancelar</button><button class="btn primary" data-cesta-lista-ok>Salvar</button></div>`);
+}
+
+/* ---------- 🐷 Reserva de emergência ---------- */
+function reservaCard() {
+  const m = resMeta(); const pr = m.alvo ? Math.min(1, m.acumulado / m.alvo) : 0; const g = resGastoMes();
+  return `<div class="card inv83-c"><div class="lab-h"><h3>🐷 Reserva de emergência</h3><button class="btn sm" data-reserva-alvo>Ajustar alvo</button></div>
+    <p style="margin:2px 0 4px"><b style="font-size:22px">${fmt0(m.acumulado)}</b> <span class="muted">de ${fmt0(m.alvo)}</span></p><div class="lei-bar"><i style="width:${pr * 100}%"></i></div>
+    <p class="small muted" style="margin:4px 0 8px">Cobre ${num2(Math.floor((m.acumulado / g) * 10) / 10)} ${m.acumulado / g >= 2 ? 'meses' : 'mês'} de gastos (média de ${fmt0(g)}/mês). Guarde quando der, sem obrigação.</p>
+    <button class="btn primary" data-reserva-guardar>+ Guardar na reserva</button>
+    <p class="small muted" style="margin:8px 0 0">Onde deixar: <b>Tesouro Selic</b> ou <b>CDB de liquidez diária</b> com 100% do CDI ou mais. Nunca em ação, fundo imobiliário ou cripto.</p></div>`;
+}
+
+/* ---------- 📓 Diário de decisões + regra das 24 h ---------- */
+const DI_RISCO = /recuper|perd|rapid|rápid|dobr|alavanc|garantid|certeza|todo mundo|n[aã]o posso perder|ultima chance|última chance/i;
+function diAlertas(d) { const a = []; if (Number(d.ans) >= 7) a.push(`ansiedade ${d.ans} de 10`); if (DI_RISCO.test(d.motivo || '')) a.push('o motivo fala em recuperar, ganhar rápido ou ter certeza'); if (d.helen === 'nao') a.push('a Helen ainda não sabe'); return a; }
+function invDiario() {
+  const I = inv83(); const pre = ui.diPre || {}; const agora = Date.now();
+  const L = [...I.diario].sort((a, b) => b.ts - a.ts);
+  return `<div class="lembrete info lab-prot"><span>📓 <b>Regra das 24 horas:</b> toda compra ou venda de verdade é anotada aqui e espera um dia. Se amanhã ainda fizer sentido, você faz. Decisão boa sobrevive a uma noite de sono.</span></div>
+    <div class="lab-cols"><div><div class="card lab-c"><h3>Nova decisão</h3>
+      <label class="lei-lab">O que vou fazer<input id="diAcao" type="text" value="${esc(pre.acao || '')}" placeholder="ex.: comprar 1 BBAS3 e 6 MXRF11"></label>
+      <div class="vg-2"><label class="lei-lab">Tipo<select id="diTipo"><option value="compra">Compra</option><option value="venda">Venda</option></select></label><label class="lei-lab">Valor (R$)<input id="diValor" type="text" inputmode="decimal" value="${pre.valor ? valorTxt(pre.valor) : ''}"></label></div>
+      <label class="lei-lab">Por quê?<input id="diMotivo" type="text" value="${esc(pre.motivo || '')}" placeholder="ex.: compra do mês, empresas sólidas"></label>
+      <label class="lei-lab">Quando eu venderia? (plano de saída)<input id="diSaida" type="text" placeholder="ex.: não vendo; seguro por 10 anos"></label>
+      <div class="vg-2"><label class="lei-lab">Ansiedade agora (0 a 10)<select id="diAns">${Array.from({ length: 11 }, (_, i) => `<option ${i === 2 ? 'selected' : ''}>${i}</option>`).join('')}</select></label><label class="lei-lab">A Helen sabe?<select id="diHelen"><option value="sim">Sim</option><option value="nao">Ainda não</option></select></label></div>
+      <button class="btn primary" style="margin-top:10px" data-di-salvar>Guardar decisão por 24 h</button></div></div>
+    <div><div class="card lab-c"><h3>Minhas decisões</h3>${L.length ? L.map((d) => { const falta = d.libera - agora; const al = diAlertas(d);
+      return `<div class="di-c ${d.st}"><div class="lab-h"><b>${esc(d.acao)}</b><span class="muted small">${dmy(d.data).slice(0, 5)}</span></div><span class="muted small">${d.tipo === 'venda' ? 'Venda' : 'Compra'}${d.valor ? ' · ' + fmt0(d.valor) : ''} · ansiedade ${d.ans} · ${esc(d.motivo || '')}${d.saida ? ' · saída: ' + esc(d.saida) : ''}</span>
+        ${al.length ? `<div class="di-al">🔴 Atenção: ${al.join('; ')}. Pare e converse com a Helen antes.</div>` : ''}
+        ${d.st === 'espera' ? (falta > 0 ? `<p class="small" style="margin:6px 0 0">⏳ Liberada em ${Math.floor(falta / 3600e3)} h ${Math.ceil((falta % 3600e3) / 60e3)} min. <button class="btn sm" data-di-st="${d.id}:desisti">Desisti</button></p>` : `<p class="small" style="margin:6px 0 0"><b>Passaram 24 h. Ainda faz sentido?</b></p><div class="row" style="gap:6px"><button class="btn sm primary" data-di-st="${d.id}:fiz">Sim, fiz</button><button class="btn sm" data-di-st="${d.id}:desisti">Desisti</button></div>`)
+          : `<p class="small muted" style="margin:6px 0 0">${d.st === 'fiz' ? '✅ Feita' : '🛑 Desistiu'}${d.fim ? ' em ' + dmy(d.fim).slice(0, 5) : ''}${d.st === 'desisti' ? ' (desistir também é uma boa decisão)' : ''}</p>`}</div>`; }).join('') : '<p class="small muted" style="margin:0">Nenhuma decisão anotada ainda.</p>'}</div></div></div>`;
+}
+
+/* ---------- 🩺 Raio-X de solidez ---------- */
+const RX_Q = {
+  acao: [['Teve lucro em pelo menos 4 dos últimos 5 anos?', 'Empresa sólida lucra quase todo ano. Status Invest: gráfico "Receitas e lucros".'],
+    ['Paga dividendos há 5 anos ou mais?', 'Mostra que divide o lucro com o sócio, ano após ano. Status Invest: "Histórico de proventos".'],
+    ['Dívida líquida / EBITDA abaixo de 3?', 'Dívida que cabe no que a empresa gera. Acima de 3, a dívida pesa. (Bancos não têm esse número: marque Sim se a inadimplência estiver controlada.)'],
+    ['ROE acima de 10%?', 'Quanto a empresa lucra sobre o dinheiro dos sócios. Abaixo de 10%, rende menos que a renda fixa.'],
+    ['Tem mais de 15 anos de bolsa?', 'Já passou por crises e continuou de pé.'],
+    ['É de um setor que o país sempre precisa?', 'Energia, saneamento, bancos e seguros vendem mesmo na crise.'],
+    ['P/L abaixo de 15?', 'Quantos anos de lucro o preço paga. Abaixo de 15, não está cara.']],
+  fii: [['P/VP entre 0,90 e 1,10?', 'Preço da cota perto do valor dos imóveis ou títulos. Muito acima de 1, está caro.'],
+    ['Dividend yield de 12 meses entre 8% e 14%?', 'Rendimento normal. Acima de 14% desconfie: pode ser algo pontual ou risco alto.'],
+    ['Liquidez diária acima de R$ 1 milhão?', 'Fácil de vender quando precisar.'],
+    ['Mais de 50 mil cotistas?', 'Fundo grande e conhecido no mercado.'],
+    ['Tijolo: vacância abaixo de 10%? Papel: devedores de primeira linha?', 'Imóveis alugados ou dívidas de empresas boas pagando em dia.'],
+    ['Pagou rendimento todo mês nos últimos 2 anos?', 'Constância de pagamento. Status Invest: "Histórico de dividendos".'],
+    ['Taxa de administração de até 1% ao ano?', 'Taxa alta come o rendimento todo ano.']],
+};
+function rxTipo(t) { return /11$/.test(t) && labTipoDe('B:' + t) === 'fii' ? 'fii' : 'acao'; }
+function raioxCard(t) {
+  const I = inv83(); const tipo = rxTipo(t); const R = I.raiox[t] || { r: {} }; const Q = RX_Q[tipo]; const n = Object.values(R.r).filter((x) => x === 's').length; const resp = Object.keys(R.r).length;
+  const ver = resp < 7 ? 'Responda as 7 perguntas' : n >= 6 ? '🟢 Sólido' : n >= 4 ? '🟡 Atenção: estude os pontos com Não' : '🔴 Frágil para quem quer segurança';
+  return `<div class="card lab-c rx"><div class="lab-h"><h3>🩺 Raio-X de solidez · ${t}</h3><b class="${n >= 6 ? 'good' : n >= 4 ? 'warn' : 'bad'}">${n}/7</b></div><p class="muted small" style="margin:0 0 8px">${ver} · Abra <b>${t}</b> na Status Invest e responda. ${R.em ? 'Respondido em ' + dmy(R.em) + '.' : ''}</p>
+    ${Q.map(([q, ex], i) => `<div class="rx-q"><div><b>${i + 1}. ${q}</b><small>${ex}</small></div><div class="rx-b">${[['s', 'Sim'], ['n', 'Não'], ['?', 'Não sei']].map(([v, l]) => `<button class="${R.r[i] === v ? 'on ' + v : ''}" data-rx="${t}:${i}:${v}">${l}</button>`).join('')}</div></div>`).join('')}
+    <p class="small muted" style="margin:8px 0 0">Raio-X é para estudar, não é recomendação. Refaça a cada 6 meses: os números mudam.</p></div>`;
+}
+
+/* ---------- 🎓 Trilha de 8 semanas ---------- */
+const TRILHA = [
+  ['Reserva de emergência', 'Antes de investir em bolsa, junte de 3 a 6 meses de gastos num lugar seguro e que dá para sacar no mesmo dia. Ela evita vender investimento na hora errada ou pegar empréstimo quando aparece um imprevisto.', ['Veja o cartão 🐷 Reserva de emergência na Visão geral e quanto falta.', 'invest', 'visao'], ['Onde deve ficar a reserva de emergência?', ['Em ações de empresas grandes', 'No Tesouro Selic ou em CDB de liquidez diária', 'Em cripto, porque rende mais'], 1, 'A reserva precisa de segurança e de saque rápido. Ação e cripto podem estar em queda justo quando você precisar.']],
+  ['Renda fixa e Tesouro', 'Renda fixa é emprestar dinheiro ao governo (Tesouro) ou a um banco (CDB) em troca de juros. O CDI é a régua: quanto mais perto ou acima de 100% do CDI, melhor. Tesouro Selic é o mais seguro do país.', ['Abra Explorar › Renda fixa e compare um CDB de 110% do CDI com o Tesouro Selic.', 'invest', 'explorar'], ['Um CDB que paga 90% do CDI é…', ['Melhor que o Tesouro Selic', 'Geralmente pior que o Tesouro Selic', 'Isento de imposto'], 1, 'O Tesouro Selic rende perto de 100% do CDI. Um CDB abaixo disso costuma render menos, a não ser em prazos curtos.']],
+  ['Ações: o que é uma empresa sólida', 'Comprar uma ação é virar sócio de uma empresa. Empresa sólida dá lucro quase todo ano, paga dividendos, não tem dívida demais e está num setor que o país sempre precisa. O preço sobe e desce todo dia; o que importa é o lucro ao longo dos anos.', ['Abra BBAS3 em Gráficos e responda o 🩺 Raio-X de solidez olhando a Status Invest.', 'invest', 'graficos'], ['O que mais mostra que uma empresa é sólida?', ['O preço subiu muito no último mês', 'Lucro e dividendos constantes por muitos anos', 'Todo mundo está falando dela'], 1, 'Preço de curto prazo e modinha não dizem nada. Lucro constante, sim.']],
+  ['Fundos imobiliários: tijolo e papel', 'Um FII junta o dinheiro de muita gente. O de tijolo compra imóveis (galpões, shoppings) e recebe aluguel. O de papel empresta para o mercado imobiliário e recebe juros, como o MXRF11. Os dois pagam rendimento todo mês, isento de imposto.', ['Responda o 🩺 Raio-X do MXRF11 e de um fundo de tijolo, como o HGLG11.', 'invest', 'graficos'], ['O que significa P/VP de 1,30 num fundo imobiliário?', ['Está 30% mais caro que o valor dos seus imóveis ou títulos', 'Rende 1,30% ao mês', 'É um fundo pequeno'], 0, 'P/VP compara o preço da cota com o valor do patrimônio. Perto de 1 é o preço justo.']],
+  ['Dividendos e reinvestir', 'O segredo dos juros compostos é reinvestir o que você recebe. Um rendimento de R$ 0,90 parece pouco, mas comprando mais cotas com ele, mês após mês, a bola de neve cresce sozinha.', ['Abra Simuladores e veja quanto R$ 80 por mês viram em 10 e em 20 anos.', 'invest', 'simular'], ['O que fazer com o rendimento do FII?', ['Gastar, porque é pouco', 'Reinvestir comprando mais cotas', 'Deixar parado na corretora'], 1, 'Reinvestir faz o rendimento gerar rendimento. É o motor dos juros compostos.']],
+  ['ETFs e exterior', 'ETF é um fundo que copia um índice inteiro: com uma cota você compra um pedaço de dezenas ou centenas de empresas. IVVB11 copia as 500 maiores dos EUA e é comprado na B3, em reais. É um jeito simples de não depender só do Brasil.', ['Abra IVVB11 em Gráficos › ETF e leia a leitura em português.', 'invest', 'graficos'], ['Qual a vantagem principal de um ETF?', ['Garante lucro', 'Diversifica em muitas empresas com uma compra só', 'Não tem risco'], 1, 'ETF espalha o risco. Ele não garante lucro e pode cair junto com o mercado.']],
+  ['Cripto e risco', 'Cripto pode subir muito e cair mais de 70%. Por isso, no máximo 1% do patrimônio, nunca dinheiro da reserva nem emprestado, e sem alavancagem. O Laboratório mostra que a maioria das regras de compra e venda perde para comprar e segurar.', ['No Laboratório, teste uma regra em todas as moedas e veja em quantas ela ganhou.', 'invest', 'lab'], ['Qual destas é uma regra que protege?', ['Usar alavancagem para recuperar uma perda', 'No máximo 1% do patrimônio em cripto', 'Colocar a reserva em cripto quando estiver em alta'], 1, 'Limite pequeno e sem alavancagem: assim um erro nunca derruba a família.']],
+  ['Seu plano de longo prazo', 'Disciplina ganha de inteligência: reserva primeiro, depois a compra do mês quando der, reinvestir os rendimentos e revisar o Raio-X a cada 6 meses. Anote toda decisão no Diário e espere 24 horas. Em 10 anos, a constância faz o trabalho.', ['Anote no 📓 Diário a sua próxima compra do mês e o motivo.', 'invest', 'diario'], ['O que mais importa no longo prazo?', ['Acertar o melhor momento de comprar', 'Constância: investir quando der, por muitos anos', 'Seguir as dicas da internet'], 1, 'Ninguém acerta o momento sempre. Quem investe com constância por muitos anos chega mais longe.']],
+];
+function trilhaSemana() { const T = inv83().trilha.feitas; for (let i = 1; i <= 8; i++) if (!T[i]) { const ant = T[i - 1]; const lib = i === 1 || (ant && addDias(ant, 7) <= hoje()); return { n: i, lib, quando: ant ? addDias(ant, 7) : hoje() }; } return { n: 9, lib: false }; }
+function trilhaCard() {
+  const T = inv83().trilha.feitas; const S = trilhaSemana(); const feitas = Object.keys(T).length;
+  return `<div class="card lab-c tri"><div class="lab-h"><h3>🎓 Trilha de investimentos · 8 semanas</h3><span class="muted small">${feitas} de 8</span></div><div class="tri-bar">${TRILHA.map((_, i) => `<i class="${T[i + 1] ? 'on' : ''}"></i>`).join('')}</div>
+    ${TRILHA.map(([t, lic, ex, q], i) => { const n = i + 1; const atual = n === S.n;
+      if (!atual) return `<div class="tri-l ${T[n] ? 'ok' : ''}">${T[n] ? '✅' : n < S.n ? '✅' : '🔒'} Semana ${n} · ${t}</div>`;
+      if (!S.lib) return `<div class="tri-l">⏳ Semana ${n} · ${t} <small class="muted">· libera em ${dmy(S.quando).slice(0, 5)} (uma por semana, para virar hábito)</small></div>`;
+      const errou = ui.triErro === n;
+      return `<div class="tri-cur"><b>▶ Semana ${n} · ${t}</b><p>${lic}</p><p class="small"><b>Exercício:</b> ${ex[0]} <button class="btn sm" data-tri-ir="${ex[1]}:${ex[2]}">Ir</button></p>
+        <p class="small" style="margin:8px 0 4px"><b>Pergunta:</b> ${q[0]}</p><div class="tri-op">${q[1].map((o, k) => `<button data-tri-r="${n}:${k}">${o}</button>`).join('')}</div>${errou ? `<p class="small bad" style="margin:6px 0 0">Ainda não. ${q[3]}</p>` : ''}</div>`; }).join('')}
+    ${S.n > 8 ? '<p class="small good" style="margin:8px 0 0">🎉 Trilha completa! Volte ao Raio-X a cada 6 meses e siga com a compra do mês.</p>' : ''}</div>`;
+}
+
+/* ---------- 🧪 Laboratório mais honesto ---------- */
+function labDCA(P) { const passo = 30; const n = Math.max(1, Math.ceil(P.length / passo)); let cotas = 0, inv = 0; for (let i = 0; i < P.length; i += passo) { cotas += 1 / P[i]; inv += 1; } return (cotas * P[P.length - 1]) / inv - 1; }
+function labHonesto() {
+  const sym = ui.labSym || 'BTC'; const D0 = labCacheLer(sym)?.d; if (!D0) return ''; const R = labRegra(); const dias = LAB_PER.find((p) => p[0] === labPerAtual())?.[2] || 1460; const D = D0.slice(-Math.min(dias, D0.length)); const T = labTestar(D, R); const dca = labDCA(T.P);
+  const moedas = LAB_MOEDAS.map((m) => m[0]); const linhas = moedas.map((s) => { const d = labCacheLer(s)?.d; if (!d) { labDados(s); return [s, null]; } const DD = d.slice(-Math.min(dias, d.length)); if (DD.length < 60) return [s, null]; const x = labTestar(DD, R); return [s, x]; });
+  const ok = linhas.filter(([, x]) => x); const venceu = ok.filter(([, x]) => x.ret > x.bh).length;
+  const ver = !ok.length ? '' : venceu >= ok.length * 0.7 ? `Ganhou em ${venceu} de ${ok.length}: a regra é consistente nesse período. Mesmo assim, teste outros períodos.` : venceu >= ok.length * 0.4 ? `Ganhou em ${venceu} de ${ok.length}: depende da moeda, não é confiável sozinha.` : `Ganhou em ${venceu} de ${ok.length}: provavelmente foi sorte onde ganhou.`;
+  return `<div class="card lab-c"><h3>⚖️ A comparação completa · ${labTk(sym)}</h3><div class="lab-k" style="grid-template-columns:repeat(3,1fr)"><div><small>SUA REGRA</small><b class="${T.ret >= 0 ? 'good' : 'bad'}">${labPct(T.ret)}</b></div><div><small>COMPRAR E SEGURAR</small><b class="${T.bh >= 0 ? 'good' : 'bad'}">${labPct(T.bh)}</b></div><div><small>UM POUCO TODO MÊS</small><b class="${dca >= 0 ? 'good' : 'bad'}">${labPct(dca)}</b><span>mesmo valor a cada 30 dias</span></div></div>
+    <p class="small muted" style="margin:0 0 10px">"Um pouco todo mês" é o que a maioria consegue fazer, sem tentar acertar o momento.</p>
+    <h3 style="font-size:14px">Mesma regra em todas as moedas</h3><table class="compact"><thead><tr><th>Moeda</th><th class="num">Regra</th><th class="num">Segurar</th><th></th></tr></thead><tbody>${linhas.map(([s, x]) => `<tr><td>${s}</td>${x ? `<td class="num">${labPct(x.ret)}</td><td class="num">${labPct(x.bh)}</td><td class="${x.ret > x.bh ? 'good' : 'bad'}">${x.ret > x.bh ? 'ganhou' : 'perdeu'}</td>` : '<td colspan="3" class="muted small">carregando…</td>'}</tr>`).join('')}</tbody></table>
+    ${ver ? `<div class="lab-leitura">${ver}</div>` : ''}</div>`;
+}
+
+/* ---------- ₿ suas criptos ---------- */
+function criptoSync() { if (!db) return; inv83().criptos.forEach((c) => { if (!LAB_MOEDAS.some((m) => m[0] === c.s)) LAB_MOEDAS.push([c.s, c.nome || c.s, 'Moeda que você adicionou. Estude o projeto antes de qualquer compra.', 'Desconhecido: moedas menores costumam ter risco altíssimo.', true]); }); }
+async function criptoAdd() {
+  const s = ($('[data-cr-cod]')?.value || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, ''); if (!s) return toast('Digite o código da cripto.');
+  if (LAB_MOEDAS.some((m) => m[0] === s)) return toast(`${s} já está na lista.`); toast(`Procurando ${s} na Binance…`);
+  try { const o = await labBuscar(s); if (!o.d.length) throw new Error(); } catch (e) { return toast(`Não achei ${s} na Binance. Confira o código.`); }
+  inv83().criptos.push({ s, em: hoje() }); criptoSync(); changed(); toast(`₿ ${s} adicionada`);
+}
+function criptoDel(s) { const I = inv83(); I.criptos = I.criptos.filter((c) => c.s !== s); const k = LAB_MOEDAS.findIndex((m) => m[0] === s && m[4]); if (k >= 0) LAB_MOEDAS.splice(k, 1); if (ui.labSym === s) ui.labSym = 'BTC'; changed(); toast(`${s} saiu da lista`); }
+
+/* ---------- ligações nas telas ---------- */
+{ const _v = invVisao; invVisao = function () { let topo = ''; try { if (db) topo = `<div class="inv83-g">${semaforo()}${cestaCard()}${reservaCard()}</div>`; } catch (e) { console.warn('8.3', e); } return topo + _v.apply(this, arguments); }; }
+{ const _e = invEstudar; invEstudar = function () { let t = ''; try { t = trilhaCard(); } catch (e) {} return t + _e.apply(this, arguments); }; }
+{ const _g = invGraficos; invGraficos = function () { criptoSync(); const h = _g.apply(this, arguments); const s = ui.labSym || 'BTC'; if (!/^B:/.test(s) || !['acao', 'fii'].includes(labTipoDe(s))) return h; return h + raioxCard(labTk(s)); }; }
+{ const _l = invLab; invLab = function () { criptoSync(); return _l.apply(this, arguments) + labHonesto(); }; }
+{ const _x = exploraCripto; exploraCripto = function () { criptoSync(); const meus = inv83().criptos;
+  return `<div class="card cr83"><b>₿ Suas criptos</b><p class="small muted" style="margin:2px 0 8px">Digite o código (ex.: AVAX, PEPE). O Prumo confere na Binance e a moeda passa a aparecer em Gráficos, Laboratório e Simulação.</p><div class="lab-tk"><input data-cr-cod placeholder="código"><button class="btn sm primary" data-cr-add>+ Adicionar</button></div>
+    ${meus.length ? `<div class="lab-sug" style="margin:8px 0 0">${meus.map((c) => `<button class="on" data-cr-del="${c.s}" title="Tirar da lista">${c.s} ✕</button>`).join('')}</div>` : ''}</div>` + _x.apply(this, arguments); }; }
+{ const _p = leiPendencias; leiPendencias = function () { const P = _p.apply(this, arguments); try { if (!db) return P; const S = trilhaSemana(); if (S.n <= 8 && S.lib) P.push({ k: 'trilha', ic: '🎓', t: `Trilha de investimentos · Semana ${S.n}`, s: TRILHA[S.n - 1][0], ok: false }); } catch (e) {} return P; }; }
+try { criptoSync(); } catch (e) {}
+
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if ((b = g('data-lei-it')) && b.dataset.leiIt === 'trilha') { ui.sub = ui.sub || {}; ui.sub.invest = 'estudar'; if (CELULAR && typeof celFecharFolha === 'function') celFecharFolha(); return setTab('invest'); }
+  if ((b = g('data-cesta-esc'))) { const [t, k] = b.dataset.cestaEsc.split(':'); if (t === 'A') ui.cestaA = ui.cestaA === k ? null : k; else ui.cestaF = ui.cestaF === k ? null : k; return renderAll(); }
+  if (g('data-cesta-comprei')) return cestaComprar();
+  if (g('data-cesta-ok')) return cestaConfirmar();
+  if (g('data-cesta-pulei')) { inv83().cestaHist.push({ id: uid(), ym: ymOf(hoje()), data: hoje(), pulou: true, total: 0, itens: [] }); changed(); return toast('Tudo bem. Mês que vem a gente vê de novo.'); }
+  if (g('data-cesta-desfazer')) { const I = inv83(); const ym = ymOf(hoje()); if (confirm('Desfazer o registro deste mês? (Os lançamentos na Carteira continuam; apague lá se precisar.)')) { I.cestaHist = I.cestaHist.filter((h) => h.ym !== ym); changed(); } return; }
+  if (g('data-cesta-diario')) { const M = cestaMontar(Number(ui.cestaB ?? inv83().cestaValor ?? 80) || 0); ui.diPre = { acao: 'comprar ' + M.itens.map((i) => `${i.q} ${i.t}`).join(' e '), valor: r2(M.total), motivo: 'compra do mês, empresas sólidas' }; ui.sub.invest = 'diario'; return renderAll(); }
+  if (g('data-cesta-lista')) return cestaLista();
+  if (g('data-cesta-lista-ok')) { const p = (v) => [...new Set(v.toUpperCase().split(/[,\s;]+/).map((x) => x.replace(/[^A-Z0-9]/g, '')).filter(Boolean))].slice(0, 8); const I = inv83(); I.cesta = { acoes: p($('#clA').value), fiis: p($('#clF').value) }; ui.cestaA = ui.cestaF = null; vgFecharJanela(); changed(); return cestaBuscar(true); }
+  if (g('data-reserva-guardar')) { const m = resMeta(); return openForm({ title: '🐷 Guardar na reserva', submit: 'Guardar', note: 'Coloque o dinheiro no Tesouro Selic ou num CDB de liquidez diária e registre aqui. Valor negativo = retirada.', fields: [{ k: 'v', label: 'Valor (R$)', type: 'money' }], onSave: (v) => { const n = parseValor(v.v); if (!isFinite(n) || n === 0) return 'Informe um valor.'; m.acumulado = r2(Math.max(0, m.acumulado + n)); if (n > 0) inv83().reservaHist.push({ id: uid(), ym: ymOf(hoje()), data: hoje(), valor: r2(n) }); } }); }
+  if (g('data-reserva-alvo')) { const m = resMeta(); return openForm({ title: 'Alvo da reserva', values: { alvo: m.alvo }, note: `O ideal é 6 meses de gastos. Sua média é ${fmt0(resGastoMes())} por mês.`, fields: [{ k: 'alvo', label: 'Alvo (R$)', type: 'money' }], onSave: (v) => { if (v.alvo > 0) m.alvo = r2(v.alvo); } }); }
+  if (g('data-di-salvar')) { const acao = ($('#diAcao')?.value || '').trim(); if (!acao) return toast('Escreva o que vai fazer.'); const d = { id: uid(), ts: Date.now(), libera: Date.now() + 24 * 3600e3, data: hoje(), acao, tipo: $('#diTipo').value, valor: num($('#diValor').value, 0), motivo: ($('#diMotivo').value || '').trim(), saida: ($('#diSaida').value || '').trim(), ans: +$('#diAns').value, helen: $('#diHelen').value, st: 'espera' }; inv83().diario.push(d); ui.diPre = null; changed(); const al = diAlertas(d); return toast(al.length ? '🔴 Guardada, com alertas. Leia antes de decidir.' : '📓 Guardada. Amanhã você confirma.', 6000); }
+  if ((b = g('data-di-st'))) { const [id, st] = b.dataset.diSt.split(':'); const d = inv83().diario.find((x) => x.id === id); if (d) { d.st = st; d.fim = hoje(); changed(); } return; }
+  if ((b = g('data-rx'))) { const [t, i, v] = b.dataset.rx.split(':'); const I = inv83(); I.raiox[t] = I.raiox[t] || { r: {} }; I.raiox[t].r[i] = v; I.raiox[t].em = hoje(); return changed(); }
+  if ((b = g('data-tri-ir'))) { const [tab, sub] = b.dataset.triIr.split(':'); ui.sub = ui.sub || {}; ui.sub[tab] = sub; if (sub === 'graficos') { const S = trilhaSemana(); const alvo = { 3: 'B:BBAS3', 4: 'B:MXRF11', 6: 'B:IVVB11' }[S.n]; if (alvo) { ui.labSym = alvo; ui.labTipo = labTipoDe(alvo); } } return setTab(tab); }
+  if ((b = g('data-tri-r'))) { const [n, k] = b.dataset.triR.split(':').map(Number); const q = TRILHA[n - 1][3]; if (k === q[2]) { inv83().trilha.feitas[n] = hoje(); ui.triErro = null; changed(); toast(`🎓 Semana ${n} concluída! ${q[3]}`, 7000); } else { ui.triErro = n; renderAll(); } return; }
+  if (g('data-cr-add')) return criptoAdd();
+  if ((b = g('data-cr-del'))) { if (confirm(`Tirar ${b.dataset.crDel} da lista?`)) criptoDel(b.dataset.crDel); return; }
+}, true);
+document.addEventListener('change', (e) => { const t = e.target.closest('[data-cesta-b]'); if (t) { const v = num(t.value, NaN); if (isFinite(v) && v >= 0) { ui.cestaB = v; inv83().cestaValor = v; } renderAll(); } });
+document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.matches?.('[data-cr-cod]')) criptoAdd(); });
+CEL_NOVIDADES['8.3'] = ['🚦 Posso investir este mês? e 🧺 Compra do mês (1 ação + 1 FII, só se der)', '🐷 Cofrinho da reserva de emergência e 📅 constância', '📓 Diário com regra das 24 h · 🩺 Raio-X de solidez · 🎓 Trilha de 8 semanas', '🧪 Laboratório compara com "um pouco todo mês" e testa em todas as moedas · ₿ adicione suas criptos'];
+CEL_NOVIDADES['8.4'] = ['🏛️ Mestres da disciplina: Barsi, Read, Bazin, Buffett, Graham e Bogle (em Estudar)', '✅ Hábitos dos mestres e ❄️ bola de neve dos proventos', '🎯 Preço-teto do Bazin no Raio-X', '📜 Meu plano de longo prazo, assinado e lido pela Helen (no Diário)'];
+
+/* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
+function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
+const PLANO_PADRAO = [
+  'Por que invisto: aposentadoria e segurança da família. Meu prazo é de 10 anos ou mais.',
+  'Primeiro a reserva de emergência (6 meses de gastos), no Tesouro Selic ou CDB de liquidez diária.',
+  'Todo mês, se as contas estiverem em dia: 1 ação sólida + 1 fundo imobiliário, de R$ 50 a R$ 100. Mês que não der, tudo bem.',
+  'Reinvisto todos os proventos (dividendos e rendimentos).',
+  'Nunca: alavancagem, dinheiro emprestado, apostas ou promessa de ganho rápido.',
+  'Cripto: no máximo 1% do patrimônio, e só depois de 6 meses de simulação.',
+  'Toda compra ou venda passa pelo Diário (24 horas) e a Helen sabe.',
+  'Só vendo se a empresa piorar de verdade (o Raio-X caiu). Nunca vendo por medo de uma queda.',
+  'Uma vez por ano reviso este plano com a Helen.',
+];
+const MESTRES = [
+  { id: 'barsi', f: '🇧🇷', n: 'Luiz Barsi', s: 'Engraxate que virou o "rei dos dividendos" · método criado nos anos 1970',
+    h: 'Compra todo mês ações de empresas sólidas que pagam dividendos (energia, bancos, papel e celulose). Reinveste tudo. Compra mais quando o preço cai.',
+    hist: ['Ficou órfão de pai ainda bebê. Para ajudar a mãe, trabalhou de engraxate e aprendiz de alfaiate.', 'Estudou contabilidade e economia e foi trabalhar numa corretora. Nos anos 1970 criou a sua "carteira previdenciária": comprar ações da mesma empresa todo mês, por muitos anos, e usar os dividendos para comprar mais.', 'Com o tempo, os dividendos passaram a comprar as ações sozinhos, sem ele tirar dinheiro do bolso. Virou o maior investidor pessoa física da bolsa brasileira, com ações de Banco do Brasil, Itaúsa, Klabin, Eletrobras, entre outras.', 'Até hoje vive de forma simples: camisa polo e metrô.'],
+    lic: ['Comprar um pouco, todo mês, das mesmas empresas boas.', 'Olhar para os dividendos, não para o preço do dia.', 'Queda de preço é chance de comprar mais barato, não motivo de pânico.'],
+    cui: 'Ele também perdeu dinheiro com bancos que quebraram nos anos 1990 (Econômico, Nacional). Ninguém acerta sempre: por isso, empresas sólidas e várias delas.',
+    ir: ['🧺 Compra do mês', 'visao'] },
+  { id: 'read', f: '🇺🇸', n: 'Ronald Read', s: 'Frentista e faxineiro · 1921–2014',
+    h: 'Ganhou pouco a vida toda. Comprou ações de empresas boas, reinvestiu os dividendos e quase nunca vendeu. Deixou quase US$ 8 milhões.',
+    hist: ['Lutou na Segunda Guerra. Depois trabalhou 25 anos como frentista e mecânico num posto em Vermont, e mais 17 anos como faxineiro numa loja.', 'Lia o jornal de economia e comprava ações de empresas grandes que pagam dividendos: bancos, energia, saúde, telefonia. Evitava o que não entendia.', 'Reinvestia os dividendos e segurava por décadas. Vivia com muita simplicidade, ninguém sabia que ele era rico.', 'Quando morreu, tinha 95 ações e quase US$ 8 milhões. Deixou cerca de US$ 4,8 milhões para o hospital e US$ 1,2 milhão para a biblioteca da cidade.'],
+    lic: ['Salário pequeno não impede: o que importa é a constância.', 'Gastar menos do que ganha, sempre.', 'Tempo + dividendos reinvestidos fazem o trabalho pesado.'],
+    cui: 'Ele teve 60 anos de investimento. A história dele mostra o poder do tempo, não de um atalho.',
+    ir: ['📅 Constância e reserva', 'visao'] },
+  { id: 'bazin', f: '🇧🇷', n: 'Décio Bazin', s: 'Jornalista de economia · 1931–2003',
+    h: 'Só comprar se a empresa pagar pelo menos 6% ao ano em dividendos e tiver pouca dívida. Criou o "preço-teto".',
+    hist: ['Estudou contabilidade, trabalhou em corretora desde os anos 1960 e escreveu sobre economia em jornais como a Gazeta Mercantil e o Estadão.', 'Em 1992 publicou o livro "Faça Fortuna com Ações, Antes que Seja Tarde".', 'A regra dele é simples: a empresa precisa pagar pelo menos 6% ao ano em dividendos, ter pouca dívida e pagar com regularidade.', 'Daí vem o preço-teto: o dividendo do ano dividido por 0,06. Acima desse preço, ele não comprava.'],
+    lic: ['Ter uma regra clara antes de comprar.', 'Dividendo alto num ano só não basta: precisa ser regular.', 'Empresa endividada pode cortar os dividendos.'],
+    cui: 'Dividendo muito alto às vezes é sinal de problema (lucro que não se repete). Confira no Raio-X.',
+    ir: ['🎯 Preço-teto no Raio-X', 'graficos'] },
+  { id: 'buffett', f: '🇺🇸', n: 'Warren Buffett', s: 'Comprou a 1ª ação aos 11 anos · hoje com 96',
+    h: 'Investir só no que entende, pensar em 10 anos ou mais, não ter medo quando todos têm. A maior parte da fortuna veio depois dos 60.',
+    hist: ['Comprou a primeira ação aos 11 anos. Aprendeu com Benjamin Graham na faculdade.', 'Há mais de 60 anos comanda a Berkshire Hathaway, que compra empresas boas e fica com elas por décadas. Mora na mesma casa desde 1958.', 'Passou o cargo de presidente da empresa para Greg Abel em janeiro de 2026, e em setembro de 2026 deixou também a presidência do conselho.', 'A maior parte da fortuna dele veio depois dos 60 anos: é o tempo que multiplica.'],
+    lic: ['"Regra nº 1: nunca perca dinheiro. Regra nº 2: nunca esqueça a regra nº 1."', 'Só comprar o que você consegue explicar em poucas palavras.', '"Tenha medo quando os outros são gananciosos, e coragem quando os outros têm medo."'],
+    cui: 'Ele avisa sempre: quem não aguenta ver a ação cair 50% sem vender não deveria ter ações.',
+    ir: ['📓 Diário de 24 horas', 'diario'] },
+  { id: 'graham', f: '🇺🇸', n: 'Benjamin Graham', s: 'O professor de Buffett · 1894–1976',
+    h: '"Margem de segurança": comprar com folga, para poder errar sem quebrar. O mercado é um sócio de humor instável.',
+    hist: ['Perdeu muito dinheiro na crise de 1929. Aprendeu da pior forma e criou um método para não repetir o erro.', 'Foi professor na Universidade Columbia e escreveu "O Investidor Inteligente" (1949), até hoje um dos livros mais lidos sobre o assunto.', 'Ele imaginava o mercado como um sócio chamado "Sr. Mercado": um dia eufórico, outro dia deprimido. Você não precisa seguir o humor dele.'],
+    lic: ['Margem de segurança: comprar com folga.', '"No curto prazo, o mercado é uma máquina de votar. No longo prazo, é uma balança."', 'Separar investimento (estudado, seguro) de especulação (aposta).'],
+    cui: 'Ele mesmo dizia que o maior inimigo do investidor costuma ser ele próprio.',
+    ir: ['🩺 Raio-X de solidez', 'graficos'] },
+  { id: 'bogle', f: '🇺🇸', n: 'John Bogle', s: 'Criou o fundo de índice · 1929–2019',
+    h: 'Taxa baixa e paciência vencem quase sempre. "Não procure a agulha no palheiro: compre o palheiro."',
+    hist: ['Fundou a Vanguard em 1975 e, em 1976, criou o primeiro fundo de índice para pessoas comuns.', 'Em vez de tentar escolher as melhores ações, o fundo compra todas as ações de um índice, com taxa muito baixa.', 'Mostrou que, em 10 ou 20 anos, a maioria dos fundos caros perde para o índice por causa das taxas.'],
+    lic: ['Cada 1% de taxa ao ano come uma fatia enorme em 20 anos.', 'Diversificar é proteção.', '"Fique no curso": não mude o plano a cada notícia.'],
+    cui: 'Fundo de índice também cai quando a bolsa cai. A diferença é que ele não quebra junto com uma empresa só.',
+    ir: ['💼 Comparador de fundos', 'explorar'] },
+];
+const LICOES = [
+  ['Comprar ações das mesmas empresas boas, todo mês, por muitos anos.', 'ideia de Luiz Barsi'],
+  ['Dinheiro serve para fazer mais dinheiro.', 'Luiz Barsi', 1],
+  ['Gastar menos do que ganha e investir a diferença, por décadas.', 'ideia de Ronald Read'],
+  ['Regra nº 1: nunca perca dinheiro. Regra nº 2: nunca esqueça a regra nº 1.', 'Warren Buffett', 1],
+  ['Alguém está sentado na sombra hoje porque alguém plantou uma árvore há muito tempo.', 'Warren Buffett', 1],
+  ['Tenha medo quando os outros são gananciosos, e coragem quando os outros têm medo.', 'Warren Buffett', 1],
+  ['No curto prazo, o mercado é uma máquina de votar. No longo prazo, é uma balança.', 'Benjamin Graham', 1],
+  ['Compre com folga, para poder errar sem quebrar: margem de segurança.', 'ideia de Benjamin Graham'],
+  ['Não procure a agulha no palheiro: compre o palheiro.', 'John Bogle', 1],
+  ['Fique no curso: não mude o plano a cada notícia.', 'ideia de John Bogle'],
+  ['Só compre se pagar pelo menos 6% ao ano em dividendos, com regularidade e pouca dívida.', 'ideia de Décio Bazin'],
+  ['Saiba o que você tem e por que você tem.', 'Peter Lynch', 1],
+  ['Queda de preço em empresa boa é chance de comprar mais barato.', 'ideia de Luiz Barsi'],
+  ['Taxa baixa e paciência vencem quase sempre.', 'ideia de John Bogle'],
+  ['Investimento é estudado e seguro. Especulação é aposta. Não misture.', 'ideia de Benjamin Graham'],
+  ['O tempo faz o trabalho pesado. A maior parte da fortuna de Buffett veio depois dos 60.', 'ideia de Warren Buffett'],
+];
+const HABITOS = [['gastei', 'Gastei menos do que ganhei', 'Read'], ['comprei', 'Investi alguma coisa este mês', 'Barsi'], ['reinvesti', 'Reinvesti os proventos', 'Barsi'], ['medo', 'Não vendi nada por medo', 'Graham'], ['entendo', 'Só comprei o que sei explicar', 'Buffett']];
+function habAuto(ym) {
+  const I = inv83(); const L = db.lancamentos.filter((l) => ymOf(l.data) === ym); const rec = soma(L.filter((l) => l.tipo === 'Receita'), 'valor'), des = soma(L.filter((l) => l.tipo === 'Despesa'), 'valor');
+  const fez = I.cestaHist.some((h) => h.ym === ym && !h.pulou) || I.reservaHist.some((h) => h.ym === ym) || (I.movs || []).some((x) => (x.tipo === 'compra' || x.tipo === 'aporte') && ymOf(x.data) === ym);
+  return { gastei: rec > 0 && des > 0 ? (rec >= des ? 's' : 'n') : null, comprei: fez ? 's' : null };
+}
+function habitosCard() {
+  const I = inv84(); const ym = ymOf(hoje()); const M = I.habitos[ym] || {}; const A = habAuto(ym);
+  const v = (k) => M[k] || A[k] || null; const n = HABITOS.filter(([k]) => v(k) === 's').length;
+  const meses = Array.from({ length: 6 }, (_, i) => addM(ym, i - 5)).map((m) => { const H = I.habitos[m] || {}; const Au = habAuto(m); return [m, HABITOS.filter(([k]) => (H[k] || Au[k]) === 's').length]; });
+  return `<div class="card lab-c me-hab"><div class="lab-h"><h3>✅ Hábitos dos mestres · ${MESES[+ym.slice(5, 7) - 1].toLowerCase()}</h3><b class="${n >= 4 ? 'good' : n >= 2 ? 'warn' : 'muted'}">${n} de 5</b></div>
+    ${HABITOS.map(([k, t, q]) => { const x = v(k); const auto = !M[k] && A[k]; return `<div class="me-hl"><span>${t} <small class="muted">(${q})</small></span><span class="me-sn">${auto ? `<i class="muted small">automático</i>` : ''}<button class="${x === 's' ? 'on s' : ''}" data-me-hab="${k}:s">Sim</button><button class="${x === 'n' ? 'on n' : ''}" data-me-hab="${k}:n">Não</button></span></div>`; }).join('')}
+    <div class="me-6">${meses.map(([m, c]) => `<span title="${c} de 5"><i style="height:${4 + c * 6}px" class="${c >= 4 ? 'g' : c >= 2 ? 'y' : ''}"></i>${MC[+m.slice(5, 7) - 1][0]}</span>`).join('')}</div>
+    <p class="small muted" style="margin:6px 0 0">O Prumo marca sozinho o que consegue saber. O resto você marca. Não é nota: é espelho.</p></div>`;
+}
+function licaoCard() {
+  const d = Math.floor(new Date(hoje() + 'T12:00:00').getTime() / 864e5); const k = ((d + (ui.licaoExtra || 0)) % LICOES.length + LICOES.length) % LICOES.length; const [t, a, cit] = LICOES[k];
+  const m = MESTRES.find((x) => a.includes(x.n));
+  return `<div class="card lab-c me-lic"><h3>💬 Lição de hoje</h3><p class="me-q">${cit ? '“' + t + '”' : t}</p><p class="muted small" style="margin:0">${cit ? '— ' + a : a.charAt(0).toUpperCase() + a.slice(1)}</p>
+    <div class="row" style="gap:6px;margin-top:10px">${m ? `<button class="btn sm primary" data-me-ab="${m.id}">Ler a história</button>` : ''}<button class="btn sm" data-me-outra>Outra lição</button></div></div>`;
+}
+function mestresGrid() {
+  const ab = ui.mestreAb;
+  return `<div class="card lab-c"><h3>📚 As histórias</h3><p class="muted small" style="margin:0 0 10px">Gente que ficou rica devagar, comprando todo mês, por décadas. Nenhum deles ficou rico rápido. Cada um ensina um hábito, e cada hábito já tem um lugar no Prumo.</p>
+    <div class="me-g">${MESTRES.map((m) => `<div class="me-m ${ab === m.id ? 'sel' : ''}"><div class="me-nm">${m.f} ${m.n}</div><div class="muted small">${m.s}</div><div class="me-h">${m.h}</div>
+      <div class="row" style="gap:6px;justify-content:space-between;align-items:center"><button class="btn sm" data-me-ab="${m.id}">${ab === m.id ? 'Fechar' : 'Ler a história'}</button><a class="me-ir" data-me-ir="${m.id}">➜ ${m.ir[0]}</a></div></div>`).join('')}</div>
+    ${ab ? mestreHist(MESTRES.find((m) => m.id === ab)) : ''}</div>`;
+}
+function mestreHist(m) {
+  if (!m) return '';
+  return `<div class="me-hist" id="meHist"><h3 style="margin:0 0 6px">${m.f} ${m.n}</h3>${m.hist.map((p) => `<p>${p}</p>`).join('')}
+    <b>3 lições para levar</b><ol>${m.lic.map((l) => `<li>${l}</li>`).join('')}</ol><div class="me-cui">⚠️ ${m.cui}</div>
+    <div class="row" style="gap:6px;margin-top:10px"><button class="btn sm primary" data-me-ir="${m.id}">Praticar no Prumo: ${m.ir[0]}</button><button class="btn sm" data-me-ab="${m.id}">Fechar</button></div></div>`;
+}
+function bolaCalc(v, dy, anos) { const t = dy / 100 / 12; let s = 0, ap = 0; const pts = []; for (let k = 1; k <= anos * 12; k++) { s = s * (1 + t) + v; ap += v; if (k % 12 === 0) pts.push([k / 12, s, s * t]); } return { s, ap, pts }; }
+function bolaCard() {
+  const I = inv84(); const v = Number(I.bola.v ?? I.cestaValor ?? 80) || 80; const dy = Number(I.bola.dy) || 8; const anos = Number(I.bola.anos) || 10;
+  const cota = cestaPrecos().p.MXRF11 || 10; const B = bolaCalc(v, dy, anos); const mx = Math.max(...B.pts.map((p) => p[1]));
+  const ano1 = B.pts.find((p) => p[2] >= cota); const prov12 = soma((I.movs || []).filter((x) => x.tipo === 'provento' && x.data >= addDias(hoje(), -365)), 'valor');
+  return `<div class="card lab-c"><h3>❄️ Bola de neve dos proventos <small class="muted">(jeito Barsi)</small></h3>
+    <div class="me-bf">Comprando <input data-me-bola="v" type="text" inputmode="decimal" value="${valorTxt(v)}"> por mês, com proventos de <input data-me-bola="dy" type="text" inputmode="decimal" value="${String(dy).replace('.', ',')}">% ao ano, reinvestidos, por <select data-me-bola="anos">${[10, 20, 30].map((a) => `<option ${a === anos ? 'selected' : ''} value="${a}">${a} anos</option>`).join('')}</select></div>
+    <div class="me-bar">${B.pts.map((p) => `<span title="Ano ${p[0]}: ${fmt0(p[1])}"><i style="height:${Math.max(3, (p[1] / mx) * 100)}%" class="${p[2] >= cota ? 'g' : ''}"></i></span>`).join('')}</div>
+    <div class="me-bx muted small"><span>Ano 1</span><span>Ano ${anos}</span></div>
+    <p style="margin:8px 0 2px"><b style="font-size:20px">${fmt0(B.s)}</b> <span class="muted small">em ${anos} anos · você colocou ${fmt0(B.ap)} · proventos de ~${fmt0(B.s * dy / 1200)}/mês</span></p>
+    <p class="small" style="margin:4px 0 0">${ano1 ? `🟢 A partir do <b>ano ${ano1[0]}</b>, os proventos sozinhos já compram 1 cota de FII (~${fmt(cota)}) por mês, sem tirar do bolso.` : 'Aumente o prazo para ver quando os proventos passam a comprar sozinhos.'}${prov12 ? ` Seus proventos de verdade nos últimos 12 meses: <b>${fmt0(prov12)}</b>.` : ''}</p>
+    <p class="small muted" style="margin:6px 0 0">Conta simples: sem valorização das cotas e sem inflação. É para ver o efeito do hábito, não é promessa.</p></div>`;
+}
+function planoCard(curto) {
+  const I = inv84(); const P = I.planoLP; const vence = P.revisar && P.revisar <= hoje();
+  const regras = curto ? P.regras.slice(0, 9) : P.regras;
+  return `<div class="card lab-c me-pl"><div class="lab-h"><h3>📜 Meu plano de longo prazo</h3><button class="btn sm" data-me-pl-ed>Editar regras</button></div>
+    <p class="muted small" style="margin:0 0 8px">Buffett e Graham diziam: decida as regras com a cabeça fria, e siga quando a emoção vier. Releia antes de cada decisão.</p>
+    <ol class="me-ol">${regras.map((r) => `<li>${esc(r)}</li>`).join('')}</ol>
+    ${vence ? '<div class="di-al" style="color:#a86a12;background:color-mix(in srgb,#d9822b 10%,transparent)">📅 Está na hora da revisão anual do plano, com a Helen.</div>' : ''}
+    <div class="me-ass"><span>${P.assinado ? `✍️ Assinado em ${dmy(P.assinado)}` : '✍️ Ainda não assinado'}</span><span>${P.helen ? `💛 Helen leu em ${dmy(P.helen)}` : '💛 A Helen ainda não leu'}</span>${P.revisar ? `<span>📅 Revisar em ${dmy(P.revisar)}</span>` : ''}</div>
+    <div class="row" style="gap:6px;margin-top:8px"><button class="btn sm primary" data-me-pl-ass>${P.assinado ? 'Assinar de novo (revisado)' : 'Assinar o plano'}</button><button class="btn sm" data-me-pl-hel>A Helen leu</button></div></div>`;
+}
+function mestresSecao() {
+  return `<div class="me-top"><h2 class="me-tt">🏛️ Mestres da disciplina</h2></div><div class="me-2">${licaoCard()}${habitosCard()}</div>${mestresGrid()}<div class="me-2">${bolaCard()}${planoCard(true)}</div>`;
+}
+/* 🎯 preço-teto Bazin (no Raio-X) */
+function bazinDivSugerido(t) { const I = inv83(); const a = (I.ativos || []).find((x) => (x.ticker || '').toUpperCase() === t); if (!a) return null; const q = cestaQtdCarteira(t); if (!(q > 0)) return null; const p = soma((I.movs || []).filter((m) => m.ativo === a.id && m.tipo === 'provento' && m.data >= addDias(hoje(), -365)), 'valor'); return p > 0 ? r2(p / q) : null; }
+function bazinCard(t) {
+  const I = inv83(); const R = I.raiox[t] || {}; const fii = rxTipo(t) === 'fii'; const tx = Number(R.bzTx) || (fii ? 8 : 6); const div = Number(R.div) || 0;
+  const preco = labCacheLer('B:' + t)?.d?.slice(-1)[0]?.[1] || cestaPrecos().p[t] || null; const teto = div > 0 ? div / (tx / 100) : null; const sug = bazinDivSugerido(t);
+  const dyAtual = preco && div ? div / preco : null;
+  return `<div class="card lab-c bz"><div class="lab-h"><h3>🎯 Preço-teto · ${t} <small class="muted">(jeito Bazin)</small></h3></div>
+    <p class="muted small" style="margin:0 0 8px">Veja na Status Invest quanto ${t} pagou por ${fii ? 'cota' : 'ação'} nos últimos 12 meses (campo "Dividendos 12M" ou soma dos proventos).</p>
+    <div class="me-bf">Pagou por ${fii ? 'cota' : 'ação'} em 12 meses: R$ <input data-bz-div="${t}" type="text" inputmode="decimal" value="${div ? valorTxt(div) : ''}" placeholder="0,00"> · mínimo de <select data-bz-tx="${t}">${[6, 8, 10].map((x) => `<option ${x === tx ? 'selected' : ''} value="${x}">${x}%</option>`).join('')}</select> ao ano</div>
+    ${sug && !div ? `<p class="small" style="margin:4px 0 0">Pelos proventos da sua carteira: R$ ${valorTxt(sug)} por ${fii ? 'cota' : 'ação'}. <button class="btn sm" data-bz-usar="${t}:${sug}">Usar</button></p>` : ''}
+    ${teto ? `<div class="bz-r"><div><small class="muted">Preço-teto</small><b>${fmt(teto)}</b><small class="muted">= ${valorTxt(div)} ÷ ${tx}%</small></div><div><small class="muted">Preço hoje</small><b>${preco ? fmt(preco) : '—'}</b><small class="muted">${dyAtual ? 'paga ' + pct1((dyAtual * 100).toFixed(1)) + ' ao ano' : 'atualize as cotações'}</small></div>
+      <div class="bz-v ${preco ? (preco <= teto ? 'good' : 'bad') : ''}">${preco ? (preco <= teto ? '🟢 Abaixo do teto: pelo critério do Bazin, o preço está razoável.' : '🔴 Acima do teto: pelo critério do Bazin, está caro. Espere ou escolha outra.') : 'Sem preço ainda.'}</div></div>` : ''}
+    <p class="small muted" style="margin:8px 0 0">Preço-teto não é garantia. Use junto com o Raio-X: dividendo alto de empresa ruim é armadilha.</p></div>`;
+}
+/* ---------- wrappers ---------- */
+{ const _e = invEstudar; invEstudar = function () { let t = ''; try { if (db) t = mestresSecao(); } catch (e) { console.warn('8.4', e); } return t + _e.apply(this, arguments); }; }
+{ const _g = invGraficos; invGraficos = function () { const h = _g.apply(this, arguments); try { const s = ui.labSym || 'BTC'; if (/^B:/.test(s) && ['acao', 'fii'].includes(labTipoDe(s))) return h + bazinCard(labTk(s)); } catch (e) { console.warn('8.4', e); } return h; }; }
+{ const _d = invDiario; invDiario = function () { let p = ''; try { p = `<details class="card lab-c me-pld"${ui.plAberto ? ' open' : ''}><summary><b>📜 Antes de decidir, releia o seu plano</b> <small class="muted">(toque para abrir)</small></summary>${planoCard(false).replace(/^<div class="card lab-c me-pl">/, '<div>')}</details>`; } catch (e) {} let h = _d.apply(this, arguments); h = h.replace('<button class="btn primary" style="margin-top:10px" data-di-salvar>', '<label class="lei-lab">Está de acordo com o meu plano?<select id="diPlano"><option value="sim">Sim</option><option value="nao">Não</option><option value="nsei">Não sei</option></select></label><button class="btn primary" style="margin-top:10px" data-di-salvar>'); return p + h; }; }
+{ const _a = diAlertas; diAlertas = function (d) { const a = _a(d); if (d.plano === 'nao') a.push('vai contra o seu plano escrito'); if (d.plano === 'nsei') a.push('você não sabe se está no plano: releia antes'); return a; }; }
+document.addEventListener('click', (e) => {
+  const g = (k) => e.target.closest(`[${k}]`); let b;
+  if (g('data-di-salvar')) { const v = ui.diPlanoV; ui.diPlanoV = null; const L = inv83().diario; const d = L[L.length - 1]; if (v && d && !d.plano && Date.now() - d.ts < 5000) { d.plano = v; changed(); if (v !== 'sim') toast(v === 'nao' ? '🔴 Essa decisão vai contra o seu plano escrito. Releia antes.' : '🟡 Releia o seu plano antes de decidir.', 7000); } return; }
+  if ((b = g('data-me-hab'))) { const [k, v] = b.dataset.meHab.split(':'); const I = inv84(); const ym = ymOf(hoje()); I.habitos[ym] = I.habitos[ym] || {}; I.habitos[ym][k] = I.habitos[ym][k] === v ? undefined : v; if (I.habitos[ym][k] === undefined) delete I.habitos[ym][k]; return changed(); }
+  if (g('data-me-outra')) { ui.licaoExtra = (ui.licaoExtra || 0) + 1; return renderAll(); }
+  if ((b = g('data-me-ab'))) { ui.mestreAb = ui.mestreAb === b.dataset.meAb ? null : b.dataset.meAb; renderAll(); if (ui.mestreAb) setTimeout(() => document.getElementById('meHist')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50); return; }
+  if ((b = g('data-me-ir'))) { const m = MESTRES.find((x) => x.id === b.dataset.meIr); if (!m) return; ui.sub = ui.sub || {}; ui.sub.invest = m.ir[1]; if (m.id === 'bazin' || m.id === 'graham') { ui.labSym = 'B:BBAS3'; ui.labTipo = 'acao'; } if (m.id === 'bogle') ui.expTipo = 'fundos'; ui.mestreAb = null; renderAll(); window.scrollTo?.(0, 0); return; }
+  if (g('data-me-pl-ed')) { const I = inv84(); return openForm({ title: '📜 Meu plano de longo prazo', submit: 'Salvar', wide: true, values: { t: I.planoLP.regras.join('\n') }, note: 'Uma regra por linha. Escreva com as suas palavras. Depois de mudar, assine de novo e mostre para a Helen.', fields: [{ k: 't', label: 'Regras', type: 'textarea' }], onSave: (v) => { const r = String(v.t || '').split('\n').map((x) => x.trim()).filter(Boolean); if (!r.length) return 'Escreva pelo menos uma regra.'; I.planoLP.regras = r.slice(0, 20); I.planoLP.helen = null; } }); }
+  if (g('data-me-pl-ass')) { const P = inv84().planoLP; P.assinado = hoje(); P.revisar = addM(ymOf(hoje()), 12) + hoje().slice(7); changed(); return toast('✍️ Plano assinado. Próxima revisão daqui a 1 ano.', 5000); }
+  if (g('data-me-pl-hel')) { inv84().planoLP.helen = hoje(); changed(); return toast('💛 Registrado: a Helen leu o plano.'); }
+  if ((b = g('data-bz-usar'))) { const [t, v] = b.dataset.bzUsar.split(':'); const I = inv83(); I.raiox[t] = I.raiox[t] || { r: {} }; I.raiox[t].div = Number(v); return changed(); }
+  if (e.target.closest('.me-pld summary')) { ui.plAberto = !e.target.closest('details').open; }
+}, true);
+window.addEventListener('click', (e) => { if (e.target.closest?.('[data-di-salvar]')) ui.diPlanoV = $('#diPlano')?.value || null; }, true);
+document.addEventListener('change', (e) => {
+  let t;
+  if ((t = e.target.closest('[data-me-bola]'))) { const I = inv84(); const k = t.dataset.meBola; const v = k === 'anos' ? +t.value : num(t.value, NaN); if (isFinite(v) && v > 0) I.bola[k] = k === 'dy' ? Math.min(v, 30) : v; changed(); return; }
+  if ((t = e.target.closest('[data-bz-div]'))) { const k = t.dataset.bzDiv; const v = num(t.value, NaN); const I = inv83(); I.raiox[k] = I.raiox[k] || { r: {} }; if (isFinite(v) && v >= 0) I.raiox[k].div = v; changed(); return; }
+  if ((t = e.target.closest('[data-bz-tx]'))) { const k = t.dataset.bzTx; const I = inv83(); I.raiox[k] = I.raiox[k] || { r: {} }; I.raiox[k].bzTx = +t.value; changed(); return; }
+});
 
 /* ---------- início ---------- */
 (async function boot() {
