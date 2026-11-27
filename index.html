@@ -1340,6 +1340,8 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 .xa89-f{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.xa89-f input{flex:1;min-width:140px;max-width:220px;text-transform:uppercase}
 .exp-c.xa89-c{border-style:dashed;border-color:color-mix(in srgb,#2f7d4f 55%,transparent)}
 
+.hg92{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:6px}.hg92 pre{white-space:pre-wrap;word-break:break-all;font-size:10.5px;max-height:120px;overflow:auto;background:var(--panel-2,#f1efe9);border-radius:6px;padding:6px;margin:6px 0 0}
+
 </style>
 </head>
 <body>
@@ -4260,7 +4262,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '9.1';
+const APP_VERSAO = '9.2';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13334,6 +13336,7 @@ CEL_NOVIDADES['8.8'] = ['📖 No ＋ Saiba mais: toque no ⓘ para entender cada
 CEL_NOVIDADES['8.9'] = ['➕ No Explorar, adicione qualquer ação ou FII pelo código e copie os números da Status Invest em ✎ Números'];
 CEL_NOVIDADES['9.0'] = ['📊 Ao adicionar uma ação ou FII no Explorar, o Prumo busca os números sozinho (botão ↻ no cartão para buscar de novo)'];
 CEL_NOVIDADES['9.1'] = ['📊 Segunda fonte de números: HG Brasil (grátis). O Prumo junta brapi + HG para preencher ações e FIIs sozinho'];
+CEL_NOVIDADES['9.2'] = ['🔍 Botão para testar a HG Brasil no Explorar e um segundo caminho para buscar as cotações'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -14077,6 +14080,50 @@ function hgAjuda() {
   if ((tipo === 'acoes' || tipo === 'fiis') && !(db.invest.cot || {}).hg) h = h.replace('Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p>', 'Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p><p class="small" style="margin:6px 0 0">💡 Para o Prumo buscar mais números sozinho (principalmente dos FIIs): <button class="btn sm" data-hg-ajuda>Ligar a HG Brasil (grátis)</button></p>');
   return h; }; }
 document.addEventListener('click', (ev) => { if (ev.target.closest('[data-hg-ajuda]')) hgAjuda(); }, true);
+
+/* ---------- v9.2 · HG Brasil: diagnóstico + caminho alternativo ---------- */
+const hgLog = [];
+async function hgFetch(url, rotulo) {
+  const ct = new AbortController(); const tm = setTimeout(() => ct.abort(), 12000); const L = { rotulo, quando: new Date().toLocaleTimeString('pt-BR') };
+  try { const r = await fetch(url, { signal: ct.signal, cache: 'no-store' }); L.status = r.status; const txt = await r.text(); L.trecho = txt.slice(0, 500);
+    let j = null; try { j = JSON.parse(txt); } catch (e) { L.erro = 'resposta não é JSON'; throw new Error(L.erro); }
+    if (!r.ok) { L.erro = `HTTP ${r.status}`; throw new Error(L.erro); }
+    const ks = j?.metadata?.key_status; if (ks && !/^(valid|ok|active|ativa)/i.test(String(ks))) L.aviso = 'key_status: ' + ks;
+    if (j?.error || j?.valid_key === false) { L.erro = j.message || 'erro da HG'; throw new Error(L.erro); }
+    L.ok = true; return j;
+  } catch (e) { if (!L.erro) L.erro = e.name === 'AbortError' ? 'demorou demais' : (e.message || 'bloqueado (CORS/rede)'); if (L.status == null) L.erro += ' · o navegador bloqueou (domínio não autorizado ou sem internet)'; throw e; }
+  finally { clearTimeout(tm); hgLog.unshift(L); hgLog.length = Math.min(hgLog.length, 12); }
+}
+hgGet = async function (rota, t, extra = '') {
+  const C = db.invest.cot || {}; if (!C.hg) throw new Error('sem chave');
+  const j = await hgFetch(`https://api.hgbrasil.com/v2/finance/${rota}?tickers=B3:${encodeURIComponent(t)}${extra}&key=${encodeURIComponent(C.hg)}&format=json-cors`, `${rota} ${t}`);
+  if (Array.isArray(j?.results) && !j.results.length) { hgLog[0].erro = 'veio vazio'; throw new Error('vazio'); }
+  return j;
+};
+async function hgLegado(t) { // endpoint antigo da HG (stock_price), costuma valer no plano grátis
+  const C = db.invest.cot || {}; return hgFetch(`https://api.hgbrasil.com/finance/stock_price?key=${encodeURIComponent(C.hg)}&symbol=${encodeURIComponent(t.toLowerCase())}&format=json-cors`, `stock_price ${t}`);
+}
+hgNumeros = (function (orig) { return async function (tipo, t) {
+  const r = await orig.apply(this, arguments);
+  if (!r.preco) { try { const j = await hgLegado(t); const p = hgNum(hgAchar(j, ['price'])); if (p > 0) r.preco = p; const nome = hgAchar(j, ['company_name', 'name']); if (nome && !r.got.nome) r.got.nome = String(nome).slice(0, 60); } catch (e) {} }
+  return r;
+}; })(hgNumeros);
+async function hgTestar() {
+  const C = db.invest.cot || {}; if (!C.hg) return hgAjuda();
+  vgJanela('<h3 style="margin:0">🔍 Testando a HG Brasil…</h3><p class="small muted">Leva uns segundos.</p>');
+  const t = 'MXRF11'; for (const f of [() => hgGet('quotes', t), () => hgGet('fundamentals', t, '&days_ago=0'), () => hgLegado(t)]) { try { await f(); } catch (e) {} }
+  const L = hgLog.slice(0, 3).reverse(); const mask = (s) => String(s || '').split(C.hg).join('••••');
+  const nome = { quotes: 'Cotação + dividend yield', fundamentals: 'Fundamentos (P/L, P/VP, ROE)', stock_price: 'Cotação (caminho antigo)' };
+  const algumOk = L.some((x) => x.ok);
+  vgJanela(`<h3 style="margin:0 0 6px">🔍 Teste da HG Brasil · ${t}</h3><p class="small muted" style="margin:0 0 8px">Endereço deste Prumo: <b>${esc(location.host || 'arquivo do computador')}</b> · chave: ${esc(C.hg.slice(0, 2))}••••</p>
+    ${L.map((x) => `<div class="hg92"><b>${x.ok ? '✅' : '❌'} ${nome[x.rotulo.split(' ')[0]] || esc(x.rotulo)}</b><br><span class="small">${x.ok ? 'Respondeu' + (x.aviso ? ' · ' + esc(x.aviso) : '') : esc(x.erro || 'falhou')}${x.status != null ? ' · código ' + x.status : ''}</span>${x.trecho ? `<pre>${esc(mask(x.trecho))}</pre>` : ''}</div>`).join('')}
+    <p class="small" style="margin:8px 0 0">${algumOk ? 'A ligação funciona. Me mande um print desta tela para eu ajustar a leitura dos números.' : 'Nenhuma resposta. Confira se o domínio cadastrado na chave é exatamente <b>' + esc(location.host || '') + '</b> e se a chave foi colada certa. Depois me mande um print desta tela.'}</p>
+    <div class="row" style="gap:6px;margin-top:8px"><button class="btn" data-sm-chaves>Ver a chave</button><button class="btn" data-sm-fechar>Fechar</button></div>`);
+}
+{ const _e = invExplorar; invExplorar = function () { let h = _e.apply(this, arguments); const tipo = ui.expTipo || 'acoes';
+  if ((tipo === 'acoes' || tipo === 'fiis') && (db.invest.cot || {}).hg) h = h.replace('Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p>', 'Depois, em <b>✎ Números</b>, copie da Status Invest os números principais.</p><p class="small" style="margin:6px 0 0">📊 HG Brasil ligada. <button class="btn sm" data-hg-testar>🔍 Testar a HG Brasil</button></p>');
+  return h; }; }
+document.addEventListener('click', (ev) => { if (ev.target.closest('[data-hg-testar]')) hgTestar(); }, true);
 
 /* ---------- início ---------- */
 (async function boot() {
