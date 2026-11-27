@@ -1,0 +1,21 @@
+name: Dados da CVM (FIIs)
+on:
+  schedule:
+    - cron: "17 9 * * 1"   # toda segunda-feira, 6h17 de Brasília
+  workflow_dispatch: {}      # botão "Run workflow" para rodar na hora
+permissions:
+  contents: write
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/cvm_fii.py cvm-fii.json
+      - run: |
+          git config user.name "prumo-bot"
+          git config user.email "prumo-bot@users.noreply.github.com"
+          git add cvm-fii.json
+          git diff --cached --quiet || (git commit -m "Dados da CVM atualizados" && git push)
