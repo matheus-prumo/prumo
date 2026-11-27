@@ -30,12 +30,23 @@ def baixar(url, timeout=90):
         if not os.path.exists(p):
             raise urllib.error.HTTPError(url, 404, "nao achei (teste)", None, None)
         return open(p, "rb").read()
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*", "Accept-Encoding": "gzip"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        dados = r.read()
-        if r.headers.get("Content-Encoding") == "gzip":
-            dados = gzip.decompress(dados)
-        return dados
+    ultimo = None
+    for tentativa in range(3):  # o site caiu? tenta de novo, esperando um pouco mais a cada vez
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*", "Accept-Encoding": "gzip", "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8"})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                dados = r.read()
+                if r.headers.get("Content-Encoding") == "gzip":
+                    dados = gzip.decompress(dados)
+                return dados
+        except urllib.error.HTTPError as e:
+            ultimo = e
+            if e.code not in (429, 500, 502, 503, 504):
+                raise
+        except Exception as e:  # conexão derrubada, tempo esgotado
+            ultimo = e
+        time.sleep(4 * (tentativa + 1))
+    raise ultimo
 
 
 def sem_acento(s):
@@ -141,11 +152,16 @@ def tesouro():
         except Exception:
             dados = None
     if dados is None:  # procura o endereço do arquivo no catálogo do Tesouro Transparente
-        j = json.loads(baixar(TESOURO_CKAN))
-        for r in j.get("result", {}).get("resources", []):
-            if re.search(r"PrecoTaxaTesouroDireto\.csv$", r.get("url", ""), re.I):
-                dados = baixar(r["url"], timeout=180)
-                break
+        try:
+            j = json.loads(baixar(TESOURO_CKAN))
+            for r in j.get("result", {}).get("resources", []):
+                if re.search(r"PrecoTaxaTesouroDireto\.csv$", r.get("url", ""), re.I):
+                    dados = baixar(r["url"], timeout=180)
+                    break
+        except Exception:
+            dados = None
+    if dados is None:  # plano B: lista de títulos à venda no site do Tesouro Direto
+        return tesouro_direto()
     if dados is None:
         raise RuntimeError("não achei o arquivo de preços e taxas do Tesouro")
     txt = dados.decode("latin-1")
@@ -181,6 +197,39 @@ def stooq(sym):
     return None
 
 
+def google(sym, bolsas):
+    """Último preço pela página do Google Finanças (ex.: VOO:NYSEARCA)."""
+    for b in bolsas:
+        try:
+            txt = baixar(f"https://www.google.com/finance/quote/{sym}:{b}?hl=en").decode("utf-8", "replace")
+            m = re.search(r'data-last-price="([0-9.]+)"', txt)
+            if m:
+                v = float(m.group(1))
+                if v > 0:
+                    return v
+        except Exception:
+            continue
+    return None
+
+
+def tesouro_direto():
+    j = json.loads(baixar("https://www.tesourodireto.com.br/json/br/com/b3/tesourodireto/service/api/treasurybondsinfo.json"))
+    lista = (j.get("response") or {}).get("TrsrBdTradgList") or []
+    titulos = []
+    for x in lista:
+        b = x.get("TrsrBd") or {}
+        nome = b.get("nm") or ""
+        tipo = re.sub(r"\s+\d{4}$", "", nome).strip()
+        venc = (b.get("mtrtyDt") or "")[:10]
+        taxa = b.get("anulInvstmtRate") or b.get("anulRedRate")
+        if tipo and venc and taxa:
+            titulos.append({"tipo": tipo, "venc": venc, "taxa": float(taxa), "pu": b.get("untrInvstmtVal") or None, "taxa_resgate": b.get("anulRedRate"), "pu_resgate": b.get("untrRedVal")})
+    if not titulos:
+        raise RuntimeError("Tesouro Direto não devolveu títulos")
+    titulos.sort(key=lambda x: (x["tipo"], x["venc"]))
+    return {"data": datetime.date.today().isoformat(), "titulos": titulos, "fonte": "tesourodireto.com.br"}
+
+
 def yahoo(tickers):
     out = {}
     for t in tickers:
@@ -193,9 +242,9 @@ def yahoo(tickers):
                 except Exception:
                     j = None
             if j is None:
-                p = stooq(t.lower() + ".us")
+                p = stooq(t.lower() + ".us") or google(t, ("NYSEARCA", "NASDAQ", "BATS", "NYSE"))
                 if p:
-                    out[t] = {"p": round(p, 2), "div12": None, "dy": None, "fonte": "stooq"}
+                    out[t] = {"p": round(p, 2), "div12": None, "dy": None, "fonte": "stooq/google"}
                 continue
             r = j["chart"]["result"][0]
             p = r["meta"].get("regularMarketPrice")
@@ -228,6 +277,8 @@ def indices():
                     break
                 except Exception:
                     continue
+            if not p:
+                p = google({"IBOV": "IBOV", "BOVA11": "BOVA11", "XFIX11": "XFIX11", "IVVB11": "IVVB11"}[nome], ("INDEXBVMF",) if nome == "IBOV" else ("BVMF",))
             if p:
                 out[nome] = round(p, 2)
         except Exception as e:
