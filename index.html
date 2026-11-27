@@ -1342,6 +1342,8 @@ body.tema-loja .nav button.tab-btn.active, body.tema-loja .nav button.tab-btn.on
 
 .cvm93{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:6px}
 
+.cvm95{margin:0 0 10px}
+
 </style>
 </head>
 <body>
@@ -4262,7 +4264,7 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-sy
 /* =================== SENHA E CRIPTOGRAFIA DOS DADOS =================== */
 // Os dados são cifrados com uma chave aleatória (AES-GCM 256). Essa chave fica guardada no arquivo
 // duas vezes: protegida pela senha e protegida pelo código de recuperação (PBKDF2-SHA256).
-const APP_VERSAO = '9.4';
+const APP_VERSAO = '9.5';
 let CRIPTO = null; // { dek: CryptoKey, kid, senha: {...}, rec: {...} } enquanto o app está desbloqueado
 const ITER = 250000;
 const b64 = { de: (buf) => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }, para: (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)) };
@@ -13337,6 +13339,7 @@ CEL_NOVIDADES['8.9'] = ['➕ No Explorar, adicione qualquer ação ou FII pelo c
 CEL_NOVIDADES['9.0'] = ['📊 Ao adicionar uma ação ou FII no Explorar, o Prumo busca os números sozinho (botão ↻ no cartão para buscar de novo)'];
 CEL_NOVIDADES['9.3'] = ['🏛️ FIIs com dados oficiais da CVM: DY, P/VP, patrimônio e cotistas sem digitar (Explorar › Fundos imobiliários)'];
 CEL_NOVIDADES['9.4'] = ['🏛️ Dados da CVM agora chegam pelo seu GitHub, toda semana, sem bloqueio'];
+CEL_NOVIDADES['9.5'] = ['🏛️ Os 30 FIIs do Explorar agora usam DY, P/VP e patrimônio dos dados oficiais da CVM com o preço do dia'];
 
 /* ---------- v8.4 · 🏛️ Mestres da disciplina + 📜 plano de longo prazo ---------- */
 function inv84() { const I = inv83(); if (!I.habitos || typeof I.habitos !== 'object') I.habitos = {}; if (!I.planoLP) I.planoLP = { regras: PLANO_PADRAO.slice(), assinado: null, helen: null, revisar: null }; if (!I.bola) I.bola = { v: null, dy: 8, anos: 10 }; return I; }
@@ -14131,6 +14134,45 @@ cvmAtualizar = async function (forcar) {
   cvmUltimoErro = viu404 ? 'o arquivo com os dados da CVM ainda não foi criado no seu GitHub (falta ligar a tarefa automática)' : 'não consegui ler o arquivo da CVM no seu GitHub (' + erroJson + ')';
   throw new Error(cvmUltimoErro);
 };
+
+/* ---------- v9.5 · os 30 FIIs da lista com DY, P/VP e patrimônio da CVM ---------- */
+function cvmAplicarLista() {
+  let n = 0; const C = cvmCache();
+  EXP_FIIS.forEach((x) => {
+    if (x.xa) return;
+    if (!x.orig) x.orig = [x[3], x[4], x[6]];
+    const f = C?.F?.[x[0].slice(0, 4)]; const p = precoLista(x[0])?.p;
+    if (f && p > 0 && f.vpa > 0) {
+      x[3] = r2(p / f.vpa);
+      x[4] = f.rend12 > 0 ? r2((f.rend12 / p) * 100) : x.orig[1];
+      x[6] = f.pl > 0 ? r2(f.pl / 1e9) : x.orig[2];
+      x.cvm = f.ref; n++;
+    } else { x[3] = x.orig[0]; x[4] = x.orig[1]; x[6] = x.orig[2]; x.cvm = null; }
+  });
+  return n;
+}
+const cvmRefTxt = (ref) => (ref ? ref.split('-').reverse().join('/') : '');
+let cvmListaTentou = false;
+{ const _e = invExplorar; invExplorar = function () {
+  const tipo = ui.expTipo || 'acoes'; let n = 0;
+  if (tipo === 'fiis') { try { n = cvmAplicarLista(); } catch (e) { console.warn('9.5', e); }
+    const C = cvmCache(); if ((!C || Date.now() - C.em > 3 * 864e5) && !cvmListaTentou) { cvmListaTentou = true; cvmAtualizar(false).then(() => { if (ui.tab === 'invest' && (ui.expTipo || 'acoes') === 'fiis') renderAll(); }).catch(() => {}); } }
+  let h = _e.apply(this, arguments);
+  if (tipo === 'fiis') {
+    const C = cvmCache(); const ref = C ? Object.values(C.F)[0]?.ref : null; const total = EXP_FIIS.filter((x) => !x.xa).length;
+    const aviso = n ? `<div class="lembrete info cvm95"><span>🏛️ <b>${n} de ${total} fundos</b> com DY, P/VP e patrimônio atualizados pelos dados oficiais da CVM${ref ? ' (informe de ' + cvmRefTxt(ref) + ')' : ''} e pelo preço do dia.${n < total ? ' Os outros ainda estão com os números da pesquisa: toque em <b>↻ Preços desta lista</b>.' : ''}</span></div>`
+      : C ? `<div class="lembrete info cvm95"><span>🏛️ Os dados da CVM estão prontos. Toque em <b>↻ Preços desta lista</b> para o Prumo recalcular o DY e o P/VP de cada fundo com o preço de hoje.</span></div>` : '';
+    if (aviso) h = h.replace('<div class="row exp-filtros">', aviso + '<div class="row exp-filtros">');
+  }
+  return h;
+}; }
+{ const _c = cardExp; cardExp = function (tipo, x) { let h = _c.apply(this, arguments); if (tipo !== 'fiis') return h; const a = EXP_FIIS.find((r) => r[0] === x.t && !r.xa); if (!a?.cvm) return h;
+  return h.replace(`<span class="tag">${esc(x.seg)}</span>`, `<span class="tag">${esc(x.seg)}</span> <span class="tag ok" title="DY, P/VP e patrimônio pelos dados oficiais da CVM">🏛️ CVM ${cvmRefTxt(a.cvm)}</span>`); }; }
+// o Saiba mais e a checagem usam os números novos
+{ const _sm = smAbrir; smAbrir = function (tipo) { if (tipo === 'fiis') { try { cvmAplicarLista(); } catch (e) {} } return _sm.apply(this, arguments); }; }
+{ const _h = smHtml; smHtml = function (tipo, t) { let h = _h.apply(this, arguments); if (tipo !== 'fiis') return h; const a = EXP_FIIS.find((r) => r[0] === t && !r.xa); if (a?.cvm) h = h.replace(/\(números da pesquisa de [^)]*\)/, `(DY, P/VP e patrimônio: CVM ${cvmRefTxt(a.cvm)} + preço do dia; liquidez: pesquisa de ${EXP_DATA})`); return h; }; }
+// depois de buscar os preços da lista de FIIs, recalcula
+precosDaLista = (function (orig) { return async function (tipo) { const r = await orig.apply(this, arguments); if (tipo === 'fiis') { try { await cvmAtualizar(false); } catch (e) {} renderAll(); } return r; }; })(precosDaLista);
 
 /* ---------- início ---------- */
 (async function boot() {
