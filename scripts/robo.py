@@ -7,7 +7,7 @@ Junta, num arquivo só (dados.json), os números que o Prumo usa:
 E, uma vez por semana, fundos.json com a cota dos fundos de investimento (CVM, Informe Diário).
 Usa só a biblioteca padrão do Python. Cada parte que falhar não derruba as outras.
 """
-import csv, datetime, gzip, html, io, json, os, re, sys, time, unicodedata, urllib.request, zipfile
+import csv, datetime, gzip, html, io, json, os, re, subprocess, sys, time, unicodedata, urllib.request, zipfile
 
 LOCAL = os.environ.get("ROBO_LOCAL")  # pasta com respostas salvas, para testes
 UA = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36"
@@ -24,7 +24,7 @@ def nome_local(url):
     return re.sub(r"[^A-Za-z0-9]+", "_", url)[-150:]
 
 
-def baixar(url, timeout=90, tentativas=3):
+def baixar(url, timeout=90, tentativas=3, curl=False):
     if LOCAL:
         p = os.path.join(LOCAL, nome_local(url))
         if not os.path.exists(p):
@@ -47,6 +47,16 @@ def baixar(url, timeout=90, tentativas=3):
             ultimo = e
         if tentativa + 1 < tentativas:
             time.sleep(4 * (tentativa + 1))
+    if curl and not isinstance(ultimo, urllib.error.HTTPError):
+        # alguns sites do governo barram o Python mas aceitam o curl
+        try:
+            r = subprocess.run(["curl", "-sSfL", "--compressed", "--retry", "3", "--retry-all-errors", "--max-time", str(timeout),
+                                "-A", UA, "-H", "Accept-Language: pt-BR,pt;q=0.9", url], capture_output=True, timeout=timeout * 4 + 30)
+            if r.returncode == 0 and r.stdout:
+                return r.stdout
+            ultimo = RuntimeError("curl: " + (r.stderr.decode("utf-8", "replace").strip()[-60:] or f"código {r.returncode}"))
+        except Exception as e:
+            ultimo = e
     raise ultimo
 
 
@@ -149,17 +159,17 @@ def tesouro():
     motivos = []
     for u in TESOURO_URLS:
         try:
-            dados = baixar(u, timeout=240, tentativas=5)
+            dados = baixar(u, timeout=240, tentativas=4, curl=True)
             break
         except Exception as e:
             motivos.append("arquivo: " + _motivo(e))
             dados = None
     if dados is None:  # procura o endereço do arquivo no catálogo do Tesouro Transparente
         try:
-            j = json.loads(baixar(TESOURO_CKAN))
+            j = json.loads(baixar(TESOURO_CKAN, curl=True))
             for r in j.get("result", {}).get("resources", []):
                 if re.search(r"PrecoTaxaTesouroDireto\.csv$", r.get("url", ""), re.I):
-                    dados = baixar(r["url"], timeout=240, tentativas=3)
+                    dados = baixar(r["url"], timeout=240, tentativas=2, curl=True)
                     break
         except Exception as e:
             motivos.append("catálogo: " + _motivo(e))
